@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.1.0-blue" />
   <img alt="Electron" src="https://img.shields.io/badge/Electron-35-47848F?logo=electron&logoColor=white" />
   <img alt="Vue" src="https://img.shields.io/badge/Vue-3-4FC08D?logo=vue.js&logoColor=white" />
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white" />
@@ -54,6 +54,15 @@
 - **Playlist Conversion** -- Convert Spotify playlists to Deezer for downloading
 - **Track Matching** -- ISRC-based matching with fallback search and confidence scoring
 - **Link Support** -- Paste Spotify URLs directly into the Link Analyzer
+- **Batch Downloads** -- Converted playlists download as a single item with unified progress tracking
+
+### Playlist Sync
+
+- **Automatic Sync** -- Monitor Spotify and Deezer playlists for new tracks
+- **Scheduling** -- Sync on app launch, hourly, every 6/12/24 hours, or manually
+- **Diff-Based Downloads** -- Only downloads tracks added since last sync
+- **Settings-Aware** -- Uses your configured quality, folder structure, and metadata settings
+- **Real-Time Progress** -- Live progress bars and status updates during sync
 
 ### User Experience
 
@@ -170,6 +179,7 @@ The Settings page offers deep customization organized into these categories:
 | **Language** | Choose from 22 supported languages |
 | **Account** | Deezer ARL token management |
 | **Spotify** | Client ID, Client Secret, fallback search toggle |
+| **Playlist Sync** | Add Spotify/Deezer playlists, set sync schedule, enable/disable |
 
 ---
 
@@ -258,10 +268,12 @@ deemix-app/
 │   │   ├── downloadStore.ts        # Download queue management
 │   │   ├── favoritesStore.ts       # Favorites tracking
 │   │   ├── playerStore.ts          # Audio preview playback
+│   │   ├── profileStore.ts         # Settings profiles
 │   │   ├── settingsStore.ts        # User preferences
+│   │   ├── syncStore.ts            # Playlist sync state
 │   │   └── toastStore.ts           # Notification system
 │   ├── types/                  # TypeScript type definitions
-│   └── views/                  # Page components (10 pages)
+│   └── views/                  # Page components (11 pages)
 ├── electron/                   # Electron main process
 │   ├── main.ts                 # Window management & IPC
 │   ├── preload.ts              # Context bridge
@@ -269,6 +281,7 @@ deemix-app/
 │   └── services/               # Backend services
 │       ├── deezerAuth.ts           # Deezer authentication
 │       ├── downloader.ts           # Download engine
+│       ├── playlistSync.ts         # Playlist sync engine
 │       ├── spotifyAPI.ts           # Spotify API client
 │       └── spotifyConverter.ts     # Spotify-to-Deezer conversion
 ├── public/                     # Static assets & icons
