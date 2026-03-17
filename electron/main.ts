@@ -752,7 +752,7 @@ ipcMain.handle('deezer:closeLoginWindow', () => {
 
 // Persistent storage for credentials (stored in userData, not localStorage)
 // This fixes session persistence issues with file:// protocol
-ipcMain.handle('storage:saveCredentials', async (_, credentials: { arl?: string; spotifyClientId?: string; spotifyClientSecret?: string }) => {
+ipcMain.handle('storage:saveCredentials', async (_, credentials: { arl?: string; spotifyClientId?: string; spotifyClientSecret?: string; spotifyUsername?: string }) => {
   try {
     const credentialsPath = getCredentialsPath()
     const data: any = {}
@@ -796,6 +796,7 @@ ipcMain.handle('storage:saveCredentials', async (_, credentials: { arl?: string;
     storeCredential(credentials.arl, 'arl')
     storeCredential(credentials.spotifyClientId, 'spotifyClientId')
     storeCredential(credentials.spotifyClientSecret, 'spotifyClientSecret')
+    storeCredential(credentials.spotifyUsername, 'spotifyUsername')
 
     await mkdir(app.getPath('userData'), { recursive: true })
     await writeFile(credentialsPath, JSON.stringify(data, null, 2))
@@ -841,10 +842,11 @@ ipcMain.handle('storage:loadCredentials', async () => {
       return stored.data
     }
 
-    const result: { arl?: string; spotifyClientId?: string; spotifyClientSecret?: string } = {}
+    const result: { arl?: string; spotifyClientId?: string; spotifyClientSecret?: string; spotifyUsername?: string } = {}
     result.arl = decodeCredential(data.arl)
     result.spotifyClientId = decodeCredential(data.spotifyClientId)
     result.spotifyClientSecret = decodeCredential(data.spotifyClientSecret)
+    result.spotifyUsername = decodeCredential(data.spotifyUsername)
 
     console.log('[Main] Credentials loaded from userData')
     return { success: true, credentials: result }
