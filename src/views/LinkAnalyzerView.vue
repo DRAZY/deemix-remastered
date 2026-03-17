@@ -213,19 +213,31 @@ async function convertSpotifyToDeezer() {
 async function downloadConvertedTracks() {
   if (!conversionResult.value?.matched) return
 
+  // Collect all Deezer track IDs from the conversion results
+  const trackIds: number[] = []
   for (const match of conversionResult.value.matched) {
-    if (match.deezerTrack) {
-      // Construct a proper Track object for addDownload
-      await downloadStore.addDownload({
-        id: match.deezerTrack.id,
-        title: match.deezerTrack.title,
-        artist: match.deezerTrack.artist || { id: 0, name: 'Unknown Artist' },
-        album: match.deezerTrack.album,
-        duration: match.deezerTrack.duration || 0,
-        cover: match.deezerTrack.album?.cover_medium || ''
-      })
+    const dz = match.deezer || match.deezerTrack
+    if (dz && dz.id) {
+      trackIds.push(dz.id)
     }
   }
+
+  if (trackIds.length === 0) return
+
+  const sourcePlaylistName = spotifyResult.value?.data?.name || 'Spotify Playlist'
+  const coverUrl = spotifyResult.value?.data?.images?.[0]?.url
+    || spotifyResult.value?.data?.album?.images?.[0]?.url
+    || ''
+
+  // Single batch request — the server queues all tracks and returns one set of IDs.
+  // The download store tracks them as a single playlist item with unified progress.
+  await downloadStore.addBatchDownload({
+    trackIds,
+    playlistName: sourcePlaylistName,
+    title: sourcePlaylistName,
+    cover: coverUrl,
+    totalTracks: trackIds.length
+  })
 }
 
 async function handleDownload() {
@@ -985,13 +997,13 @@ function copyLink() {
           <div class="max-h-48 overflow-y-auto space-y-1">
             <div
               v-for="match in conversionResult.matched"
-              :key="match.spotifyTrack.id"
+              :key="match.spotify?.id || match.spotifyTrack?.id"
               class="flex items-center gap-3 p-2 rounded bg-background-main"
             >
               <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
-              <span class="truncate">{{ match.spotifyTrack.name }}</span>
+              <span class="truncate">{{ match.spotify?.name || match.spotifyTrack?.name }}</span>
               <span class="text-xs text-foreground-muted ml-auto">{{ match.matchType === 'isrc' ? 'ISRC' : 'Search' }}</span>
             </div>
           </div>

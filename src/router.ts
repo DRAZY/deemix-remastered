@@ -29,6 +29,11 @@ const router = createRouter({
       component: () => import('./views/LinkAnalyzerView.vue')
     },
     {
+      path: '/sync',
+      name: 'sync',
+      component: () => import('./views/SyncView.vue')
+    },
+    {
       path: '/settings',
       name: 'settings',
       component: () => import('./views/SettingsView.vue')

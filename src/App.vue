@@ -11,6 +11,8 @@ import OfflineBanner from './components/OfflineBanner.vue'
 import { useDownloadStore } from './stores/downloadStore'
 import { useAuthStore } from './stores/authStore'
 import { useSettingsStore } from './stores/settingsStore'
+import { useProfileStore } from './stores/profileStore'
+import { useSyncStore } from './stores/syncStore'
 import { useFavoritesStore } from './stores/favoritesStore'
 import { useKeyboardShortcuts } from './composables/useKeyboardShortcuts'
 
@@ -18,6 +20,8 @@ const router = useRouter()
 const downloadStore = useDownloadStore()
 const authStore = useAuthStore()
 const settingsStore = useSettingsStore()
+const profileStore = useProfileStore()
+const syncStore = useSyncStore()
 const favoritesStore = useFavoritesStore()
 const isLoading = ref(true)
 const loadingMessage = ref('Loading settings...')
@@ -57,6 +61,14 @@ onMounted(async () => {
   loadingMessage.value = 'Loading settings...'
   await settingsStore.loadSettings()
   console.log('[App] Settings loaded')
+
+  // Load profiles after settings
+  await profileStore.loadProfiles()
+  console.log('[App] Profiles loaded')
+
+  // Initialize sync store (non-blocking, after settings)
+  syncStore.init().then(() => console.log('[App] Sync store initialized'))
+    .catch((e: any) => console.warn('[App] Sync store init failed:', e.message))
 
   // Now initialize remaining stores
   loadingMessage.value = 'Connecting to Deezer...'

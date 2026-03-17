@@ -1,4 +1,5 @@
 import { createServer, Server, IncomingMessage, ServerResponse } from 'http'
+import * as http from 'http'
 import { EventEmitter } from 'events'
 import * as https from 'https'
 import * as fs from 'fs'
@@ -8,6 +9,7 @@ import { deezerAuth, DeezerSession } from './services/deezerAuth'
 import { downloader, DownloadProgress } from './services/downloader'
 import { spotifyAPI } from './services/spotifyAPI'
 import { spotifyConverter } from './services/spotifyConverter'
+import { playlistSync } from './services/playlistSync'
 
 // File-based cache for discography (persists across app restarts)
 const DISCOGRAPHY_FILE_CACHE_TTL = 24 * 60 * 60 * 1000 // 24 hours
@@ -62,7 +64,7 @@ function saveFileCache(cache: FileCache): void {
 }
 
 // Security: Per-operation rate limiting
-type OperationType = 'auth' | 'search' | 'download' | 'api' | 'default'
+type OperationType = 'auth' | 'search' | 'download' | 'api' | 'sync' | 'default'
 
 interface RateLimitConfig {
   window: number     // Time window in ms
@@ -73,8 +75,9 @@ interface RateLimitConfig {
 const RATE_LIMIT_CONFIGS: Record<OperationType, RateLimitConfig> = {
   auth: { window: 60000, maxRequests: 5 },       // 5 auth attempts per minute
   search: { window: 60000, maxRequests: 30 },    // 30 searches per minute
-  download: { window: 60000, maxRequests: 20 },  // 20 download starts per minute
-  api: { window: 60000, maxRequests: 60 },       // 60 API calls per minute
+  download: { window: 60000, maxRequests: 500 },  // 500 download starts per minute (local API, batch support)
+  api: { window: 60000, maxRequests: 500 },       // 500 API calls per minute (local API)
+  sync: { window: 60000, maxRequests: 120 },     // 120 sync operations per minute (local API)
   default: { window: 60000, maxRequests: 100 }   // 100 general requests per minute
 }
 
@@ -502,6 +505,9 @@ export class DeemixServer extends EventEmitter {
     if (path.startsWith('/api/download')) {
       return 'download'
     }
+    if (path.startsWith('/api/sync/')) {
+      return 'sync'
+    }
     if (path.startsWith('/api/')) {
       return 'api'
     }
@@ -647,6 +653,10 @@ export class DeemixServer extends EventEmitter {
         await this.handleDownloadPlaylist(req, res)
         break
 
+      case '/api/download/batch':
+        await this.handleDownloadBatch(req, res)
+        break
+
       case '/api/queue':
         this.handleGetQueue(res)
         break
@@ -706,6 +716,39 @@ export class DeemixServer extends EventEmitter {
 
       case '/info-spotify':
         this.handleInfoSpotify(res)
+        break
+
+      // Playlist Sync routes
+      case '/api/sync/playlists':
+        if (req.method === 'GET') {
+          this.handleGetSyncPlaylists(res)
+        } else if (req.method === 'POST') {
+          await this.handleAddSyncPlaylist(req, res)
+        } else if (req.method === 'PUT') {
+          await this.handleUpdateSyncPlaylist(req, res)
+        } else if (req.method === 'DELETE') {
+          await this.handleDeleteSyncPlaylist(req, res)
+        }
+        break
+
+      case '/api/sync/run':
+        await this.handleRunSync(req, res)
+        break
+
+      case '/api/sync/run-all':
+        await this.handleRunSyncAll(res)
+        break
+
+      case '/api/sync/cancel':
+        await this.handleCancelSync(req, res)
+        break
+
+      case '/api/sync/status':
+        this.handleGetSyncStatus(res)
+        break
+
+      case '/api/sync/resolve-url':
+        await this.handleResolveShareUrl(req, res)
         break
 
       default:
@@ -1155,6 +1198,11 @@ export class DeemixServer extends EventEmitter {
 
     const body = await this.parseBody(req)
     const trackId = validateNumericId(body.trackId)
+    // Optional playlist context — when provided, the track is treated as part of
+    // a playlist (e.g. converted Spotify playlist from Link Analyzer) instead of
+    // a standalone single. This enables playlist folder creation and playlist
+    // track naming templates from the user's settings.
+    const playlistName = typeof body.playlistName === 'string' ? body.playlistName.trim() : ''
 
     if (trackId === null) {
       this.sendJSON(res, { error: 'Valid Track ID is required' }, 400)
@@ -1167,15 +1215,16 @@ export class DeemixServer extends EventEmitter {
       return
     }
 
-    console.log(`[Server] Download request - trackId: ${trackId}, quality: ${this.settings.quality}, path: ${this.settings.downloadPath}`)
+    const isPlaylistTrack = !!playlistName
+    console.log(`[Server] Download request - trackId: ${trackId}, quality: ${this.settings.quality}, path: ${this.settings.downloadPath}${isPlaylistTrack ? `, playlist: "${playlistName}"` : ''}`)
     console.log(`[Server] Settings - embedArtwork: ${this.settings.embedArtwork}, saveArtwork: ${this.settings.saveArtwork}`)
     console.log(`[Server] Settings - tags.cover: ${this.settings.tags?.cover}, tags.title: ${this.settings.tags?.title}`)
     console.log(`[Server] Settings - albumCovers.embeddedArtworkSize: ${this.settings.albumCovers?.embeddedArtworkSize}`)
     console.log(`[Server] Settings - createArtistFolder: ${this.settings.createArtistFolder}, createAlbumFolder: ${this.settings.createAlbumFolder}, createSinglesStructure: ${this.settings.createSinglesStructure}`)
 
     try {
-      // Individual track downloads are treated as singles
-      // This ensures they use trackNameTemplate and respect createSinglesStructure setting
+      // When playlistName is provided, treat as a playlist track (enables playlist
+      // folders and playlist track naming). Otherwise treat as a standalone single.
       const downloadId = await downloader.download({
         trackId,
         outputPath: this.settings.downloadPath,
@@ -1188,7 +1237,10 @@ export class DeemixServer extends EventEmitter {
         embedArtwork: this.settings.embedArtwork,
         saveLyrics: this.settings.saveLyrics,
         syncedLyrics: this.settings.syncedLyrics,
-        isSingle: true, // Flag individual track downloads as singles
+        isSingle: !isPlaylistTrack,
+        isFromPlaylist: isPlaylistTrack || undefined,
+        playlistName: playlistName || undefined,
+        savePlaylistAsCompilation: isPlaylistTrack ? this.settings.savePlaylistAsCompilation : undefined,
         folderSettings: {
           createPlaylistFolder: this.settings.createPlaylistFolder,
           createArtistFolder: this.settings.createArtistFolder,
@@ -1456,6 +1508,126 @@ export class DeemixServer extends EventEmitter {
         } catch (err: any) {
           console.error('[Server] M3U generation failed:', err.message)
           // Don't fail the whole request, just log the error
+        }
+      }
+
+      this.sendJSON(res, { ids: downloadIds, count: downloadIds.length })
+    } catch (error: any) {
+      this.sendJSON(res, { error: error.message }, 500)
+    }
+  }
+
+  /**
+   * Batch download endpoint — accepts an array of Deezer track IDs with optional
+   * playlist context. Used by the Link Analyzer when downloading converted Spotify
+   * playlists. Returns a single set of download IDs that the client tracks as one
+   * playlist-like download item, avoiding hundreds of individual API calls.
+   */
+  private async handleDownloadBatch(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    if (!deezerAuth.isLoggedIn()) {
+      this.sendJSON(res, { error: 'Authentication required' }, 401)
+      return
+    }
+
+    const body = await this.parseBody(req)
+    const trackIds: number[] = (Array.isArray(body.trackIds) ? body.trackIds : [])
+      .map((id: any) => validateNumericId(id))
+      .filter((id: number | null): id is number => id !== null)
+    const playlistName = typeof body.playlistName === 'string' ? body.playlistName.trim() : ''
+
+    if (trackIds.length === 0) {
+      this.sendJSON(res, { error: 'At least one valid track ID is required' }, 400)
+      return
+    }
+
+    if (!validateDownloadPath(this.settings.downloadPath)) {
+      this.sendJSON(res, { error: 'Invalid download path configured' }, 400)
+      return
+    }
+
+    const isPlaylist = !!playlistName
+    console.log(`[Server] Batch download: ${trackIds.length} tracks${isPlaylist ? `, playlist: "${playlistName}"` : ''}`)
+
+    try {
+      const downloadIds: string[] = []
+
+      for (let i = 0; i < trackIds.length; i++) {
+        const downloadId = await downloader.download({
+          trackId: trackIds[i],
+          outputPath: this.settings.downloadPath,
+          quality: this.settings.quality,
+          bitrateFallback: this.settings.bitrateFallback,
+          createFolders: true,
+          artistFolder: this.settings.createArtistFolder,
+          albumFolder: this.settings.createAlbumFolder,
+          saveArtwork: this.settings.saveArtwork,
+          embedArtwork: this.settings.embedArtwork,
+          saveLyrics: this.settings.saveLyrics,
+          syncedLyrics: this.settings.syncedLyrics,
+          isSingle: !isPlaylist,
+          isFromPlaylist: isPlaylist || undefined,
+          playlistName: playlistName || undefined,
+          playlistPosition: isPlaylist ? i + 1 : undefined,
+          playlistContext: isPlaylist ? { playlistId: 0, playlistName } : undefined,
+          savePlaylistAsCompilation: isPlaylist ? this.settings.savePlaylistAsCompilation : undefined,
+          folderSettings: {
+            createPlaylistFolder: this.settings.createPlaylistFolder,
+            createArtistFolder: this.settings.createArtistFolder,
+            createAlbumFolder: this.settings.createAlbumFolder,
+            createCDFolder: this.settings.createCDFolder,
+            createPlaylistStructure: this.settings.createPlaylistStructure,
+            createSinglesStructure: this.settings.createSinglesStructure,
+            playlistFolderTemplate: this.settings.playlistFolderTemplate,
+            albumFolderTemplate: this.settings.albumFolderTemplate,
+            artistFolderTemplate: this.settings.artistFolderTemplate
+          },
+          trackTemplates: {
+            trackNameTemplate: this.settings.trackNameTemplate,
+            albumTrackTemplate: this.settings.albumTrackTemplate,
+            playlistTrackTemplate: this.settings.playlistTrackTemplate
+          },
+          metadataSettings: {
+            tags: this.settings.tags,
+            albumCovers: this.settings.albumCovers,
+            useNullSeparator: this.settings.useNullSeparator,
+            saveID3v1: this.settings.saveID3v1,
+            saveOnlyMainArtist: this.settings.saveOnlyMainArtist,
+            artistSeparator: this.settings.artistSeparator,
+            dateFormatFlac: this.settings.dateFormatFlac,
+            titleCasing: this.settings.titleCasing,
+            artistCasing: this.settings.artistCasing,
+            removeAlbumVersion: this.settings.removeAlbumVersion,
+            featuredArtistsHandling: this.settings.featuredArtistsHandling,
+            keepVariousArtists: this.settings.keepVariousArtists,
+            removeArtistCombinations: this.settings.removeArtistCombinations
+          },
+          createErrorLog: this.settings.createErrorLog
+        })
+        downloadIds.push(downloadId)
+      }
+
+      // Generate M3U playlist file if setting is enabled and this is a playlist
+      if (isPlaylist && this.settings.createPlaylistFile && downloadIds.length > 0) {
+        try {
+          const fileExt = this.settings.quality === 'FLAC' ? '.flac' : '.mp3'
+          const m3uTracks = trackIds.map((_, i) => {
+            const position = String(i + 1).padStart(2, '0')
+            const template = this.settings.playlistTrackTemplate || '%position% - %artist% - %title%'
+            const fileName = template
+              .replace(/%position%/g, position)
+              .replace(/%artist%/g, 'Unknown Artist')
+              .replace(/%title%/g, 'Unknown Track')
+              .replace(/[<>:"/\\|?*]/g, '_')
+            return {
+              duration: 0,
+              artist: 'Unknown Artist',
+              title: 'Unknown Track',
+              relativePath: `${playlistName}/${fileName}${fileExt}`
+            }
+          })
+          downloader.generateM3U(playlistName, this.settings.downloadPath, m3uTracks)
+        } catch (err: any) {
+          console.error('[Server] M3U generation failed:', err.message)
         }
       }
 
@@ -2545,8 +2717,9 @@ export class DeemixServer extends EventEmitter {
           deezer: m.deezerTrack ? {
             id: m.deezerTrack.id,
             title: m.deezerTrack.title,
-            artist: m.deezerTrack.artist?.name,
-            album: m.deezerTrack.album?.title
+            artist: m.deezerTrack.artist || { id: 0, name: 'Unknown Artist' },
+            album: m.deezerTrack.album || { id: 0, title: '', cover_medium: '' },
+            duration: m.deezerTrack.duration || 0
           } : null,
           matchType: m.matchType,
           confidence: m.confidence
@@ -2567,6 +2740,184 @@ export class DeemixServer extends EventEmitter {
   }
 
   // ==================== End Spotify Handlers ====================
+
+  // ==================== Playlist Sync Handlers ====================
+
+  private handleGetSyncPlaylists(res: ServerResponse): void {
+    const playlists = playlistSync.getPlaylists()
+    const activeSyncIds = playlistSync.getActiveSyncIds()
+    this.sendJSON(res, { playlists, activeSyncIds })
+  }
+
+  private async handleAddSyncPlaylist(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    try {
+      const body = await this.parseBody(req)
+      const { source, sourcePlaylistId, sourcePlaylistName, sourcePlaylistUrl, schedule, downloadPath } = body
+
+      if (!source || !sourcePlaylistId || !sourcePlaylistName) {
+        this.sendJSON(res, { error: 'Missing required fields: source, sourcePlaylistId, sourcePlaylistName' }, 400)
+        return
+      }
+
+      if (!['spotify', 'deezer'].includes(source)) {
+        this.sendJSON(res, { error: 'Invalid source. Must be "spotify" or "deezer"' }, 400)
+        return
+      }
+
+      const playlist = await playlistSync.addPlaylist({
+        source,
+        sourcePlaylistId: String(sourcePlaylistId),
+        sourcePlaylistName: String(sourcePlaylistName),
+        sourcePlaylistUrl: String(sourcePlaylistUrl || ''),
+        schedule: schedule || '6h',
+        downloadPath: downloadPath || this.settings.downloadPath || ''
+      })
+
+      this.sendJSON(res, { success: true, playlist })
+    } catch (error: any) {
+      this.sendJSON(res, { error: error.message || 'Failed to add playlist' }, 500)
+    }
+  }
+
+  private async handleUpdateSyncPlaylist(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    try {
+      const body = await this.parseBody(req)
+      const { id, ...updates } = body
+
+      if (!id) {
+        this.sendJSON(res, { error: 'Missing playlist id' }, 400)
+        return
+      }
+
+      const playlist = await playlistSync.updatePlaylist(id, updates)
+      if (!playlist) {
+        this.sendJSON(res, { error: 'Playlist not found' }, 404)
+        return
+      }
+
+      this.sendJSON(res, { success: true, playlist })
+    } catch (error: any) {
+      this.sendJSON(res, { error: error.message || 'Failed to update playlist' }, 500)
+    }
+  }
+
+  private async handleDeleteSyncPlaylist(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    try {
+      const body = await this.parseBody(req)
+      const { id } = body
+
+      if (!id) {
+        this.sendJSON(res, { error: 'Missing playlist id' }, 400)
+        return
+      }
+
+      await playlistSync.removePlaylist(id)
+      this.sendJSON(res, { success: true })
+    } catch (error: any) {
+      this.sendJSON(res, { error: error.message || 'Failed to delete playlist' }, 500)
+    }
+  }
+
+  private async handleRunSync(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    try {
+      const body = await this.parseBody(req)
+      const { id } = body
+
+      if (!id) {
+        this.sendJSON(res, { error: 'Missing playlist id' }, 400)
+        return
+      }
+
+      // Run sync in background, return immediately
+      playlistSync.syncPlaylist(id).catch(err =>
+        console.error(`[Server] Sync failed for ${id}:`, err)
+      )
+
+      this.sendJSON(res, { success: true, message: 'Sync started' })
+    } catch (error: any) {
+      this.sendJSON(res, { error: error.message || 'Failed to start sync' }, 500)
+    }
+  }
+
+  private async handleRunSyncAll(res: ServerResponse): Promise<void> {
+    playlistSync.syncAll().catch(err =>
+      console.error('[Server] Sync all failed:', err)
+    )
+    this.sendJSON(res, { success: true, message: 'Sync all started' })
+  }
+
+  private async handleCancelSync(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    try {
+      const body = await this.parseBody(req)
+      const { id } = body
+
+      if (!id) {
+        this.sendJSON(res, { error: 'Missing playlist id' }, 400)
+        return
+      }
+
+      playlistSync.cancelSync(id)
+      this.sendJSON(res, { success: true })
+    } catch (error: any) {
+      this.sendJSON(res, { error: error.message || 'Failed to cancel sync' }, 500)
+    }
+  }
+
+  private handleGetSyncStatus(res: ServerResponse): void {
+    const playlists = playlistSync.getPlaylists()
+    const activeSyncIds = playlistSync.getActiveSyncIds()
+    this.sendJSON(res, { playlists, activeSyncIds })
+  }
+
+  private async handleResolveShareUrl(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    try {
+      const body = await this.parseBody(req)
+      const { url } = body
+      if (!url) {
+        this.sendJSON(res, { error: 'URL is required' }, 400)
+        return
+      }
+
+      // Follow redirects to resolve share links to their final URL
+      const resolvedUrl = await new Promise<string>((resolve, reject) => {
+        const doRequest = (targetUrl: string, redirectCount: number) => {
+          if (redirectCount > 5) {
+            reject(new Error('Too many redirects'))
+            return
+          }
+          const protocol = targetUrl.startsWith('https') ? https : http
+          protocol.get(targetUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (response: any) => {
+            if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
+              doRequest(response.headers.location, redirectCount + 1)
+            } else {
+              resolve(targetUrl)
+            }
+            response.resume() // Consume response to free memory
+          }).on('error', reject)
+        }
+        doRequest(url, 0)
+      })
+
+      // Extract playlist ID from resolved URL
+      const deezerMatch = resolvedUrl.match(/deezer\.com\/(?:\w+\/)?playlist\/(\d+)/)
+      if (deezerMatch) {
+        this.sendJSON(res, { playlistId: deezerMatch[1], source: 'deezer', resolvedUrl })
+        return
+      }
+
+      const spotifyMatch = resolvedUrl.match(/open\.spotify\.com\/playlist\/([a-zA-Z0-9]+)/)
+      if (spotifyMatch) {
+        this.sendJSON(res, { playlistId: spotifyMatch[1], source: 'spotify', resolvedUrl })
+        return
+      }
+
+      this.sendJSON(res, { error: 'Could not resolve URL to a playlist', resolvedUrl }, 400)
+    } catch (error: any) {
+      this.sendJSON(res, { error: error.message || 'Failed to resolve URL' }, 500)
+    }
+  }
+
+  // ==================== End Playlist Sync Handlers ====================
 
   updateSettings(settings: Partial<ServerSettings>): void {
     this.settings = { ...this.settings, ...settings }

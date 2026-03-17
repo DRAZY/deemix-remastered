@@ -114,6 +114,12 @@ export interface DownloadItem {
   completedTracks?: number
   failedTracks?: FailedTrack[]
   trackIds?: string[]  // Server-side download IDs for individual tracks
+  // Batch download context (for retry of converted Spotify playlists)
+  batchConfig?: {
+    trackIds: number[]
+    playlistName: string
+    cover?: string
+  }
   // Speed tracking
   speed?: number        // Bytes per second (if server provides it)
   bytesDownloaded?: number

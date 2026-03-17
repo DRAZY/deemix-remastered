@@ -355,7 +355,7 @@ export const useDownloadStore = defineStore('downloads', () => {
     return undefined
   }
 
-  async function addDownload(track: Track) {
+  async function addDownload(track: Track, { skipSync = false, playlistName = '' } = {}) {
     const toastStore = useToastStore()
 
     // Check if already downloaded (completed)
@@ -372,7 +372,7 @@ export const useDownloadStore = defineStore('downloads', () => {
       return // Early return - don't add duplicate
     }
 
-    await syncSettingsToServer()
+    if (!skipSync) await syncSettingsToServer()
     const settingsStore = useSettingsStore()
 
     const tempId = `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
@@ -398,10 +398,12 @@ export const useDownloadStore = defineStore('downloads', () => {
     saveDownloads()
 
     try {
+      const requestBody: Record<string, any> = { trackId: track.id }
+      if (playlistName) requestBody.playlistName = playlistName
       const response = await fetch(`http://127.0.0.1:${serverPort.value}/api/download`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ trackId: track.id })
+        body: JSON.stringify(requestBody)
       })
 
       if (!response.ok) {
@@ -605,6 +607,88 @@ export const useDownloadStore = defineStore('downloads', () => {
     } catch (error: any) {
       console.error('[DownloadStore] Playlist download error:', error.message)
       updateDownloadStatus(playlistId, 'error', error.message || String(error))
+    }
+  }
+
+  /**
+   * Batch download — sends all track IDs in a single request to
+   * /api/download/batch and tracks them as one playlist-like item.
+   * Used by the Link Analyzer for converted Spotify playlists.
+   */
+  async function addBatchDownload(config: {
+    trackIds: number[]
+    playlistName: string
+    title: string
+    cover?: string
+    totalTracks: number
+  }) {
+    await syncSettingsToServer()
+    const settingsStore = useSettingsStore()
+    const toastStore = useToastStore()
+
+    const batchId = `batch_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+
+    const item: DownloadItem = {
+      id: batchId,
+      title: config.title,
+      cover: config.cover,
+      progress: 0,
+      status: 'pending',
+      type: 'playlist',
+      addedAt: new Date().toISOString(),
+      quality: settingsStore.settings.quality,
+      totalTracks: config.totalTracks,
+      completedTracks: 0,
+      failedTracks: [],
+      trackIds: [],
+      batchConfig: {
+        trackIds: config.trackIds,
+        playlistName: config.playlistName,
+        cover: config.cover
+      }
+    }
+
+    downloads.value = [item, ...downloads.value]
+    saveDownloads()
+
+    try {
+      const response = await fetch(`http://127.0.0.1:${serverPort.value}/api/download/batch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          trackIds: config.trackIds,
+          playlistName: config.playlistName
+        })
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        const errorMsg = errorData.error || 'Batch download request failed'
+
+        if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
+          toastStore.error('Session expired. Please log in again to download.')
+          throw new Error('Session expired: Please log in again')
+        }
+
+        throw new Error(errorMsg)
+      }
+
+      const data = await response.json()
+      if (data.ids && data.ids.length > 0) {
+        console.log(`[DownloadStore] Batch "${config.title}": received ${data.ids.length} IDs from server`)
+        item.trackIds = data.ids
+        if (item.totalTracks !== data.ids.length) {
+          item.totalTracks = data.ids.length
+        }
+        item.status = 'downloading'
+        saveDownloads()
+        registerForPolling(batchId, data.ids, 'album')
+      } else {
+        throw new Error('Server did not return download IDs')
+      }
+    } catch (error: any) {
+      console.error('[DownloadStore] Batch download error:', error.message)
+      updateDownloadStatus(batchId, 'error', error.message || String(error))
     }
   }
 
@@ -985,6 +1069,16 @@ export const useDownloadStore = defineStore('downloads', () => {
         console.error('[DownloadStore] Failed to retry album:', e)
         toastStore.error(`Failed to retry "${item.title}"`)
       }
+    } else if (item.type === 'playlist' && item.batchConfig) {
+      // Batch download (converted Spotify playlist from Link Analyzer)
+      toastStore.info(`Retrying "${item.title}"...`)
+      await addBatchDownload({
+        trackIds: item.batchConfig.trackIds,
+        playlistName: item.batchConfig.playlistName,
+        title: item.title,
+        cover: item.batchConfig.cover,
+        totalTracks: item.batchConfig.trackIds.length
+      })
     } else if (item.type === 'playlist' && item.playlist) {
       toastStore.info(`Retrying playlist "${item.title}"...`)
       // Fetch fresh track list for the playlist using correct endpoint
@@ -1118,6 +1212,7 @@ export const useDownloadStore = defineStore('downloads', () => {
     addDownload,
     addAlbumDownload,
     addPlaylistDownload,
+    addBatchDownload,
     cancelDownload,
     deleteDownload,
     retryDownload,
@@ -1127,6 +1222,7 @@ export const useDownloadStore = defineStore('downloads', () => {
     pauseQueue,
     resumeQueue,
     saveDownloadsImmediate,
-    isSessionError
+    isSessionError,
+    syncSettingsToServer
   }
 })

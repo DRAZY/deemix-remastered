@@ -2,18 +2,22 @@
 import { onMounted, ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSettingsStore, type ColorTheme } from '../stores/settingsStore'
+import { useProfileStore } from '../stores/profileStore'
 import { SUPPORTED_LOCALES, setLocale, getCurrentLocale } from '../i18n'
 import FlagIcon from '../components/FlagIcon.vue'
+import ProfileSelector from '../components/ProfileSelector.vue'
 import { useContextMenu } from '../composables/useContextMenu'
 
 const { t } = useI18n()
 const settingsStore = useSettingsStore()
+const profileStore = useProfileStore()
 
 // Settings search
 const settingsSearch = ref('')
 
 // Define searchable content for each section
 const sectionSearchTerms: Record<string, string[]> = {
+  profiles: ['profile', 'preset', 'audiophile', 'quick', 'balanced', 'flac', 'mp3', 'import', 'export', 'save profile'],
   appearance: ['appearance', 'theme', 'color', 'violet', 'spotify', 'rose', 'ocean', 'sunset', 'mint', 'dracula', 'nord', 'slim', 'sidebar', 'download tab', 'quality tag', 'search button'],
   languages: ['language', 'languages', 'locale', 'translation'],
   downloads: ['download', 'path', 'location', 'folder', 'concurrent', 'bitrate', 'quality', 'mp3', 'flac', '128', '320', 'overwrite', 'fallback', 'isrc', 'log', 'cdn', 'lrc', 'lyrics', 'playlist', 'queue'],
@@ -89,6 +93,7 @@ const spotifyUsername = ref('')
 
 // Collapsible section states (true = expanded, false = collapsed)
 const expandedSections = ref({
+  profiles: true,
   appearance: true,
   languages: true,
   downloads: true,
@@ -377,6 +382,31 @@ function saveNow() {
         {{ t('settings.clearSearch') }}
       </button>
     </div>
+
+    <!-- Settings Profiles -->
+    <section v-if="isSectionVisible('profiles')" class="card">
+      <h2
+        @click="toggleSection('profiles')"
+        class="text-lg font-semibold border-b border-zinc-700 pb-2 flex items-center gap-2 cursor-pointer hover:text-primary-400 transition-colors select-none"
+      >
+        <svg class="w-5 h-5 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+        {{ t('settings.profiles.title') }}
+        <svg
+          class="w-4 h-4 ml-auto transition-transform duration-200"
+          :class="{ 'rotate-180': expandedSections.profiles }"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </h2>
+
+      <div v-show="expandedSections.profiles" class="space-y-6 pt-6">
+        <ProfileSelector />
+      </div>
+    </section>
 
     <!-- Appearance Settings -->
     <section v-if="isSectionVisible('appearance')" class="card">

@@ -3,6 +3,8 @@ import { join, normalize, resolve } from 'path'
 import { rm, stat, readFile, writeFile, mkdir } from 'fs/promises'
 import { existsSync } from 'fs'
 import { DeemixServer } from './server'
+import { playlistSync } from './services/playlistSync'
+import { spotifyAPI } from './services/spotifyAPI'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling
 // Squirrel startup is handled by electron-builder
@@ -34,6 +36,10 @@ function getCredentialsPath(): string {
 
 function getSettingsPath(): string {
   return join(app.getPath('userData'), 'settings.json')
+}
+
+function getProfilesPath(): string {
+  return join(app.getPath('userData'), 'profiles.json')
 }
 
 async function loadWindowState(): Promise<WindowState> {
@@ -211,7 +217,7 @@ function createWindow() {
       responseHeaders: {
         ...details.responseHeaders,
         'Content-Security-Policy': [
-          "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; frame-src 'self' https://www.google.com; connect-src 'self' http://127.0.0.1:* http://localhost:* https://api.deezer.com https://*.dzcdn.net https://*.deezer.com https://www.google.com; img-src 'self' data: https://*.dzcdn.net https://*.deezer.com https://www.gstatic.com; media-src 'self' https://*.dzcdn.net https://*.deezer.com"
+          "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.google.com; connect-src 'self' http://127.0.0.1:* http://localhost:* https://api.deezer.com https://*.dzcdn.net https://*.deezer.com https://www.google.com; img-src 'self' data: https://*.dzcdn.net https://*.deezer.com https://*.scdn.co https://*.spotifycdn.com https://www.gstatic.com; media-src 'self' https://*.dzcdn.net https://*.deezer.com"
         ]
       }
     })
@@ -290,6 +296,108 @@ async function initServer() {
         mainWindow.webContents.send('session:health', data)
       }
     })
+
+    // Restore Spotify credentials from saved storage before sync init
+    try {
+      const credentialsPath = getCredentialsPath()
+      const credData = JSON.parse(await readFile(credentialsPath, 'utf-8'))
+      const decodeField = (stored: any): string => {
+        if (!stored || !stored.data) return ''
+        if (stored.encrypted && safeStorage.isEncryptionAvailable()) {
+          try { return safeStorage.decryptString(Buffer.from(stored.data, 'base64')) } catch { /* fall through */ }
+        }
+        if (stored.obfuscated) {
+          try { return Buffer.from(stored.data.split('').reverse().join(''), 'base64').toString('utf-8') } catch { /* fall through */ }
+        }
+        return stored.data || ''
+      }
+      const spotifyClientId = decodeField(credData.spotifyClientId)
+      const spotifyClientSecret = decodeField(credData.spotifyClientSecret)
+      if (spotifyClientId && spotifyClientSecret) {
+        spotifyAPI.setCredentials(spotifyClientId, spotifyClientSecret)
+        console.log('[Main] Spotify credentials restored from storage')
+      }
+    } catch (e: any) {
+      if (e.code !== 'ENOENT') {
+        console.warn('[Main] Failed to restore Spotify credentials:', e.message)
+      }
+    }
+
+    // Provide current download settings to the sync engine so synced playlists
+    // use the same quality, folder structure, templates, and metadata settings
+    playlistSync.setSettingsProvider(() => {
+      const s = server!.getSettings()
+      return {
+        downloadPath: s.downloadPath,
+        quality: s.quality,
+        bitrateFallback: s.bitrateFallback,
+        createArtistFolder: s.createArtistFolder,
+        createAlbumFolder: s.createAlbumFolder,
+        saveArtwork: s.saveArtwork,
+        embedArtwork: s.embedArtwork,
+        saveLyrics: s.saveLyrics,
+        syncedLyrics: s.syncedLyrics,
+        createErrorLog: s.createErrorLog,
+        savePlaylistAsCompilation: s.savePlaylistAsCompilation,
+        folderSettings: {
+          createPlaylistFolder: s.createPlaylistFolder,
+          createArtistFolder: s.createArtistFolder,
+          createAlbumFolder: s.createAlbumFolder,
+          createCDFolder: s.createCDFolder,
+          createPlaylistStructure: s.createPlaylistStructure,
+          createSinglesStructure: s.createSinglesStructure,
+          playlistFolderTemplate: s.playlistFolderTemplate,
+          albumFolderTemplate: s.albumFolderTemplate,
+          artistFolderTemplate: s.artistFolderTemplate
+        },
+        trackTemplates: {
+          trackNameTemplate: s.trackNameTemplate,
+          albumTrackTemplate: s.albumTrackTemplate,
+          playlistTrackTemplate: s.playlistTrackTemplate
+        },
+        metadataSettings: {
+          tags: s.tags,
+          albumCovers: s.albumCovers,
+          useNullSeparator: s.useNullSeparator,
+          saveID3v1: s.saveID3v1,
+          saveOnlyMainArtist: s.saveOnlyMainArtist,
+          artistSeparator: s.artistSeparator,
+          dateFormatFlac: s.dateFormatFlac,
+          titleCasing: s.titleCasing,
+          artistCasing: s.artistCasing,
+          removeAlbumVersion: s.removeAlbumVersion,
+          featuredArtistsHandling: s.featuredArtistsHandling,
+          keepVariousArtists: s.keepVariousArtists,
+          removeArtistCombinations: s.removeArtistCombinations
+        }
+      }
+    })
+
+    // Initialize playlist sync engine
+    await playlistSync.init()
+    console.log('[Main] Playlist sync engine initialized')
+
+    // Forward sync events to renderer
+    playlistSync.on('sync:start', (playlistId: string) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('sync:start', { playlistId })
+      }
+    })
+    playlistSync.on('sync:progress', (playlistId: string, data: any) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('sync:progress', { playlistId, ...data })
+      }
+    })
+    playlistSync.on('sync:complete', (playlistId: string, result: any) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('sync:complete', { playlistId, ...result })
+      }
+    })
+    playlistSync.on('sync:error', (playlistId: string, error: string) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('sync:error', { playlistId, error })
+      }
+    })
   } catch (error) {
     console.error('[Main] Failed to start server:', error)
     throw error
@@ -326,7 +434,8 @@ app.on('window-all-closed', () => {
   }
 })
 
-app.on('before-quit', () => {
+app.on('before-quit', async () => {
+  await playlistSync.shutdown()
   server?.stop()
 })
 
@@ -774,5 +883,33 @@ ipcMain.handle('storage:loadSettings', async () => {
       console.error('[Main] Failed to load settings:', error)
     }
     return { success: true, settings: null }
+  }
+})
+
+// Persistent storage for settings profiles
+ipcMain.handle('storage:saveProfiles', async (_, data: object) => {
+  try {
+    const profilesPath = getProfilesPath()
+    await mkdir(app.getPath('userData'), { recursive: true })
+    await writeFile(profilesPath, JSON.stringify(data, null, 2))
+    console.log('[Main] Profiles saved to userData')
+    return { success: true }
+  } catch (error: any) {
+    console.error('[Main] Failed to save profiles:', error)
+    return { success: false, error: error.message }
+  }
+})
+
+ipcMain.handle('storage:loadProfiles', async () => {
+  try {
+    const profilesPath = getProfilesPath()
+    const data = await readFile(profilesPath, 'utf-8')
+    console.log('[Main] Profiles loaded from userData')
+    return { success: true, data: JSON.parse(data) }
+  } catch (error: any) {
+    if (error.code !== 'ENOENT') {
+      console.error('[Main] Failed to load profiles:', error)
+    }
+    return { success: true, data: null }
   }
 })

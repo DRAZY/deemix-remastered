@@ -127,7 +127,7 @@ export interface Settings {
   spotifyFallbackSearch: boolean
 }
 
-const defaultSettings: Settings = {
+export const defaultSettings: Settings = {
   downloadPath: '',
   quality: '320',
   maxConcurrentDownloads: 3,
@@ -255,31 +255,30 @@ const LEGACY_ARL_STORAGE_KEY = 'arl_secure'
 const LEGACY_SPOTIFY_STORAGE_KEY = 'spotify_secure'
 const LEGACY_SETTINGS_KEY = 'settings'
 
+// Deep merge helper to properly merge nested objects (exported for use by profileStore)
+export function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T {
+  const result = { ...target }
+  for (const key in source) {
+    if (source[key] !== undefined) {
+      if (
+        typeof source[key] === 'object' &&
+        source[key] !== null &&
+        !Array.isArray(source[key]) &&
+        typeof target[key] === 'object' &&
+        target[key] !== null
+      ) {
+        result[key] = deepMerge(target[key], source[key] as any)
+      } else {
+        result[key] = source[key] as any
+      }
+    }
+  }
+  return result
+}
+
 export const useSettingsStore = defineStore('settings', () => {
   const settings = ref<Settings>({ ...defaultSettings })
   const isLoaded = ref(false)
-
-  // Deep merge helper to properly merge nested objects
-  function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T {
-    const result = { ...target }
-    for (const key in source) {
-      if (source[key] !== undefined) {
-        if (
-          typeof source[key] === 'object' &&
-          source[key] !== null &&
-          !Array.isArray(source[key]) &&
-          typeof target[key] === 'object' &&
-          target[key] !== null
-        ) {
-          // Deep merge nested objects
-          result[key] = deepMerge(target[key], source[key] as any)
-        } else {
-          result[key] = source[key] as any
-        }
-      }
-    }
-    return result
-  }
 
   async function loadSettings() {
     console.log('[Settings] Loading settings...')
@@ -341,6 +340,24 @@ export const useSettingsStore = defineStore('settings', () => {
 
     // Load encrypted credentials separately (from userData or localStorage)
     await loadSecureCredentials()
+
+    // Push Spotify credentials to server so spotifyAPI singleton has them
+    if (settings.value.spotifyClientId && settings.value.spotifyClientSecret) {
+      try {
+        const port = window.electronAPI ? await window.electronAPI.getServerPort() : 6595
+        fetch(`http://127.0.0.1:${port}/api/spotify/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            clientId: settings.value.spotifyClientId,
+            clientSecret: settings.value.spotifyClientSecret
+          })
+        }).then(() => console.log('[Settings] Spotify credentials pushed to server'))
+          .catch(() => {}) // Non-blocking, best-effort
+      } catch (e) {
+        // Ignore
+      }
+    }
 
     // Set default download path
     if (!settings.value.downloadPath) {

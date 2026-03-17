@@ -58,6 +58,22 @@ contextBridge.exposeInMainWorld('electronAPI', {
     closeLoginWindow: () => ipcRenderer.invoke('deezer:closeLoginWindow')
   },
 
+  // Playlist sync events
+  playlistSync: {
+    onSyncStart: (callback: (data: { playlistId: string }) => void) => {
+      ipcRenderer.on('sync:start', (_, data) => callback(data))
+    },
+    onSyncProgress: (callback: (data: { playlistId: string; current: number; total: number; phase: string }) => void) => {
+      ipcRenderer.on('sync:progress', (_, data) => callback(data))
+    },
+    onSyncComplete: (callback: (data: any) => void) => {
+      ipcRenderer.on('sync:complete', (_, data) => callback(data))
+    },
+    onSyncError: (callback: (data: { playlistId: string; error: string }) => void) => {
+      ipcRenderer.on('sync:error', (_, data) => callback(data))
+    }
+  },
+
   // Persistent storage (stored in userData, not localStorage)
   // This fixes session persistence issues with file:// protocol
   storage: {
@@ -65,7 +81,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
       ipcRenderer.invoke('storage:saveCredentials', credentials),
     loadCredentials: () => ipcRenderer.invoke('storage:loadCredentials'),
     saveSettings: (settings: object) => ipcRenderer.invoke('storage:saveSettings', settings),
-    loadSettings: () => ipcRenderer.invoke('storage:loadSettings')
+    loadSettings: () => ipcRenderer.invoke('storage:loadSettings'),
+    saveProfiles: (data: object) => ipcRenderer.invoke('storage:saveProfiles', data),
+    loadProfiles: () => ipcRenderer.invoke('storage:loadProfiles')
   }
 })
 
@@ -128,11 +146,19 @@ declare global {
         openLoginWindow: () => Promise<{ success: boolean; arl?: string; error?: string }>
         closeLoginWindow: () => Promise<void>
       }
+      playlistSync: {
+        onSyncStart: (callback: (data: { playlistId: string }) => void) => void
+        onSyncProgress: (callback: (data: { playlistId: string; current: number; total: number; phase: string }) => void) => void
+        onSyncComplete: (callback: (data: any) => void) => void
+        onSyncError: (callback: (data: { playlistId: string; error: string }) => void) => void
+      }
       storage: {
         saveCredentials: (credentials: StorageCredentials) => Promise<StorageResult>
         loadCredentials: () => Promise<CredentialsLoadResult>
         saveSettings: (settings: object) => Promise<StorageResult>
         loadSettings: () => Promise<SettingsLoadResult>
+        saveProfiles: (data: object) => Promise<StorageResult>
+        loadProfiles: () => Promise<{ success: boolean; data: any }>
       }
     }
   }

@@ -240,8 +240,8 @@ class SpotifyAPI {
   /**
    * Get playlist info with tracks (paginated)
    */
-  async getPlaylist(id: string): Promise<SpotifyPlaylist> {
-    const playlist = await this.apiRequest<SpotifyPlaylist>(`/playlists/${id}`)
+  async getPlaylist(id: string, market: string = 'US'): Promise<SpotifyPlaylist> {
+    const playlist = await this.apiRequest<SpotifyPlaylist>(`/playlists/${id}?market=${market}`)
 
     // If playlist has more than 100 tracks, fetch remaining pages
     if (playlist.tracks.total > 100) {
@@ -250,7 +250,7 @@ class SpotifyAPI {
 
       while (offset < playlist.tracks.total) {
         const page = await this.apiRequest<{ items: Array<{ track: SpotifyTrack }> }>(
-          `/playlists/${id}/tracks?offset=${offset}&limit=100`
+          `/playlists/${id}/tracks?offset=${offset}&limit=100&market=${market}`
         )
         allItems.push(...page.items)
         offset += 100
