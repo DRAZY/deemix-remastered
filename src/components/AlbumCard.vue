@@ -47,13 +47,26 @@ async function downloadAlbum() {
   isDownloading.value = true
 
   try {
-    // Fetch album tracks
-    const tracks = await deezerAPI.getAlbumTracks(props.album.id)
-    if (tracks && tracks.length > 0) {
-      await downloadStore.addAlbumDownload(props.album, tracks)
+    if (props.type === 'playlist') {
+      const tracks = await deezerAPI.getPlaylistTracks(props.album.id)
+      if (tracks && tracks.length > 0) {
+        await downloadStore.addPlaylistDownload({
+          id: props.album.id,
+          title: props.album.title,
+          creator: props.album.artist || { id: 0, name: 'Unknown' },
+          picture_medium: props.album.cover_medium || '',
+          picture_big: props.album.cover_big || '',
+          nb_tracks: tracks.length
+        }, tracks)
+      }
+    } else {
+      const tracks = await deezerAPI.getAlbumTracks(props.album.id)
+      if (tracks && tracks.length > 0) {
+        await downloadStore.addAlbumDownload(props.album, tracks)
+      }
     }
   } catch (error) {
-    console.error('Failed to download album:', error)
+    console.error('Failed to download:', error)
   } finally {
     isDownloading.value = false
   }
