@@ -1194,6 +1194,11 @@ export class Downloader extends EventEmitter {
     if (!name || typeof name !== 'string') return 'Unknown'
 
     return name
+      // Remove empty brackets/parentheses left by empty template variables
+      // e.g. "Album ()" or "Album []" or "Album {}" → "Album"
+      .replace(/\s*\(\s*\)/g, '')
+      .replace(/\s*\[\s*\]/g, '')
+      .replace(/\s*\{\s*\}/g, '')
       // Remove path traversal attempts
       .replace(/\.\./g, '')
       .replace(/[\/\\]/g, '_')
