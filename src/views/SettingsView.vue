@@ -891,6 +891,7 @@ function saveNow() {
             <code class="text-xs px-2 py-1 bg-background-tertiary rounded">%year%</code>
             <code class="text-xs px-2 py-1 bg-background-tertiary rounded">%genre%</code>
             <code class="text-xs px-2 py-1 bg-background-tertiary rounded">%label%</code>
+            <code class="text-xs px-2 py-1 bg-background-tertiary rounded">%explicit%</code>
           </div>
         </div>
 
