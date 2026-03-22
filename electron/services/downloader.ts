@@ -127,6 +127,7 @@ export interface DownloadOptions {
     albumArtist: string
     artistPicture?: string  // Artist picture URL for saving artist image
     totalDiscs?: number     // Total number of discs in the album
+    explicitLyrics?: boolean // Album-level explicit flag for consistent folder naming
   }
   // Error logging
   createErrorLog?: boolean
@@ -1030,7 +1031,9 @@ export class Downloader extends EventEmitter {
     const year = trackInfo.PHYSICAL_RELEASE_DATE?.split('-')[0] || ''
     const genre = '' // Would need async lookup
     const label = trackInfo.LABEL_NAME || ''
-    const folderExplicit = trackInfo.EXPLICIT_LYRICS ? 'Explicit' : ''
+    // For folder naming, prefer album-level explicit flag (consistent across all tracks)
+    // Fall back to track-level flag for single track downloads
+    const folderExplicit = (albumContext?.explicitLyrics ?? trackInfo.EXPLICIT_LYRICS) ? 'Explicit' : ''
 
     // Template replacement helper for FOLDER names - uses album context for consistency
     const replaceFolderTemplate = (template: string): string => {

@@ -1408,7 +1408,8 @@ export class DeemixServer extends EventEmitter {
         albumTitle: albumInfo.title || 'Unknown Album',
         albumArtist: albumInfo.artist?.name || 'Unknown Artist',
         artistPicture: albumInfo.artist?.picture_xl || albumInfo.artist?.picture_big || albumInfo.artist?.picture_medium || undefined,
-        totalDiscs: totalDiscs
+        totalDiscs: totalDiscs,
+        explicitLyrics: !!albumInfo.explicit_lyrics
       }
 
       for (const track of albumTracks.data) {
