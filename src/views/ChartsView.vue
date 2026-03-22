@@ -67,20 +67,23 @@ const filteredCountries = computed(() => {
 })
 
 onMounted(async () => {
-  // Load saved country from localStorage
-  const savedCountryId = localStorage.getItem('charts_country_id')
-  const savedCountryName = localStorage.getItem('charts_country_name')
-  const savedCountryCode = localStorage.getItem('charts_country_code')
-
-  if (savedCountryId && savedCountryName && savedCountryCode) {
-    selectedCountry.value = { id: savedCountryId, name: savedCountryName, code: savedCountryCode }
-  }
-
-  // Set initial tab from route
+  // Set initial tab from route query — if a type is specified (e.g. from
+  // Home "See all" links), force Worldwide so all tabs are available
   if (route.query.type) {
     const type = route.query.type as string
     if (['tracks', 'albums', 'artists', 'playlists'].includes(type)) {
       activeTab.value = type as typeof activeTab.value
+      // Reset to Worldwide so the requested tab is visible
+      selectedCountry.value = { id: '0', name: 'Worldwide', code: 'WW' }
+    }
+  } else {
+    // No type specified — restore saved country from localStorage
+    const savedCountryId = localStorage.getItem('charts_country_id')
+    const savedCountryName = localStorage.getItem('charts_country_name')
+    const savedCountryCode = localStorage.getItem('charts_country_code')
+
+    if (savedCountryId && savedCountryName && savedCountryCode) {
+      selectedCountry.value = { id: savedCountryId, name: savedCountryName, code: savedCountryCode }
     }
   }
 
