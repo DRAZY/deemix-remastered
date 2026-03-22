@@ -204,21 +204,27 @@ function createWindow() {
     Menu.setApplicationMenu(null)
   }
 
-  // Open external links in browser
+  // Open external links in browser (with URL validation)
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    shell.openExternal(url)
+    if (isUrlSafe(url)) {
+      shell.openExternal(url)
+    } else {
+      console.warn('[Security] Blocked unsafe URL in window.open:', url)
+    }
     return { action: 'deny' }
   })
 
   // Security: Set Content Security Policy
-  // Using consistent CSP for both dev and production to avoid rendering issues
+  // Production: strict CSP without unsafe-eval (Vue 3 compiles templates at build time)
+  // Development: looser CSP to allow Vite HMR inline scripts
   mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    const csp = isDev
+      ? "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:* http://127.0.0.1:*; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' http://127.0.0.1:* http://localhost:* ws://localhost:* https://api.deezer.com https://*.dzcdn.net https://*.deezer.com; img-src 'self' data: https://*.dzcdn.net https://*.deezer.com https://*.scdn.co https://*.spotifycdn.com; media-src 'self' https://*.dzcdn.net https://*.deezer.com"
+      : "default-src 'self'; script-src 'self' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.google.com; connect-src 'self' http://127.0.0.1:* https://api.deezer.com https://*.dzcdn.net https://*.deezer.com https://www.google.com; img-src 'self' data: https://*.dzcdn.net https://*.deezer.com https://*.scdn.co https://*.spotifycdn.com https://www.gstatic.com; media-src 'self' https://*.dzcdn.net https://*.deezer.com"
     callback({
       responseHeaders: {
         ...details.responseHeaders,
-        'Content-Security-Policy': [
-          "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.google.com; connect-src 'self' http://127.0.0.1:* http://localhost:* https://api.deezer.com https://*.dzcdn.net https://*.deezer.com https://www.google.com; img-src 'self' data: https://*.dzcdn.net https://*.deezer.com https://*.scdn.co https://*.spotifycdn.com https://www.gstatic.com; media-src 'self' https://*.dzcdn.net https://*.deezer.com"
-        ]
+        'Content-Security-Policy': [csp]
       }
     })
   })
@@ -233,16 +239,17 @@ function createWindow() {
     }
   })
 
-  // Add keyboard shortcut to toggle DevTools (Cmd+Option+I on Mac, Ctrl+Shift+I elsewhere)
-  mainWindow.webContents.on('before-input-event', (event, input) => {
-    if ((input.meta || input.control) && input.alt && input.key.toLowerCase() === 'i') {
-      mainWindow?.webContents.toggleDevTools()
-    }
-    // Also support F12
-    if (input.key === 'F12') {
-      mainWindow?.webContents.toggleDevTools()
-    }
-  })
+  // Add keyboard shortcut to toggle DevTools (development only)
+  if (isDev) {
+    mainWindow.webContents.on('before-input-event', (event, input) => {
+      if ((input.meta || input.control) && input.alt && input.key.toLowerCase() === 'i') {
+        mainWindow?.webContents.toggleDevTools()
+      }
+      if (input.key === 'F12') {
+        mainWindow?.webContents.toggleDevTools()
+      }
+    })
+  }
 
   if (isDev) {
     mainWindow.loadURL('http://localhost:5173')
@@ -672,7 +679,7 @@ ipcMain.handle('deezer:openLoginWindow', async () => {
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
-        sandbox: false, // Allow full web functionality for login
+        sandbox: true,
         partition: 'persist:deezer-login' // Use persistent partition for cookies
       }
     })
@@ -703,7 +710,7 @@ ipcMain.handle('deezer:openLoginWindow', async () => {
         const allCookies = await loginSession.cookies.get({})
         const arlCookie = allCookies.find(c =>
           c.name === 'arl' &&
-          c.domain.includes('deezer') &&
+          c.domain.endsWith('.deezer.com') &&
           c.value &&
           c.value.length > 50
         )

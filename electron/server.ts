@@ -156,6 +156,83 @@ function checkRateLimit(ip: string, operation: OperationType = 'default'): boole
   return true
 }
 
+// Security: SSRF-safe redirect follower for share link resolution
+// Only follows redirects to whitelisted domains, rejects private IPs and non-HTTP protocols
+const ALLOWED_REDIRECT_DOMAINS = ['.deezer.com', '.spotify.com', '.dzcdn.net']
+
+function isRedirectSafe(targetUrl: string): boolean {
+  try {
+    const parsed = new URL(targetUrl)
+    // Only allow http/https
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false
+    const hostname = parsed.hostname.toLowerCase()
+    // Block private/internal IPs
+    if (hostname === 'localhost' || hostname.startsWith('127.') ||
+        hostname.startsWith('10.') || hostname.startsWith('192.168.') ||
+        hostname === '0.0.0.0' || hostname === '::1' || hostname === '[::1]' ||
+        hostname.startsWith('169.254.') || hostname.startsWith('172.') ||
+        hostname.endsWith('.local') || hostname.endsWith('.internal')) {
+      return false
+    }
+    // Check 172.16-31.x range more precisely
+    const parts = hostname.split('.')
+    if (parts[0] === '172') {
+      const second = parseInt(parts[1], 10)
+      if (second >= 16 && second <= 31) return false
+    }
+    // Must match an allowed domain
+    return ALLOWED_REDIRECT_DOMAINS.some(domain => hostname.endsWith(domain))
+  } catch {
+    return false
+  }
+}
+
+async function followRedirectsSafely(startUrl: string, maxRedirects: number = 5): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const doRequest = (targetUrl: string, redirectCount: number) => {
+      if (redirectCount > maxRedirects) {
+        reject(new Error('Too many redirects'))
+        return
+      }
+      if (redirectCount > 0 && !isRedirectSafe(targetUrl)) {
+        reject(new Error('Redirect to disallowed destination blocked'))
+        return
+      }
+      const protocol = targetUrl.startsWith('https') ? https : http
+      protocol.get(targetUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (response: any) => {
+        if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
+          doRequest(response.headers.location, redirectCount + 1)
+        } else {
+          resolve(targetUrl)
+        }
+        response.resume()
+      }).on('error', reject)
+    }
+    doRequest(startUrl, 0)
+  })
+}
+
+// Security: Sanitize error messages to prevent internal detail leakage
+// Preserves known user-facing messages, replaces unknown errors with generic text
+const SAFE_ERROR_PATTERNS = [
+  'Authentication required', 'Login failed', 'Invalid', 'not found',
+  'not configured', 'required', 'expired', 'CAPTCHA', 'Rate limit',
+  'not available', 'Failed to resolve', 'Too many redirects',
+  'Redirect to disallowed', 'Unsupported', 'already', 'Maximum',
+  'No Deezer match', 'Download failed', 'Conversion failed'
+]
+
+function sanitizeErrorMessage(error: any, fallback: string = 'Internal server error'): string {
+  const msg = error?.message || ''
+  // If the message matches a known safe pattern, return it
+  if (SAFE_ERROR_PATTERNS.some(pattern => msg.includes(pattern))) {
+    return msg.substring(0, 200) // Truncate to prevent huge messages
+  }
+  // Log the real error server-side, return generic message to client
+  console.error('[Server] Internal error (sanitized):', msg)
+  return fallback
+}
+
 // Security: Input validation helpers
 function sanitizeString(input: string, maxLength: number = 500): string {
   if (typeof input !== 'string') return ''
@@ -456,7 +533,7 @@ export class DeemixServer extends EventEmitter {
           console.error('[Server] Request error:', error)
           // Always return JSON, even on error
           try {
-            this.sendJSON(res, { error: error.message || 'Internal server error' }, 500)
+            this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
           } catch (e) {
             console.error('[Server] Failed to send error response:', e)
           }
@@ -538,8 +615,11 @@ export class DeemixServer extends EventEmitter {
       `http://127.0.0.1:${this.port}`,
       'file://'  // Electron production mode
     ]
-    const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0]
-    res.setHeader('Access-Control-Allow-Origin', corsOrigin)
+    // Only set CORS headers for known origins — reject unknown origins entirely
+    const corsOrigin = allowedOrigins.includes(origin) ? origin : null
+    if (corsOrigin) {
+      res.setHeader('Access-Control-Allow-Origin', corsOrigin)
+    }
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
     res.setHeader('Access-Control-Allow-Credentials', 'true')
@@ -940,7 +1020,7 @@ export class DeemixServer extends EventEmitter {
       const response = await this.deezerPublicAPI(`/search/${type}?q=${encodeURIComponent(query)}&limit=${limit}&index=${index}`)
       this.sendJSON(res, response)
     } catch (error: any) {
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -957,7 +1037,7 @@ export class DeemixServer extends EventEmitter {
       const response = await this.deezerPublicAPI(`/track/${id}`)
       this.sendJSON(res, response)
     } catch (error: any) {
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -989,7 +1069,7 @@ export class DeemixServer extends EventEmitter {
 
       this.sendJSON(res, { ...album, tracks: allTracks })
     } catch (error: any) {
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -1043,7 +1123,7 @@ export class DeemixServer extends EventEmitter {
         albums: albumsWithArtist
       })
     } catch (error: any) {
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -1155,7 +1235,7 @@ export class DeemixServer extends EventEmitter {
       this.sendJSON(res, responseData)
     } catch (error: any) {
       console.error('[Server] Discography fetch error:', error.message)
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -1187,7 +1267,7 @@ export class DeemixServer extends EventEmitter {
 
       this.sendJSON(res, { ...playlist, tracks: allTracks })
     } catch (error: any) {
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -1282,7 +1362,7 @@ export class DeemixServer extends EventEmitter {
 
       this.sendJSON(res, { id: downloadId, status: 'queued' })
     } catch (error: any) {
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -1383,7 +1463,7 @@ export class DeemixServer extends EventEmitter {
 
       this.sendJSON(res, { ids: downloadIds, count: downloadIds.length })
     } catch (error: any) {
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -1517,7 +1597,7 @@ export class DeemixServer extends EventEmitter {
 
       this.sendJSON(res, { ids: downloadIds, count: downloadIds.length })
     } catch (error: any) {
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -1638,7 +1718,7 @@ export class DeemixServer extends EventEmitter {
 
       this.sendJSON(res, { ids: downloadIds, count: downloadIds.length })
     } catch (error: any) {
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -1939,7 +2019,7 @@ export class DeemixServer extends EventEmitter {
       }
     } catch (error: any) {
       console.error('[Server] Chart fetch error:', error.message)
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -2055,7 +2135,7 @@ export class DeemixServer extends EventEmitter {
       const response = await this.deezerPublicAPI(`/editorial/${genre}/releases?limit=${limit}`)
       this.sendJSON(res, response)
     } catch (error: any) {
-      this.sendJSON(res, { error: error.message }, 500)
+      this.sendJSON(res, { error: sanitizeErrorMessage(error) }, 500)
     }
   }
 
@@ -2110,24 +2190,7 @@ export class DeemixServer extends EventEmitter {
     let resolvedUrl = rawUrl.trim()
     if (resolvedUrl.includes('link.deezer.com') || resolvedUrl.includes('deezer.page.link')) {
       try {
-        resolvedUrl = await new Promise<string>((resolve, reject) => {
-          const doRequest = (targetUrl: string, redirectCount: number) => {
-            if (redirectCount > 5) {
-              reject(new Error('Too many redirects'))
-              return
-            }
-            const protocol = targetUrl.startsWith('https') ? https : http
-            protocol.get(targetUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (response: any) => {
-              if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-                doRequest(response.headers.location, redirectCount + 1)
-              } else {
-                resolve(targetUrl)
-              }
-              response.resume()
-            }).on('error', reject)
-          }
-          doRequest(resolvedUrl, 0)
-        })
+        resolvedUrl = await followRedirectsSafely(resolvedUrl)
         console.log(`[Server] Resolved share link: ${rawUrl} -> ${resolvedUrl}`)
       } catch (err: any) {
         console.error('[Server] Failed to resolve share link:', err.message)
@@ -2952,25 +3015,8 @@ export class DeemixServer extends EventEmitter {
         return
       }
 
-      // Follow redirects to resolve share links to their final URL
-      const resolvedUrl = await new Promise<string>((resolve, reject) => {
-        const doRequest = (targetUrl: string, redirectCount: number) => {
-          if (redirectCount > 5) {
-            reject(new Error('Too many redirects'))
-            return
-          }
-          const protocol = targetUrl.startsWith('https') ? https : http
-          protocol.get(targetUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (response: any) => {
-            if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-              doRequest(response.headers.location, redirectCount + 1)
-            } else {
-              resolve(targetUrl)
-            }
-            response.resume() // Consume response to free memory
-          }).on('error', reject)
-        }
-        doRequest(url, 0)
-      })
+      // Follow redirects to resolve share links to their final URL (SSRF-safe)
+      const resolvedUrl = await followRedirectsSafely(url)
 
       // Extract playlist ID from resolved URL
       const deezerMatch = resolvedUrl.match(/deezer\.com\/(?:\w+\/)?playlist\/(\d+)/)
