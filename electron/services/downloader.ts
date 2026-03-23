@@ -1033,7 +1033,11 @@ export class Downloader extends EventEmitter {
     const label = trackInfo.LABEL_NAME || ''
     // For folder naming, prefer album-level explicit flag (consistent across all tracks)
     // Fall back to track-level flag for single track downloads
-    const folderExplicit = (albumContext?.explicitLyrics ?? trackInfo.EXPLICIT_LYRICS) ? 'Explicit' : ''
+    // Note: Deezer private API returns EXPLICIT_LYRICS as string "0"/"1", not boolean
+    // Must use strict checks — "0" is truthy in JS but means NOT explicit
+    const isAlbumExplicit = albumContext?.explicitLyrics === true
+    const isTrackExplicit = trackInfo.EXPLICIT_LYRICS === 1 || trackInfo.EXPLICIT_LYRICS === '1' || trackInfo.EXPLICIT_LYRICS === true
+    const folderExplicit = (albumContext ? isAlbumExplicit : isTrackExplicit) ? 'Explicit' : ''
 
     // Template replacement helper for FOLDER names - uses album context for consistency
     const replaceFolderTemplate = (template: string): string => {
@@ -1140,7 +1144,7 @@ export class Downloader extends EventEmitter {
     const bpm = trackInfo.BPM?.toString() || ''
     const isrc = trackInfo.ISRC || ''
     const upc = trackInfo.ALB_UPC || ''
-    const explicit = trackInfo.EXPLICIT_LYRICS ? 'Explicit' : ''
+    const explicit = (trackInfo.EXPLICIT_LYRICS === 1 || trackInfo.EXPLICIT_LYRICS === '1' || trackInfo.EXPLICIT_LYRICS === true) ? 'Explicit' : ''
     const trackId = trackInfo.SNG_ID?.toString() || ''
     const albumId = trackInfo.ALB_ID?.toString() || ''
     const artistId = trackInfo.ART_ID?.toString() || ''
