@@ -235,24 +235,6 @@ Build output is written to the `release/` directory.
 
 ---
 
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| **Runtime** | [Electron 35](https://www.electronjs.org/) (Chromium 134, Node.js 22) |
-| **Frontend** | [Vue 3](https://vuejs.org/) (Composition API) |
-| **Build** | [Vite 6](https://vitejs.dev/) + [vite-plugin-electron](https://github.com/electron-vite/vite-plugin-electron) |
-| **Styling** | [Tailwind CSS 3](https://tailwindcss.com/) |
-| **State** | [Pinia](https://pinia.vuejs.org/) |
-| **Routing** | [Vue Router 4](https://router.vuejs.org/) |
-| **i18n** | [Vue I18n 9](https://vue-i18n.intlify.dev/) |
-| **Language** | [TypeScript 5](https://www.typescriptlang.org/) |
-| **Packaging** | [electron-builder 26](https://www.electron.build/) |
-| **HTTP** | [Axios](https://axios-http.com/) |
-| **Audio Tags** | [node-id3](https://github.com/Zazama/node-id3), [flac-metadata](https://github.com/claus/flac-metadata) |
-
----
-
 ## Project Structure
 
 ```
