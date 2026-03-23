@@ -5,7 +5,7 @@
 <h1 align="center">Deemix Remastered</h1>
 
 <p align="center">
-  <em>My vibe coded attempt at making an updated Deemix alternative. Not bad for a first attempt.</em>
+  <em>My vibe coded attempt at making a modern updated alternative to Deemix. Not bad for a first attempt.</em>
   <br />
   A modern, cross-platform desktop music downloader built with Electron, Vue 3, and Vite.
 </p>
