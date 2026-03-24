@@ -131,6 +131,8 @@ export interface DownloadOptions {
   }
   // Error logging
   createErrorLog?: boolean
+  // Overwrite behavior: 'no' = skip existing, 'overwrite' = replace, 'rename' = add suffix
+  overwriteMode?: 'no' | 'overwrite' | 'rename'
 }
 
 // Detailed error information for better user feedback
@@ -782,9 +784,11 @@ export class Downloader extends EventEmitter {
 
     // Store track info in progress for error logging and UI display
     // Include VERSION in title if present (e.g., "Club Mix", "Extended Club Mix")
+    // Strip existing parens from VERSION to avoid double-wrapping like "((Remix))"
     const trackVersion = trackInfo.VERSION
-    progress.trackTitle = trackVersion
-      ? `${trackInfo.SNG_TITLE || 'Unknown Track'} (${trackVersion})`
+    const cleanTrackVersion = trackVersion ? trackVersion.replace(/^\((.+)\)$/, '$1') : ''
+    progress.trackTitle = cleanTrackVersion
+      ? `${trackInfo.SNG_TITLE || 'Unknown Track'} (${cleanTrackVersion})`
       : (trackInfo.SNG_TITLE || 'Unknown Track')
     progress.trackArtist = trackInfo.ART_NAME || 'Unknown Artist'
     progress.albumTitle = trackInfo.ALB_TITLE || options.albumContext?.albumTitle || ''
@@ -848,8 +852,15 @@ export class Downloader extends EventEmitter {
     console.log(`[Downloader] Initial output path: ${initialOutputPath}`)
 
     // Reserve a unique output path to prevent concurrent download collisions
-    // This will append track ID if the path is already in use by another download or existing file
-    const outputPath = this.reserveOutputPath(initialOutputPath, trackInfo.SNG_ID)
+    // Returns null if overwrite mode is 'no' and file already exists (skip download)
+    const outputPath = this.reserveOutputPath(initialOutputPath, trackInfo.SNG_ID, options.overwriteMode)
+    if (outputPath === null) {
+      // File exists and overwrite mode is 'no' — mark as completed and skip
+      progress.status = 'completed'
+      progress.progress = 100
+      this.emit('progress', progress)
+      return
+    }
     console.log(`[Downloader] Reserved output path: ${outputPath}`)
 
     // Wrap in try/finally to ensure path is always released
@@ -1132,7 +1143,9 @@ export class Downloader extends EventEmitter {
     // Deezer stores mix/version info separately (e.g., "Club Mix", "Extended Club Mix")
     const baseTitle = trackInfo.SNG_TITLE || 'Unknown Track'
     const version = trackInfo.VERSION
-    const title = version ? `${baseTitle} (${version})` : baseTitle
+    // VERSION may already be wrapped in parentheses from the API — strip before re-wrapping
+    const cleanVersion = version ? version.replace(/^\((.+)\)$/, '$1') : ''
+    const title = cleanVersion ? `${baseTitle} (${cleanVersion})` : baseTitle
     console.log(`[Downloader] Track metadata - ID: ${trackInfo.SNG_ID}, Title: "${baseTitle}", Version: "${version || 'none'}", Full: "${title}", Artist: "${trackInfo.ART_NAME}"`)
     const artists = trackInfo.ARTISTS?.map((a: any) => a.ART_NAME).join(', ') || artistName
     const allArtists = trackInfo.SNG_CONTRIBUTORS?.main_artist?.join(', ') || artists
@@ -1234,25 +1247,39 @@ export class Downloader extends EventEmitter {
    * @param trackId - The Deezer track ID for logging
    * @returns The reserved path (same as input, collision info logged)
    */
-  private reserveOutputPath(basePath: string, trackId: string | number): string {
+  private reserveOutputPath(basePath: string, trackId: string | number, overwriteMode?: string): string | null {
     const normalizedPath = path.normalize(basePath)
 
     // Check for collision with another in-progress download
     if (this.reservedPaths.has(normalizedPath)) {
-      console.warn(`[Downloader] ⚠️ PATH COLLISION DETECTED for track ${trackId}!`)
-      console.warn(`[Downloader] Path already reserved by another download: ${normalizedPath}`)
-      console.warn(`[Downloader] This may result in file overwrite - check filename templates`)
+      console.warn(`[Downloader] PATH COLLISION for track ${trackId}: ${normalizedPath}`)
     }
 
-    // Check for collision with existing file
+    // Check for existing file and handle based on overwrite mode
     if (fs.existsSync(normalizedPath)) {
-      console.warn(`[Downloader] ⚠️ FILE ALREADY EXISTS for track ${trackId}: ${normalizedPath}`)
+      const mode = overwriteMode || 'overwrite'
+      if (mode === 'no') {
+        console.log(`[Downloader] Skipping track ${trackId} — file already exists: ${normalizedPath}`)
+        return null // Signal to skip this download
+      } else if (mode === 'rename') {
+        // Find a unique filename by appending a counter
+        const ext = path.extname(normalizedPath)
+        const base = normalizedPath.slice(0, -ext.length)
+        let counter = 1
+        let newPath = `${base} (${counter})${ext}`
+        while (fs.existsSync(newPath)) {
+          counter++
+          newPath = `${base} (${counter})${ext}`
+        }
+        console.log(`[Downloader] Renaming track ${trackId} to avoid overwrite: ${newPath}`)
+        this.reservedPaths.add(path.normalize(newPath))
+        return newPath
+      }
+      // mode === 'overwrite' — proceed normally
+      console.log(`[Downloader] Overwriting existing file for track ${trackId}: ${normalizedPath}`)
     }
 
-    // Reserve the path (even if collision - we want to track all concurrent writes)
     this.reservedPaths.add(normalizedPath)
-    console.log(`[Downloader] Reserved path for track ${trackId}: ${normalizedPath}`)
-
     return normalizedPath
   }
 
@@ -1669,7 +1696,8 @@ export class Downloader extends EventEmitter {
       // Basic tags - include VERSION in title if present
       const baseTitle = trackInfo.SNG_TITLE || ''
       const versionInfo = trackInfo.VERSION
-      let processedTitle = versionInfo ? `${baseTitle} (${versionInfo})` : baseTitle
+      const cleanVersionInfo = versionInfo ? versionInfo.replace(/^\((.+)\)$/, '$1') : ''
+      let processedTitle = cleanVersionInfo ? `${baseTitle} (${cleanVersionInfo})` : baseTitle
       let processedArtist = ''
 
       // Get artist string — include all artists (main + featured)
@@ -2080,7 +2108,8 @@ export class Downloader extends EventEmitter {
       // Process title and artist - include VERSION in title if present
       const flacBaseTitle = trackInfo.SNG_TITLE || ''
       const flacVersionInfo = trackInfo.VERSION
-      let processedTitle = flacVersionInfo ? `${flacBaseTitle} (${flacVersionInfo})` : flacBaseTitle
+      const flacCleanVersion = flacVersionInfo ? flacVersionInfo.replace(/^\((.+)\)$/, '$1') : ''
+      let processedTitle = flacCleanVersion ? `${flacBaseTitle} (${flacCleanVersion})` : flacBaseTitle
       let processedArtist = ''
 
       // Get artist string — include all artists (main + featured)

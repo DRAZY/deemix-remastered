@@ -1359,7 +1359,8 @@ export class DeemixServer extends EventEmitter {
           keepVariousArtists: this.settings.keepVariousArtists,
           removeArtistCombinations: this.settings.removeArtistCombinations
         },
-        createErrorLog: this.settings.createErrorLog
+        createErrorLog: this.settings.createErrorLog,
+        overwriteMode: this.settings.overwriteFiles
       })
 
       this.sendJSON(res, { id: downloadId, status: 'queued' })
