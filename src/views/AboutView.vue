@@ -23,12 +23,14 @@ function openLink(url: string) {
 }
 
 const whatsNew = [
-  'Deezer Favorites Import -- Import your liked tracks, albums, artists, and playlists from your Deezer account',
-  'Deezer share link support -- Link Analyzer now resolves link.deezer.com share URLs',
-  'Charts navigation fix -- "See all" links now correctly show all chart tabs on every platform',
-  'Playlist Sync -- Automatically monitor Spotify and Deezer playlists for new tracks with flexible scheduling',
-  'Link Analyzer batch downloads -- Converted Spotify playlists download as a single item with unified progress',
-  'Settings integration -- Sync and Link Analyzer downloads now use your configured quality, folders, and metadata'
+  'Batch Favorites Download -- Download all your favorite tracks, albums, or playlists with one click',
+  'Featured Artists in Tags -- Artist tags now include all credited artists (main + featured), not just the main artist',
+  'M3U Playlist Paths Fixed -- Playlist files now use actual file paths from completed downloads, guaranteed to match what is on disk',
+  'Overwrite Setting Respected -- The skip/overwrite/rename setting now works for all download types',
+  'Title Tag Formatting -- Fixed double parentheses in remix/version tags like "((Remix))"',
+  'Explicit Folder Tag -- %explicit% variable in folder templates separates clean and explicit album versions',
+  'Playlist Folder %date% Variable -- Add download date to playlist folder names',
+  'Deezer Favorites Import -- Import liked tracks, albums, artists, and playlists from your Deezer account'
 ]
 </script>
 
