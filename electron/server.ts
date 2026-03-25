@@ -1508,41 +1508,11 @@ export class DeemixServer extends EventEmitter {
       const downloadIds: string[] = []
       const playlistName = playlistInfo.title || 'Playlist'
 
-      // Collect track info for M3U generation
-      const m3uTracks: Array<{
-        duration: number
-        artist: string
-        title: string
-        relativePath: string
-      }> = []
-
-      // Determine file extension based on quality
-      const fileExt = this.settings.quality === 'FLAC' ? '.flac' : '.mp3'
-
-      // Pre-fetch track details for M3U — playlist tracks lack track_position
-      // and disk_number, but individual track endpoints have them
-      let trackDetailMap: Map<number, any> | null = null
+      // Register playlist for automatic M3U generation from actual file paths
+      // The downloader collects real paths as tracks complete, then generates
+      // the M3U — this guarantees paths match what's on disk
       if (this.settings.createPlaylistFile) {
-        try {
-          trackDetailMap = new Map()
-          // Fetch in batches of 10 to avoid overwhelming the API
-          const batchSize = 10
-          for (let b = 0; b < playlist.data.length; b += batchSize) {
-            const batch = playlist.data.slice(b, b + batchSize)
-            const details = await Promise.all(
-              batch.map((t: any) => this.deezerPublicAPI(`/track/${t.id}`).catch(() => null))
-            )
-            for (const detail of details) {
-              if (detail?.id) {
-                trackDetailMap.set(detail.id, detail)
-              }
-            }
-          }
-          console.log(`[Server] Pre-fetched ${trackDetailMap.size} track details for M3U`)
-        } catch (err: any) {
-          console.warn('[Server] Failed to pre-fetch track details for M3U:', err.message)
-          trackDetailMap = null
-        }
+        downloader.registerPlaylistForM3U(playlistName, this.settings.downloadPath, playlist.data.length)
       }
 
       for (let i = 0; i < playlist.data.length; i++) {
@@ -1603,94 +1573,10 @@ export class DeemixServer extends EventEmitter {
           overwriteMode: this.settings.overwriteFiles
         })
         downloadIds.push(downloadId)
-
-        // Build M3U track entry — reconstruct the relative path to mirror
-        // the actual folder structure the downloader creates
-        const artistName = track.artist?.name || 'Unknown Artist'
-        const trackTitle = track.title || 'Unknown Track'
-        const albumTitle = track.album?.title || 'Unknown Album'
-        // Playlist track objects lack track_position/disk_number — look up from
-        // the pre-fetched detail map to get the real album position numbers
-        const trackDetail = trackDetailMap?.get(track.id)
-        const trackNum = (trackDetail?.track_position || track.track_position || (i + 1)).toString().padStart(2, '0')
-        const discNum = (trackDetail?.disk_number || track.disk_number || 1).toString()
-        const position = String(i + 1).padStart(3, '0')
-
-        // Helper to resolve folder template variables and sanitize
-        const resolveFolderTemplate = (template: string): string => {
-          return template
-            .replace(/%artist%/gi, artistName)
-            .replace(/%album%/gi, albumTitle)
-            .replace(/%playlist%/gi, playlistName)
-            .replace(/%year%/gi, '')
-            .replace(/%date%/gi, '')
-            .replace(/%genre%/gi, '')
-            .replace(/%label%/gi, '')
-            .replace(/%explicit%/gi, track.explicit_content_lyrics === 1 ? 'Explicit' : '')
-            .replace(/%[a-z_]+%/gi, '')
-            .replace(/\s*\(\s*\)/g, '').replace(/\s*\[\s*\]/g, '').replace(/\s*\{\s*\}/g, '')
-            .replace(/[<>:"/\\|?*]/g, '_').replace(/\s+/g, ' ').trim()
-        }
-
-        // Build folder path segments matching the downloader's buildOutputPath logic
-        const pathSegments: string[] = []
-
-        if (this.settings.createPlaylistFolder) {
-          pathSegments.push(resolveFolderTemplate(this.settings.playlistFolderTemplate || '%playlist%'))
-
-          // Playlist structure creates artist/album subfolders within playlist
-          if (this.settings.createPlaylistStructure) {
-            if (this.settings.createArtistFolder) {
-              pathSegments.push(resolveFolderTemplate(this.settings.artistFolderTemplate || '%artist%'))
-            }
-            if (this.settings.createAlbumFolder) {
-              pathSegments.push(resolveFolderTemplate(this.settings.albumFolderTemplate || '%artist% - %album%'))
-            }
-          }
-        } else {
-          // Standard folder structure (no playlist folder)
-          if (this.settings.createArtistFolder) {
-            pathSegments.push(resolveFolderTemplate(this.settings.artistFolderTemplate || '%artist%'))
-          }
-          if (this.settings.createAlbumFolder) {
-            pathSegments.push(resolveFolderTemplate(this.settings.albumFolderTemplate || '%artist% - %album%'))
-          }
-        }
-
-        // Build filename from template
-        const fileTemplate = this.settings.playlistTrackTemplate || '%position% - %artist% - %title%'
-        const fileName = fileTemplate
-          .replace(/%position%/gi, position)
-          .replace(/%artist%/gi, artistName)
-          .replace(/%artists%/gi, artistName)
-          .replace(/%title%/gi, trackTitle)
-          .replace(/%album%/gi, albumTitle)
-          .replace(/%albumartist%/gi, artistName)
-          .replace(/%tracknumber%/gi, trackNum)
-          .replace(/%discnumber%/gi, discNum)
-          .replace(/%[a-z_]+%/gi, '')
-          .replace(/\s*\(\s*\)/g, '').replace(/\s*\[\s*\]/g, '').replace(/\s*\{\s*\}/g, '')
-          .replace(/[<>:"/\\|?*]/g, '_').replace(/\s+/g, ' ').trim()
-
-        pathSegments.push(`${fileName}${fileExt}`)
-
-        m3uTracks.push({
-          duration: track.duration || 0,
-          artist: artistName,
-          title: trackTitle,
-          relativePath: pathSegments.join('/')
-        })
       }
 
-      // Generate M3U playlist file if setting is enabled
-      if (this.settings.createPlaylistFile && m3uTracks.length > 0) {
-        try {
-          downloader.generateM3U(playlistName, this.settings.downloadPath, m3uTracks)
-        } catch (err: any) {
-          console.error('[Server] M3U generation failed:', err.message)
-          // Don't fail the whole request, just log the error
-        }
-      }
+      // M3U is now generated automatically by the downloader as tracks complete
+      // using actual file paths — no manual path reconstruction needed
 
       this.sendJSON(res, { ids: downloadIds, count: downloadIds.length })
     } catch (error: any) {

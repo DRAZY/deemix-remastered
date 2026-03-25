@@ -205,6 +205,19 @@ export class Downloader extends EventEmitter {
   // Reserved paths: tracks output paths currently being used by in-progress downloads
   // This prevents concurrent downloads from overwriting each other's files
   private reservedPaths: Set<string> = new Set()
+  // Playlist M3U tracker: collects actual file paths as tracks complete
+  // so M3U can be generated from real paths instead of reconstructed guesses
+  private playlistM3UTracker: Map<string, {
+    outputDir: string
+    totalTracks: number
+    completedEntries: Array<{
+      position: number
+      duration: number
+      artist: string
+      title: string
+      absolutePath: string
+    }>
+  }> = new Map()
 
   constructor() {
     super()
@@ -999,6 +1012,18 @@ export class Downloader extends EventEmitter {
       progress.status = 'completed'
       progress.progress = 100
       this.cleanupThrottle(downloadId)
+
+      // Record actual file path for M3U generation (playlist tracks only)
+      if (options.isFromPlaylist && options.playlistName) {
+        this.recordM3UEntry(options.playlistName, {
+          position: options.playlistPosition || 0,
+          duration: trackInfo.DURATION || 0,
+          artist: trackInfo.ART_NAME || 'Unknown Artist',
+          title: progress.trackTitle || trackInfo.SNG_TITLE || 'Unknown Track',
+          absolutePath: decryptedPath
+        })
+      }
+
       this.emit('complete', { ...progress, path: decryptedPath })
     } finally {
       // Always release the reserved path when done (success or failure)
@@ -3204,6 +3229,68 @@ export class Downloader extends EventEmitter {
 
   getMaxConcurrent(): number {
     return this.maxConcurrent
+  }
+
+  /**
+   * Register a playlist for automatic M3U generation from real file paths.
+   * As tracks complete, their actual paths are collected. When all tracks
+   * are done, the M3U is generated with paths that match the files on disk.
+   */
+  registerPlaylistForM3U(playlistName: string, outputDir: string, totalTracks: number): void {
+    this.playlistM3UTracker.set(playlistName, {
+      outputDir,
+      totalTracks,
+      completedEntries: []
+    })
+    console.log(`[Downloader] Registered playlist "${playlistName}" for M3U (${totalTracks} tracks)`)
+  }
+
+  /**
+   * Record a completed track for M3U generation. Called internally when a
+   * playlist track finishes downloading. When all tracks are recorded,
+   * automatically generates the M3U file.
+   */
+  private recordM3UEntry(playlistName: string, entry: {
+    position: number
+    duration: number
+    artist: string
+    title: string
+    absolutePath: string
+  }): void {
+    const tracker = this.playlistM3UTracker.get(playlistName)
+    if (!tracker) return
+
+    tracker.completedEntries.push(entry)
+
+    // Check if all tracks are done
+    if (tracker.completedEntries.length >= tracker.totalTracks) {
+      try {
+        // Sort by playlist position to maintain order
+        tracker.completedEntries.sort((a, b) => a.position - b.position)
+
+        // Convert absolute paths to relative paths from the output directory
+        const tracks = tracker.completedEntries.map(e => {
+          let relativePath = e.absolutePath
+          if (relativePath.startsWith(tracker.outputDir)) {
+            relativePath = relativePath.slice(tracker.outputDir.length)
+            // Remove leading slash/backslash
+            relativePath = relativePath.replace(/^[/\\]/, '')
+          }
+          return {
+            duration: e.duration,
+            artist: e.artist,
+            title: e.title,
+            relativePath
+          }
+        })
+
+        this.generateM3U(playlistName, tracker.outputDir, tracks)
+      } catch (err: any) {
+        console.error(`[Downloader] Auto M3U generation failed for "${playlistName}":`, err.message)
+      } finally {
+        this.playlistM3UTracker.delete(playlistName)
+      }
+    }
   }
 
   /**
