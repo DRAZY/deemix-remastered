@@ -742,9 +742,16 @@ export const useDownloadStore = defineStore('downloads', () => {
         const data = await response.json()
         const queue = data.queue || []
 
-        // Debug: Log queue IDs for comparison (reduced logging frequency)
-        if (queue.length > 0 && Math.random() < 0.2) {
-          console.log(`[DownloadStore] Poll: queue has ${queue.length} items`)
+        // Build O(1) lookup map from queue — avoids O(n) find() per track
+        const queueMap = new Map<string, any>()
+        for (const q of queue) {
+          queueMap.set(q.id, q)
+        }
+
+        // Build O(1) lookup map from downloads for this poll cycle
+        const downloadMap = new Map<string, DownloadItem>()
+        for (const d of downloads.value) {
+          downloadMap.set(d.id, d)
         }
 
         let hasChanges = false
@@ -752,15 +759,14 @@ export const useDownloadStore = defineStore('downloads', () => {
 
         // Process all polling groups with the single response
         for (const [groupId, { trackIds, type }] of pollingGroups) {
-          const item = downloads.value.find(d => d.id === groupId)
+          const item = downloadMap.get(groupId)
           if (!item || item.status === 'completed' || item.status === 'error') {
             groupsToRemove.push(groupId)
             continue
           }
 
           if (type === 'track') {
-            // Single track polling
-            const serverItem = queue.find((q: any) => q.id === groupId)
+            const serverItem = queueMap.get(groupId)
             if (serverItem) {
               const changed = updateTrackProgress(item, serverItem)
               hasChanges = hasChanges || changed
@@ -770,7 +776,7 @@ export const useDownloadStore = defineStore('downloads', () => {
             }
           } else {
             // Album/playlist polling
-            const changed = updateAlbumProgress(item, trackIds, queue)
+            const changed = updateAlbumProgress(item, trackIds, queueMap)
             hasChanges = hasChanges || changed
             if (item.status === 'completed' || item.status === 'error') {
               groupsToRemove.push(groupId)
@@ -829,6 +835,11 @@ export const useDownloadStore = defineStore('downloads', () => {
       item.status = serverItem.status
       changed = true
 
+      // Clear speed on completion/error
+      if (serverItem.status === 'completed' || serverItem.status === 'error') {
+        item.speed = 0
+      }
+
       // Show toast for single track completion (only if status actually changed)
       if (previousStatus !== 'completed' && previousStatus !== 'error') {
         const toastStore = useToastStore()
@@ -883,31 +894,18 @@ export const useDownloadStore = defineStore('downloads', () => {
   }
 
   // Update album/playlist progress - returns true if anything changed
-  function updateAlbumProgress(item: DownloadItem, trackIds: string[], queue: any[]): boolean {
+  function updateAlbumProgress(item: DownloadItem, trackIds: string[], queueMap: Map<string, any>): boolean {
     let changed = false
     let completedCount = 0
     let errorCount = 0
     let totalProgress = 0
     const failedTracks: FailedTrack[] = []
     let albumFolderPath: string | null = null
-    let foundCount = 0
-    let actualFormat: string | null = null  // Capture format from first track
-
-    // Debug: Log queue summary to understand what we're receiving
-    const statusSummary = queue.reduce((acc: any, q: any) => {
-      acc[q.status] = (acc[q.status] || 0) + 1
-      return acc
-    }, {})
-    console.log(`[DownloadStore] updateAlbumProgress for ${item.title}: trackIds=${trackIds.length}, queue=${queue.length}, statuses:`, statusSummary)
+    let actualFormat: string | null = null
 
     for (const trackId of trackIds) {
-      const serverItem = queue.find((q: any) => q.id === trackId)
+      const serverItem = queueMap.get(trackId)
       if (serverItem) {
-        foundCount++
-        // Debug: Log when we find a done/completed item
-        if (serverItem.status === 'completed' || serverItem.status === 'decrypting' || serverItem.status === 'tagging') {
-          console.log(`[DownloadStore] Found done track: ${serverItem.id}, status="${serverItem.status}"`)
-        }
         // Capture album folder path for deletion
         // Prefer albumRootFolder (excludes CD subfolders) for proper recursive deletion
         if (!albumFolderPath) {
@@ -953,9 +951,6 @@ export const useDownloadStore = defineStore('downloads', () => {
         }
       }
     }
-
-    // Debug: Log matching results
-    console.log(`[DownloadStore] ${item.title}: found=${foundCount}/${trackIds.length}, completed=${completedCount}, errors=${errorCount}, progress=${totalProgress}`)
 
     const newProgress = Math.round(totalProgress / trackIds.length)
     if (item.progress !== newProgress) {
