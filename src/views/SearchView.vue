@@ -336,49 +336,51 @@ async function handlePaste(e: ClipboardEvent) {
 
   for (const link of links) {
     try {
+      const id = parseInt(link.id)
+
       if (link.type === 'track') {
-        const response = await fetch(`http://127.0.0.1:${serverPort.value}/api/download`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ trackId: parseInt(link.id) })
-        })
-        if (response.ok) queued++
-        else failed++
+        // Fetch track info and add through download store for proper tracking
+        const trackData = await deezerAPI.getTrack(id)
+        if (trackData?.id) {
+          await downloadStore.addDownload(trackData, { skipSync: true })
+          queued++
+        } else {
+          failed++
+        }
       } else if (link.type === 'album') {
-        const response = await fetch(`http://127.0.0.1:${serverPort.value}/api/download/album`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ albumId: parseInt(link.id) })
-        })
-        if (response.ok) queued++
-        else failed++
+        const albumData = await deezerAPI.getAlbum(id)
+        const tracks = await deezerAPI.getAlbumTracks(id)
+        if (albumData?.id && tracks?.length > 0) {
+          await downloadStore.addAlbumDownload(albumData, tracks)
+          queued++
+        } else {
+          failed++
+        }
       } else if (link.type === 'playlist') {
-        const response = await fetch(`http://127.0.0.1:${serverPort.value}/api/download/playlist`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ playlistId: parseInt(link.id) })
-        })
-        if (response.ok) queued++
-        else failed++
+        const playlistData = await deezerAPI.getPlaylist(id)
+        const tracks = await deezerAPI.getPlaylistTracks(id)
+        if (playlistData?.id && tracks?.length > 0) {
+          await downloadStore.addPlaylistDownload(playlistData, tracks)
+          queued++
+        } else {
+          failed++
+        }
       } else if (link.type === 'artist') {
         // Download full discography — fetch all albums and queue each
-        try {
-          const albums = await deezerAPI.getArtistAlbums(parseInt(link.id))
-          let artistQueued = 0
+        const albums = await deezerAPI.getArtistAlbums(id)
+        if (albums.length > 0) {
           for (const album of albums) {
-            if (album.id) {
-              const response = await fetch(`http://127.0.0.1:${serverPort.value}/api/download/album`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ albumId: album.id })
-              })
-              if (response.ok) artistQueued++
+            try {
+              const tracks = await deezerAPI.getAlbumTracks(album.id)
+              if (tracks?.length > 0) {
+                await downloadStore.addAlbumDownload(album, tracks)
+              }
+            } catch (e) {
+              console.error(`[Search] Failed to queue album ${album.id}:`, e)
             }
           }
-          if (artistQueued > 0) queued++
-          else failed++
-        } catch (err) {
-          console.error(`[Search] Bulk artist download failed for ${link.id}:`, err)
+          queued++
+        } else {
           failed++
         }
       }
@@ -391,9 +393,9 @@ async function handlePaste(e: ClipboardEvent) {
   isBulkDownloading.value = false
 
   if (queued > 0) {
-    toastStore.success(`Queued ${queued} download${queued > 1 ? 's' : ''} from ${links.length} links${failed > 0 ? ` (${failed} failed)` : ''}`)
+    toastStore.success(`Queued ${queued} item${queued > 1 ? 's' : ''} from ${links.length} links${failed > 0 ? ` (${failed} failed)` : ''}`)
   } else {
-    toastStore.error('Failed to queue any downloads')
+    toastStore.error('No downloads could be queued — check that you are logged in')
   }
 }
 
