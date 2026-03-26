@@ -360,6 +360,24 @@ async function handlePaste(e: ClipboardEvent) {
         })
         if (response.ok) queued++
         else failed++
+      } else if (link.type === 'artist') {
+        // Fetch artist's top tracks and queue each for download
+        try {
+          const topTracks = await deezerAPI.getArtistTopTracks(parseInt(link.id))
+          for (const track of topTracks) {
+            if (track.id) {
+              await fetch(`http://127.0.0.1:${serverPort.value}/api/download`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ trackId: track.id })
+              })
+            }
+          }
+          if (topTracks.length > 0) queued++
+          else failed++
+        } catch {
+          failed++
+        }
       }
     } catch (err) {
       console.error(`[Search] Bulk download failed for ${link.type}/${link.id}:`, err)
@@ -793,7 +811,7 @@ const contextMenuItems = computed(() => {
               id: playlist.id,
               title: playlist.title,
               cover_medium: playlist.picture_medium,
-              artist: { id: 0, name: playlist.creator?.name || 'Unknown' },
+              artist: { id: 0, name: playlist.creator?.name || playlist.user?.name || 'Unknown' },
               nb_tracks: playlist.nb_tracks
             }"
             type="playlist"
