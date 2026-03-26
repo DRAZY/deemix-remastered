@@ -361,21 +361,24 @@ async function handlePaste(e: ClipboardEvent) {
         if (response.ok) queued++
         else failed++
       } else if (link.type === 'artist') {
-        // Fetch artist's top tracks and queue each for download
+        // Download full discography — fetch all albums and queue each
         try {
-          const topTracks = await deezerAPI.getArtistTopTracks(parseInt(link.id))
-          for (const track of topTracks) {
-            if (track.id) {
-              await fetch(`http://127.0.0.1:${serverPort.value}/api/download`, {
+          const albums = await deezerAPI.getArtistAlbums(parseInt(link.id))
+          let artistQueued = 0
+          for (const album of albums) {
+            if (album.id) {
+              const response = await fetch(`http://127.0.0.1:${serverPort.value}/api/download/album`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ trackId: track.id })
+                body: JSON.stringify({ albumId: album.id })
               })
+              if (response.ok) artistQueued++
             }
           }
-          if (topTracks.length > 0) queued++
+          if (artistQueued > 0) queued++
           else failed++
-        } catch {
+        } catch (err) {
+          console.error(`[Search] Bulk artist download failed for ${link.id}:`, err)
           failed++
         }
       }
