@@ -1418,88 +1418,86 @@ export class DeezerAuth extends EventEmitter {
   async getTrackUrl(trackId: string | number, quality: 'MP3_128' | 'MP3_320' | 'FLAC' = 'MP3_320', bitrateFallback: boolean = true): Promise<{ url: string; format: string }> {
     console.log('[DeezerAuth] getTrackUrl called with quality:', quality, 'bitrateFallback:', bitrateFallback)
 
-    // Get track info with token
+    // Build format fallback chain
+    const buildFormats = (info: any): string[] => {
+      if (quality === 'FLAC') {
+        return bitrateFallback ? ['FLAC', 'MP3_320', 'MP3_128'] :
+          (info.FILESIZE_FLAC && parseInt(info.FILESIZE_FLAC) > 0) ? ['FLAC'] :
+          (() => { throw new Error('PreferredBitrateNotFound: FLAC not available') })()
+      } else if (quality === 'MP3_320') {
+        return bitrateFallback ? ['MP3_320', 'MP3_128'] :
+          (info.FILESIZE_MP3_320 && parseInt(info.FILESIZE_MP3_320) > 0) ? ['MP3_320'] :
+          (() => { throw new Error('PreferredBitrateNotFound: MP3_320 not available') })()
+      }
+      return ['MP3_128']
+    }
+
+    // Try to get a media URL for a specific track, with fresh token retry
+    const tryGetUrl = async (id: string | number): Promise<{ url: string; format: string } | null> => {
+      // Clear cache to ensure fresh token
+      this.trackInfoCache.delete(`track_${id}`)
+      const info = await this.getTrackInfo(id)
+
+      if (!info.TRACK_TOKEN) return null
+
+      const formats = buildFormats(info)
+      console.log('[DeezerAuth] Trying track:', id, 'formats:', formats.join(', '))
+
+      try {
+        const result = await this.getMediaUrl(info.TRACK_TOKEN, formats)
+        if (result) return result
+      } catch (e: any) {
+        console.warn(`[DeezerAuth] Media API failed for track ${id}:`, e.message)
+      }
+      return null
+    }
+
+    // Attempt 1: Try the requested track ID (always with fresh token)
+    let result = await tryGetUrl(trackId)
+    if (result) {
+      console.log('[DeezerAuth] Got media URL for track', trackId, 'format:', result.format)
+      return result
+    }
+
+    // Attempt 2: Check for FALLBACK track (alternative version that may be available)
+    // Playlists often reference compilation/special edition track IDs that have restricted
+    // rights. The FALLBACK field points to the original album version which is usually available.
     const trackInfo = await this.getTrackInfo(trackId)
-    const trackToken = trackInfo.TRACK_TOKEN
-
-    if (!trackToken) {
-      throw new Error('Track not available - no token')
-    }
-
-    // Log available file sizes
-    console.log('[DeezerAuth] Track file sizes:', {
-      FLAC: trackInfo.FILESIZE_FLAC,
-      MP3_320: trackInfo.FILESIZE_MP3_320,
-      MP3_128: trackInfo.FILESIZE_MP3_128
-    })
-
-    // Build format fallback chain — send ALL acceptable formats to the media API
-    // so Deezer returns the best one the user's license allows.
-    // This matches the old Deemix behavior and fixes error 2002 ("insufficient rights")
-    // which occurs when the track exists but the user's license doesn't cover that format.
-    let formats: string[] = []
-
-    if (quality === 'FLAC') {
-      if (bitrateFallback) {
-        formats = ['FLAC', 'MP3_320', 'MP3_128']
-      } else {
-        if (trackInfo.FILESIZE_FLAC && parseInt(trackInfo.FILESIZE_FLAC) > 0) {
-          formats = ['FLAC']
-        } else {
-          throw new Error('PreferredBitrateNotFound: FLAC not available for this track')
-        }
-      }
-    } else if (quality === 'MP3_320') {
-      if (bitrateFallback) {
-        formats = ['MP3_320', 'MP3_128']
-      } else {
-        if (trackInfo.FILESIZE_MP3_320 && parseInt(trackInfo.FILESIZE_MP3_320) > 0) {
-          formats = ['MP3_320']
-        } else {
-          throw new Error('PreferredBitrateNotFound: MP3_320 not available for this track')
-        }
-      }
-    } else {
-      formats = ['MP3_128']
-    }
-
-    console.log('[DeezerAuth] Getting media URL for track:', trackId, 'requesting formats:', formats.join(', '))
-
-    // Try modern media.deezer.com API first
-    try {
-      const result = await this.getMediaUrl(trackToken, formats)
+    const fallbackId = trackInfo.FALLBACK?.SNG_ID
+    if (fallbackId && String(fallbackId) !== String(trackId)) {
+      console.log(`[DeezerAuth] Track ${trackId} has FALLBACK: ${fallbackId} — trying alternative version`)
+      result = await tryGetUrl(fallbackId)
       if (result) {
-        console.log('[DeezerAuth] Got media URL via modern API, format:', result.format || formats[0])
-        return { url: result.url, format: result.format || formats[0] }
+        console.log('[DeezerAuth] Got media URL via FALLBACK track', fallbackId, 'format:', result.format)
+        return result
       }
-    } catch (modernError: any) {
-      console.warn('[DeezerAuth] Modern media API failed:', modernError.message)
+    }
 
-      // Token may have expired (cached from earlier in a large playlist).
-      // Clear the cache and retry with a fresh token before giving up.
-      const cacheKey = `track_${trackId}`
-      if (this.trackInfoCache.has(cacheKey)) {
-        console.log('[DeezerAuth] Clearing cached track token and retrying...')
-        this.trackInfoCache.delete(cacheKey)
-        try {
-          const freshTrackInfo = await this.getTrackInfo(trackId)
-          if (freshTrackInfo.TRACK_TOKEN) {
-            const retryResult = await this.getMediaUrl(freshTrackInfo.TRACK_TOKEN, formats)
-            if (retryResult) {
-              console.log('[DeezerAuth] Got media URL on retry with fresh token, format:', retryResult.format || formats[0])
-              return { url: retryResult.url, format: retryResult.format || formats[0] }
+    // Attempt 3: Search for the same song on the original album via ISRC
+    // ISRC is a universal recording identifier — same across all album versions
+    if (trackInfo.ISRC) {
+      console.log(`[DeezerAuth] Trying ISRC lookup for: ${trackInfo.ISRC}`)
+      try {
+        const searchResult = await this.apiCall('song.getListByIsrc', { isrc: trackInfo.ISRC })
+        const alternatives = searchResult?.results?.data || searchResult?.results || []
+        if (Array.isArray(alternatives)) {
+          for (const alt of alternatives) {
+            if (alt.SNG_ID && String(alt.SNG_ID) !== String(trackId) && String(alt.SNG_ID) !== String(fallbackId || '')) {
+              console.log(`[DeezerAuth] Trying ISRC alternative: ${alt.SNG_ID} (album: ${alt.ALB_TITLE})`)
+              result = await tryGetUrl(alt.SNG_ID)
+              if (result) {
+                console.log('[DeezerAuth] Got media URL via ISRC alternative', alt.SNG_ID, 'format:', result.format)
+                return result
+              }
             }
           }
-        } catch (retryError: any) {
-          console.warn('[DeezerAuth] Retry with fresh token also failed:', retryError.message)
         }
+      } catch (isrcError: any) {
+        console.warn('[DeezerAuth] ISRC lookup failed:', isrcError.message)
       }
-
-      // Both attempts failed — throw the original error
-      throw modernError
     }
 
-    throw new Error('Failed to get media URL from Deezer')
+    throw new Error('Track not available: all versions exhausted (original, fallback, ISRC alternatives)')
   }
 
   private async getMediaUrl(trackToken: string, formats: string[]): Promise<{ url: string; format: string }> {
