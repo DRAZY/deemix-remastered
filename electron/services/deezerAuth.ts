@@ -1465,15 +1465,42 @@ export class DeezerAuth extends EventEmitter {
 
     console.log('[DeezerAuth] Getting media URL for track:', trackId, 'requesting formats:', formats.join(', '))
 
-    // Use the modern media.deezer.com API — sends all formats, API picks the best available
-    const result = await this.getMediaUrl(trackToken, formats)
+    // Try modern media.deezer.com API first — sends all formats, API picks best available
+    try {
+      const result = await this.getMediaUrl(trackToken, formats)
+      if (result) {
+        console.log('[DeezerAuth] Got media URL via modern API, format:', result.format || formats[0])
+        return { url: result.url, format: result.format || formats[0] }
+      }
+    } catch (modernError: any) {
+      console.warn('[DeezerAuth] Modern media API failed:', modernError.message)
 
-    if (!result) {
-      throw new Error('Failed to get media URL from Deezer')
+      // Fallback: try legacy CDN URL (bypasses track token restrictions)
+      // This is how the old Deemix handled tracks that fail with error 2002
+      if (trackInfo.MD5_ORIGIN && trackInfo.MEDIA_VERSION) {
+        console.log('[DeezerAuth] Trying legacy CDN URL fallback...')
+        const formatCodes: Record<string, number> = { 'FLAC': 9, 'MP3_320': 3, 'MP3_128': 1 }
+
+        for (const fmt of formats) {
+          const code = formatCodes[fmt]
+          if (!code) continue
+          try {
+            const legacyUrl = await this.generateTrackUrl(trackInfo, code)
+            if (legacyUrl) {
+              console.log('[DeezerAuth] Got media URL via legacy CDN, format:', fmt)
+              return { url: legacyUrl, format: fmt }
+            }
+          } catch (legacyError: any) {
+            console.warn(`[DeezerAuth] Legacy CDN failed for ${fmt}:`, legacyError.message)
+          }
+        }
+      }
+
+      // Both methods failed — throw the original error
+      throw modernError
     }
 
-    console.log('[DeezerAuth] Got media URL, format:', result.format || formats[0])
-    return { url: result.url, format: result.format || formats[0] }
+    throw new Error('Failed to get media URL from Deezer')
   }
 
   private async getMediaUrl(trackToken: string, formats: string[]): Promise<{ url: string; format: string }> {
