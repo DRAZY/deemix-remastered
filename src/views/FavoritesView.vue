@@ -25,33 +25,28 @@ const sortOrder = ref<'added' | 'name-asc' | 'name-desc'>(
 watch(sortOrder, (val) => localStorage.setItem('favorites_sort', val))
 
 // Sorted favorites — sorts the store's arrays without mutating them
-const sortedTracks = computed(() => {
-  const tracks = [...favoritesStore.favoriteTracks]
-  if (sortOrder.value === 'name-asc') return tracks.sort((a, b) => (a.title || '').localeCompare(b.title || ''))
-  if (sortOrder.value === 'name-desc') return tracks.sort((a, b) => (b.title || '').localeCompare(a.title || ''))
-  return tracks // 'added' = original order from store
-})
+function sortByName(items: any[], key: string, order: string): any[] {
+  const copy = items.slice()
+  if (order === 'name-asc') {
+    copy.sort((a, b) => {
+      const aVal = (a[key] || '').toLowerCase()
+      const bVal = (b[key] || '').toLowerCase()
+      return aVal < bVal ? -1 : aVal > bVal ? 1 : 0
+    })
+  } else if (order === 'name-desc') {
+    copy.sort((a, b) => {
+      const aVal = (a[key] || '').toLowerCase()
+      const bVal = (b[key] || '').toLowerCase()
+      return aVal > bVal ? -1 : aVal < bVal ? 1 : 0
+    })
+  }
+  return copy
+}
 
-const sortedAlbums = computed(() => {
-  const albums = [...favoritesStore.favoriteAlbums]
-  if (sortOrder.value === 'name-asc') return albums.sort((a, b) => (a.title || '').localeCompare(b.title || ''))
-  if (sortOrder.value === 'name-desc') return albums.sort((a, b) => (b.title || '').localeCompare(a.title || ''))
-  return albums
-})
-
-const sortedArtists = computed(() => {
-  const artists = [...favoritesStore.favoriteArtists]
-  if (sortOrder.value === 'name-asc') return artists.sort((a, b) => (a.name || '').localeCompare(b.name || ''))
-  if (sortOrder.value === 'name-desc') return artists.sort((a, b) => (b.name || '').localeCompare(a.name || ''))
-  return artists
-})
-
-const sortedPlaylists = computed(() => {
-  const playlists = [...favoritesStore.favoritePlaylists]
-  if (sortOrder.value === 'name-asc') return playlists.sort((a, b) => (a.title || '').localeCompare(b.title || ''))
-  if (sortOrder.value === 'name-desc') return playlists.sort((a, b) => (b.title || '').localeCompare(a.title || ''))
-  return playlists
-})
+const sortedTracks = computed(() => sortByName(favoritesStore.favoriteTracks, 'title', sortOrder.value))
+const sortedAlbums = computed(() => sortByName(favoritesStore.favoriteAlbums, 'title', sortOrder.value))
+const sortedArtists = computed(() => sortByName(favoritesStore.favoriteArtists, 'name', sortOrder.value))
+const sortedPlaylists = computed(() => sortByName(favoritesStore.favoritePlaylists, 'title', sortOrder.value))
 
 const tabs = computed(() => [
   { id: 'tracks', label: t('favorites.tracks'), count: () => favoritesStore.favoriteTracks.length },
