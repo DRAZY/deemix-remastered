@@ -310,6 +310,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         trackNameTemplate: settingsStore.settings.trackNameTemplate,
         albumTrackTemplate: settingsStore.settings.albumTrackTemplate,
         playlistTrackTemplate: settingsStore.settings.playlistTrackTemplate,
+        m3uNameTemplate: settingsStore.settings.m3uNameTemplate,
         saveArtwork: settingsStore.settings.saveArtwork,
         embedArtwork: settingsStore.settings.embedArtwork,
         saveLyrics: settingsStore.settings.saveLyrics,

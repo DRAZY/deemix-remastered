@@ -211,7 +211,8 @@ export class Downloader extends EventEmitter {
   private playlistM3UTracker: Map<string, {
     outputDir: string
     totalTracks: number
-    processedCount: number  // tracks completed + failed (for knowing when to generate)
+    processedCount: number
+    m3uNameTemplate: string
     completedEntries: Array<{
       position: number
       duration: number
@@ -3271,11 +3272,12 @@ export class Downloader extends EventEmitter {
    * As tracks complete, their actual paths are collected. When all tracks
    * are done, the M3U is generated with paths that match the files on disk.
    */
-  registerPlaylistForM3U(playlistName: string, outputDir: string, totalTracks: number): void {
+  registerPlaylistForM3U(playlistName: string, outputDir: string, totalTracks: number, m3uNameTemplate?: string): void {
     this.playlistM3UTracker.set(playlistName, {
       outputDir,
       totalTracks,
       processedCount: 0,
+      m3uNameTemplate: m3uNameTemplate || '%playlist%',
       completedEntries: []
     })
     console.log(`[Downloader] Registered playlist "${playlistName}" for M3U (${totalTracks} tracks)`)
@@ -3338,7 +3340,7 @@ export class Downloader extends EventEmitter {
           }
         })
 
-        this.generateM3U(playlistName, tracker.outputDir, tracks)
+        this.generateM3U(playlistName, tracker.outputDir, tracks, tracker.m3uNameTemplate)
       } catch (err: any) {
         console.error(`[Downloader] Auto M3U generation failed for "${playlistName}":`, err.message)
       } finally {
@@ -3361,10 +3363,19 @@ export class Downloader extends EventEmitter {
       artist: string
       title: string
       relativePath: string
-    }>
+    }>,
+    nameTemplate?: string
   ): string {
     try {
-      const sanitizedName = this.sanitizeFilename(playlistName)
+      const today = new Date().toISOString().split('T')[0]
+      const resolvedName = (nameTemplate || '%playlist%')
+        .replace(/%playlist%/gi, playlistName)
+        .replace(/%date%/gi, today)
+        .replace(/%year%/gi, today.split('-')[0])
+        .replace(/%[a-z_]+%/gi, '')
+        .replace(/\s*\(\s*\)/g, '').replace(/\s*\[\s*\]/g, '').replace(/\s*\{\s*\}/g, '')
+        .trim() || playlistName
+      const sanitizedName = this.sanitizeFilename(resolvedName)
       const m3uPath = path.join(outputDir, `${sanitizedName}.m3u8`)
 
       // Build M3U content

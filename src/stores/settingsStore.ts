@@ -89,6 +89,7 @@ export interface Settings {
   trackNameTemplate: string
   albumTrackTemplate: string
   playlistTrackTemplate: string
+  m3uNameTemplate: string
   // File settings
   saveArtwork: boolean
   embedArtwork: boolean
@@ -157,6 +158,7 @@ export const defaultSettings: Settings = {
   trackNameTemplate: '%artist% - %title%',
   albumTrackTemplate: '%tracknumber% - %title%',
   playlistTrackTemplate: '%position% - %artist% - %title%',
+  m3uNameTemplate: '%playlist%',
   // File settings
   saveArtwork: true,
   embedArtwork: true,

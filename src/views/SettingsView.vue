@@ -748,6 +748,16 @@ function saveNow() {
             />
             <span class="text-sm">{{ t('settings.createPlaylistFile') }}</span>
           </label>
+          <div v-if="settingsStore.settings.createPlaylistFile" class="ml-7">
+            <label class="block text-xs text-foreground-muted mb-1">M3U filename template</label>
+            <input
+              v-model="settingsStore.settings.m3uNameTemplate"
+              type="text"
+              placeholder="%playlist%"
+              class="input w-full text-sm"
+            />
+            <p class="text-xs text-foreground-muted mt-1">Variables: %playlist%, %date%, %year%</p>
+          </div>
         </div>
       </div>
 

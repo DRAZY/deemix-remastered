@@ -375,6 +375,7 @@ interface ServerSettings {
   trackNameTemplate: string
   albumTrackTemplate: string
   playlistTrackTemplate: string
+  m3uNameTemplate: string
   // File settings
   saveArtwork: boolean
   embedArtwork: boolean
@@ -435,6 +436,7 @@ export class DeemixServer extends EventEmitter {
     trackNameTemplate: '%artist% - %title%',
     albumTrackTemplate: '%tracknumber% - %title%',
     playlistTrackTemplate: '%position% - %artist% - %title%',
+    m3uNameTemplate: '%playlist%',
     // File settings
     saveArtwork: true,
     embedArtwork: true,
@@ -1526,7 +1528,7 @@ export class DeemixServer extends EventEmitter {
       // The downloader collects real paths as tracks complete, then generates
       // the M3U — this guarantees paths match what's on disk
       if (this.settings.createPlaylistFile) {
-        downloader.registerPlaylistForM3U(playlistName, this.settings.downloadPath, playlist.data.length)
+        downloader.registerPlaylistForM3U(playlistName, this.settings.downloadPath, playlist.data.length, this.settings.m3uNameTemplate)
       }
 
       for (let i = 0; i < playlist.data.length; i++) {
