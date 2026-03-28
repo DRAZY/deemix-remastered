@@ -1415,7 +1415,7 @@ export class DeezerAuth extends EventEmitter {
     }
   }
 
-  async getTrackUrl(trackId: string | number, quality: 'MP3_128' | 'MP3_320' | 'FLAC' = 'MP3_320', bitrateFallback: boolean = true): Promise<{ url: string; format: string }> {
+  async getTrackUrl(trackId: string | number, quality: 'MP3_128' | 'MP3_320' | 'FLAC' = 'MP3_320', bitrateFallback: boolean = true): Promise<{ url: string; format: string; resolvedTrackId?: string | number }> {
     console.log('[DeezerAuth] getTrackUrl called with quality:', quality, 'bitrateFallback:', bitrateFallback)
 
     // Build format fallback chain
@@ -1469,7 +1469,7 @@ export class DeezerAuth extends EventEmitter {
       result = await tryGetUrl(fallbackId)
       if (result) {
         console.log('[DeezerAuth] Got media URL via FALLBACK track', fallbackId, 'format:', result.format)
-        return result
+        return { ...result, resolvedTrackId: fallbackId }
       }
     }
 
@@ -1487,7 +1487,7 @@ export class DeezerAuth extends EventEmitter {
               result = await tryGetUrl(alt.SNG_ID)
               if (result) {
                 console.log('[DeezerAuth] Got media URL via ISRC alternative', alt.SNG_ID, 'format:', result.format)
-                return result
+                return { ...result, resolvedTrackId: alt.SNG_ID }
               }
             }
           }

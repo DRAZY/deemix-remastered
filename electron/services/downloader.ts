@@ -850,7 +850,25 @@ export class Downloader extends EventEmitter {
       const result = await deezerAuth.getTrackUrl(trackInfo.SNG_ID, options.quality, bitrateFallback)
       downloadUrl = result.url
       actualFormat = result.format
-      progress.actualFormat = actualFormat  // Track the actual format for UI display
+      progress.actualFormat = actualFormat
+
+      // If the track was resolved to a different version (fallback/ISRC),
+      // re-fetch track info so metadata, folder path, and M3U use the correct album
+      if (result.resolvedTrackId && String(result.resolvedTrackId) !== String(trackInfo.SNG_ID)) {
+        console.log(`[Downloader] Track resolved to alternative: ${trackInfo.SNG_ID} → ${result.resolvedTrackId} — refreshing metadata`)
+        const resolvedInfo = await deezerAuth.getTrackInfo(result.resolvedTrackId)
+        if (resolvedInfo) {
+          trackInfo = resolvedInfo
+          // Update progress display with resolved track info
+          const resolvedVersion = trackInfo.VERSION ? trackInfo.VERSION.replace(/^\((.+)\)$/, '$1') : ''
+          progress.trackTitle = resolvedVersion
+            ? `${trackInfo.SNG_TITLE || 'Unknown Track'} (${resolvedVersion})`
+            : (trackInfo.SNG_TITLE || 'Unknown Track')
+          progress.trackArtist = trackInfo.ART_NAME || 'Unknown Artist'
+          progress.albumTitle = trackInfo.ALB_TITLE || ''
+        }
+      }
+
       console.log(`[Downloader] Got URL for format: ${actualFormat}`)
       console.log(`[Downloader] Download URL: ${downloadUrl?.substring(0, 100)}...`)
 
@@ -860,14 +878,13 @@ export class Downloader extends EventEmitter {
       }
     } catch (error: any) {
       console.error(`[Downloader] Failed to get media URL:`, error.message)
-      // Check if this is a bitrate not found error
       if (error.message.includes('PreferredBitrateNotFound')) {
         throw new Error(`Preferred bitrate (${options.quality}) not available for this track. Enable Bitrate Fallback in settings to download in a lower quality.`)
       }
       throw new Error(`Failed to get download URL: ${error.message}`)
     }
 
-    // Build output path using the ACTUAL format (not requested quality)
+    // Build output path using the ACTUAL format and resolved track info
     const initialOutputPath = this.buildOutputPath(trackInfo, options, actualFormat)
     console.log(`[Downloader] Initial output path: ${initialOutputPath}`)
 
