@@ -23,6 +23,7 @@ function openLink(url: string) {
 }
 
 const whatsNew = [
+  'Playlist Card Display -- Playlist titles and creator names now wrap to show full text instead of truncating',
   'Cancel All Fix -- Canceling downloads during bulk paste now stops immediately, and new downloads start cleanly without restart',
   'M3U Filename Template -- Customize M3U playlist filenames with %playlist%, %date%, %year% variables',
   'Sorting -- Sort favorites and artist discographies by name, date, or default order',
