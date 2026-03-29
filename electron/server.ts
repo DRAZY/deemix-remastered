@@ -751,6 +751,11 @@ export class DeemixServer extends EventEmitter {
         await this.handleCancelDownload(req, res)
         break
 
+      case '/api/queue/clear':
+        downloader.clearAll()
+        this.sendJSON(res, { success: true })
+        break
+
       case '/api/queue/pause':
         this.handlePauseQueue(res)
         break

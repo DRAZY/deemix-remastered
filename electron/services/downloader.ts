@@ -3255,6 +3255,20 @@ export class Downloader extends EventEmitter {
     }
   }
 
+  /**
+   * Clear all downloads — reset queue, active downloads, and counters.
+   * Called when user cancels all downloads to ensure clean state.
+   */
+  clearAll(): void {
+    this.downloadQueue = []
+    this.activeDownloads.clear()
+    this.currentDownloads = 0
+    this._isPaused = false
+    this.reservedPaths.clear()
+    this.playlistM3UTracker.clear()
+    console.log('[Downloader] All downloads cleared, state reset')
+  }
+
   setMaxConcurrent(max: number): void {
     // Clamp between 1 and 50
     this.maxConcurrent = Math.max(1, Math.min(50, max))

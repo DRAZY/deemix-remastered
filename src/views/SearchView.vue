@@ -26,6 +26,7 @@ const authStore = useAuthStore()
 const toastStore = useToastStore()
 const serverPort = ref(6595)
 const isBulkDownloading = ref(false)
+const bulkAborted = ref(false)
 
 const searchQuery = ref('')
 const activeTab = ref<'all' | 'track' | 'album' | 'artist' | 'playlist'>('all')
@@ -186,6 +187,13 @@ onMounted(async () => {
   if (route.query.type) {
     activeTab.value = route.query.type as typeof activeTab.value
   }
+
+  // Abort bulk download if user clears all downloads
+  watch(() => downloadStore.downloads.length, (newLen) => {
+    if (newLen === 0 && isBulkDownloading.value) {
+      bulkAborted.value = true
+    }
+  })
 })
 
 watch(() => route.query.q, (newQuery) => {
@@ -328,6 +336,7 @@ async function handlePaste(e: ClipboardEvent) {
   }
 
   isBulkDownloading.value = true
+  bulkAborted.value = false
   toastStore.info(`Processing ${links.length} links...`)
   await downloadStore.syncSettingsToServer()
 
@@ -335,6 +344,11 @@ async function handlePaste(e: ClipboardEvent) {
   let failed = 0
 
   for (const link of links) {
+    // Check if user canceled all downloads during bulk processing
+    if (bulkAborted.value) {
+      console.log('[Search] Bulk download aborted by user')
+      break
+    }
     try {
       const id = parseInt(link.id)
 
@@ -373,6 +387,7 @@ async function handlePaste(e: ClipboardEvent) {
           let albumsQueued = 0
           let albumsFailed = 0
           for (const album of albums) {
+            if (bulkAborted.value) break
             try {
               // Inject artist info — /artist/{id}/albums doesn't include it
               if (!album.artist && artistInfo) {

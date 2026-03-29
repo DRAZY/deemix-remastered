@@ -1123,7 +1123,12 @@ export const useDownloadStore = defineStore('downloads', () => {
     trackIdToStatus.clear()
     albumIdToStatus.clear()
     playlistIdToStatus.clear()
+    isPaused.value = false
     saveDownloads()
+
+    // Reset server-side queue state to ensure new downloads can start
+    fetch(`http://127.0.0.1:${serverPort.value}/api/queue/clear`, { method: 'POST' })
+      .catch(e => console.error('[DownloadStore] Failed to clear server queue:', e))
   }
 
   // Reorder a download item in the queue
