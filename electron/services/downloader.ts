@@ -3304,6 +3304,21 @@ export class Downloader extends EventEmitter {
       completedEntries: []
     })
     console.log(`[Downloader] Registered playlist "${playlistName}" for M3U (${totalTracks} tracks)`)
+
+    // Safety timeout: if M3U isn't generated within 10 minutes, generate with
+    // whatever entries were collected. Prevents orphaned trackers when tracks
+    // are skipped by duplicate detection or other early-exit paths.
+    setTimeout(() => {
+      const tracker = this.playlistM3UTracker.get(playlistName)
+      if (tracker && tracker.completedEntries.length > 0) {
+        console.warn(`[Downloader] M3U safety timeout for "${playlistName}" — generating with ${tracker.completedEntries.length}/${tracker.totalTracks} entries`)
+        tracker.processedCount = tracker.totalTracks // Force completion
+        this.checkM3UComplete(playlistName)
+      } else if (tracker) {
+        console.warn(`[Downloader] M3U safety timeout for "${playlistName}" — no entries collected, removing tracker`)
+        this.playlistM3UTracker.delete(playlistName)
+      }
+    }, 600000) // 10 minutes
   }
 
   /**
