@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useDownloadStore } from '../stores/downloadStore'
 import { useAuthStore } from '../stores/authStore'
 import BackButton from '../components/BackButton.vue'
@@ -8,6 +8,7 @@ import ContextMenu from '../components/ContextMenu.vue'
 import { useContextMenu } from '../composables/useContextMenu'
 
 const router = useRouter()
+const route = useRoute()
 const downloadStore = useDownloadStore()
 const authStore = useAuthStore()
 
@@ -28,6 +29,11 @@ const conversionProgress = ref({ current: 0, total: 0 })
 onMounted(async () => {
   if (window.electronAPI) {
     serverPort.value = await window.electronAPI.getServerPort()
+  }
+  // Auto-analyze if URL passed via query parameter (from Search redirect)
+  if (route.query.url) {
+    linkInput.value = route.query.url as string
+    analyzeLink()
   }
 })
 

@@ -158,6 +158,16 @@ function handleGlobalPaste(e: ClipboardEvent) {
   if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable) return
 
   const text = e.clipboardData?.getData('text') || ''
+
+  // Check for share links first — route to Link Analyzer for resolution
+  if (text.includes('link.deezer.com') || text.includes('deezer.page.link') ||
+      text.includes('spotify.link')) {
+    e.preventDefault()
+    router.push({ path: '/analyzer', query: { url: text.trim() } })
+    return
+  }
+
+  // Check for standard Deezer URLs — route to Search for bulk download
   const deezerPattern = /(?:https?:\/\/)?(?:www\.)?deezer\.com(?:\/[a-z]{2})?\/(track|album|artist|playlist)\/(\d+)/gi
   const links = text.match(deezerPattern)
   if (links && links.length > 0) {

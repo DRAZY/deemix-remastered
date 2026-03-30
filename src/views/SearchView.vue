@@ -225,6 +225,15 @@ function resetPagination() {
 async function performSearch() {
   if (!searchQuery.value.trim()) return
 
+  // Detect Deezer/Spotify links and redirect to Link Analyzer
+  const query = searchQuery.value.trim()
+  if (query.includes('deezer.com') || query.includes('link.deezer.com') ||
+      query.includes('deezer.page.link') || query.includes('spotify.com') ||
+      query.includes('spotify.link')) {
+    router.push({ path: '/analyzer', query: { url: query } })
+    return
+  }
+
   isLoading.value = true
   hasError.value = false
   showHistory.value = false
