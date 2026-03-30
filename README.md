@@ -38,21 +38,24 @@
 
 - **Audio Formats** -- MP3 128 kbps, MP3 320 kbps, and FLAC (lossless)
 - **Batch Downloads** -- Download entire albums, playlists, or select individual tracks
-- **Bulk Link Paste** -- Paste multiple Deezer links into the Search bar to queue them all at once
+- **Bulk Link Paste** -- Paste multiple Deezer links into the Search bar or anywhere in the app to queue them all at once
 - **Batch Favorites** -- Download all your favorite tracks, albums, or playlists with one click
+- **Three-Tier Track Resolution** -- Automatically finds alternative versions (FALLBACK, ISRC) when a track is unavailable — matches old Deemix behavior
 - **Download Queue** -- Pause, resume, reorder (drag-and-drop), cancel, and retry downloads
-- **Smart Fallbacks** -- Automatic bitrate and search fallback when preferred quality is unavailable
-- **Concurrent Downloads** -- Configurable from 2 to 10+ simultaneous downloads
+- **Download History** -- Persistent log of all completed and failed downloads (last 500 entries)
+- **Smart Fallbacks** -- Automatic bitrate and format fallback when preferred quality is unavailable
+- **Concurrent Downloads** -- Configurable from 2 to 50 simultaneous downloads
 - **Conflict Handling** -- Skip, overwrite, or rename when files already exist
+- **Playlist Diff** -- See how many tracks are new vs already downloaded before re-downloading a playlist
 
 ### Metadata & Organization
 
 - **ID3 Tagging** -- 21 configurable tag fields including title, artist, album, lyrics, ISRC, BPM, and more
 - **Featured Artists** -- All credited artists (main + featured) included in tags with configurable separator
-- **M3U Playlists** -- Automatic M3U8 playlist file generation with paths matching actual downloaded files
+- **M3U Playlists** -- Automatic M3U8 playlist file generation with paths matching actual downloaded files and customizable filename template (`%playlist%`, `%date%`, `%year%`)
 - **Album Artwork** -- Embedded and local cover art with configurable size and format (JPEG/PNG)
 - **Synced Lyrics** -- Optional LRC file generation for synced lyrics
-- **Folder Structure** -- Customizable templates for artist, album, playlist, and CD folder organization with variables like `%artist%`, `%album%`, `%year%`, `%explicit%`
+- **Folder Structure** -- Customizable templates for artist, album, playlist, and CD folder organization with variables like `%artist%`, `%album%`, `%year%`, `%explicit%`, `%owner%`, `%date%`
 - **Track Naming** -- Template-based naming with variables like `%artist%`, `%title%`, `%tracknumber%`, `%explicit%`
 - **Explicit Tag** -- `%explicit%` variable in folder templates separates clean and explicit album versions into different folders
 
@@ -81,6 +84,10 @@
 - **Context Menus** -- Right-click support for copy/paste operations
 - **Offline Detection** -- Banner notification when network connectivity is lost
 - **Toast Notifications** -- Non-intrusive feedback for all user actions
+- **Auto-Update Checker** -- Notifies you on startup when a new version is available
+- **Download Progress in Title Bar** -- See overall download progress in the window title
+- **Export/Import Settings** -- Transfer settings between machines via JSON file (credentials excluded)
+- **Settings Profiles** -- Save, apply, export, and import named settings configurations
 
 ### Supported Languages
 
@@ -201,8 +208,8 @@ The Settings page offers deep customization organized into these categories:
 | Category | Key Options |
 |----------|-------------|
 | **Appearance** | Theme (8 color themes), dark/light/system mode, slim sidebar, slim downloads |
-| **Downloads** | Quality (128/320/FLAC), max concurrent, overwrite mode, bitrate fallback |
-| **Folder Structure** | Create artist/album/playlist/CD folders, templates with `%explicit%` tag support |
+| **Downloads** | Quality (128/320/FLAC), max concurrent, overwrite mode, bitrate fallback, M3U filename template |
+| **Folder Structure** | Create artist/album/playlist/CD folders, templates with `%explicit%`, `%owner%`, `%date%` support |
 | **Track Naming** | Templates for single tracks, album tracks, and playlist tracks |
 | **Metadata Tags** | Toggle 21 individual ID3 tag fields (title, artist, album, lyrics, ISRC, BPM, etc.) |
 | **Album Covers** | Save covers, embedded/local artwork size, JPEG quality, PNG option |
@@ -211,6 +218,8 @@ The Settings page offers deep customization organized into these categories:
 | **Account** | Deezer ARL token management |
 | **Spotify** | Client ID, Client Secret, fallback search toggle |
 | **Playlist Sync** | Add Spotify/Deezer playlists, set sync schedule, enable/disable |
+| **Profiles** | Save, apply, export, import named settings configurations |
+| **Export/Import** | Transfer settings between machines via JSON file |
 
 ---
 
