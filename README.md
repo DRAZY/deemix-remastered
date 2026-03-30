@@ -287,15 +287,15 @@ deemix-app/
 │   │   └── deezerAPI.ts            # Deezer API wrapper with caching
 │   ├── stores/                 # Pinia state stores
 │   │   ├── authStore.ts            # Authentication & session
-│   │   ├── downloadStore.ts        # Download queue management
+│   │   ├── downloadStore.ts        # Download queue management & history
 │   │   ├── favoritesStore.ts       # Favorites tracking & Deezer import
 │   │   ├── playerStore.ts          # Audio preview playback
 │   │   ├── profileStore.ts         # Settings profiles
-│   │   ├── settingsStore.ts        # User preferences
+│   │   ├── settingsStore.ts        # User preferences & export/import
 │   │   ├── syncStore.ts            # Playlist sync state
 │   │   └── toastStore.ts           # Notification system
 │   ├── types/                  # TypeScript type definitions
-│   └── views/                  # Page components (11 pages)
+│   └── views/                  # Page components (12 pages)
 ├── electron/                   # Electron main process
 │   ├── main.ts                 # Window management & IPC
 │   ├── preload.ts              # Context bridge
