@@ -3451,7 +3451,7 @@ export class Downloader extends EventEmitter {
 
       // Build M3U content
       let content = '#EXTM3U\n'
-      content += `#PLAYLIST:${playlistName}\n\n`
+      content += `#PLAYLIST:${resolvedName}\n\n`
 
       for (const track of tracks) {
         // EXTINF format: #EXTINF:duration,Artist - Title
