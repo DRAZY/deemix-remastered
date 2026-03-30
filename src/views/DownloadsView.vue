@@ -21,6 +21,7 @@ const showQualityTag = computed(() => settingsStore.settings.appearance?.showQua
 
 // Track which items have expanded failed tracks view
 const expandedItems = ref<Set<string>>(new Set())
+const showHistory = ref(false)
 
 function toggleExpanded(id: string) {
   if (expandedItems.value.has(id)) {
@@ -873,6 +874,66 @@ function copyAllErrorDetails() {
       @confirm="executeClearCompleted"
       @cancel="showClearCompletedConfirm = false"
     />
+
+    <!-- Download History Toggle -->
+    <div class="mt-8 border-t border-zinc-800 pt-6">
+      <div class="flex items-center justify-between mb-4">
+        <button
+          @click="showHistory = !showHistory"
+          class="flex items-center gap-2 text-sm text-foreground-muted hover:text-foreground transition-colors"
+        >
+          <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-90': showHistory }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+          Download History ({{ downloadStore.downloadHistory.length }})
+        </button>
+        <button
+          v-if="showHistory && downloadStore.downloadHistory.length > 0"
+          @click="downloadStore.clearHistory()"
+          class="text-xs text-red-400 hover:text-red-300 transition-colors"
+        >
+          Clear History
+        </button>
+      </div>
+
+      <div v-if="showHistory" class="space-y-1">
+        <div v-if="downloadStore.downloadHistory.length === 0" class="text-sm text-foreground-muted text-center py-8">
+          No download history yet
+        </div>
+        <div
+          v-for="entry in downloadStore.downloadHistory"
+          :key="entry.id"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg bg-background-secondary/30 text-sm"
+        >
+          <!-- Status icon -->
+          <div class="flex-shrink-0">
+            <svg v-if="entry.status === 'completed'" class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <svg v-else class="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+          <!-- Info -->
+          <div class="flex-1 min-w-0">
+            <p class="truncate font-medium">{{ entry.title }}</p>
+            <p class="text-xs text-foreground-muted truncate">
+              {{ entry.artist || 'Unknown Artist' }}
+              <span v-if="entry.actualFormat"> · {{ entry.actualFormat }}</span>
+              <span v-if="entry.type !== 'track'"> · {{ entry.totalTracks }} tracks<span v-if="entry.failedTracks"> ({{ entry.failedTracks }} failed)</span></span>
+            </p>
+          </div>
+          <!-- Type badge -->
+          <span class="text-xs px-2 py-0.5 rounded-full bg-background-tertiary text-foreground-muted flex-shrink-0">
+            {{ entry.type }}
+          </span>
+          <!-- Timestamp -->
+          <span class="text-xs text-foreground-muted/50 flex-shrink-0 w-20 text-right">
+            {{ new Date(entry.completedAt).toLocaleDateString() }}
+          </span>
+        </div>
+      </div>
+    </div>
 
     <!-- Context Menu -->
     <ContextMenu
