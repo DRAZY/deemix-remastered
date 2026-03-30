@@ -22,8 +22,14 @@ function applyProfile(id: string) {
 
 function saveCurrentProfile() {
   if (!newProfileName.value.trim()) return
-  profileStore.saveCurrentAsProfile(newProfileName.value.trim(), newProfileDescription.value.trim())
-  toastStore.addToast(t('settings.profiles.saved'), 'success')
+  try {
+    profileStore.saveCurrentAsProfile(newProfileName.value.trim(), newProfileDescription.value.trim())
+    toastStore.addToast(t('settings.profiles.saved'), 'success')
+  } catch (e) {
+    console.error('[Profiles] Save failed:', e)
+    toastStore.addToast('Failed to save profile', 'error')
+  }
+  // Always close form and clear fields
   newProfileName.value = ''
   newProfileDescription.value = ''
   showSaveDialog.value = false
