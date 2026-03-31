@@ -151,7 +151,7 @@ const contextMenuItems = computed(() => [
     <!-- Title - click to navigate to album details -->
     <h3
       @click="navigate"
-      class="font-medium line-clamp-2 hover:text-primary-400 transition-colors cursor-pointer"
+      class="font-medium line-clamp-3 hover:text-primary-400 transition-colors cursor-pointer text-sm"
     >
       {{ album.title }}
     </h3>
