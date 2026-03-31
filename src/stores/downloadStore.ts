@@ -1155,29 +1155,36 @@ export const useDownloadStore = defineStore('downloads', () => {
 
     await syncSettingsToServer()
 
+    // Queue each failed track as an individual download — they appear as
+    // separate items in the Downloads tab with their own progress tracking.
+    // Don't try to reuse the parent album item — the polling system can't
+    // track new download IDs against the original album's trackIds array.
     let retried = 0
     for (const failed of item.failedTracks) {
       const trackId = failed.trackId || failed.id
       if (!trackId) continue
       try {
-        const response = await fetch(`http://127.0.0.1:${serverPort.value}/api/download`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ trackId })
-        })
-        if (response.ok) retried++
+        await addDownload({
+          id: typeof trackId === 'string' ? parseInt(trackId, 10) : trackId,
+          title: failed.title || 'Unknown Track',
+          artist: failed.artist ? { id: 0, name: failed.artist } : { id: 0, name: 'Unknown Artist' },
+          album: { id: 0, title: item.title || '', cover_medium: '' },
+          duration: 0,
+          cover: item.cover || ''
+        }, { skipSync: true })
+        retried++
       } catch (e) {
         console.error(`[DownloadStore] Failed to retry track ${trackId}:`, e)
       }
     }
 
     if (retried > 0) {
-      // Clear the failed tracks from the item since they're re-queued
+      // Mark the parent item as completed — failed tracks are now individual items
       item.failedTracks = []
       item.error = undefined
-      item.status = 'downloading'
+      item.status = 'completed'
       saveDownloads()
-      toastStore.success(`Re-queued ${retried} track${retried > 1 ? 's' : ''}`)
+      toastStore.success(`Re-queued ${retried} track${retried > 1 ? 's' : ''} as individual downloads`)
     } else {
       toastStore.error('Failed to retry any tracks')
     }
