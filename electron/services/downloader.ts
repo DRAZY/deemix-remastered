@@ -126,16 +126,19 @@ export interface DownloadOptions {
     albumId: number | string
     albumTitle: string
     albumArtist: string
-    artistPicture?: string  // Artist picture URL for saving artist image
-    totalDiscs?: number     // Total number of discs in the album
+    artistPicture?: string   // Artist picture URL for saving artist image
+    totalDiscs?: number      // Total number of discs in the album
     explicitLyrics?: boolean // Album-level explicit flag for consistent folder naming
+    isCompilation?: boolean  // Whether album is a compilation (Deezer record_type "compile")
   }
   // Error logging
   createErrorLog?: boolean
   // Overwrite behavior: 'no' = skip existing, 'overwrite' = replace, 'rename' = add suffix
   overwriteMode?: 'no' | 'overwrite' | 'rename'
-  // Pre-resolved album explicit status (set by processDownload before buildOutputPath)
+  // Pre-resolved album info (set by processDownload before buildOutputPath)
   _resolvedAlbumExplicit?: boolean
+  _resolvedAlbumArtist?: string        // Album-level artist from public API (for consistent folder naming)
+  _resolvedAlbumIsCompilation?: boolean // Whether the album is a compilation (record_type === 'compile')
   // M3U tracker ID — unique key for the playlist M3U tracker (avoids name collisions)
   _m3uTrackerId?: string
 }
@@ -207,9 +210,10 @@ export class Downloader extends EventEmitter {
   // Progress throttling: track last emit time per download to reduce event frequency
   private lastProgressEmit: Map<string, number> = new Map()
   private readonly PROGRESS_THROTTLE_MS = 250 // Emit progress at most every 250ms
-  // Album explicit cache: stores album-level explicit status per album ID
+  // Album info cache: stores album-level metadata per album ID
   // Fetched from public API once per unique album, prevents duplicate lookups
-  private albumExplicitCache: Map<string, Promise<boolean>> = new Map()
+  // Used for explicit status, album artist (for consistent folder naming), and compilation detection
+  private albumInfoCache: Map<string, Promise<{ explicit: boolean, artist: string, isCompilation: boolean }>> = new Map()
   // Reserved paths: tracks output paths currently being used by in-progress downloads
   // This prevents concurrent downloads from overwriting each other's files
   private reservedPaths: Set<string> = new Set()
@@ -899,11 +903,13 @@ export class Downloader extends EventEmitter {
       throw new Error(`Failed to get download URL: ${error.message}`)
     }
 
-    // Resolve album explicit status for folder naming (if not already known)
+    // Resolve album info for folder naming (if not already known via albumContext)
+    // Fetches album artist, explicit status, and compilation flag from public API
+    // This ensures tracks from the same album use consistent folder naming
     if (!options.albumContext && trackInfo.ALB_ID) {
       const albumId = String(trackInfo.ALB_ID)
-      if (!this.albumExplicitCache.has(albumId)) {
-        this.albumExplicitCache.set(albumId, (async () => {
+      if (!this.albumInfoCache.has(albumId)) {
+        this.albumInfoCache.set(albumId, (async () => {
           try {
             const https = await import('https')
             const albumData: any = await new Promise((resolve, reject) => {
@@ -914,17 +920,28 @@ export class Downloader extends EventEmitter {
               }).on('error', reject)
             })
             const status = albumData.explicit_content_lyrics
-            // Status 1 = explicit, 4 = partially explicit
-            return status === 1 || status === 4
+            return {
+              // Status 1 = explicit, 4 = partially explicit
+              explicit: status === 1 || status === 4,
+              // Album-level artist from public API (e.g., "Various Artists" for compilations)
+              artist: albumData.artist?.name || '',
+              // Deezer record_type "compile" = compilation/sampler
+              isCompilation: albumData.record_type === 'compile'
+            }
           } catch {
-            return false
+            return { explicit: false, artist: '', isCompilation: false }
           }
         })())
       }
       try {
-        options._resolvedAlbumExplicit = await this.albumExplicitCache.get(albumId)
+        const albumInfo = await this.albumInfoCache.get(albumId)
+        options._resolvedAlbumExplicit = albumInfo?.explicit
+        options._resolvedAlbumArtist = albumInfo?.artist || undefined
+        options._resolvedAlbumIsCompilation = albumInfo?.isCompilation
       } catch {
         options._resolvedAlbumExplicit = undefined
+        options._resolvedAlbumArtist = undefined
+        options._resolvedAlbumIsCompilation = undefined
       }
     }
 
@@ -1134,9 +1151,12 @@ export class Downloader extends EventEmitter {
     console.log(`[Downloader] Folder settings - createArtistFolder: ${folderSettings?.createArtistFolder}, createAlbumFolder: ${folderSettings?.createAlbumFolder}, createSinglesStructure: ${folderSettings?.createSinglesStructure}`)
 
     // For folder structure, prefer album context (ensures all album tracks go to same folder)
-    // Fall back to track info for single track downloads
+    // Fall back to resolved album artist from public API (ensures compilations stay grouped)
+    // Last resort: track-level fields from private API
     const albumContext = options.albumContext
-    const folderArtist = albumContext?.albumArtist || trackInfo.ALB_ART_NAME || trackInfo.ART_NAME || 'Unknown Artist'
+    const folderArtist = albumContext?.albumArtist
+      || options._resolvedAlbumArtist
+      || trackInfo.ALB_ART_NAME || trackInfo.ART_NAME || 'Unknown Artist'
     const folderAlbum = albumContext?.albumTitle || trackInfo.ALB_TITLE || 'Unknown Album'
 
     // Track artist is still used for filename templates
@@ -3318,7 +3338,7 @@ export class Downloader extends EventEmitter {
     this.currentDownloads = 0
     this._isPaused = false
     this.reservedPaths.clear()
-    this.albumExplicitCache.clear()
+    this.albumInfoCache.clear()
     // Clear activity timers before clearing trackers
     for (const tracker of this.playlistM3UTracker.values()) {
       if (tracker.activityTimer) clearTimeout(tracker.activityTimer)

@@ -1430,13 +1430,16 @@ export class DeemixServer extends EventEmitter {
       const hasExplicitTracks = albumTracks.data.some((t: any) => t.explicit_content_lyrics === 1)
 
       // Build album context for consistent folder naming
+      // For compilations (record_type "compile"), Deezer typically sets the album artist
+      // to "Various Artists" — this ensures all tracks land in the same folder
       const albumContext = {
         albumId: albumId,
         albumTitle: albumInfo.title || 'Unknown Album',
         albumArtist: albumInfo.artist?.name || 'Unknown Artist',
         artistPicture: albumInfo.artist?.picture_xl || albumInfo.artist?.picture_big || albumInfo.artist?.picture_medium || undefined,
         totalDiscs: totalDiscs,
-        explicitLyrics: hasExplicitTracks
+        explicitLyrics: hasExplicitTracks,
+        isCompilation: albumInfo.record_type === 'compile'
       }
 
       for (const track of albumTracks.data) {
