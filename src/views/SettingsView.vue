@@ -1822,7 +1822,7 @@ function saveNow() {
         <div class="flex gap-2">
           <input
             v-model="spotifyClientId"
-            type="text"
+            type="password"
             :placeholder="t('settings.spotify.clientIdPlaceholder')"
             class="input flex-1 font-mono text-sm"
           />

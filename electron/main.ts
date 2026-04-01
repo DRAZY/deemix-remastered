@@ -90,15 +90,11 @@ const HOST = '127.0.0.1'
 function isPathAllowed(targetPath: string): boolean {
   if (!targetPath || typeof targetPath !== 'string') return false
 
-  // Check for path traversal patterns
-  if (targetPath.includes('..')) return false
-
   try {
+    // Resolve to absolute path — handles encoded sequences and relative paths
     const normalizedPath = normalize(resolve(targetPath))
 
     // Check if it's an absolute path
-    // Windows: starts with drive letter (e.g., C:\, D:\)
-    // Unix: starts with /
     const isWindowsAbsolute = /^[A-Za-z]:[\\\/]/.test(normalizedPath)
     const isUnixAbsolute = normalizedPath.startsWith('/')
 
@@ -106,10 +102,26 @@ function isPathAllowed(targetPath: string): boolean {
       return false
     }
 
-    // Block sensitive system directories
+    // Block sensitive system and user directories
+    const home = process.env.HOME || process.env.USERPROFILE || ''
     const blockedPaths = process.platform === 'win32'
-      ? ['C:\\Windows', 'C:\\Program Files', 'C:\\Program Files (x86)', 'C:\\System']
-      : ['/bin', '/sbin', '/usr', '/etc', '/var', '/System', '/Library']
+      ? [
+          'C:\\Windows', 'C:\\Program Files', 'C:\\Program Files (x86)', 'C:\\System',
+          ...(home ? [
+            join(home, 'AppData'),
+            join(home, '.ssh'),
+            join(home, '.gnupg')
+          ] : [])
+        ]
+      : [
+          '/bin', '/sbin', '/usr', '/etc', '/var', '/System', '/Library',
+          '/Applications', '/opt',
+          ...(home ? [
+            join(home, '.ssh'),
+            join(home, '.gnupg'),
+            join(home, '.config')
+          ] : [])
+        ]
 
     const isBlocked = blockedPaths.some(blocked => {
       const normalizedBlocked = normalize(resolve(blocked))
