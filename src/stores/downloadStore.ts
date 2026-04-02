@@ -1187,15 +1187,18 @@ export const useDownloadStore = defineStore('downloads', () => {
     }
 
     if (newTrackIds.length > 0) {
-      // Append new download IDs to the parent item and re-activate it
-      item.trackIds = [...(item.trackIds || []), ...newTrackIds]
-      item.totalTracks = (item.totalTracks || 0) + newTrackIds.length
+      // Replace trackIds with ONLY the new retry IDs — old IDs may no longer
+      // exist in the server's download queue, which would prevent completion.
+      // Reset counters to match the retry batch size.
+      item.trackIds = newTrackIds
+      item.totalTracks = newTrackIds.length
+      item.completedTracks = 0
+      item.progress = 0
       item.failedTracks = []
       item.error = undefined
       item.status = 'downloading'
       saveDownloads()
-      // Re-register for polling with the full trackIds array (old + new)
-      registerForPolling(item.id, item.trackIds, 'album')
+      registerForPolling(item.id, newTrackIds, 'album')
       toastStore.success(`Retrying ${newTrackIds.length} track${newTrackIds.length > 1 ? 's' : ''}`)
     } else {
       toastStore.error('Failed to retry any tracks')
