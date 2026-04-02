@@ -2722,6 +2722,7 @@ export class DeemixServer extends EventEmitter {
   }
 
   private async handleSpotifyAnalyze(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    let parsedUrl: { type: string; id: string } | null = null
     try {
       const body = await this.parseBody(req)
       const { url } = body
@@ -2738,6 +2739,7 @@ export class DeemixServer extends EventEmitter {
 
       // Parse the URL
       const parsed = spotifyAPI.parseSpotifyUrl(url)
+      parsedUrl = parsed
       if (!parsed) {
         this.sendJSON(res, { error: 'Invalid Spotify URL' }, 400)
         return
@@ -2784,7 +2786,16 @@ export class DeemixServer extends EventEmitter {
       })
     } catch (error: any) {
       console.error('[Server] Spotify analyze error:', error.message)
-      this.sendJSON(res, { error: error.message || 'Failed to analyze Spotify URL' }, 500)
+      const msg = error.message || 'Failed to analyze Spotify URL'
+      // Spotify returns "Resource not found" / "Not found" for personalized playlists
+      // (Daily Mix, Discover Weekly, etc.) because they require user-level OAuth
+      if (msg.toLowerCase().includes('not found') && parsedUrl?.type === 'playlist') {
+        this.sendJSON(res, {
+          error: 'This playlist is not accessible. Spotify personalized playlists (Daily Mix, Discover Weekly, etc.) require user-level authentication which is not supported. Try a public or user-created playlist instead.'
+        }, 404)
+      } else {
+        this.sendJSON(res, { error: msg }, 500)
+      }
     }
   }
 
