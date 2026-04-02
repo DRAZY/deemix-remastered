@@ -556,8 +556,8 @@ function copyAllErrorDetails() {
             <div v-else>
               <p :class="[getStatusColor(item.status), isSlim ? 'text-xs' : 'text-sm']" class="font-medium">
                 {{ getStatusText(item.status) }}
-                <span v-if="item.status === 'completed' && item.totalTracks" class="text-foreground-muted font-normal">
-                  ({{ item.completedTracks }}/{{ item.totalTracks }})
+                <span v-if="(item.status === 'completed' || item.status === 'error') && item.totalTracks" class="text-foreground-muted font-normal">
+                  ({{ item.completedTracks || 0 }}/{{ item.totalTracks }})
                 </span>
               </p>
               <!-- Clickable error message -->
