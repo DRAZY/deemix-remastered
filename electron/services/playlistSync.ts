@@ -345,6 +345,12 @@ class PlaylistSyncEngine extends EventEmitter {
         }
       }
 
+      // Build position map: source track ID → playlist position (1-based)
+      const sourceIdToPosition = new Map<string, number>()
+      for (let i = 0; i < currentTrackIds.length; i++) {
+        sourceIdToPosition.set(currentTrackIds[i], i + 1)
+      }
+
       // Download new tracks using current app settings
       // Each download is queued and we wait for it to actually complete before
       // marking the track as "known". This ensures failed or interrupted tracks
@@ -360,6 +366,10 @@ class PlaylistSyncEngine extends EventEmitter {
             total: deezerTrackIds.length,
             phase: 'downloading'
           })
+          // Look up this track's position in the full playlist
+          const sourceId = deezerToSourceId.get(trackId) || String(trackId)
+          const playlistPosition = sourceIdToPosition.get(sourceId) || (i + 1)
+
           const downloadOpts: DownloadOptions = {
             trackId,
             outputPath: playlist.downloadPath || settings?.downloadPath || join(process.env.HOME || process.env.USERPROFILE || '/tmp', 'Music', 'Deemix'),
@@ -375,6 +385,7 @@ class PlaylistSyncEngine extends EventEmitter {
             isSingle: false,
             isFromPlaylist: true,
             playlistName: playlist.sourcePlaylistName,
+            playlistPosition: playlistPosition,
             createErrorLog: settings?.createErrorLog ?? true,
             savePlaylistAsCompilation: settings?.savePlaylistAsCompilation ?? false,
             folderSettings: settings?.folderSettings,
