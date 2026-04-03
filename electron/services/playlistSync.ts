@@ -445,8 +445,7 @@ class PlaylistSyncEngine extends EventEmitter {
           })
 
           downloadedCount++
-          // Map Deezer track ID back to source ID (Spotify or Deezer)
-          const sourceId = deezerToSourceId.get(trackId) || String(trackId)
+          // Use sourceId (already resolved above) to track successful downloads
           successfullyDownloadedIds.push(sourceId)
         } catch (err: any) {
           const info = trackMap.get(String(trackId))
