@@ -225,6 +225,20 @@ class PlaylistSyncEngine extends EventEmitter {
     return this.state.playlists.find(p => p.id === id) || null
   }
 
+  // Reset a playlist's known tracks so next sync re-downloads everything
+  async resetPlaylist(id: string): Promise<boolean> {
+    const playlist = this.state.playlists.find(p => p.id === id)
+    if (!playlist) return false
+    playlist.knownTrackIds = []
+    playlist.totalTracksDownloaded = 0
+    playlist.failedTracks = []
+    playlist.lastSyncStatus = null
+    playlist.lastSyncError = null
+    await this.saveState()
+    this.emit('playlists:changed', this.state.playlists)
+    return true
+  }
+
   // Sync Operations
   async syncPlaylist(id: string): Promise<SyncResult> {
     const playlist = this.state.playlists.find(p => p.id === id)
@@ -294,6 +308,8 @@ class PlaylistSyncEngine extends EventEmitter {
 
       // Convert new tracks to Deezer IDs for download
       let deezerTrackIds: number[] = []
+      // Map Deezer track ID → source track ID (for marking known after download)
+      const deezerToSourceId: Map<number, string> = new Map()
       const failed: SyncedPlaylist['failedTracks'] = []
 
       if (playlist.source === 'spotify' && newTrackIds.length > 0) {
@@ -310,6 +326,8 @@ class PlaylistSyncEngine extends EventEmitter {
         for (const match of result.matched) {
           if (match.deezerTrack) {
             deezerTrackIds.push(match.deezerTrack.id)
+            // Map back to Spotify ID so we can mark it as known
+            deezerToSourceId.set(match.deezerTrack.id, match.spotifyTrack?.id || String(match.deezerTrack.id))
           }
         }
         for (const unmatched of result.unmatched) {
@@ -322,11 +340,18 @@ class PlaylistSyncEngine extends EventEmitter {
         }
       } else if (playlist.source === 'deezer') {
         deezerTrackIds = newTrackIds.map(id => parseInt(id, 10)).filter(id => !isNaN(id))
+        for (const did of deezerTrackIds) {
+          deezerToSourceId.set(did, String(did))
+        }
       }
 
       // Download new tracks using current app settings
+      // Each download is queued and we wait for it to actually complete before
+      // marking the track as "known". This ensures failed or interrupted tracks
+      // will be retried on the next sync.
       const settings = this.settingsProvider?.()
       let downloadedCount = 0
+      const successfullyDownloadedIds: string[] = []
       for (let i = 0; i < deezerTrackIds.length; i++) {
         const trackId = deezerTrackIds[i]
         try {
@@ -356,8 +381,62 @@ class PlaylistSyncEngine extends EventEmitter {
             trackTemplates: settings?.trackTemplates,
             metadataSettings: settings?.metadataSettings
           }
-          await downloader.download(downloadOpts)
+          const downloadId = await downloader.download(downloadOpts)
+
+          // Wait for the download to actually complete (not just queue)
+          await new Promise<void>((resolve, reject) => {
+            const timeout = setTimeout(() => {
+              cleanup()
+              reject(new Error('Download timed out'))
+            }, 5 * 60 * 1000) // 5 minute timeout per track
+
+            const onComplete = (progress: any) => {
+              if (progress.id === downloadId) {
+                cleanup()
+                resolve()
+              }
+            }
+            const onError = (progress: any) => {
+              if (progress.id === downloadId) {
+                cleanup()
+                reject(new Error(progress.error || 'Download failed'))
+              }
+            }
+            const onCancelled = (progress: any) => {
+              if (progress.id === downloadId) {
+                cleanup()
+                reject(new Error('Download cancelled'))
+              }
+            }
+            const cleanup = () => {
+              clearTimeout(timeout)
+              downloader.removeListener('complete', onComplete)
+              downloader.removeListener('error', onError)
+              downloader.removeListener('cancelled', onCancelled)
+            }
+
+            // Check if already completed (e.g., duplicate/skipped)
+            const current = downloader.getAllProgress().find(p => p.id === downloadId)
+            if (current?.status === 'completed') {
+              cleanup()
+              resolve()
+              return
+            }
+            if (current?.status === 'error') {
+              cleanup()
+              reject(new Error(current.error || 'Download failed'))
+              return
+            }
+
+            downloader.on('complete', onComplete)
+            downloader.on('error', onError)
+            downloader.on('cancelled', onCancelled)
+          })
+
           downloadedCount++
+          // Map Deezer track ID back to source ID (Spotify or Deezer)
+          const sourceId = deezerToSourceId.get(trackId) || String(trackId)
+          successfullyDownloadedIds.push(sourceId)
         } catch (err: any) {
           const info = trackMap.get(String(trackId))
           failed.push({
@@ -369,8 +448,13 @@ class PlaylistSyncEngine extends EventEmitter {
         }
       }
 
-      // Update state
-      playlist.knownTrackIds = currentTrackIds
+      // Update state — only mark successfully downloaded tracks as "known"
+      // Failed tracks stay out of knownTrackIds so they'll be retried next sync
+      const previousKnown = new Set(playlist.knownTrackIds)
+      for (const sid of successfullyDownloadedIds) {
+        previousKnown.add(sid)
+      }
+      playlist.knownTrackIds = currentTrackIds.filter(id => previousKnown.has(id))
       playlist.failedTracks = failed
       playlist.totalTracksDownloaded += downloadedCount
       playlist.lastSyncAt = new Date().toISOString()

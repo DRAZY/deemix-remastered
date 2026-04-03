@@ -165,6 +165,21 @@ export const useSyncStore = defineStore('sync', () => {
     }
   }
 
+  async function forceSync(id: string) {
+    try {
+      // Reset known tracks first, then trigger sync
+      await fetch(`http://127.0.0.1:${serverPort.value}/api/sync/reset`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      })
+      await fetchPlaylists()
+      await syncPlaylist(id)
+    } catch (e) {
+      console.error('[SyncStore] Failed to force sync:', e)
+    }
+  }
+
   async function syncAll() {
     try {
       await fetch(`http://127.0.0.1:${serverPort.value}/api/sync/run-all`, {
@@ -210,6 +225,7 @@ export const useSyncStore = defineStore('sync', () => {
     removePlaylist,
     updatePlaylist,
     syncPlaylist,
+    forceSync,
     syncAll,
     cancelSync,
     isSyncing,

@@ -830,6 +830,10 @@ export class DeemixServer extends EventEmitter {
         await this.handleRunSync(req, res)
         break
 
+      case '/api/sync/reset':
+        await this.handleResetSync(req, res)
+        break
+
       case '/api/sync/run-all':
         await this.handleRunSyncAll(res)
         break
@@ -2989,6 +2993,27 @@ export class DeemixServer extends EventEmitter {
       this.sendJSON(res, { success: true, message: 'Sync started' })
     } catch (error: any) {
       this.sendJSON(res, { error: error.message || 'Failed to start sync' }, 500)
+    }
+  }
+
+  private async handleResetSync(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    try {
+      const body = await this.parseBody(req)
+      const { id } = body
+
+      if (!id) {
+        this.sendJSON(res, { error: 'Missing playlist id' }, 400)
+        return
+      }
+
+      const success = await playlistSync.resetPlaylist(id)
+      if (success) {
+        this.sendJSON(res, { success: true, message: 'Playlist reset — next sync will re-download all tracks' })
+      } else {
+        this.sendJSON(res, { error: 'Playlist not found' }, 404)
+      }
+    } catch (error: any) {
+      this.sendJSON(res, { error: error.message || 'Failed to reset playlist' }, 500)
     }
   }
 
