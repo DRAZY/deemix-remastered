@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useDownloadStore } from '../stores/downloadStore'
 import { useAuthStore } from '../stores/authStore'
+import { useToastStore } from '../stores/toastStore'
 import BackButton from '../components/BackButton.vue'
 import ContextMenu from '../components/ContextMenu.vue'
 import { useContextMenu } from '../composables/useContextMenu'
@@ -11,6 +12,7 @@ const router = useRouter()
 const route = useRoute()
 const downloadStore = useDownloadStore()
 const authStore = useAuthStore()
+const toastStore = useToastStore()
 
 const linkInput = ref('')
 const isAnalyzing = ref(false)
@@ -217,7 +219,10 @@ async function convertSpotifyToDeezer() {
 }
 
 async function downloadConvertedTracks() {
-  if (!conversionResult.value?.matched) return
+  if (!conversionResult.value?.matched) {
+    toastStore.error('No conversion results available')
+    return
+  }
 
   // Collect all Deezer track IDs from the conversion results
   const trackIds: number[] = []
@@ -228,7 +233,10 @@ async function downloadConvertedTracks() {
     }
   }
 
-  if (trackIds.length === 0) return
+  if (trackIds.length === 0) {
+    toastStore.error('No matching Deezer tracks found to download')
+    return
+  }
 
   const sourcePlaylistName = spotifyResult.value?.data?.name || 'Spotify Playlist'
   const coverUrl = spotifyResult.value?.data?.images?.[0]?.url
@@ -237,13 +245,18 @@ async function downloadConvertedTracks() {
 
   // Single batch request — the server queues all tracks and returns one set of IDs.
   // The download store tracks them as a single playlist item with unified progress.
-  await downloadStore.addBatchDownload({
-    trackIds,
-    playlistName: sourcePlaylistName,
-    title: sourcePlaylistName,
-    cover: coverUrl,
-    totalTracks: trackIds.length
-  })
+  try {
+    await downloadStore.addBatchDownload({
+      trackIds,
+      playlistName: sourcePlaylistName,
+      title: sourcePlaylistName,
+      cover: coverUrl,
+      totalTracks: trackIds.length
+    })
+    toastStore.success(`Added ${trackIds.length} tracks to download queue`)
+  } catch (err: any) {
+    toastStore.error(`Failed to start download: ${err.message || 'Unknown error'}`)
+  }
 }
 
 async function handleDownload() {
@@ -980,6 +993,9 @@ function copyLink() {
               </svg>
               Download {{ conversionResult.matched.length }} Tracks
             </button>
+            <p v-if="conversionResult && !conversionResult.matched?.length" class="text-sm text-yellow-400">
+              No matching Deezer tracks found. The playlist tracks may not be available on Deezer.
+            </p>
           </div>
 
           <p v-if="!authStore.isLoggedIn" class="text-sm text-foreground-muted mt-2">
