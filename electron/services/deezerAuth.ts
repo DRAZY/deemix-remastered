@@ -1540,6 +1540,7 @@ export class DeezerAuth extends EventEmitter {
         method: 'POST',
         agent: httpsAgent,
         rejectUnauthorized: false, // Required for Deezer Media API (matches deemix-gui)
+        timeout: 30000, // 30s timeout for media URL retrieval
         headers: {
           'Content-Type': 'application/json',
           'Content-Length': Buffer.byteLength(postData),
@@ -1625,6 +1626,10 @@ export class DeezerAuth extends EventEmitter {
         })
       })
 
+      req.on('timeout', () => {
+        console.error('[DeezerAuth] Media URL request timed out')
+        req.destroy(new Error('Media URL request timed out — Deezer may be slow or the track unavailable'))
+      })
       req.on('error', reject)
       req.write(postData)
       req.end()
