@@ -41,7 +41,8 @@
 - **Bulk Link Paste** -- Paste multiple Deezer links into the Search bar or anywhere in the app to queue them all at once
 - **Batch Favorites** -- Download all your favorite tracks, albums, or playlists with one click
 - **Three-Tier Track Resolution** -- Automatically finds alternative versions (FALLBACK, ISRC) when a track is unavailable — matches old Deemix behavior
-- **Download Queue** -- Pause, resume, reorder (drag-and-drop), cancel, and retry downloads
+- **Download Queue** -- Pause, resume, reorder (drag-and-drop), cancel, and retry downloads (retries stay grouped under the parent album/playlist)
+- **Delete Files** -- Remove downloaded files directly from the app; deletes the entire playlist or album folder
 - **Download History** -- Persistent log of all completed and failed downloads (last 500 entries)
 - **Smart Fallbacks** -- Automatic bitrate and format fallback when preferred quality is unavailable
 - **Concurrent Downloads** -- Configurable from 2 to 50 simultaneous downloads
@@ -54,6 +55,7 @@
 - **Featured Artists** -- All credited artists (main + featured) included in tags with configurable separator
 - **M3U Playlists** -- Automatic M3U8 playlist file generation with paths matching actual downloaded files and customizable filename template (`%playlist%`, `%date%`, `%year%`)
 - **Album Artwork** -- Embedded and local cover art with configurable size and format (JPEG/PNG)
+- **Playlist Artwork** -- Playlist cover image saved as `cover.jpg` in the playlist folder (Deezer, Spotify, and Playlist Sync)
 - **Synced Lyrics** -- Optional LRC file generation for synced lyrics
 - **Folder Structure** -- Customizable templates for artist, album, playlist, and CD folder organization with variables like `%artist%`, `%album%`, `%year%`, `%explicit%`, `%owner%`, `%date%`
 - **Track Naming** -- Template-based naming with variables like `%artist%`, `%title%`, `%tracknumber%`, `%explicit%`
@@ -65,12 +67,14 @@
 - **Track Matching** -- ISRC-based matching with fallback search and confidence scoring
 - **Link Support** -- Paste Spotify URLs directly into the Link Analyzer
 - **Batch Downloads** -- Converted playlists download as a single item with unified progress tracking
+- **Public/Private Badge** -- Spotify playlists show visibility status in the Link Analyzer
 
 ### Playlist Sync
 
 - **Automatic Sync** -- Monitor Spotify and Deezer playlists for new tracks
 - **Scheduling** -- Sync on app launch, hourly, every 6/12/24 hours, or manually
-- **Diff-Based Downloads** -- Only downloads tracks added since last sync
+- **Diff-Based Downloads** -- Only downloads tracks added since last sync; failed tracks are automatically retried on next sync
+- **Force Full Sync** -- Right-click the sync button to reset and re-download all tracks in a playlist
 - **Settings-Aware** -- Uses your configured quality, folder structure, and metadata settings
 - **Real-Time Progress** -- Live progress bars and status updates during sync
 
