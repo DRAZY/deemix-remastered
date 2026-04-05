@@ -863,10 +863,13 @@ export class Downloader extends EventEmitter {
         progress.playlistFolder = path.join(options.outputPath, playlistFolder)
         console.log(`[Downloader] Playlist folder set: ${progress.playlistFolder}`)
 
-        // Save playlist cover artwork (once per playlist folder)
+        // Save playlist cover artwork in the playlist folder as cover.jpg
         if (options.playlistCoverUrl && options.saveArtwork) {
           this.savePlaylistCover(options.playlistCoverUrl, progress.playlistFolder, options)
         }
+      } else if (options.isFromPlaylist && options.playlistCoverUrl && options.saveArtwork && options.playlistName) {
+        // No playlist folder — save cover in root download dir named after the playlist
+        this.savePlaylistCover(options.playlistCoverUrl, options.outputPath, options, options.playlistName)
       }
     } catch (pathError: any) {
       console.error(`[Downloader] Failed to calculate early folder path:`, pathError.message)
@@ -3145,10 +3148,11 @@ export class Downloader extends EventEmitter {
     }
   }
 
-  private async savePlaylistCover(coverUrl: string, playlistFolder: string, options: DownloadOptions): Promise<void> {
-    // Only save once per playlist folder
-    if (this.playlistCoverSaved.has(playlistFolder)) return
-    this.playlistCoverSaved.add(playlistFolder)
+  private async savePlaylistCover(coverUrl: string, saveDir: string, options: DownloadOptions, playlistName?: string): Promise<void> {
+    // Build a unique key for dedup — use dir + playlist name to handle multiple playlists in same dir
+    const dedupKey = playlistName ? `${saveDir}:${playlistName}` : saveDir
+    if (this.playlistCoverSaved.has(dedupKey)) return
+    this.playlistCoverSaved.add(dedupKey)
 
     try {
       const albumCoverSettings = options.metadataSettings?.albumCovers || {
@@ -3161,8 +3165,13 @@ export class Downloader extends EventEmitter {
 
       if (!albumCoverSettings.saveCovers) return
 
-      const coverName = albumCoverSettings.coverNameTemplate || 'cover'
-      const artworkPath = path.join(playlistFolder, `${coverName}.jpg`)
+      // When saving to a dedicated playlist folder, use the cover name template
+      // When saving to the root download dir (no playlist folder), use the playlist name
+      // to avoid collisions between multiple playlists
+      const coverName = playlistName
+        ? this.sanitizeFilename(playlistName)
+        : (albumCoverSettings.coverNameTemplate || 'cover')
+      const artworkPath = path.join(saveDir, `${coverName}.jpg`)
 
       // Don't overwrite existing artwork
       if (fs.existsSync(artworkPath)) {
@@ -3175,8 +3184,8 @@ export class Downloader extends EventEmitter {
       }
 
       // Ensure directory exists
-      if (!fs.existsSync(playlistFolder)) {
-        fs.mkdirSync(playlistFolder, { recursive: true })
+      if (!fs.existsSync(saveDir)) {
+        fs.mkdirSync(saveDir, { recursive: true })
       }
 
       // Deezer playlist picture URLs are full URLs, request the largest available
