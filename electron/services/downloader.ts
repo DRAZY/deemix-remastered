@@ -899,9 +899,20 @@ export class Downloader extends EventEmitter {
       // re-fetch track info so metadata, folder path, and M3U use the correct album
       if (result.resolvedTrackId && String(result.resolvedTrackId) !== String(trackInfo.SNG_ID)) {
         console.log(`[Downloader] Track resolved to alternative: ${trackInfo.SNG_ID} → ${result.resolvedTrackId} — refreshing metadata`)
+        // Preserve the original track/disc number — the resolved track may be from
+        // a different album where it has a different position
+        const originalTrackNumber = trackInfo.TRACK_NUMBER
+        const originalDiskNumber = trackInfo.DISK_NUMBER
         const resolvedInfo = await deezerAuth.getTrackInfo(result.resolvedTrackId)
         if (resolvedInfo) {
           trackInfo = resolvedInfo
+          // Restore original position so the file is numbered correctly on this album
+          if (originalTrackNumber) {
+            trackInfo.TRACK_NUMBER = originalTrackNumber
+          }
+          if (originalDiskNumber) {
+            trackInfo.DISK_NUMBER = originalDiskNumber
+          }
           // Update progress display with resolved track info
           const resolvedVersion = trackInfo.VERSION ? trackInfo.VERSION.replace(/^\((.+)\)$/, '$1') : ''
           progress.trackTitle = resolvedVersion
