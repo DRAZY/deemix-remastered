@@ -5,9 +5,9 @@
 <h1 align="center">Deemix Remastered</h1>
 
 <p align="center">
-  <em>In homage to the orignal Deemix app, I vibe coded an updated alternative and named it Deemix Remastered.   Not bad for a first attempt.</em>
+  <em>In homage to the original Deemix app, I vibe coded an updated alternative and named it Deemix Remastered. Not bad for a first attempt.</em>
   <br />
-  A modern, cross-platform desktop music downloader built with Electron, Vue 3, and Vite.
+  A modern, cross-platform desktop music downloader built entirely from scratch with Electron, Vue 3, and TypeScript. No code from the original Deemix project -- just the same spirit, reimagined with a modern stack.
 </p>
 
 <p align="center">
