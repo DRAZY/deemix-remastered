@@ -232,7 +232,7 @@ function createWindow() {
       responseHeaders: {
         ...details.responseHeaders,
         'Content-Security-Policy': [
-          "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.google.com; connect-src 'self' http://127.0.0.1:* http://localhost:* https://api.deezer.com https://*.dzcdn.net https://*.deezer.com https://www.google.com; img-src 'self' data: https://*.dzcdn.net https://*.deezer.com https://*.scdn.co https://*.spotifycdn.com https://www.gstatic.com; media-src 'self' https://*.dzcdn.net https://*.deezer.com"
+          "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.google.com; connect-src 'self' http://127.0.0.1:* http://localhost:* https://api.deezer.com https://*.dzcdn.net https://*.deezer.com https://api.github.com https://www.google.com; img-src 'self' data: https://*.dzcdn.net https://*.deezer.com https://*.scdn.co https://*.spotifycdn.com https://www.gstatic.com; media-src 'self' https://*.dzcdn.net https://*.deezer.com"
         ]
       }
     })
