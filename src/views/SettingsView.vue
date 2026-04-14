@@ -71,16 +71,16 @@ watch(
 const currentLocale = ref(getCurrentLocale())
 
 function handleExportSettings() {
-  const json = settingsStore.exportSettings()
+  const json = settingsStore.exportConfiguration()
   const blob = new Blob([json], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = 'deemix-settings.json'
+  a.download = 'deemix-configuration.json'
   a.click()
   URL.revokeObjectURL(url)
   const toastStore = useToastStore()
-  toastStore.success('Settings exported')
+  toastStore.success('Configuration exported (settings + profiles)')
 }
 
 function handleImportSettings() {
@@ -92,10 +92,13 @@ function handleImportSettings() {
     if (!file) return
     const text = await file.text()
     const toastStore = useToastStore()
-    if (settingsStore.importSettings(text)) {
+    // Try unified configuration format first, fall back to legacy settings-only
+    if (settingsStore.importConfiguration(text)) {
+      toastStore.success('Configuration imported (settings + profiles)')
+    } else if (settingsStore.importSettings(text)) {
       toastStore.success('Settings imported successfully')
     } else {
-      toastStore.error('Failed to import settings — invalid file')
+      toastStore.error('Failed to import configuration. Invalid file format.')
     }
   }
   input.click()

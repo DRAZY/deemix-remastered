@@ -733,6 +733,58 @@ export const useSettingsStore = defineStore('settings', () => {
     }
   }
 
+  function exportConfiguration(): string {
+    // Bundle current settings + all saved profiles into one file
+    const { useProfileStore } = require('./profileStore')
+    const profileStore = useProfileStore()
+    const settingsData = { ...settings.value, arl: '', spotifyClientId: '', spotifyClientSecret: '', spotifyUsername: '' }
+    const profilesData = profileStore.profiles
+      .filter((p: any) => !p.isBuiltIn)
+      .map((p: any) => ({ name: p.name, description: p.description, settings: p.settings }))
+    return JSON.stringify({
+      type: 'deemix-configuration',
+      version: 1,
+      settings: settingsData,
+      profiles: profilesData
+    }, null, 2)
+  }
+
+  function importConfiguration(jsonStr: string): boolean {
+    try {
+      const data = JSON.parse(jsonStr)
+      if (data.type !== 'deemix-configuration' || !data.settings) return false
+
+      // Import settings (preserve credentials)
+      const currentArl = settings.value.arl
+      const currentSpotifyId = settings.value.spotifyClientId
+      const currentSpotifySecret = settings.value.spotifyClientSecret
+      const currentSpotifyUser = settings.value.spotifyUsername
+      settings.value = deepMerge(defaultSettings, data.settings)
+      settings.value.arl = currentArl
+      settings.value.spotifyClientId = currentSpotifyId
+      settings.value.spotifyClientSecret = currentSpotifySecret
+      settings.value.spotifyUsername = currentSpotifyUser
+      saveSettings()
+
+      // Import profiles if present
+      if (data.profiles && Array.isArray(data.profiles)) {
+        const { useProfileStore } = require('./profileStore')
+        const profileStore = useProfileStore()
+        for (const p of data.profiles) {
+          if (p.name && p.settings) {
+            // Wrap in profile format and import
+            const profileJson = JSON.stringify({ type: 'deemix-profile', version: 1, profile: p })
+            profileStore.importProfile(profileJson)
+          }
+        }
+      }
+
+      return true
+    } catch {
+      return false
+    }
+  }
+
   async function selectDownloadPath() {
     if (window.electronAPI) {
       const path = await window.electronAPI.selectFolder(settings.value.downloadPath)
@@ -775,6 +827,8 @@ export const useSettingsStore = defineStore('settings', () => {
     setArl,
     setSpotifyCredentials,
     exportSettings,
-    importSettings
+    importSettings,
+    exportConfiguration,
+    importConfiguration
   }
 })
