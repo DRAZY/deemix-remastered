@@ -71,7 +71,11 @@ watch(
 const currentLocale = ref(getCurrentLocale())
 
 function handleExportSettings() {
-  const json = settingsStore.exportConfiguration()
+  // Gather custom profiles from profileStore
+  const customProfiles = profileStore.profiles
+    .filter(p => !p.isBuiltIn)
+    .map(p => ({ name: p.name, description: p.description, settings: p.settings }))
+  const json = settingsStore.exportConfiguration(customProfiles)
   const blob = new Blob([json], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
@@ -93,7 +97,17 @@ function handleImportSettings() {
     const text = await file.text()
     const toastStore = useToastStore()
     // Try unified configuration format first, fall back to legacy settings-only
-    if (settingsStore.importConfiguration(text)) {
+    const result = settingsStore.importConfiguration(text)
+    if (result.success) {
+      // Import profiles if present
+      if (result.profiles && Array.isArray(result.profiles)) {
+        for (const p of result.profiles) {
+          if (p.name && p.settings) {
+            const profileJson = JSON.stringify({ type: 'deemix-profile', version: 1, profile: p })
+            profileStore.importProfile(profileJson)
+          }
+        }
+      }
       toastStore.success('Configuration imported (settings + profiles)')
     } else if (settingsStore.importSettings(text)) {
       toastStore.success('Settings imported successfully')
