@@ -144,7 +144,7 @@ Pre-built binaries are available on the [Releases](../../releases) page.
 |----------|-------------|---------|
 | **macOS** | Universal (Intel + Apple Silicon), ARM64 (Apple Silicon) | `.dmg` |
 | **Windows** | x64, ARM64 | `.exe` (Installer), `.exe` (Portable) |
-| **Linux** | x64, ARM64 | `.AppImage` |
+| **Linux** | x64, ARM64 | `.AppImage`, `.deb` |
 
 ### Release Files
 
@@ -161,6 +161,8 @@ Pre-built binaries are available on the [Releases](../../releases) page.
 #### Linux
 - `Deemix Remastered-{version}.AppImage` -- AppImage (x64)
 - `Deemix Remastered-{version}-arm64.AppImage` -- AppImage (ARM64)
+- `deemix-app_{version}_amd64.deb` -- Debian/Ubuntu package (x64)
+- `deemix-app_{version}_arm64.deb` -- Debian/Ubuntu package (ARM64)
 
 ---
 
