@@ -61,25 +61,7 @@ function handleAuthClick() {
     <div class="p-4" :class="isSlim ? 'pb-2' : 'p-5 pb-4'">
       <div class="flex items-center gap-2.5" :class="isSlim ? 'justify-center' : ''">
         <div class="w-9 h-9 rounded-xl overflow-hidden flex-shrink-0">
-          <svg viewBox="0 0 512 512" class="w-full h-full">
-            <defs>
-              <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" class="logo-gradient-start"/>
-                <stop offset="50%" class="logo-gradient-mid"/>
-                <stop offset="100%" class="logo-gradient-end"/>
-              </linearGradient>
-            </defs>
-            <circle cx="256" cy="256" r="256" fill="url(#logoGrad)"/>
-            <path d="M140 100 L140 412 L270 412 C370 412 440 330 440 256 C440 182 370 100 270 100 Z"
-                  fill="none" stroke="white" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
-            <g fill="white" opacity="0.9">
-              <rect x="190" y="195" width="18" height="122" rx="9"/>
-              <rect x="225" y="160" width="18" height="192" rx="9"/>
-              <rect x="260" y="180" width="18" height="152" rx="9"/>
-              <rect x="295" y="150" width="18" height="212" rx="9"/>
-              <rect x="330" y="175" width="18" height="162" rx="9"/>
-            </g>
-          </svg>
+          <img src="/icon.png" alt="Deemix Remastered" class="w-full h-full object-cover" />
         </div>
         <div v-if="!isSlim" class="min-w-0">
           <h1 class="text-base font-bold leading-tight">{{ t('sidebar.appName') }}</h1>

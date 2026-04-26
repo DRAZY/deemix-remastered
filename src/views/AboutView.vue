@@ -23,6 +23,7 @@ function openLink(url: string) {
 }
 
 const whatsNew = [
+  'New App Icon -- Refreshed app icon with a vibrant paper-cut layered design (cobalt + lime palette) replacing the previous purple gradient',
   'New Releases Page -- Dedicated page showing all 100 of Deezer\'s latest album releases, accessible via "See all" on the Home page',
   'Download Statistics Dashboard -- View total downloads, tracks, top artists, formats, and weekly activity on the Downloads page',
   'Duplicate Album Detection -- Warns when an album already exists on disk before downloading',
@@ -46,25 +47,7 @@ const whatsNew = [
     <div class="card p-8 text-center">
       <div class="flex justify-center mb-4">
         <div class="w-20 h-20 rounded-2xl overflow-hidden">
-          <svg viewBox="0 0 512 512" class="w-full h-full">
-            <defs>
-              <linearGradient id="aboutLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" class="logo-gradient-start"/>
-                <stop offset="50%" class="logo-gradient-mid"/>
-                <stop offset="100%" class="logo-gradient-end"/>
-              </linearGradient>
-            </defs>
-            <circle cx="256" cy="256" r="256" fill="url(#aboutLogoGrad)"/>
-            <path d="M140 100 L140 412 L270 412 C370 412 440 330 440 256 C440 182 370 100 270 100 Z"
-                  fill="none" stroke="white" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
-            <g fill="white" opacity="0.9">
-              <rect x="190" y="195" width="18" height="122" rx="9"/>
-              <rect x="225" y="160" width="18" height="192" rx="9"/>
-              <rect x="260" y="180" width="18" height="152" rx="9"/>
-              <rect x="295" y="150" width="18" height="212" rx="9"/>
-              <rect x="330" y="175" width="18" height="162" rx="9"/>
-            </g>
-          </svg>
+          <img src="/icon.png" alt="Deemix Remastered" class="w-full h-full object-cover" />
         </div>
       </div>
       <h1 class="text-3xl font-bold mb-1">{{ t('about.appName') }}</h1>
