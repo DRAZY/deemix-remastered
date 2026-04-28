@@ -23,6 +23,9 @@ function openLink(url: string) {
 }
 
 const whatsNew = [
+  'Large Playlist Fix -- Playlists and albums with more than 500 tracks now download in full instead of being silently truncated at the first 500 (issue #58)',
+  'Sync Toast Fix -- Adding or removing a playlist from Sync no longer throws an error when displaying the success/failure toast',
+  'Artist Page Fix -- Artist discography now loads reliably (resolved a runtime error reading the server port)',
   'New App Icon -- Refreshed app icon with a vibrant paper-cut layered design (cobalt + lime palette) replacing the previous purple gradient',
   'New Releases Page -- Dedicated page showing all 100 of Deezer\'s latest album releases, accessible via "See all" on the Home page',
   'Download Statistics Dashboard -- View total downloads, tracks, top artists, formats, and weekly activity on the Downloads page',

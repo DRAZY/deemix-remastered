@@ -4,6 +4,20 @@ All notable changes to **Deemix Remastered** are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.3] — 2026-04-28
+
+### Fixed
+
+- **Large playlists and albums no longer truncate at 500 tracks** ([#58](https://github.com/DRAZY/deemix-remastered/issues/58)). The download path was making a single non-paginated request to Deezer's `/playlist/{id}/tracks?limit=500` and `/album/{id}/tracks?limit=500` endpoints, silently dropping anything past the first page. A 1100-track playlist would queue only 500 tracks. Both download handlers now paginate (100-track batches, follow `next`, 10,000 safety ceiling), matching the existing pattern in the browse path.
+- **Playlist Sync add/remove toast no longer throws.** `SyncView` was calling a non-existent `toastStore.addToast(...)` method; replaced with the correct `success(...)` / `error(...)` calls.
+- **Artist page discography loading no longer errors.** `ArtistView` was reading `downloadStore.serverPort.value`, but Pinia auto-unwraps refs in components so `.value` on a number was a runtime error.
+- **Profile actions no longer throw their toasts.** `ProfileSelector` had 8 `addToast` calls with the same wrong-method-name bug; all replaced with the correct store methods.
+
+### Changed
+
+- Internal: typecheck cleanup pass — resolved 61 pre-existing TypeScript errors so `vue-tsc --noEmit` passes clean. Added a GitHub Actions workflow that runs typecheck on every push and PR to `main`.
+- Internal: housekeeping — added `LICENSE` (GPL-3.0), `SECURITY.md`, `CHANGELOG.md`, issue templates, architecture diagram, and troubleshooting guide. Refreshed README screenshots. Removed unused `deezer-js` dependency and confirmed dead code in several views.
+
 ## [1.5.2] — 2026-04-26
 
 ### Changed
@@ -79,6 +93,7 @@ For releases before v1.5.0, see the [GitHub Releases page](https://github.com/DR
 - **v1.1.x** — Multi-language support (22 languages), additional color themes.
 - **v1.0.0** — Initial release.
 
+[1.5.3]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.3
 [1.5.2]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.2
 [1.5.1]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.1
 [1.5.0]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.0
