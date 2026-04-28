@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="public/icon.png" alt="Deemix Remastered" width="128" height="128" />
-</p>
-
 <h1 align="center">Deemix Remastered</h1>
 
 <p align="center">
