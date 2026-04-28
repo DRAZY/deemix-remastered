@@ -1479,13 +1479,25 @@ export class DeemixServer extends EventEmitter {
         return
       }
 
-      // Get album tracks
-      const albumTracks = await this.deezerPublicAPI(`/album/${albumId}/tracks?limit=500`)
+      // Get album tracks — paginated to support albums with >500 tracks
+      // (rare but possible for large compilations). Mirrors handlePlaylist.
+      let allAlbumTracks: any[] = []
+      let albumIndex = 0
+      const albumBatchSize = 100
+      while (albumIndex < 10000) {
+        const tracksPage = await this.deezerPublicAPI(`/album/${albumId}/tracks?limit=${albumBatchSize}&index=${albumIndex}`)
+        if (!tracksPage.data || tracksPage.data.length === 0) break
+        allAlbumTracks = [...allAlbumTracks, ...tracksPage.data]
+        if (!tracksPage.next) break
+        albumIndex += albumBatchSize
+      }
 
-      if (!albumTracks.data || albumTracks.data.length === 0) {
+      if (allAlbumTracks.length === 0) {
         this.sendJSON(res, { error: 'No tracks found for this album' }, 404)
         return
       }
+
+      const albumTracks = { data: allAlbumTracks }
 
       const downloadIds: string[] = []
 
@@ -1602,12 +1614,26 @@ export class DeemixServer extends EventEmitter {
         return
       }
 
-      const playlist = await this.deezerPublicAPI(`/playlist/${playlistId}/tracks?limit=500`)
+      // Paginated fetch — Deezer caps each /playlist/{id}/tracks page at ~500.
+      // A single non-paginated call silently truncates large playlists (issue #58).
+      // Mirrors the loop already used in handlePlaylist for browse.
+      let allPlaylistTracks: any[] = []
+      let playlistIndex = 0
+      const playlistBatchSize = 100
+      while (playlistIndex < 10000) {
+        const tracksPage = await this.deezerPublicAPI(`/playlist/${playlistId}/tracks?limit=${playlistBatchSize}&index=${playlistIndex}`)
+        if (!tracksPage?.data || !Array.isArray(tracksPage.data) || tracksPage.data.length === 0) break
+        allPlaylistTracks = [...allPlaylistTracks, ...tracksPage.data]
+        if (!tracksPage.next) break
+        playlistIndex += playlistBatchSize
+      }
 
-      if (!playlist?.data || !Array.isArray(playlist.data) || playlist.data.length === 0) {
+      if (allPlaylistTracks.length === 0) {
         this.sendJSON(res, { error: 'No tracks found for this playlist — it may be empty, private, or unavailable' }, 404)
         return
       }
+
+      const playlist = { data: allPlaylistTracks }
 
       // Filter out null/undefined track entries (deleted tracks still appear in some playlists)
       const validTracks = playlist.data.filter((t: any) => t && t.id)
