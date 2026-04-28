@@ -169,7 +169,7 @@ async function loadArtist(artistId: string) {
     isLoadingFeatured.value = true
 
     // Get server port from download store (it's a ref)
-    const serverPort = downloadStore.serverPort.value || 6595
+    const serverPort = downloadStore.serverPort || 6595
 
     // Try to fetch from server's private API first (proper categorization)
     const discography = await deezerAPI.getArtistDiscographyFromServer(artistId, serverPort)

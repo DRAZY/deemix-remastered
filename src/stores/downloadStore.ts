@@ -20,9 +20,9 @@ export const useDownloadStore = defineStore('downloads', () => {
 
   // === PERFORMANCE: O(1) lookup Maps for duplicate detection ===
   // These Maps are updated whenever downloads change, providing instant lookups
-  const trackIdToStatus = new Map<number, DownloadStatus>()
-  const albumIdToStatus = new Map<number, DownloadStatus>()
-  const playlistIdToStatus = new Map<number, DownloadStatus>()
+  const trackIdToStatus = new Map<number | string, DownloadStatus>()
+  const albumIdToStatus = new Map<number | string, DownloadStatus>()
+  const playlistIdToStatus = new Map<number | string, DownloadStatus>()
 
   // === PERFORMANCE: Adaptive polling configuration ===
   const POLLING_INTERVALS = {
@@ -815,7 +815,7 @@ export const useDownloadStore = defineStore('downloads', () => {
             if (serverItem) {
               const changed = updateTrackProgress(item, serverItem)
               hasChanges = hasChanges || changed
-              if (item.status === 'completed' || item.status === 'error') {
+              if ((item.status as string) === 'completed' || (item.status as string) === 'error') {
                 groupsToRemove.push(groupId)
               }
             }
@@ -823,7 +823,7 @@ export const useDownloadStore = defineStore('downloads', () => {
             // Album/playlist polling
             const changed = updateAlbumProgress(item, trackIds, queueMap)
             hasChanges = hasChanges || changed
-            if (item.status === 'completed' || item.status === 'error') {
+            if ((item.status as string) === 'completed' || (item.status as string) === 'error') {
               groupsToRemove.push(groupId)
             }
           }

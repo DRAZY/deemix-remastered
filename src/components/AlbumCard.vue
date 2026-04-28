@@ -53,7 +53,9 @@ async function downloadAlbum() {
         await downloadStore.addPlaylistDownload({
           id: props.album.id,
           title: props.album.title,
-          creator: props.album.artist || { id: 0, name: 'Unknown' },
+          creator: props.album.artist
+            ? { id: Number(props.album.artist.id) || 0, name: props.album.artist.name }
+            : { id: 0, name: 'Unknown' },
           picture_medium: props.album.cover_medium || '',
           picture_big: props.album.cover_big || '',
           nb_tracks: tracks.length

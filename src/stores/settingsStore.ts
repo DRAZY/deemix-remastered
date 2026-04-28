@@ -391,6 +391,7 @@ export const useSettingsStore = defineStore('settings', () => {
     }
   }
 
+  // @ts-expect-error retained for one-time legacy migration; not currently invoked
   async function migrateFromLocalStorage() {
     // Try to load from legacy localStorage
     const saved = localStorage.getItem(LEGACY_SETTINGS_KEY)

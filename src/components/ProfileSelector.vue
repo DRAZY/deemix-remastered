@@ -22,17 +22,17 @@ const editDescription = ref('')
 
 function applyProfile(id: string) {
   profileStore.applyProfile(id)
-  toastStore.addToast(t('settings.profiles.applied'), 'success')
+  toastStore.success(t('settings.profiles.applied'))
 }
 
 function saveCurrentProfile() {
   if (!newProfileName.value.trim()) return
   try {
     profileStore.saveCurrentAsProfile(newProfileName.value.trim(), newProfileDescription.value.trim())
-    toastStore.addToast(t('settings.profiles.saved'), 'success')
+    toastStore.success(t('settings.profiles.saved'))
   } catch (e) {
     console.error('[Profiles] Save failed:', e)
-    toastStore.addToast('Failed to save profile', 'error')
+    toastStore.error('Failed to save profile')
   }
   // Always close form and clear fields
   newProfileName.value = ''
@@ -60,12 +60,12 @@ function cancelEdit() {
 
 function deleteProfile(id: string) {
   profileStore.deleteProfile(id)
-  toastStore.addToast(t('settings.profiles.deleted'), 'success')
+  toastStore.success(t('settings.profiles.deleted'))
 }
 
 function duplicateProfile(id: string) {
   profileStore.duplicateProfile(id)
-  toastStore.addToast(t('settings.profiles.duplicated'), 'success')
+  toastStore.success(t('settings.profiles.duplicated'))
 }
 
 function exportProfile(id: string) {
@@ -79,25 +79,7 @@ function exportProfile(id: string) {
   a.download = `deemix-profile-${profile?.name?.toLowerCase().replace(/\s+/g, '-') || 'export'}.json`
   a.click()
   URL.revokeObjectURL(url)
-  toastStore.addToast(t('settings.profiles.exported'), 'success')
-}
-
-async function importProfile() {
-  const input = document.createElement('input')
-  input.type = 'file'
-  input.accept = '.json'
-  input.onchange = async (e) => {
-    const file = (e.target as HTMLInputElement).files?.[0]
-    if (!file) return
-    const text = await file.text()
-    const result = profileStore.importProfile(text)
-    if (result) {
-      toastStore.addToast(t('settings.profiles.imported', { name: result.name }), 'success')
-    } else {
-      toastStore.addToast(t('settings.profiles.importFailed'), 'error')
-    }
-  }
-  input.click()
+  toastStore.success(t('settings.profiles.exported'))
 }
 </script>
 

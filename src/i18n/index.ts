@@ -69,7 +69,7 @@ export async function loadLocale(locale: string): Promise<void> {
 // Set the active locale
 export async function setLocale(locale: string): Promise<void> {
   await loadLocale(locale)
-  i18n.global.locale.value = locale
+  ;(i18n.global.locale as any).value = locale
 
   // Update html lang attribute (but do NOT change direction - keep LTR for all languages)
   // The original deemix-gui does not flip the UI for RTL languages

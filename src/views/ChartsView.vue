@@ -398,7 +398,7 @@ function getCountryFlag(code: string): string {
               id: playlist.id,
               title: playlist.title,
               cover_medium: playlist.picture_medium,
-              artist: { id: 0, name: playlist.creator?.name || playlist.user?.name || 'Deezer' },
+              artist: { id: 0, name: playlist.creator?.name || (playlist as any).user?.name || 'Deezer' },
               nb_tracks: playlist.nb_tracks
             }"
             type="playlist"

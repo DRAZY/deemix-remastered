@@ -665,12 +665,6 @@ async function pasteLink() {
   }
 }
 
-// Copy link function
-function copyLink() {
-  if (linkInput.value) {
-    copyToClipboard(linkInput.value, 'Link')
-  }
-}
 </script>
 
 <template>

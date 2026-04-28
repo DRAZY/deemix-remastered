@@ -184,7 +184,7 @@ class DeezerAPI {
   // Charts - Deezer allows up to 100 items per chart request
   // countryId: 0 = worldwide, other IDs for specific countries
   async getChart(type: 'tracks' | 'albums' | 'artists' | 'playlists', limit: number = 100, countryId: string = '0'): Promise<any[]> {
-    const data = await this.fetch<{ [key: string]: { data: any[] } }>(`/chart/${countryId}/${type}?limit=${limit}`)
+    const data = await this.fetch<{ data: any[] }>(`/chart/${countryId}/${type}?limit=${limit}`)
     return data.data || []
   }
 
@@ -640,7 +640,6 @@ class DeezerAPI {
 
     const albumIds = new Set<number>()
     const artistIdNum = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId
-    const artistLower = artistName.toLowerCase()
 
     // Multiple search strategies to find featured appearances
     const searchQueries = [

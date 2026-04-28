@@ -258,18 +258,6 @@ function handleImageError(event: Event) {
   }
 }
 
-const activeTab = computed(() => {
-  if (downloadStore.activeDownloads.length > 0) return 'active'
-  if (downloadStore.completedDownloads.length > 0) return 'completed'
-  return 'active'
-})
-
-function formatDuration(seconds: number): string {
-  const mins = Math.floor(seconds / 60)
-  const secs = seconds % 60
-  return `${mins}:${secs.toString().padStart(2, '0')}`
-}
-
 function formatSpeed(bytesPerSecond: number): string {
   if (!bytesPerSecond || bytesPerSecond <= 0) return ''
   if (bytesPerSecond >= 1024 * 1024) {

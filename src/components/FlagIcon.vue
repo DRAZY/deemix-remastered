@@ -4,53 +4,6 @@ defineProps<{
   size?: number
 }>()
 
-// SVG flag paths for each country code
-// These are simplified circular flags that render consistently across all platforms
-const flagPaths: Record<string, { colors: string[], pattern?: string }> = {
-  // Great Britain (Union Jack simplified)
-  'gb': { colors: ['#012169', '#C8102E', '#FFFFFF'], pattern: 'uk' },
-  // Saudi Arabia
-  'sa': { colors: ['#006C35', '#FFFFFF'], pattern: 'sa' },
-  // Germany
-  'de': { colors: ['#000000', '#DD0000', '#FFCE00'], pattern: 'horizontal3' },
-  // Greece
-  'gr': { colors: ['#0D5EAF', '#FFFFFF'], pattern: 'gr' },
-  // Spain
-  'es': { colors: ['#AA151B', '#F1BF00'], pattern: 'es' },
-  // Philippines
-  'ph': { colors: ['#0038A8', '#CE1126', '#FCD116', '#FFFFFF'], pattern: 'ph' },
-  // France
-  'fr': { colors: ['#002395', '#FFFFFF', '#ED2939'], pattern: 'vertical3' },
-  // Croatia
-  'hr': { colors: ['#FF0000', '#FFFFFF', '#171796'], pattern: 'hr' },
-  // Indonesia
-  'id': { colors: ['#FF0000', '#FFFFFF'], pattern: 'horizontal2' },
-  // Italy
-  'it': { colors: ['#009246', '#FFFFFF', '#CE2B37'], pattern: 'vertical3' },
-  // South Korea
-  'kr': { colors: ['#FFFFFF', '#CD2E3A', '#0047A0', '#000000'], pattern: 'kr' },
-  // Poland
-  'pl': { colors: ['#FFFFFF', '#DC143C'], pattern: 'horizontal2' },
-  // Brazil
-  'br': { colors: ['#009739', '#FEDD00', '#002776'], pattern: 'br' },
-  // Portugal
-  'pt': { colors: ['#006600', '#FF0000', '#FFCC00'], pattern: 'pt' },
-  // Russia
-  'ru': { colors: ['#FFFFFF', '#0039A6', '#D52B1E'], pattern: 'horizontal3' },
-  // Turkey
-  'tr': { colors: ['#E30A17', '#FFFFFF'], pattern: 'tr' },
-  // China
-  'cn': { colors: ['#DE2910', '#FFDE00'], pattern: 'cn' },
-  // Serbia
-  'rs': { colors: ['#C6363C', '#0C4076', '#FFFFFF'], pattern: 'horizontal3' },
-  // Thailand
-  'th': { colors: ['#A51931', '#F4F5F8', '#2D2A4A'], pattern: 'th' },
-  // Vietnam
-  'vn': { colors: ['#DA251D', '#FFFF00'], pattern: 'vn' },
-  // Taiwan
-  'tw': { colors: ['#FE0000', '#000095', '#FFFFFF'], pattern: 'tw' }
-}
-
 function getCountryCode(localeCode: string): string {
   // Map locale codes to country codes
   const localeToCountry: Record<string, string> = {

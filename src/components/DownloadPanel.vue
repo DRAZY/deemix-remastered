@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDownloadStore } from '../stores/downloadStore'
 import { useSettingsStore } from '../stores/settingsStore'
-import type { DownloadItem, FailedTrack } from '../types'
+import type { DownloadItem } from '../types'
 
 const { t } = useI18n()
 
@@ -45,13 +45,6 @@ function getProgressText(item: any): string {
   return item.status === 'completed' ? '100%' : `${item.progress || 0}%`
 }
 
-function getStatusIcon(item: any): string {
-  if (item.status === 'completed') return 'check'
-  if (item.status === 'error') return 'error'
-  if (item.status === 'downloading') return 'downloading'
-  return 'pending'
-}
-
 // Safely extract artist name (handles both string and object)
 function getArtistName(item: any): string {
   if (!item.artist) return t('common.unknownArtist')
@@ -61,10 +54,10 @@ function getArtistName(item: any): string {
 }
 
 // Safely extract cover URL
-function getCoverUrl(item: any): string | null {
-  if (!item.cover) return null
+function getCoverUrl(item: any): string | undefined {
+  if (!item.cover) return undefined
   if (typeof item.cover === 'string') return item.cover
-  return null
+  return undefined
 }
 
 // Handle click on a failed download item
@@ -118,7 +111,7 @@ function closeFailedModal() {
 function hasFailedDetails(item: DownloadItem): boolean {
   return item.status === 'error' && (
     !!item.error ||
-    (item.failedTracks && item.failedTracks.length > 0)
+    !!(item.failedTracks && item.failedTracks.length > 0)
   )
 }
 

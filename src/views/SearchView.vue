@@ -36,8 +36,8 @@ const showHistory = ref(false)
 
 // Batch selection state
 const isSelectionMode = ref(false)
-const selectedTracks = ref<Set<number>>(new Set())
-const selectedAlbums = ref<Set<number>>(new Set())
+const selectedTracks = ref<Set<number | string>>(new Set())
+const selectedAlbums = ref<Set<number | string>>(new Set())
 
 const selectedCount = computed(() => selectedTracks.value.size + selectedAlbums.value.size)
 
@@ -49,7 +49,7 @@ function toggleSelectionMode() {
   }
 }
 
-function toggleTrackSelection(trackId: number) {
+function toggleTrackSelection(trackId: number | string) {
   if (selectedTracks.value.has(trackId)) {
     selectedTracks.value.delete(trackId)
   } else {
@@ -57,7 +57,7 @@ function toggleTrackSelection(trackId: number) {
   }
 }
 
-function toggleAlbumSelection(albumId: number) {
+function toggleAlbumSelection(albumId: number | string) {
   if (selectedAlbums.value.has(albumId)) {
     selectedAlbums.value.delete(albumId)
   } else {
@@ -475,15 +475,6 @@ const contextMenuLabel = ref('')
 function openSearchInputMenu(e: MouseEvent) {
   contextMenuMode.value = 'input'
   openMenu(e)
-}
-
-function openResultMenu(e: MouseEvent, label: string, value: string) {
-  if (value) {
-    contextMenuMode.value = 'result'
-    contextMenuValue.value = value
-    contextMenuLabel.value = label
-    openMenu(e)
-  }
 }
 
 const contextMenuItems = computed(() => {

@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const isOnline = ref(navigator.onLine)
 const wasOffline = ref(false) // Track if we were recently offline

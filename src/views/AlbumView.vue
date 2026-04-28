@@ -24,7 +24,7 @@ const isLoading = ref(true)
 const hasError = ref(false)
 
 // Track selection state
-const selectedTracks = ref<Set<number>>(new Set())
+const selectedTracks = ref<Set<number | string>>(new Set())
 const isSelectionMode = ref(false)
 
 const totalDuration = computed(() => {
@@ -111,7 +111,7 @@ function toggleSelectionMode() {
   }
 }
 
-function toggleTrackSelection(trackId: number) {
+function toggleTrackSelection(trackId: number | string) {
   if (selectedTracks.value.has(trackId)) {
     selectedTracks.value.delete(trackId)
   } else {
@@ -147,7 +147,7 @@ async function downloadSelectedTracks() {
   for (const track of tracksToDownload) {
     await downloadStore.addDownload({
       ...track,
-      album: album.value,
+      album: album.value || undefined,
       artist: track.artist || album.value?.artist
     })
   }

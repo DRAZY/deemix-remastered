@@ -34,6 +34,7 @@ export interface Album {
   record_type?: string
   explicit_lyrics?: boolean
   link?: string
+  fans?: number
 }
 
 export interface Artist {
