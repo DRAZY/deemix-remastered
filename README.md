@@ -119,19 +119,25 @@ Arabic, Chinese (Simplified & Traditional), Croatian, English, Filipino, French,
 <p align="center">
   <img src="docs/screenshots/home-new-releases.png" alt="Home - New Releases" width="800" />
   <br />
-  <em>Home Dashboard — New releases, search, and navigation</em>
+  <em>Home Dashboard — New releases, search, and an active downloads panel</em>
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/home-albums-playlists.png" alt="Home - Albums & Playlists" width="800" />
+  <img src="docs/screenshots/downloads-statistics.png" alt="Downloads & Statistics Dashboard" width="800" />
   <br />
-  <em>Most Streamed Albums and Popular Playlists</em>
+  <em>Downloads — Statistics dashboard with top artists, formats, and weekly activity</em>
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/settings.png" alt="Settings" width="800" />
+  <img src="docs/screenshots/charts.png" alt="Charts" width="800" />
   <br />
-  <em>Settings — Profiles, themes, and deep customization</em>
+  <em>Charts — Browse global and country-specific top tracks, albums, artists, and playlists</em>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/settings-profiles.png" alt="Settings - Profiles & Appearance" width="800" />
+  <br />
+  <em>Settings — Quick presets, custom profiles, export/import, and 8 color themes</em>
 </p>
 
 ---
@@ -314,7 +320,7 @@ deemix-remastered/
 │   │   ├── syncStore.ts            # Playlist sync state
 │   │   └── toastStore.ts           # Notification system
 │   ├── types/                  # TypeScript type definitions
-│   └── views/                  # Page components (12 pages)
+│   └── views/                  # Page components (13 pages)
 ├── electron/                   # Electron main process
 │   ├── main.ts                 # Window management & IPC
 │   ├── preload.ts              # Context bridge
