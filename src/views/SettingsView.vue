@@ -315,36 +315,6 @@ function openSpotifyInfo() {
   window.open(`http://127.0.0.1:${serverPort.value}/info-spotify`, '_blank')
 }
 
-const qualityOptions = [
-  { value: '128', label: 'MP3 128kbps', description: 'Smaller file size, lower quality' },
-  { value: '320', label: 'MP3 320kbps', description: 'Good balance of size and quality' },
-  { value: 'flac', label: 'FLAC', description: 'Lossless, highest quality' }
-]
-
-const concurrentPresets = [
-  { value: 2, label: '2', description: 'Conservative - gentle on network' },
-  { value: 3, label: '3', description: 'Balanced (default)' },
-  { value: 5, label: '5', description: 'Faster downloads' },
-  { value: 10, label: '10', description: 'Fast - good for fast connections' }
-]
-
-function setConcurrentDownloads(value: number) {
-  showCustomConcurrent.value = false
-  settingsStore.settings.maxConcurrentDownloads = value
-}
-
-function enableCustomConcurrent() {
-  showCustomConcurrent.value = true
-}
-
-function updateCustomConcurrent(event: Event) {
-  const input = event.target as HTMLInputElement
-  let value = parseInt(input.value) || 3
-  // Clamp between 2 and 50
-  value = Math.max(2, Math.min(50, value))
-  settingsStore.settings.maxConcurrentDownloads = value
-}
-
 const themeOptions: { value: ColorTheme; label: string; colors: string[] }[] = [
   { value: 'violet', label: 'Violet', colors: ['#8B5CF6', '#6366F1', '#3B82F6'] },
   { value: 'spotify', label: 'Spotify', colors: ['#1DB954', '#1ED760', '#17A34A'] },

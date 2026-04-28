@@ -777,7 +777,7 @@ const contextMenuItems = computed(() => {
                 ? 'bg-primary-500 text-white'
                 : 'bg-black/60 hover:bg-primary-500/80 text-white/80 hover:text-white'"
             >
-              <svg v-if="selectedAlbums.has(album.id)" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <svg v-if="selectedAlbums.has(Number(album.id))" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
               </svg>
               <svg v-else class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -786,7 +786,7 @@ const contextMenuItems = computed(() => {
             </button>
             <!-- Selected ring -->
             <div
-              v-if="isSelectionMode && selectedAlbums.has(album.id)"
+              v-if="isSelectionMode && selectedAlbums.has(Number(album.id))"
               class="absolute inset-0 ring-2 ring-primary-500 rounded-lg pointer-events-none"
             />
             <AlbumCard :album="album" />
@@ -865,7 +865,7 @@ const contextMenuItems = computed(() => {
               id: playlist.id,
               title: playlist.title,
               cover_medium: playlist.picture_medium,
-              artist: { id: 0, name: playlist.creator?.name || playlist.user?.name || 'Unknown' },
+              artist: { id: 0, name: playlist.creator?.name || (playlist as any).user?.name || 'Unknown' },
               nb_tracks: playlist.nb_tracks
             }"
             type="playlist"

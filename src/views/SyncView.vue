@@ -132,12 +132,12 @@ function addPlaylist() {
   // Fire the add request in the background
   syncStore.addPlaylist(config).then(result => {
     if (result && result.success) {
-      toastStore.addToast(t('sync.added'), 'success')
+      toastStore.success(t('sync.added'))
     } else if (result && result.error) {
-      toastStore.addToast(result.error, 'error')
+      toastStore.error(result.error)
     }
   }).catch(e => {
-    toastStore.addToast(e.message || t('sync.addFailed'), 'error')
+    toastStore.error(e.message || t('sync.addFailed'))
   })
 }
 
