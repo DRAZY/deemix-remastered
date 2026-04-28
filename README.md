@@ -296,6 +296,13 @@ Build output is written to the `release/` directory.
 
 ---
 
+## Documentation
+
+- **[Architecture](docs/ARCHITECTURE.md)** — How the renderer, preload bridge, and main process fit together, with a diagram and walkthroughs of common data flows
+- **[Troubleshooting](docs/TROUBLESHOOTING.md)** — Solutions for login issues, download failures, M3U glitches, Spotify integration, and more
+
+---
+
 ## Project Structure
 
 ```
