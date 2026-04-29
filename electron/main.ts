@@ -355,6 +355,7 @@ async function initServer() {
         syncedLyrics: s.syncedLyrics,
         createErrorLog: s.createErrorLog,
         savePlaylistAsCompilation: s.savePlaylistAsCompilation,
+        createPlaylistFile: s.createPlaylistFile,
         folderSettings: {
           createPlaylistFolder: s.createPlaylistFolder,
           createArtistFolder: s.createArtistFolder,

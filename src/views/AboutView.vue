@@ -23,6 +23,7 @@ function openLink(url: string) {
 }
 
 const whatsNew = [
+  'Playlist Sync M3U -- Each sync run now writes a timestamped M3U playlist file alongside the synced tracks (issue #59)',
   'Large Playlist Fix -- Playlists and albums with more than 500 tracks now download in full instead of being silently truncated at the first 500 (issue #58)',
   'Sync Toast Fix -- Adding or removing a playlist from Sync no longer throws an error when displaying the success/failure toast',
   'Artist Page Fix -- Artist discography now loads reliably (resolved a runtime error reading the server port)',

@@ -4,6 +4,13 @@ All notable changes to **Deemix Remastered** are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.4] — 2026-04-29
+
+### Added
+
+- **Playlist Sync now generates an M3U file** ([#59](https://github.com/DRAZY/deemix-remastered/issues/59)). Each sync run produces a timestamped `.m3u8` snapshot (`{playlist name} - YYYY-MM-DD_HH-MM-SS.m3u8`) so users can see exactly what tracks were synced and when. Mirrors the behavior of normal playlist downloads. Honors the `Create Playlist File` setting.
+- **New M3U filename template tokens** — the `m3uNameTemplate` setting now also supports `%time%` (`HH-MM-SS`) and `%datetime%` (`YYYY-MM-DD_HH-MM-SS`) in addition to the existing `%playlist%`, `%date%`, and `%year%` tokens.
+
 ## [1.5.3] — 2026-04-28
 
 ### Fixed
@@ -93,6 +100,7 @@ For releases before v1.5.0, see the [GitHub Releases page](https://github.com/DR
 - **v1.1.x** — Multi-language support (22 languages), additional color themes.
 - **v1.0.0** — Initial release.
 
+[1.5.4]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.4
 [1.5.3]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.3
 [1.5.2]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.2
 [1.5.1]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.1

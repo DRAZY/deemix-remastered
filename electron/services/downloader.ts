@@ -3647,10 +3647,16 @@ export class Downloader extends EventEmitter {
     nameTemplate?: string
   ): string {
     try {
-      const today = new Date().toISOString().split('T')[0]
+      const now = new Date()
+      const pad = (n: number) => String(n).padStart(2, '0')
+      const today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
+      const timeStr = `${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`
+      const datetime = `${today}_${timeStr}`
       const resolvedName = (nameTemplate || '%playlist%')
         .replace(/%playlist%/gi, playlistName)
+        .replace(/%datetime%/gi, datetime)
         .replace(/%date%/gi, today)
+        .replace(/%time%/gi, timeStr)
         .replace(/%year%/gi, today.split('-')[0])
         .replace(/%[a-z_]+%/gi, '')
         .replace(/\s*\(\s*\)/g, '').replace(/\s*\[\s*\]/g, '').replace(/\s*\{\s*\}/g, '')

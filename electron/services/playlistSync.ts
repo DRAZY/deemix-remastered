@@ -20,6 +20,7 @@ export interface SyncDownloadSettings {
   syncedLyrics: boolean
   createErrorLog: boolean
   savePlaylistAsCompilation: boolean
+  createPlaylistFile?: boolean
   folderSettings: FolderSettings
   trackTemplates: TrackTemplates
   metadataSettings: MetadataSettings
@@ -364,6 +365,32 @@ class PlaylistSyncEngine extends EventEmitter {
       const settings = this.settingsProvider?.()
       let downloadedCount = 0
       const successfullyDownloadedIds: string[] = []
+
+      // Register playlist for automatic M3U generation. Each sync run gets a
+      // timestamped M3U snapshot so users can see what changed when. The
+      // downloader auto-generates the M3U from real file paths as tracks
+      // complete (or after a 30s activity timeout).
+      // We resolve the timestamp ONCE here (sync start) and bake it into the
+      // template literal — otherwise the prediction below could disagree
+      // with the downloader's own resolution at write time.
+      const m3uOutputDir = playlist.downloadPath || settings?.downloadPath || join(process.env.HOME || process.env.USERPROFILE || '/tmp', 'Music', 'Deemix')
+      const m3uTrackerId = `sync_${playlist.id}_${Date.now()}`
+      const shouldGenerateM3U = !!settings?.createPlaylistFile && deezerTrackIds.length > 0
+      const syncStart = new Date()
+      const pad = (n: number) => String(n).padStart(2, '0')
+      const syncDateStr = `${syncStart.getFullYear()}-${pad(syncStart.getMonth() + 1)}-${pad(syncStart.getDate())}`
+      const syncTimeStr = `${pad(syncStart.getHours())}-${pad(syncStart.getMinutes())}-${pad(syncStart.getSeconds())}`
+      const syncTimestamp = `${syncDateStr}_${syncTimeStr}`
+      if (shouldGenerateM3U) {
+        downloader.registerPlaylistForM3U(
+          m3uTrackerId,
+          playlist.sourcePlaylistName,
+          m3uOutputDir,
+          deezerTrackIds.length,
+          `%playlist% - ${syncTimestamp}`
+        )
+      }
+
       for (let i = 0; i < deezerTrackIds.length; i++) {
         const trackId = deezerTrackIds[i]
         try {
@@ -397,7 +424,8 @@ class PlaylistSyncEngine extends EventEmitter {
             savePlaylistAsCompilation: settings?.savePlaylistAsCompilation ?? false,
             folderSettings: settings?.folderSettings,
             trackTemplates: settings?.trackTemplates,
-            metadataSettings: settings?.metadataSettings
+            metadataSettings: settings?.metadataSettings,
+            ...(shouldGenerateM3U ? { _m3uTrackerId: m3uTrackerId } : {})
           }
           const downloadId = await downloader.download(downloadOpts)
 
@@ -484,12 +512,24 @@ class PlaylistSyncEngine extends EventEmitter {
 
       await this.saveState()
 
+      // Predict the M3U output path so the UI/result can surface it. The
+      // timestamp was baked into the template at sync start, so this matches
+      // exactly what the downloader will write when all tracks complete.
+      let m3uPath: string | null = null
+      if (shouldGenerateM3U && downloadedCount > 0) {
+        const resolvedName = `${playlist.sourcePlaylistName} - ${syncTimestamp}`
+        const sanitized = downloader.sanitizeFilename(resolvedName)
+        m3uPath = join(m3uOutputDir, `${sanitized}.m3u8`)
+        playlist.m3uPath = m3uPath
+        await this.saveState()
+      }
+
       const result: SyncResult = {
         playlistId: id,
         newTracks: downloadedCount,
         failedTracks: failed.length,
         totalTracks: currentTrackIds.length,
-        m3uPath: playlist.m3uPath,
+        m3uPath: m3uPath || playlist.m3uPath,
         error: null
       }
 
