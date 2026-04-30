@@ -23,6 +23,9 @@ function openLink(url: string) {
 }
 
 const whatsNew = [
+  'Link Analyzer Timeout Fix -- Public Deezer API calls now time out after 15 seconds instead of hanging forever (issue #57)',
+  'Region-Restricted Content -- Link Analyzer falls back to the authenticated gateway for region-locked tracks/albums when public lookup returns no data',
+  'Better Analyzer Errors -- Clearer messaging when content is unavailable in your region or the link is malformed',
   'Playlist Sync M3U -- Each sync run now writes a timestamped M3U playlist file alongside the synced tracks (issue #59)',
   'Large Playlist Fix -- Playlists and albums with more than 500 tracks now download in full instead of being silently truncated at the first 500 (issue #58)',
   'Sync Toast Fix -- Adding or removing a playlist from Sync no longer throws an error when displaying the success/failure toast',

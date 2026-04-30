@@ -4,6 +4,17 @@ All notable changes to **Deemix Remastered** are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.5] — 2026-04-30
+
+### Fixed
+
+- **Link Analyzer no longer hangs on slow or missing Deezer responses** ([#57](https://github.com/DRAZY/deemix-remastered/issues/57)). The public Deezer API call had no request timeout, so an unresponsive endpoint left the analyzer spinning forever with no error. All public REST calls now enforce a 15-second timeout and surface a clear "Deezer API request timed out" message.
+
+### Added
+
+- **Authenticated gateway fallback for region-restricted content in the Link Analyzer.** When Deezer's public REST returns "no data" for a track or album (often happens for region-locked releases — e.g., a New Zealand–only single viewed by a New Zealand–authenticated user), the analyzer now retries via the authenticated gateway using the user's account region. Responses are normalized so the existing UI renders them unchanged.
+- **Clearer Link Analyzer error messages.** Deezer error code 800 ("no data") now reads "This content isn't available in your region" when signed in, or prompts to sign in when signed out. Error code 4 reads "Invalid Deezer URL or content ID."
+
 ## [1.5.4] — 2026-04-29
 
 ### Added
@@ -100,6 +111,7 @@ For releases before v1.5.0, see the [GitHub Releases page](https://github.com/DR
 - **v1.1.x** — Multi-language support (22 languages), additional color themes.
 - **v1.0.0** — Initial release.
 
+[1.5.5]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.5
 [1.5.4]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.4
 [1.5.3]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.3
 [1.5.2]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.2

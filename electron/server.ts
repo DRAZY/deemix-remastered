@@ -2315,6 +2315,71 @@ export class DeemixServer extends EventEmitter {
     }
   }
 
+  /**
+   * Map Deezer gateway album response (UPPERCASE keys) to public-REST shape so
+   * downstream code (LinkAnalyzerView, etc.) can treat both sources uniformly.
+   * Used as a fallback when public API returns no data for region-restricted
+   * content but the user's authenticated session can still reach it.
+   */
+  private normalizeGatewayAlbum(g: any): any {
+    if (!g) return null
+    const md5 = g.ALB_PICTURE || ''
+    const cover = (size: string) => md5 ? `https://e-cdns-images.dzcdn.net/images/cover/${md5}/${size}.jpg` : ''
+    return {
+      id: parseInt(g.ALB_ID, 10) || g.ALB_ID,
+      title: g.ALB_TITLE || '',
+      upc: g.UPC || g.PHYSICAL_RELEASE_DATE_UPC || null,
+      label: g.LABEL_NAME || null,
+      nb_tracks: parseInt(g.NUMBER_TRACK, 10) || (Array.isArray(g.SONGS?.data) ? g.SONGS.data.length : 0),
+      duration: parseInt(g.DURATION, 10) || 0,
+      release_date: g.PHYSICAL_RELEASE_DATE || g.DIGITAL_RELEASE_DATE || g.ORIGINAL_RELEASE_DATE || null,
+      explicit_lyrics: g.EXPLICIT_ALBUM_CONTENT?.EXPLICIT_LYRICS_STATUS === 1 || false,
+      cover_xl: cover('1000x1000-000000-80-0-0'),
+      cover_big: cover('500x500-000000-80-0-0'),
+      cover_medium: cover('250x250-000000-80-0-0'),
+      cover_small: cover('56x56-000000-80-0-0'),
+      artist: {
+        id: parseInt(g.ART_ID, 10) || g.ART_ID,
+        name: g.ART_NAME || 'Unknown'
+      },
+      genres: { data: Array.isArray(g.GENRES?.data) ? g.GENRES.data.map((x: any) => ({ name: x.GENRE_NAME || x.name || '' })) : [] }
+    }
+  }
+
+  /**
+   * Map Deezer gateway track response (UPPERCASE keys) to public-REST shape.
+   */
+  private normalizeGatewayTrack(g: any): any {
+    if (!g) return null
+    const md5 = g.ALB_PICTURE || ''
+    const cover = (size: string) => md5 ? `https://e-cdns-images.dzcdn.net/images/cover/${md5}/${size}.jpg` : ''
+    return {
+      id: parseInt(g.SNG_ID, 10) || g.SNG_ID,
+      title: g.SNG_TITLE || '',
+      title_short: g.SNG_TITLE || '',
+      isrc: g.ISRC || null,
+      readable: true,
+      duration: parseInt(g.DURATION, 10) || 0,
+      track_position: parseInt(g.TRACK_NUMBER, 10) || 0,
+      disk_number: parseInt(g.DISK_NUMBER, 10) || 1,
+      explicit_lyrics: g.EXPLICIT_LYRICS === '1' || g.EXPLICIT_LYRICS === 1,
+      bpm: g.BPM ? parseFloat(g.BPM) : null,
+      gain: g.GAIN ? parseFloat(g.GAIN) : null,
+      album: {
+        id: parseInt(g.ALB_ID, 10) || g.ALB_ID,
+        title: g.ALB_TITLE || '',
+        cover_xl: cover('1000x1000-000000-80-0-0'),
+        cover_big: cover('500x500-000000-80-0-0'),
+        cover_medium: cover('250x250-000000-80-0-0'),
+        cover_small: cover('56x56-000000-80-0-0')
+      },
+      artist: {
+        id: parseInt(g.ART_ID, 10) || g.ART_ID,
+        name: g.ART_NAME || 'Unknown'
+      }
+    }
+  }
+
   private async handleAnalyze(url: URL, res: ServerResponse): Promise<void> {
     const rawUrl = url.searchParams.get('url')
 
@@ -2351,6 +2416,23 @@ export class DeemixServer extends EventEmitter {
       switch (parsed.type) {
         case 'track':
           data = await this.deezerPublicAPI(`/track/${parsed.id}`)
+          // Region-restricted fallback: public REST returns "no data" for
+          // tracks not in the server's IP region. The authenticated session
+          // can still reach them via the gateway when the user's account region
+          // is permitted. Use it as the canonical track source in that case.
+          if (data?.error && deezerAuth.isLoggedIn()) {
+            try {
+              const gatewayTrack = await deezerAuth.getTrackInfo(parsed.id)
+              const normalized = this.normalizeGatewayTrack(gatewayTrack)
+              if (normalized) {
+                console.log('[Server] Track analyze: public API returned no data, gateway fallback succeeded')
+                data = normalized
+              }
+            } catch (gwErr: any) {
+              console.log('[Server] Track analyze: gateway fallback also failed:', gwErr.message)
+              // fall through — data still has .error, handled below
+            }
+          }
           // Track-specific fields: ISRC, readable, available
           additionalInfo = {
             isrc: data.isrc || null,
@@ -2452,8 +2534,24 @@ export class DeemixServer extends EventEmitter {
           }
           break
 
-        case 'album':
+        case 'album': {
           data = await this.deezerPublicAPI(`/album/${parsed.id}`)
+          // Region-restricted fallback: public REST returns "no data" for albums
+          // not catalogued in the server's IP region. Authenticated session may
+          // still reach them via the gateway.
+          if (data?.error && deezerAuth.isLoggedIn()) {
+            try {
+              const gateway = await deezerAuth.getAlbumInfo(parsed.id)
+              const normalized = this.normalizeGatewayAlbum(gateway)
+              if (normalized) {
+                console.log('[Server] Album analyze: public API returned no data, gateway fallback succeeded')
+                data = normalized
+              }
+            } catch (gwErr: any) {
+              console.log('[Server] Album analyze: gateway fallback also failed:', gwErr.message)
+              // fall through — data still has .error, handled below
+            }
+          }
           // Album-specific fields: UPC, label, track count
           additionalInfo = {
             upc: data.upc || null,
@@ -2462,6 +2560,7 @@ export class DeemixServer extends EventEmitter {
             genres: data.genres?.data?.map((g: any) => g.name) || []
           }
           break
+        }
 
         case 'artist':
           data = await this.deezerPublicAPI(`/artist/${parsed.id}`)
@@ -2488,9 +2587,22 @@ export class DeemixServer extends EventEmitter {
           return
       }
 
-      // Check if content was found
+      // Check if content was found. Map common Deezer error codes to copy
+      // that tells the user what they can do about it. errorCode is surfaced
+      // to the client so the UI can offer a contextual CTA (e.g. "Sign in").
       if (data.error) {
-        this.sendJSON(res, { error: data.error.message || 'Content not found on Deezer' }, 404)
+        const code = data.error.code
+        let msg: string
+        if (code === 800) {
+          msg = deezerAuth.isLoggedIn()
+            ? 'This content isn\'t available in your region.'
+            : 'Sign in to Deezer for access to region-restricted content.'
+        } else if (code === 4) {
+          msg = 'Invalid Deezer URL or content ID.'
+        } else {
+          msg = data.error.message || 'Content not found on Deezer'
+        }
+        this.sendJSON(res, { error: msg, errorCode: code ?? null }, 404)
         return
       }
 
@@ -2548,21 +2660,27 @@ export class DeemixServer extends EventEmitter {
     }
   }
 
-  private async deezerPublicAPI(endpoint: string): Promise<any> {
+  private async deezerPublicAPI(endpoint: string, opts?: { timeoutMs?: number }): Promise<any> {
+    const timeoutMs = opts?.timeoutMs ?? 15000
     return new Promise((resolve, reject) => {
       const url = `https://api.deezer.com${endpoint}`
 
-      https.get(url, (response) => {
+      const req = https.get(url, (response) => {
         let data = ''
         response.on('data', chunk => data += chunk)
         response.on('end', () => {
           try {
             resolve(JSON.parse(data))
           } catch (e) {
-            reject(new Error('Failed to parse API response'))
+            reject(new Error('Failed to parse Deezer API response'))
           }
         })
-      }).on('error', reject)
+      })
+      req.setTimeout(timeoutMs, () => {
+        req.destroy()
+        reject(new Error(`Deezer API request timed out after ${timeoutMs}ms`))
+      })
+      req.on('error', reject)
     })
   }
 
