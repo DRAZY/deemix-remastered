@@ -1443,12 +1443,44 @@ export class DeezerAuth extends EventEmitter {
       const formats = buildFormats(info)
       console.log('[DeezerAuth] Trying track:', id, 'formats:', formats.join(', '))
 
+      // Primary path: modern Media API (requires licenseToken, IP-geo enforced)
       try {
         const result = await this.getMediaUrl(info.TRACK_TOKEN, formats)
         if (result) return result
       } catch (e: any) {
+        // Bubble auth errors — caller needs to surface "please log in"
+        if (/session expired|log in|license token/i.test(e.message || '')) {
+          throw e
+        }
         console.warn(`[DeezerAuth] Media API failed for track ${id}:`, e.message)
+        // Fall through to legacy CDN fallback
       }
+
+      // Fallback path: legacy CDN URL (signature-based, tolerant of region-shifted releases)
+      // Used by old Python deemix. Required for cases where the user's account region
+      // permits a release but the modern Media API rejects on the request's IP region.
+      if (info.MD5_ORIGIN && info.MEDIA_VERSION) {
+        const formatToInt: Record<string, number> = { FLAC: 9, MP3_320: 3, MP3_128: 1 }
+        const sizeKey: Record<string, string> = {
+          FLAC: 'FILESIZE_FLAC',
+          MP3_320: 'FILESIZE_MP3_320',
+          MP3_128: 'FILESIZE_MP3_128'
+        }
+        for (const fmt of formats) {
+          const sizeRaw = info[sizeKey[fmt]] ?? info.FILESIZE_MP3 ?? '0'
+          const size = parseInt(String(sizeRaw), 10)
+          if (size > 0) {
+            try {
+              const url = await this.generateTrackUrl(info, formatToInt[fmt])
+              console.log(`[DeezerAuth] Got media URL via LEGACY CDN for track ${id}, format: ${fmt}`)
+              return { url, format: fmt }
+            } catch (legacyErr: any) {
+              console.warn(`[DeezerAuth] Legacy URL generation failed for ${fmt}:`, legacyErr.message)
+            }
+          }
+        }
+      }
+
       return null
     }
 

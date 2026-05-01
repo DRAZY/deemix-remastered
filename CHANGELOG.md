@@ -4,6 +4,12 @@ All notable changes to **Deemix Remastered** are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.6] — 2026-05-01
+
+### Fixed
+
+- **Region-shifted releases now download** ([#57](https://github.com/DRAZY/deemix-remastered/issues/57)). For users on Premium accounts whose region timezone makes a release available earlier than their physical location (e.g., a New Zealand–registered account on a Bulgarian IP, where NZ-only early releases would load in the analyzer but fail to download), the download path now falls back to the legacy CDN URL when Deezer's modern Media API rejects the stream request. The legacy URL is signature-based rather than IP-geo–enforced, matching the behavior of the original Python deemix. Auth-related errors (401, expired session) still surface correctly — only non-auth Media API failures trigger the fallback.
+
 ## [1.5.5] — 2026-04-30
 
 ### Fixed
@@ -111,6 +117,7 @@ For releases before v1.5.0, see the [GitHub Releases page](https://github.com/DR
 - **v1.1.x** — Multi-language support (22 languages), additional color themes.
 - **v1.0.0** — Initial release.
 
+[1.5.6]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.6
 [1.5.5]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.5
 [1.5.4]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.4
 [1.5.3]: https://github.com/DRAZY/deemix-remastered/releases/tag/v1.5.3
