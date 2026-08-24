@@ -146,7 +146,9 @@ const spotifyClientSecret = ref('')
 const spotifyUsername = ref('')
 
 // Collapsible section states (true = expanded, false = collapsed)
-const expandedSections = ref({
+const SECTION_STATE_KEY = 'settingsExpandedSections'
+
+const defaultExpandedSections = {
   profiles: true,
   appearance: true,
   languages: true,
@@ -163,7 +165,38 @@ const expandedSections = ref({
   // Closed by default so it doesn't dominate the settings page; users open it
   // intentionally when they need to back up or restore (#72).
   backup: false
-})
+}
+
+// Restore the collapse state from the last session. Merged over the defaults so
+// a section added in a later version still gets its intended default instead of
+// coming back undefined from an older saved object. Reported by cisko99za, who
+// rotates his Deezer ARL often and had to re-collapse the same panels every
+// launch to reach the accounts section.
+function loadExpandedSections(): typeof defaultExpandedSections {
+  try {
+    const saved = localStorage.getItem(SECTION_STATE_KEY)
+    if (!saved) return { ...defaultExpandedSections }
+    const parsed = JSON.parse(saved)
+    if (!parsed || typeof parsed !== 'object') return { ...defaultExpandedSections }
+    const merged = { ...defaultExpandedSections }
+    for (const key of Object.keys(defaultExpandedSections) as Array<keyof typeof defaultExpandedSections>) {
+      if (typeof parsed[key] === 'boolean') merged[key] = parsed[key]
+    }
+    return merged
+  } catch {
+    return { ...defaultExpandedSections }
+  }
+}
+
+const expandedSections = ref(loadExpandedSections())
+
+watch(expandedSections, (state) => {
+  try {
+    localStorage.setItem(SECTION_STATE_KEY, JSON.stringify(state))
+  } catch (e) {
+    console.error('[SettingsView] Could not persist section collapse state:', e)
+  }
+}, { deep: true })
 
 function toggleSection(section: keyof typeof expandedSections.value) {
   expandedSections.value[section] = !expandedSections.value[section]
