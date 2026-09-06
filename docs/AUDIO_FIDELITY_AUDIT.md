@@ -2,7 +2,8 @@
 
 Reference for the recurring "downloads sound worse" report (#87, #99, #130). Source
 and measurement claims verified 2026-07-28; reporter-supplied sample analysis added
-2026-07-29. Cite this instead of re-deriving it.
+2026-07-29; live tier test and library census repeated 2026-09-06. Cite this instead
+of re-deriving it.
 
 ## Verdict
 
@@ -242,6 +243,81 @@ re-download for 128-under-320 and 128-under-FLAC, and skip for 320-under-320 and
 tier, and the delivered bytes really are that tier.** The bitrate mismatch that
 was reachable in shipped code was never in the selection path at all — it was the
 skip path keeping an older, lower-bitrate file and reporting the newer tier.
+
+## Re-verification (2026-09-06)
+
+Run again on request after another "wrong bitrate" report was filed and then
+deleted by the reporter before it could be examined. Installed build under test:
+2.6.1 RC (`rc/2.6.1` at `41ad882`). Nothing in the selection path had changed
+since the 2026-07-30 live test: `git log --since=2026-07-30` on `deezerAuth.ts`
+and `audioProbe.ts` shows only log sanitisation (`bdb968b`), a copyright tag
+read (`daf015b`) and a track-count fix (`7823229`), none of which touch
+`getTrackUrl`, `getMediaUrl`, decryption or the post-download bitstream check.
+
+### Live end-to-end tier test, repeated
+
+Same protocol as July: track 67238732 three times through the running app's HTTP
+API, one tier per run, each into its own empty folder, `skipDuplicateTracks` off
+and `bitrateFallback` off so a miss would fail loudly instead of stepping down.
+Settings snapshotted before and restored after, checked field by field.
+
+| Requested | API said | ffprobe | Bytes | SHA-256 (first 16) |
+|---|---|---|---|---|
+| MP3_128 | MP3_128 | mp3, 128 kbps, 44.1 kHz | 5,654,832 | `f4213c34647070ae` |
+| MP3_320 | MP3_320 | mp3, 320 kbps, 44.1 kHz | 13,758,016 | `0f6e3d87ebba8ada` |
+| FLAC | FLAC | flac, 16-bit, 44.1 kHz | 40,048,725 | `b902a0954a7a316e` |
+
+Three for three again. The FLAC is byte-identical to the July download (same
+size, same hash) five weeks apart, which is what a pure permutation of Deezer's
+bytes should produce. The two MP3 files are larger than in July by roughly
+250 KB each; the July run used a different tag configuration (the file size
+difference sits in the embedded artwork, not the audio, and ffprobe reads the
+same 128 and 320 CBR streams). The app's own `probeAudioFile` reads the three
+files as `MP3_128 128k`, `MP3_320 320k` and `FLAC 16/44100`, none flagged VBR.
+
+### Library census, repeated
+
+The app's own bitstream reader run over the whole download folder (8,891 files,
+up from 8,809 in July):
+
+| What the bytes say | Files |
+|---|---|
+| FLAC 16/44.1 | 7,614 |
+| FLAC 24-bit (44.1 to 192 kHz, Qobuz) | 1,261 |
+| MP3 320 CBR | 10 |
+| MP3 128 CBR | 6 |
+| Extension disagrees with container | 0 |
+| VBR or an unrecognised MP3 bitrate | 0 |
+| Unreadable | 0 |
+
+The 10 and 6 are the same tracks as July: things Deezer only carries at that
+tier, downloaded with fallback on. The app's own download log
+(`downloads-state.json`, 449 rows) shows every completed Deezer request for FLAC
+delivered FLAC; the only MP3 row was a 320 request that delivered MP3_320.
+
+### Where the pipeline checks itself
+
+For the next report, this is the chain a wrong-tier file would have to get
+through, and every link is in shipped code:
+
+1. `buildFormats` (`deezerAuth.ts`) turns the setting into an ordered list.
+   With fallback off it is a single entry, and a missing `FILESIZE_*` throws
+   `PreferredBitrateNotFound` before any request is made.
+2. `getMediaUrl` sends that list to `media.deezer.com/v1/get_url` and reads the
+   tier back from `media.format`.
+3. `downloadFromUrl` rejects a body shorter than `Content-Length` as
+   `TRUNCATED` and deletes it.
+4. `decryptFile` is a byte permutation with a zero-fill guard; it never touches
+   sample values.
+5. `probeAudioFile` reads the decrypted bitstream. A container that disagrees
+   with the label deletes the file and fails the download; a tier that
+   disagrees relabels the row so the chip and the downgrade badge tell the truth.
+6. `isLowerTier` stops a lower-tier file already on disk from being kept when
+   a higher tier is requested.
+
+The one gap found this pass was upstream of all six: the renderer's "already
+downloaded" gate compared ids only, so a completed MP3 128 row blocked a later
+FLAC request from ever reaching the server. Fixed on `rc/2.6.1` (#144).
 
 ## The settings path (2026-07-31)
 
