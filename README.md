@@ -165,6 +165,8 @@ Pre-built binaries are available on the [Releases](../../releases) page.
 | **Windows** | x64, ARM64 | `.exe` (Installer), `.exe` (Portable) |
 | **Linux** | x64, ARM64 | `.AppImage`, `.deb` |
 
+If the app earns a place in your workflow, a star on this repository is the easiest way to say so. It costs nothing, and it is how other people find the project.
+
 ---
 
 ## Getting Started
@@ -314,6 +316,14 @@ Build output is written to the `release/` directory.
 ## Versioning
 
 This project follows [Semantic Versioning](https://semver.org/). See the [Releases](../../releases) page for the full changelog.
+
+---
+
+## Support the Project
+
+Deemix Remastered is free, open source, and built in spare time. If you like the app, the single most useful thing you can do is [star the repository](../../stargazers). Stars are how GitHub ranks projects in search and recommendations, so every one of them puts the app in front of someone who has not found it yet.
+
+Beyond that, the ways to help are the usual ones: report bugs with a log line or a file attached, answer a question in [Discussions](../../discussions), or tell someone who still uses the original.
 
 ---
 
