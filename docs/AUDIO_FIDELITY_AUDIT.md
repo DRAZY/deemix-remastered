@@ -369,10 +369,28 @@ Confirmed 2026-07-31 by parsing both allowlists out of source:
 | `tags` (carries `replayGain`) | yes | non-boolean validator |
 | `createPlaylistFile` | yes | yes |
 | `createAlbumPlaylistFile` | yes | yes |
+| `preferSyncedLyrics` | **no until 2.6.1** | yes |
 
 A full sweep of both directions found exactly one key the server declares that
 the renderer never sends: `checkForUpdates`, which is deliberate (main-process
 only, unrelated to downloads). No other setting is silently dropped.
+
+**It happened again (2026-09-10).** `preferSyncedLyrics` (#141) shipped in 2.6.0
+wired into links 1, 3 and 4 plus the UI, the profile keys excepted, and not into
+link 2. The reporter came back eleven days later with "I can't seem to get the
+feature to work." The July table above was never re-run for the new key. Fixed on
+`rc/2.6.1` (`48c08a1`). The allowlist sweep was re-run after the fix and again
+reports only `checkForUpdates`.
+
+The behavioral test was then run the way this section says to, through the real
+renderer and not the HTTP shortcut: the Pinia settings store was flipped over the
+DevTools protocol, the download was enqueued with the store's own `addDownload`,
+and the server's copy of the setting was read back after each enqueue. On: server
+saw `true`, folder held `.flac` + `.lrc`. Off: server saw `false`, folder held
+`.flac` + `.lrc` + `.txt`. Both directions, same track, same build. The two
+misses in six weeks share one cause, so the rule from here is mechanical: any
+change that adds a key to `ServerSettings` re-runs the allowlist sweep and the
+two-direction behavioral test before it is called done, in the same pass.
 
 ### The verification standard this changed
 

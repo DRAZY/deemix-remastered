@@ -12,6 +12,7 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ### Fixed
 
+- **The "prefer synced lyrics" toggle from 2.6.0 did nothing (#141, reported by @shark0151).** The setting saved and showed as on, but the app kept writing both the .lrc and the .txt. The checkbox was never sent to the part of the app that writes the files, so it always ran with the option off. It is now sent, and it was tested both ways on a real download: on gives one .lrc, off gives both files. It also now survives switching profiles.
 - **Settings remembers which panels you collapsed (reported by @cisko99za in discussion #105).** The collapse state of each Settings section was never saved, so every launch reopened Profiles, Appearance, Languages, Downloads, Accounts, Spotify and Qobuz, and anyone who rotates their Deezer ARL had to fold the same panels again to reach Accounts. The state is now kept between launches.
 - **Switching to a higher quality lets you download an item again (#144, requested by @username227).** A track, album or playlist that had already come down as MP3 128 was refused with "was already downloaded" even after you changed the setting to 320 or FLAC. The check now compares the quality it was delivered at with the quality you have selected, and steps aside when yours is higher. Same or lower quality still gets the notice, so nothing is refetched for a downgrade. The quality shown on the transfer row at the moment you start a download is the tier being requested; it updates to the delivered tier once Deezer answers.
 
