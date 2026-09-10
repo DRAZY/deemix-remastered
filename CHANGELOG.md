@@ -10,6 +10,10 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+### Added
+
+- **Copy Link on downloads and on playlist and album pages (#150, requested by @alex5908).** Right-click any row in the Downloads rack for Copy Link and Copy Title, and the playlist and album pages now have Copy Link at the top of their right-click menu. The link is the public Deezer or Qobuz address, so a playlist that failed can be pasted straight back into Link Analyzer or a browser. Rows that finished before this version show Copy Link greyed out, since they were recorded without the id needed to rebuild it.
+
 ### Fixed
 
 - **The "prefer synced lyrics" toggle from 2.6.0 did nothing (#141, reported by @shark0151).** The setting saved and showed as on, but the app kept writing both the .lrc and the .txt. The checkbox was never sent to the part of the app that writes the files, so it always ran with the option off. It is now sent, and it was tested both ways on a real download: on gives one .lrc, off gives both files. It also now survives switching profiles.
