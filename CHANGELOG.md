@@ -10,6 +10,10 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+### Added
+
+- **Link Analyzer takes many links at once (#142, requested by @cisko99za).** Paste any number of Deezer, Spotify or Qobuz links into the box, separated by spaces, commas or new lines, and the analyzer works through them one at a time with a row per link. Each row turns green when it is ready or red with the reason when it fails, and one failure does not stop the rest. Spotify links are matched during the run, so a green row is ready to download. Click a row to see its full details below, download a single row, or use Download all ready to queue everything that resolved. A single link behaves exactly as before.
+
 ## [2.6.1] - 2026-09-10
 
 ### Summary
