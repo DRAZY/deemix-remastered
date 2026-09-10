@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { publicLinkForItem } from '../utils/sourceLinks'
 import { ref, computed } from 'vue'
 import type { Track, Album, Playlist, DownloadItem, DownloadStatus, FailedTrack, SubstitutedTrack, DownloadHistoryEntry, DownloadTrackEntry } from '../types'
 import { useSettingsStore } from './settingsStore'
@@ -423,6 +424,7 @@ export const useDownloadStore = defineStore('downloads', () => {
       substitutedTracks: item.substitutedTracks,
       skippedAsDuplicate: item.skippedAsDuplicate,
       path: item.path,
+      link: publicLinkForItem(item) ?? undefined,
       status: item.status === 'completed' ? 'completed' : 'error',
       error: item.error,
       completedAt: new Date().toISOString(),

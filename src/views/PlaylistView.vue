@@ -10,6 +10,7 @@ import BackButton from '../components/BackButton.vue'
 import ErrorState from '../components/ErrorState.vue'
 import ContextMenu from '../components/ContextMenu.vue'
 import { useContextMenu } from '../composables/useContextMenu'
+import { publicLink } from '../utils/sourceLinks'
 import type { Playlist, Track } from '../types'
 
 const { t } = useI18n()
@@ -175,9 +176,19 @@ async function refreshPlaylistTags() {
 // Context menu
 const { menuState, openMenu, closeMenu, copyToClipboard } = useContextMenu()
 
+const playlistLink = computed(() => playlist.value
+  ? publicLink('playlist', (playlist.value as any).qobuzId ?? playlist.value.id, (playlist.value as any).source)
+  : null)
+
 const contextMenuItems = computed(() => {
   if (!playlist.value) return []
   return [
+    {
+      label: t('contextMenu.copyLink'),
+      icon: 'link',
+      action: () => copyToClipboard(playlistLink.value || '', t('contextMenu.link')),
+      disabled: !playlistLink.value
+    },
     {
       label: t('contextMenu.copyPlaylist'),
       icon: 'copy',
