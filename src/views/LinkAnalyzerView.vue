@@ -75,6 +75,152 @@ const bothCounts = computed(() => {
 const qobuzResult = ref<any>(null)
 const qobuzDownloading = ref(false)
 
+// ---- Multi-link batch (#142) ----------------------------------------------
+// Paste more than one link and the analyzer works through them one at a time,
+// keeping a row per link. The detail view below the list still shows exactly
+// one result, driven by the same refs as before: selecting a row restores that
+// link's saved state into them, so every existing render block and button keeps
+// working unchanged. Spotify links are converted as part of the run so a row is
+// download-ready when it turns green.
+type BatchKind = 'deezer' | 'spotify' | 'qobuz'
+interface BatchSnapshot { result: any; spotifyResult: any; qobuzResult: any; conversionResult: any; isSpotifyLink: boolean }
+interface BatchRow {
+  url: string
+  kind: BatchKind
+  status: 'pending' | 'analyzing' | 'ready' | 'failed'
+  type?: string
+  title?: string
+  subtitle?: string
+  error?: string
+  snapshot?: BatchSnapshot
+}
+const batch = ref<BatchRow[]>([])
+const batchRunning = ref(false)
+const batchSelected = ref(-1)
+const batchReady = computed(() => batch.value.filter(r => r.status === 'ready').length)
+const batchDone = computed(() => batch.value.filter(r => r.status === 'ready' || r.status === 'failed').length)
+const batchDownloading = ref(false)
+
+// Pull every supported link out of whatever was typed or pasted, in order,
+// without duplicates. Separators are whitespace, commas and semicolons; a
+// text input collapses pasted newlines into spaces, so that case is covered.
+function extractLinks(text: string): string[] {
+  const seen = new Set<string>()
+  const out: string[] = []
+  for (const raw of text.split(/[\s,;]+/)) {
+    const u = raw.trim().replace(/^<|>$/g, '')
+    if (!u || seen.has(u)) continue
+    if (isDeezerUrl(u) || isSpotifyUrl(u) || isQobuzUrl(u)) { seen.add(u); out.push(u) }
+  }
+  return out
+}
+
+function kindOf(url: string): BatchKind { return isSpotifyUrl(url) ? 'spotify' : isQobuzUrl(url) ? 'qobuz' : 'deezer' }
+
+function takeSnapshot(): BatchSnapshot {
+  return { result: result.value, spotifyResult: spotifyResult.value, qobuzResult: qobuzResult.value, conversionResult: conversionResult.value, isSpotifyLink: isSpotifyLink.value }
+}
+function restoreSnapshot(sn: BatchSnapshot) {
+  result.value = sn.result; spotifyResult.value = sn.spotifyResult; qobuzResult.value = sn.qobuzResult
+  conversionResult.value = sn.conversionResult; isSpotifyLink.value = sn.isSpotifyLink; error.value = ''
+}
+
+// Summary line for a row, read off whichever result the link produced.
+function describeRow(row: BatchRow) {
+  if (row.kind === 'spotify' && spotifyResult.value) {
+    const d = spotifyResult.value.data || {}
+    row.type = spotifyResult.value.type
+    row.title = d.name || d.title || row.url
+    row.subtitle = d.artists?.[0]?.name || d.owner?.display_name || ''
+    const m = conversionResult.value?.matched?.length
+    if (typeof m === 'number') row.subtitle = [row.subtitle, `${m} matched`].filter(Boolean).join(' · ')
+  } else if (row.kind === 'qobuz' && qobuzResult.value) {
+    const q = qobuzResult.value
+    row.type = q.type
+    row.title = q.data?.title || q.data?.name || row.url
+    row.subtitle = q.data?.artist?.name || q.data?.owner?.name || ''
+  } else if (result.value) {
+    const d = result.value.data || {}
+    row.type = result.value.type
+    row.title = d.title || d.name || row.url
+    row.subtitle = result.value.type === 'playlist' ? (result.value.creator || d.creator?.name || '') : (d.artist?.name || '')
+  }
+}
+
+// Sequential on purpose: Deezer rate-limits, and this view already has to cope
+// with quota errors on a single link. One failure marks its row and the run
+// carries on with the next.
+async function runBatch(links: string[]) {
+  batch.value = links.map(url => ({ url, kind: kindOf(url), status: 'pending' as const }))
+  batchSelected.value = -1
+  batchRunning.value = true
+  try {
+    for (let i = 0; i < batch.value.length; i++) {
+      const row = batch.value[i]
+      row.status = 'analyzing'
+      await analyzeOne(row.url)
+      if (!error.value && isSpotifyLink.value && spotifyResult.value) {
+        await convertSpotifyToDeezer()
+      }
+      if (error.value) {
+        row.status = 'failed'
+        row.error = error.value
+      } else {
+        describeRow(row)
+        row.snapshot = takeSnapshot()
+        row.status = 'ready'
+      }
+    }
+  } finally {
+    batchRunning.value = false
+    error.value = ''
+    const first = batch.value.findIndex(r => r.status === 'ready')
+    if (first >= 0) selectBatchRow(first)
+  }
+}
+
+function selectBatchRow(i: number) {
+  const row = batch.value[i]
+  if (!row) return
+  batchSelected.value = i
+  if (row.snapshot) restoreSnapshot(row.snapshot)
+  else { result.value = null; spotifyResult.value = null; qobuzResult.value = null; conversionResult.value = null; error.value = row.error || '' }
+}
+
+function clearBatch() {
+  batch.value = []
+  batchSelected.value = -1
+  result.value = null; spotifyResult.value = null; qobuzResult.value = null; conversionResult.value = null; isSpotifyLink.value = false; error.value = ''
+}
+
+// Route one row through the same download action its detail view uses.
+async function downloadBatchRow(i: number) {
+  const row = batch.value[i]
+  if (!row?.snapshot || row.status !== 'ready') return
+  selectBatchRow(i)
+  if (row.kind === 'qobuz') await downloadQobuz()
+  else if (row.kind === 'spotify') await downloadConvertedTracks()
+  else await handleDownload()
+}
+
+async function downloadAllReady() {
+  if (batchDownloading.value) return
+  batchDownloading.value = true
+  let n = 0
+  try {
+    for (let i = 0; i < batch.value.length; i++) {
+      // Artists have no direct download; their detail action navigates to the
+      // artist page, which would yank the user off this screen mid-run.
+      if (batch.value[i].status !== 'ready' || batch.value[i].type === 'artist') continue
+      await downloadBatchRow(i)
+      n++
+    }
+    toastStore.success(`Queued ${n} of ${batch.value.length} links`)
+  } finally {
+    batchDownloading.value = false
+  }
+}
+
 // Get the actual server port on mount
 onMounted(async () => {
   if (window.electronAPI) {
@@ -154,12 +300,22 @@ const subtitle = computed(() => {
 })
 
 async function analyzeLink() {
-  const url = linkInput.value.trim()
-  if (!url) {
+  const raw = linkInput.value.trim()
+  if (!raw) {
     error.value = 'Please enter a Deezer, Spotify, or Qobuz link'
     return
   }
+  const links = extractLinks(raw)
+  // More than one supported link in the box: run them as a batch (#142).
+  if (links.length > 1) {
+    await runBatch(links)
+    return
+  }
+  if (batch.value.length) clearBatch()
+  await analyzeOne(links[0] || raw)
+}
 
+async function analyzeOne(url: string) {
   isAnalyzing.value = true
   error.value = ''
   result.value = null
@@ -502,7 +658,7 @@ function navigateToContent() {
 function handlePaste(e: ClipboardEvent) {
   // Auto-analyze on paste if it looks like a Deezer or Spotify URL
   const text = e.clipboardData?.getData('text') || ''
-  if (isDeezerUrl(text) || isSpotifyUrl(text)) {
+  if (extractLinks(text).length > 0) {
     // Let the paste happen first, then analyze
     setTimeout(() => {
       analyzeLink()
@@ -863,7 +1019,7 @@ async function pasteLink() {
           <input
             v-model="linkInput"
             type="text"
-            placeholder="Paste a Deezer or Spotify link (track, album, artist, or playlist)..."
+            placeholder="Paste one or more Deezer, Spotify or Qobuz links (track, album, artist, or playlist)..."
             class="flex-1 min-w-0 bg-transparent border-none outline-none font-mono text-[13px] px-4 text-foreground placeholder:text-foreground-muted caret-primary-500"
             @paste="handlePaste"
             @contextmenu="openInputMenu"
@@ -903,6 +1059,65 @@ async function pasteLink() {
             d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <p>{{ error }}</p>
+      </div>
+    </div>
+
+    <!-- Multi-link batch (#142): one row per pasted link; the detail view below shows the selected row -->
+    <div v-if="batch.length" class="bg-background-secondary/60 border border-white/[0.08]">
+      <div class="flex items-center gap-3 px-4 py-2.5 border-b border-white/[0.08]">
+        <span class="font-mono text-[10.5px] uppercase tracking-[0.12em] text-foreground-muted">
+          {{ batch.length }} links · {{ batchReady }} ready<span v-if="batchDone < batch.length"> · {{ batchDone }}/{{ batch.length }} analyzed</span><span v-else-if="batch.length - batchReady > 0"> · {{ batch.length - batchReady }} failed</span>
+        </span>
+        <svg v-if="batchRunning" class="animate-spin w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        <div class="flex-1"></div>
+        <button
+          type="button"
+          :disabled="batchRunning || batchDownloading || batchReady === 0"
+          class="px-3 py-1.5 font-mono text-[10.5px] uppercase tracking-[0.1em] bg-primary-500 text-background-main hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          @click="downloadAllReady"
+        >
+          {{ batchDownloading ? 'Queuing...' : `Download all ready (${batchReady})` }}
+        </button>
+        <button
+          type="button"
+          :disabled="batchRunning"
+          class="px-3 py-1.5 font-mono text-[10.5px] uppercase tracking-[0.1em] border border-white/[0.1] text-foreground-muted hover:text-foreground disabled:opacity-50 transition-colors"
+          @click="clearBatch"
+        >
+          Clear
+        </button>
+      </div>
+      <div class="max-h-72 overflow-y-auto divide-y divide-white/[0.06]">
+        <div
+          v-for="(row, i) in batch"
+          :key="row.url"
+          class="flex items-center gap-3 px-4 py-2 text-sm cursor-pointer hover:bg-white/[0.03]"
+          :class="batchSelected === i ? 'bg-primary-500/10' : ''"
+          @click="selectBatchRow(i)"
+        >
+          <span
+            class="w-2 h-2 flex-shrink-0 rounded-full"
+            :class="row.status === 'ready' ? 'bg-green-400' : row.status === 'failed' ? 'bg-red-400' : row.status === 'analyzing' ? 'bg-primary-500 animate-pulse' : 'bg-white/20'"
+          ></span>
+          <span class="flex-shrink-0 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.08em] border border-white/[0.1] text-foreground-muted">{{ row.type || row.kind }}</span>
+          <div class="flex-1 min-w-0">
+            <div class="truncate" :class="row.status === 'failed' ? 'text-foreground-muted' : ''">{{ row.title || row.url }}</div>
+            <div v-if="row.status === 'failed'" class="truncate text-xs text-red-400">{{ row.error }}</div>
+            <div v-else-if="row.subtitle" class="truncate text-xs text-foreground-muted">{{ row.subtitle }}</div>
+          </div>
+          <button
+            v-if="row.status === 'ready' && row.type !== 'artist'"
+            type="button"
+            :disabled="batchDownloading"
+            class="flex-shrink-0 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.08em] border border-primary-500/40 text-primary-500 hover:bg-primary-500/10 disabled:opacity-50 transition-colors"
+            @click.stop="downloadBatchRow(i)"
+          >
+            Download
+          </button>
+        </div>
       </div>
     </div>
 
