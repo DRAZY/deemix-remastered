@@ -10,9 +10,17 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+## [2.6.1] - 2026-09-10
+
+### Summary
+
+- **A fix release: the synced-lyrics toggle from 2.6.0 now works, Settings keeps your panels folded, a higher quality setting can re-download something you already have, and you can copy a Deezer or Qobuz link back out of the app. French is now fully translated.**
+
 ### Added
 
 - **Copy Link on downloads and on playlist and album pages (#150, requested by @alex5908).** Right-click any row in the Downloads rack for Copy Link and Copy Title, and the playlist and album pages now have Copy Link at the top of their right-click menu. The link is the public Deezer or Qobuz address, so a playlist that failed can be pasted straight back into Link Analyzer or a browser. Rows that finished before this version show Copy Link greyed out, since they were recorded without the id needed to rebuild it.
+
+- **French is complete (#148, contributed by @GravuTrad).** Every string in the app now has a French translation, replacing the partial one that fell back to English for about a third of the interface. Existing strings were polished too, with proper French quotation marks and apostrophes.
 
 ### Fixed
 
