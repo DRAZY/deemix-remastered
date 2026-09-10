@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { publicLinkForItem } from '../utils/sourceLinks'
 import { ref, computed } from 'vue'
 import type { Track, Album, Playlist, DownloadItem, DownloadStatus, FailedTrack, SubstitutedTrack, DownloadHistoryEntry, DownloadTrackEntry } from '../types'
 import { useSettingsStore } from './settingsStore'
@@ -38,6 +39,54 @@ export const useDownloadStore = defineStore('downloads', () => {
   // use (isTrackInQueue/isTrackCompleted parseInt string ids before .get()).
   function asCatalogKey(id: number | string): number {
     return typeof id === 'string' ? parseInt(id, 10) : id
+  }
+
+  // Quality tiers, comparable across the renderer's requested labels
+  // ('128' | '320' | 'flac') and the server's delivered labels ('MP3_128' |
+  // 'MP3_320' | 'FLAC', Qobuz 'FLAC 24/96'). 0 means unknown, which callers
+  // must read as "cannot compare", never as "lowest".
+  function tierRank(format?: string | null): number {
+    if (!format) return 0
+    const f = String(format).toUpperCase()
+    if (f.startsWith('FLAC')) return 3
+    if (f === '320' || f === 'MP3_320') return 2
+    if (f === '128' || f === 'MP3_128') return 1
+    return 0
+  }
+
+  // Tier the newest completed row for this item actually delivered, falling
+  // back to what it requested when the server never reported a delivered
+  // format. Album and playlist rows count for the tracks they contain, the
+  // same way rebuildLookupMaps registers their catalog ids. downloads is
+  // newest-first, so the first hit is the freshest.
+  function completedTierRank(kind: 'track' | 'album' | 'playlist', id: number | string): number {
+    const key = asCatalogKey(id)
+    for (const d of downloads.value) {
+      if (d.refresh || d.status !== 'completed') continue
+      let hit = false
+      if (kind === 'track') {
+        hit = (d.track?.id != null && asCatalogKey(d.track.id) === key) ||
+          (d.catalogTrackIds?.some(cid => asCatalogKey(cid) === key) ?? false)
+      } else if (kind === 'album') {
+        hit = d.type === 'album' && d.album?.id != null && asCatalogKey(d.album.id) === key
+      } else {
+        hit = d.type === 'playlist' && d.playlist?.id != null && asCatalogKey(d.playlist.id) === key
+      }
+      if (hit) return tierRank(d.actualFormat || d.quality)
+    }
+    return 0
+  }
+
+  // True when the item is marked downloaded but at a lower tier than the
+  // quality currently selected in Settings: it went down as MP3 128, say, and
+  // the user has since switched to 320 or FLAC. Asking for it again is an
+  // upgrade, not a duplicate, so the "already downloaded" gate steps aside and
+  // the server's tier-aware skip check (isLowerTier) does the rest (#144).
+  // Unknown tiers never unlock; a same-or-higher tier on disk keeps the toast.
+  function isCompletedAtLowerTier(kind: 'track' | 'album' | 'playlist', id: number | string): boolean {
+    const want = tierRank(useSettingsStore().settings.quality)
+    const have = completedTierRank(kind, id)
+    return want > 0 && have > 0 && have < want
   }
 
   // Helper to rebuild lookup Maps from downloads array
@@ -375,6 +424,7 @@ export const useDownloadStore = defineStore('downloads', () => {
       substitutedTracks: item.substitutedTracks,
       skippedAsDuplicate: item.skippedAsDuplicate,
       path: item.path,
+      link: publicLinkForItem(item) ?? undefined,
       status: item.status === 'completed' ? 'completed' : 'error',
       error: item.error,
       completedAt: new Date().toISOString(),
@@ -449,6 +499,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         embedArtwork: settingsStore.settings.embedArtwork,
         saveLyrics: settingsStore.settings.saveLyrics,
         syncedLyrics: settingsStore.settings.syncedLyrics,
+        preferSyncedLyrics: settingsStore.settings.preferSyncedLyrics,
         tags: settingsStore.settings.tags,
         albumCovers: settingsStore.settings.albumCovers,
         savePlaylistAsCompilation: settingsStore.settings.savePlaylistAsCompilation,
@@ -509,11 +560,16 @@ export const useDownloadStore = defineStore('downloads', () => {
   async function addDownload(track: Track, { skipSync = false, playlistName = '' } = {}) {
     const toastStore = useToastStore()
 
-    // Check if already downloaded (completed)
+    // Check if already downloaded (completed). A completed row at a lower tier
+    // than the current quality setting is an upgrade request, not a repeat (#144).
     if (isTrackCompleted(track.id)) {
-      toastStore.info(`"${track.title}" was already downloaded`)
-      console.log(`[DownloadStore] Track ${track.id} already completed, skipping`)
-      return // Early return - already downloaded
+      if (isCompletedAtLowerTier('track', track.id)) {
+        console.log(`[DownloadStore] Track ${track.id} was downloaded at a lower tier — re-downloading at current quality`)
+      } else {
+        toastStore.info(`"${track.title}" was already downloaded`)
+        console.log(`[DownloadStore] Track ${track.id} already completed, skipping`)
+        return // Early return - already downloaded
+      }
     }
 
     // Check for duplicate - prevent adding track already in queue
@@ -610,9 +666,13 @@ export const useDownloadStore = defineStore('downloads', () => {
     // Check if already downloaded (completed). Refresh-tags intentionally
     // re-processes existing files, so it bypasses this guard.
     if (!refreshTags && isAlbumCompleted(album.id)) {
-      toastStore.info(`"${album.title}" was already downloaded`)
-      console.log(`[DownloadStore] Album ${album.id} already completed, skipping`)
-      return // Early return - already downloaded
+      if (isCompletedAtLowerTier('album', album.id)) {
+        console.log(`[DownloadStore] Album ${album.id} was downloaded at a lower tier — re-downloading at current quality (#144)`)
+      } else {
+        toastStore.info(`"${album.title}" was already downloaded`)
+        console.log(`[DownloadStore] Album ${album.id} already completed, skipping`)
+        return // Early return - already downloaded
+      }
     }
 
     // Check for duplicate - prevent adding album already in queue
@@ -817,9 +877,13 @@ export const useDownloadStore = defineStore('downloads', () => {
     // Check if already downloaded (completed). Refresh-tags re-processes
     // existing files on purpose, so it bypasses this guard.
     if (!refreshTags && isPlaylistCompleted(playlist.id)) {
-      toastStore.info(`"${playlist.title}" was already downloaded`)
-      console.log(`[DownloadStore] Playlist ${playlist.id} already completed, skipping`)
-      return // Early return - already downloaded
+      if (isCompletedAtLowerTier('playlist', playlist.id)) {
+        console.log(`[DownloadStore] Playlist ${playlist.id} was downloaded at a lower tier — re-downloading at current quality (#144)`)
+      } else {
+        toastStore.info(`"${playlist.title}" was already downloaded`)
+        console.log(`[DownloadStore] Playlist ${playlist.id} already completed, skipping`)
+        return // Early return - already downloaded
+      }
     }
 
     // Check for duplicate - prevent adding playlist already in queue

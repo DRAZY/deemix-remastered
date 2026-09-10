@@ -199,6 +199,8 @@ export interface DownloadHistoryEntry {
   completedAt: string
   totalTracks?: number
   failedTracks?: number
+  /** Public Deezer/Qobuz URL of the item, captured when the row was recorded (#150). */
+  link?: string
 }
 
 export interface SearchResults {

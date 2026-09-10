@@ -8,6 +8,7 @@ import ConfirmDialog from '../components/ConfirmDialog.vue'
 import EmptyState from '../components/EmptyState.vue'
 import ContextMenu from '../components/ContextMenu.vue'
 import { useContextMenu } from '../composables/useContextMenu'
+import { publicLinkForItem } from '../utils/sourceLinks'
 import type { DownloadItem, SubstitutedTrack } from '../types'
 
 const { t } = useI18n()
@@ -406,26 +407,56 @@ async function moveToFront(item: DownloadItem) {
   }
 }
 
-// Context menu for error details
+// One context menu, two uses: fields in the error dialog (copy the value) and
+// rows in the rack (copy the item's public link or title, #150).
 const { menuState, openMenu, closeMenu, copyToClipboard } = useContextMenu()
+const menuMode = ref<'error' | 'row'>('error')
 const contextMenuValue = ref('')
 const contextMenuLabel = ref('')
+const rowMenuLink = ref<string | null>(null)
+const rowMenuTitle = ref('')
 
 function openErrorContextMenu(e: MouseEvent, label: string, value: string) {
   if (value) {
+    menuMode.value = 'error'
     contextMenuValue.value = value
     contextMenuLabel.value = label
     openMenu(e)
   }
 }
 
-const contextMenuItems = computed(() => [
-  {
-    label: t('contextMenu.copyError'),
-    icon: 'copy',
-    action: () => copyToClipboard(contextMenuValue.value, contextMenuLabel.value)
-  }
-])
+// Active rows carry the track/album/playlist object, so the link is rebuilt on
+// the spot; history entries carry the link captured when they were recorded.
+// Entries recorded before #150 have neither, so Copy Link shows disabled there.
+function openRowContextMenu(e: MouseEvent, target: { title?: string; link?: string; type?: string; source?: string; track?: any; album?: any; playlist?: any }) {
+  menuMode.value = 'row'
+  rowMenuLink.value = target.link ?? publicLinkForItem(target)
+  rowMenuTitle.value = target.title || ''
+  openMenu(e)
+}
+
+const contextMenuItems = computed(() => menuMode.value === 'row'
+  ? [
+      {
+        label: t('contextMenu.copyLink'),
+        icon: 'link',
+        action: () => copyToClipboard(rowMenuLink.value || '', t('contextMenu.link')),
+        disabled: !rowMenuLink.value
+      },
+      {
+        label: t('contextMenu.copyTitle'),
+        icon: 'copy',
+        action: () => copyToClipboard(rowMenuTitle.value, t('contextMenu.title')),
+        disabled: !rowMenuTitle.value
+      }
+    ]
+  : [
+      {
+        label: t('contextMenu.copyError'),
+        icon: 'copy',
+        action: () => copyToClipboard(contextMenuValue.value, contextMenuLabel.value)
+      }
+    ])
 
 // Copy all error details
 function copyAllErrorDetails() {
@@ -614,6 +645,7 @@ function copyAllErrorDetails() {
         :key="item.id"
         draggable="true"
         class="card relative transition-transform dl-unit cv-auto-row"
+        @contextmenu="openRowContextMenu($event, item)"
         :class="[
           `dl-${item.status}`,
           isSlim ? 'p-2' : '',
@@ -1204,6 +1236,7 @@ function copyAllErrorDetails() {
           v-for="entry in downloadStore.downloadHistory"
           :key="entry.id"
           class="flex items-center gap-3 px-3 py-2 border border-white/[0.06] bg-background-secondary/30 text-sm cv-auto-row-slim"
+          @contextmenu="openRowContextMenu($event, entry)"
         >
           <!-- Status icon -->
           <div class="flex-shrink-0">

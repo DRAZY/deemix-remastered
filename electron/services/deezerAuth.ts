@@ -1485,7 +1485,7 @@ export class DeezerAuth extends EventEmitter {
         }
       } catch (e: any) {
         // Non-fatal by design: the download proceeds without the copyright tag.
-        console.log('[DeezerAuth] pageTrack copyright enrichment failed:', logSafe(e?.message ?? e))
+        console.log('[DeezerAuth] pageTrack copyright enrichment failed:', JSON.stringify(logSafe(e?.message ?? e)))
       }
     }
 

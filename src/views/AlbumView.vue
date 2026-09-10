@@ -11,6 +11,7 @@ import BackButton from '../components/BackButton.vue'
 import ErrorState from '../components/ErrorState.vue'
 import ContextMenu from '../components/ContextMenu.vue'
 import { useContextMenu } from '../composables/useContextMenu'
+import { publicLink } from '../utils/sourceLinks'
 import type { Album, Track } from '../types'
 
 const { t } = useI18n()
@@ -202,9 +203,19 @@ async function downloadSelectedTracks() {
 // Context menu
 const { menuState, openMenu, closeMenu, copyToClipboard } = useContextMenu()
 
+const albumLink = computed(() => album.value
+  ? publicLink('album', (album.value as any).qobuzId ?? album.value.id, (album.value as any).source)
+  : null)
+
 const contextMenuItems = computed(() => {
   if (!album.value) return []
   return [
+    {
+      label: t('contextMenu.copyLink'),
+      icon: 'link',
+      action: () => copyToClipboard(albumLink.value || '', t('contextMenu.link')),
+      disabled: !albumLink.value
+    },
     {
       label: t('contextMenu.copyAlbum'),
       icon: 'copy',
