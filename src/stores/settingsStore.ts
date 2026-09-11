@@ -43,11 +43,15 @@ export interface TagSettings {
   releaseType: boolean
 }
 
+export type FavoritesTab = 'tracks' | 'albums' | 'artists' | 'playlists'
+
 export interface AppearanceSettings {
   slimDownloadTab: boolean
   slimSidebar: boolean
   showQualityTag: boolean
   showSearchButton: boolean
+  // #149: which Favorites tab opens first
+  favoritesDefaultTab: FavoritesTab
 }
 
 export interface AlbumCoverSettings {
@@ -215,7 +219,8 @@ export const defaultSettings: Settings = {
     slimDownloadTab: false,
     slimSidebar: false,
     showQualityTag: true,
-    showSearchButton: true
+    showSearchButton: true,
+    favoritesDefaultTab: 'tracks'
   },
   // Album cover settings
   albumCovers: {

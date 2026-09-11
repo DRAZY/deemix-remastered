@@ -184,6 +184,8 @@
     "showQualityTag": "إظهار علامة الجودة",
     "showSearchButton": "إظهار زر البحث",
     "showSearchButtonDesc": "عرض البحث في التنقل الجانبي",
+    "favoritesDefaultTab": "المفضلة: فتح على",
+    "favoritesDefaultTabDesc": "القسم الذي تعرضه صفحة المفضلة أولاً",
     "downloadPath": "مسار التنزيل",
     "downloadLocation": "موقع التنزيل",
     "notSet": "غير محدد",

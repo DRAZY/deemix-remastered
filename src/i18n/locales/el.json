@@ -184,6 +184,8 @@
     "showQualityTag": "Εμφάνιση Ετικέτας Ποιότητας",
     "showSearchButton": "Εμφάνιση Κουμπιού Αναζήτησης",
     "showSearchButtonDesc": "Εμφάνιση αναζήτησης στην πλοήγηση",
+    "favoritesDefaultTab": "Αγαπημένα: άνοιγμα σε",
+    "favoritesDefaultTabDesc": "Ποια ενότητα εμφανίζει πρώτα η σελίδα Αγαπημένων",
     "downloadPath": "Διαδρομή Λήψεων",
     "downloadLocation": "Τοποθεσία Λήψεων",
     "notSet": "Δεν έχει οριστεί",

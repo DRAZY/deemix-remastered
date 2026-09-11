@@ -184,6 +184,8 @@
     "showQualityTag": "Показать тег качества",
     "showSearchButton": "Показать кнопку поиска",
     "showSearchButtonDesc": "Показать поиск в навигации",
+    "favoritesDefaultTab": "Избранное: открывать на",
+    "favoritesDefaultTabDesc": "Какой раздел страницы Избранного показывать первым",
     "downloadPath": "Путь загрузки",
     "downloadLocation": "Расположение загрузок",
     "notSet": "Не задано",

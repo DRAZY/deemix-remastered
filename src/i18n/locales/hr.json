@@ -184,6 +184,8 @@
     "showQualityTag": "Prikaži Oznaku Kvalitete",
     "showSearchButton": "Prikaži Gumb za Pretragu",
     "showSearchButtonDesc": "Prikaži pretragu u navigaciji bočne trake",
+    "favoritesDefaultTab": "Favoriti: otvori na",
+    "favoritesDefaultTabDesc": "Koji se odjeljak prvi prikazuje na stranici Favoriti",
     "downloadPath": "Putanja Preuzimanja",
     "downloadLocation": "Lokacija Preuzimanja",
     "notSet": "Nije postavljeno",

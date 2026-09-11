@@ -184,6 +184,8 @@
     "showQualityTag": "Tampilkan Tag Kualitas",
     "showSearchButton": "Tampilkan Tombol Pencarian",
     "showSearchButtonDesc": "Tampilkan pencarian di navigasi sidebar",
+    "favoritesDefaultTab": "Favorit: buka di",
+    "favoritesDefaultTabDesc": "Bagian mana yang ditampilkan pertama di halaman Favorit",
     "downloadPath": "Lokasi Unduhan",
     "downloadLocation": "Lokasi Unduhan",
     "notSet": "Belum diatur",

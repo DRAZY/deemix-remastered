@@ -184,6 +184,8 @@
     "showQualityTag": "품질 태그 표시",
     "showSearchButton": "검색 버튼 표시",
     "showSearchButtonDesc": "사이드바 네비게이션에 검색 표시",
+    "favoritesDefaultTab": "즐겨찾기: 처음 열 탭",
+    "favoritesDefaultTabDesc": "즐겨찾기 페이지에서 먼저 표시할 섹션",
     "downloadPath": "다운로드 경로",
     "downloadLocation": "다운로드 위치",
     "notSet": "설정되지 않음",

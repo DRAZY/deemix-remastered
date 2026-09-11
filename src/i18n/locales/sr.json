@@ -235,6 +235,8 @@
     "showQualityTag": "Прикажи ознаку квалитета",
     "showSearchButton": "Прикажи дугме за претрагу",
     "showSearchButtonDesc": "Прикажи претрагу у бочној навигацији",
+    "favoritesDefaultTab": "Омиљено: отвори на",
+    "favoritesDefaultTabDesc": "Који се одељак прво приказује на страници Омиљено",
     "downloadPath": "Путања преузимања",
     "downloadLocation": "Локација преузимања",
     "notSet": "Није постављено",

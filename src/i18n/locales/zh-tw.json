@@ -235,6 +235,8 @@
     "showQualityTag": "顯示品質標籤",
     "showSearchButton": "顯示搜尋按鈕",
     "showSearchButtonDesc": "在側邊欄導覽中顯示搜尋",
+    "favoritesDefaultTab": "收藏：預設開啟",
+    "favoritesDefaultTabDesc": "收藏頁面首先顯示的分區",
     "downloadPath": "下載路徑",
     "downloadLocation": "下載位置",
     "notSet": "未設定",

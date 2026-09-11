@@ -184,6 +184,8 @@
     "showQualityTag": "Ipakita ang Quality Tag",
     "showSearchButton": "Ipakita ang Search Button",
     "showSearchButtonDesc": "Ipakita ang search sa sidebar navigation",
+    "favoritesDefaultTab": "Mga Paborito: buksan sa",
+    "favoritesDefaultTabDesc": "Aling seksyon ang unang ipinapakita ng pahina ng Mga Paborito",
     "downloadPath": "Path ng Download",
     "downloadLocation": "Lokasyon ng Download",
     "notSet": "Hindi pa naka-set",

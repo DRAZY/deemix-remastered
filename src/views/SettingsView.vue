@@ -699,6 +699,22 @@ async function reindexLibrary() {
           </label>
         </div>
       </div>
+
+      <!-- #149: which Favorites tab opens first -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium mb-1">{{ t('settings.favoritesDefaultTab') }}</label>
+        <p class="text-xs text-foreground-muted mb-2">{{ t('settings.favoritesDefaultTabDesc') }}</p>
+        <select
+          v-model="settingsStore.settings.appearance.favoritesDefaultTab"
+          @change="saveNow"
+          class="w-full px-3 py-2 bg-background-main/60 text-sm border border-white/[0.1] focus:border-primary-500/50 outline-none"
+        >
+          <option value="tracks">{{ t('favorites.tracks') }}</option>
+          <option value="albums">{{ t('favorites.albums') }}</option>
+          <option value="artists">{{ t('favorites.artists') }}</option>
+          <option value="playlists">{{ t('favorites.playlists') }}</option>
+        </select>
+      </div>
     </section>
 
     <!-- Languages Section -->

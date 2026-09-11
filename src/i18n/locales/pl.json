@@ -184,6 +184,8 @@
     "showQualityTag": "Pokaż znacznik jakości",
     "showSearchButton": "Pokaż przycisk wyszukiwania",
     "showSearchButtonDesc": "Wyświetl wyszukiwanie w nawigacji bocznej",
+    "favoritesDefaultTab": "Ulubione: otwieraj na",
+    "favoritesDefaultTabDesc": "Która sekcja strony Ulubione jest wyświetlana jako pierwsza",
     "downloadPath": "Ścieżka pobierania",
     "downloadLocation": "Lokalizacja pobierania",
     "notSet": "Nie ustawiono",

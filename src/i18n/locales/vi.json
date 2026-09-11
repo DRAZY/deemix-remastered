@@ -235,6 +235,8 @@
     "showQualityTag": "Hiển thị nhãn chất lượng",
     "showSearchButton": "Hiển thị nút tìm kiếm",
     "showSearchButtonDesc": "Hiển thị tìm kiếm trong điều hướng thanh bên",
+    "favoritesDefaultTab": "Yêu thích: mở ở",
+    "favoritesDefaultTabDesc": "Mục nào được hiển thị đầu tiên trên trang Yêu thích",
     "downloadPath": "Đường dẫn tải xuống",
     "downloadLocation": "Vị trí tải xuống",
     "notSet": "Chưa đặt",

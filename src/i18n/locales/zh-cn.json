@@ -184,6 +184,8 @@
     "showQualityTag": "显示质量标签",
     "showSearchButton": "显示搜索按钮",
     "showSearchButtonDesc": "在侧边栏导航中显示搜索",
+    "favoritesDefaultTab": "收藏：默认打开",
+    "favoritesDefaultTabDesc": "收藏页面首先显示的分区",
     "downloadPath": "下载路径",
     "downloadLocation": "下载位置",
     "notSet": "未设置",

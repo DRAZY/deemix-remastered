@@ -184,6 +184,8 @@
     "showQualityTag": "Mostrar etiqueta de calidad",
     "showSearchButton": "Mostrar botón de búsqueda",
     "showSearchButtonDesc": "Mostrar búsqueda en la navegación lateral",
+    "favoritesDefaultTab": "Favoritos: abrir en",
+    "favoritesDefaultTabDesc": "Qué sección muestra primero la página de Favoritos",
     "downloadPath": "Ruta de descarga",
     "downloadLocation": "Ubicación de descarga",
     "notSet": "No establecido",

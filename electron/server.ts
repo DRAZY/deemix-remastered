@@ -869,7 +869,7 @@ export class DeemixServer extends EventEmitter {
         break
 
       case '/api/user/favorites':
-        await this.handleGetUserFavorites(res)
+        await this.handleGetUserFavorites(url, res)
         break
 
       // Spotify endpoints
@@ -2769,7 +2769,10 @@ export class DeemixServer extends EventEmitter {
     }
   }
 
-  private async handleGetUserFavorites(res: ServerResponse): Promise<void> {
+  // #149: the renderer may ask for one section at a time (?type=tracks|albums|
+  // artists|playlists) so a large tracks list no longer holds the other three
+  // hostage. With no type the legacy all-in-one response is returned.
+  private async handleGetUserFavorites(url: URL, res: ServerResponse): Promise<void> {
     if (!deezerAuth.isLoggedIn()) {
       this.sendJSON(res, { error: 'Authentication required' }, 401)
       return
@@ -2800,19 +2803,29 @@ export class DeemixServer extends EventEmitter {
         return allItems
       }
 
-      const [tracks, albums, artists, playlists] = await Promise.all([
-        fetchAllPages(`/user/${userId}/tracks`),
-        fetchAllPages(`/user/${userId}/albums`),
-        fetchAllPages(`/user/${userId}/artists`),
-        fetchAllPages(`/user/${userId}/playlists`)
-      ])
-
-      const result = {
-        tracks,
-        albums,
-        artists,
-        playlists: playlists.filter((p: any) => !p.is_loved_track)
+      const sections = ['tracks', 'albums', 'artists', 'playlists'] as const
+      type Section = typeof sections[number]
+      const requested = url.searchParams.get('type')
+      if (requested !== null && !(sections as readonly string[]).includes(requested)) {
+        this.sendJSON(res, { error: `Unknown favorites type: ${requested}` }, 400)
+        return
       }
+
+      const fetchSection = async (section: Section): Promise<any[]> => {
+        const items = await fetchAllPages(`/user/${userId}/${section}`)
+        return section === 'playlists' ? items.filter((p: any) => !p.is_loved_track) : items
+      }
+
+      if (requested !== null) {
+        const section = requested as Section
+        const items = await fetchSection(section)
+        console.log(`[Server] Fetched favorites: ${items.length} ${section}`)
+        this.sendJSON(res, { [section]: items })
+        return
+      }
+
+      const [tracks, albums, artists, playlists] = await Promise.all(sections.map(fetchSection))
+      const result = { tracks, albums, artists, playlists }
 
       console.log(`[Server] Fetched favorites: ${result.tracks.length} tracks, ${result.albums.length} albums, ${result.artists.length} artists, ${result.playlists.length} playlists`)
       this.sendJSON(res, result)

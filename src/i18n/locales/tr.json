@@ -184,6 +184,8 @@
     "showQualityTag": "Kalite Etiketini Göster",
     "showSearchButton": "Arama Düğmesini Göster",
     "showSearchButtonDesc": "Kenar çubuğu navigasyonunda aramayı göster",
+    "favoritesDefaultTab": "Favoriler: şurada aç",
+    "favoritesDefaultTabDesc": "Favoriler sayfasının ilk gösterdiği bölüm",
     "downloadPath": "İndirme Yolu",
     "downloadLocation": "İndirme Konumu",
     "notSet": "Ayarlanmadı",

@@ -235,6 +235,8 @@
     "showQualityTag": "แสดงแท็กคุณภาพ",
     "showSearchButton": "แสดงปุ่มค้นหา",
     "showSearchButtonDesc": "แสดงการค้นหาในแถบนำทางด้านข้าง",
+    "favoritesDefaultTab": "รายการโปรด: เปิดที่",
+    "favoritesDefaultTabDesc": "ส่วนที่หน้ารายการโปรดแสดงเป็นอันดับแรก",
     "downloadPath": "เส้นทางดาวน์โหลด",
     "downloadLocation": "ตำแหน่งดาวน์โหลด",
     "notSet": "ไม่ได้ตั้งค่า",

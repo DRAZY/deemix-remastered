@@ -349,6 +349,8 @@
     "showQualityTag": "Show Quality Tag",
     "showSearchButton": "Show Search Button",
     "showSearchButtonDesc": "Display search in the sidebar navigation",
+    "favoritesDefaultTab": "Favorites: open on",
+    "favoritesDefaultTabDesc": "Which section the Favorites page shows first",
     "downloadPath": "Download Path",
     "downloadLocation": "Download Location",
     "notSet": "Not set",

@@ -349,6 +349,8 @@
     "showQualityTag": "Afficher l’indicateur de qualité",
     "showSearchButton": "Afficher le bouton de recherche",
     "showSearchButtonDesc": "Afficher la recherche dans la navigation de la barre latérale",
+    "favoritesDefaultTab": "Favoris : ouvrir sur",
+    "favoritesDefaultTabDesc": "Section affichée en premier sur la page Favoris",
     "downloadPath": "Chemin de téléchargement",
     "downloadLocation": "Emplacement de téléchargement",
     "notSet": "Non défini",

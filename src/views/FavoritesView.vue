@@ -7,7 +7,7 @@ import { useDownloadStore } from '../stores/downloadStore'
 import { useToastStore } from '../stores/toastStore'
 import { useSyncStore, type SyncedPlaylist } from '../stores/syncStore'
 import { useArtistSyncStore, type SyncedArtist, type FirstSyncMode } from '../stores/artistSyncStore'
-import { useSettingsStore } from '../stores/settingsStore'
+import { useSettingsStore, type FavoritesTab } from '../stores/settingsStore'
 import { deezerAPI } from '../services/deezerAPI'
 import TrackCard from '../components/TrackCard.vue'
 import AlbumCard from '../components/AlbumCard.vue'
@@ -23,7 +23,8 @@ const toastStore = useToastStore()
 const syncStore = useSyncStore()
 const artistSyncStore = useArtistSyncStore()
 const settingsStore = useSettingsStore()
-const activeTab = ref<'tracks' | 'albums' | 'artists' | 'playlists'>('tracks')
+// #149: open on the tab chosen in Settings > Appearance (default: tracks)
+const activeTab = ref<FavoritesTab>(settingsStore.settings.appearance.favoritesDefaultTab || 'tracks')
 const isDownloading = ref(false)
 const isBulkSyncing = ref(false)
 
@@ -68,10 +69,10 @@ const sortedArtists = computed(() => sortByName(favoritesStore.favoriteArtists, 
 const sortedPlaylists = computed(() => sortByName(favoritesStore.favoritePlaylists, 'title', sortOrder.value))
 
 const tabs = computed(() => [
-  { id: 'tracks', label: t('favorites.tracks'), count: () => favoritesStore.favoriteTracks.length },
-  { id: 'albums', label: t('favorites.albums'), count: () => favoritesStore.favoriteAlbums.length },
-  { id: 'artists', label: t('favorites.artists'), count: () => favoritesStore.favoriteArtists.length },
-  { id: 'playlists', label: t('favorites.playlists'), count: () => favoritesStore.favoritePlaylists.length }
+  { id: 'tracks', label: t('favorites.tracks'), count: () => favoritesStore.favoriteTracks.length, loading: () => favoritesStore.importingSections.track },
+  { id: 'albums', label: t('favorites.albums'), count: () => favoritesStore.favoriteAlbums.length, loading: () => favoritesStore.importingSections.album },
+  { id: 'artists', label: t('favorites.artists'), count: () => favoritesStore.favoriteArtists.length, loading: () => favoritesStore.importingSections.artist },
+  { id: 'playlists', label: t('favorites.playlists'), count: () => favoritesStore.favoritePlaylists.length, loading: () => favoritesStore.importingSections.playlist }
 ])
 
 onMounted(async () => {
@@ -489,7 +490,10 @@ async function downloadAllFavorites() {
 
 async function importFromDeezer() {
   try {
-    const { imported, skipped, pruned, syncStale } = await favoritesStore.importDeezerFavorites(serverPort.value)
+    const { imported, skipped, pruned, failed, syncStale } = await favoritesStore.importDeezerFavorites(serverPort.value)
+    if (failed.length > 0) {
+      toastStore.error(`Could not load ${failed.map(f => f + 's').join(', ')} from Deezer. Other sections were updated.`)
+    }
     const parts: string[] = []
     if (imported > 0) parts.push(`+${imported} imported`)
     if (pruned > 0) parts.push(`−${pruned} pruned`)
@@ -597,8 +601,12 @@ async function importFromDeezer() {
           : 'text-foreground-muted border-white/[0.08] hover:text-foreground hover:border-white/20'"
       >
         {{ tab.label }}
+        <svg v-if="tab.loading()" class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+        </svg>
         <span
-          v-if="tab.count() > 0"
+          v-else-if="tab.count() > 0"
           class="text-[9.5px]"
           :class="activeTab === tab.id ? 'text-primary-500/80' : 'text-foreground-muted'"
         >
