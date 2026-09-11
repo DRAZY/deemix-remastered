@@ -251,6 +251,7 @@
     "saveLyrics": "Zapisuj teksty",
     "syncedLyrics": "Zsynchronizowane teksty (.lrc)",
     "preferSyncedLyrics": "Pomiń zwykły .txt, gdy dostępne są zsynchronizowane teksty",
+    "deleteSupersededLyrics": "Usuń także starszy plik .txt po zapisaniu zsynchronizowanego tekstu",
     "embeddedArtwork": "Rozmiar osadzonej okładki",
     "localArtwork": "Rozmiar lokalnej okładki",
     "saveCovers": "Zapisuj okładki albumów",

@@ -251,6 +251,7 @@
     "saveLyrics": "가사 저장",
     "syncedLyrics": "동기화된 가사 (.lrc)",
     "preferSyncedLyrics": "동기화된 가사가 있으면 일반 .txt 건너뛰기",
+    "deleteSupersededLyrics": "동기화 가사가 저장되면 이전 .txt도 삭제",
     "embeddedArtwork": "내장 아트워크 크기",
     "localArtwork": "로컬 아트워크 크기",
     "saveCovers": "앨범 커버 저장",

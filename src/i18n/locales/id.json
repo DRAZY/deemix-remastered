@@ -251,6 +251,7 @@
     "saveLyrics": "Simpan lirik",
     "syncedLyrics": "Lirik sinkron (.lrc)",
     "preferSyncedLyrics": "Lewati .txt biasa jika lirik sinkron tersedia",
+    "deleteSupersededLyrics": "Hapus juga .txt lama setelah lirik tersinkron disimpan",
     "embeddedArtwork": "Ukuran sampul tertanam",
     "localArtwork": "Ukuran sampul lokal",
     "saveCovers": "Simpan sampul album",

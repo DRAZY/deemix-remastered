@@ -302,6 +302,7 @@
     "saveLyrics": "บันทึกเนื้อเพลง",
     "syncedLyrics": "เนื้อเพลงซิงค์ (.lrc)",
     "preferSyncedLyrics": "ข้ามไฟล์ .txt ธรรมดาเมื่อมีเนื้อเพลงซิงค์",
+    "deleteSupersededLyrics": "ลบไฟล์ .txt เก่าด้วยเมื่อบันทึกเนื้อเพลงซิงค์แล้ว",
     "embeddedArtwork": "ขนาดภาพปกที่ฝัง",
     "localArtwork": "ขนาดภาพปกในเครื่อง",
     "saveCovers": "บันทึกปกอัลบั้ม",

@@ -118,6 +118,10 @@ export interface DownloadOptions {
   // When true, the plain .txt is skipped for any track that also produced an
   // .lrc, so a track with synced lyrics leaves one file instead of two (#141).
   preferSyncedLyrics?: boolean
+  // With preferSyncedLyrics on, also remove a .txt written by an earlier run
+  // once this run writes the .lrc for the same track (#141). Opt-in: the app
+  // deleting a file it wrote before is fine except when someone edited it.
+  deleteSupersededLyrics?: boolean
   // Additional folder settings
   folderSettings?: FolderSettings
   // Track naming templates
@@ -1744,7 +1748,7 @@ export class Downloader extends EventEmitter {
       // Save lyrics if requested
       if (options.saveLyrics && trackInfo.LYRICS) {
         try {
-          await this.saveLyrics(trackInfo, decryptedPath, options.syncedLyrics !== false, options.preferSyncedLyrics === true)
+          await this.saveLyrics(trackInfo, decryptedPath, options.syncedLyrics !== false, options.preferSyncedLyrics === true, options.deleteSupersededLyrics === true)
         } catch (error: any) {
           console.error(`[Downloader] Lyrics save error:`, error.message)
         }
@@ -4317,7 +4321,7 @@ export class Downloader extends EventEmitter {
     }
   }
 
-  private async saveLyrics(trackInfo: any, audioPath: string, saveSynced: boolean = true, preferSynced: boolean = false): Promise<void> {
+  private async saveLyrics(trackInfo: any, audioPath: string, saveSynced: boolean = true, preferSynced: boolean = false, deleteSuperseded: boolean = false): Promise<void> {
     try {
       if (!trackInfo.LYRICS?.LYRICS_TEXT && !trackInfo.LYRICS?.LYRICS_SYNC_JSON) {
         return
@@ -4338,9 +4342,14 @@ export class Downloader extends EventEmitter {
       const willWriteLrc = saveSynced && !!trackInfo.LYRICS?.LYRICS_SYNC_JSON
 
       // Save plain lyrics
+      const lyricsPath = path.join(outputDir, `${baseName}.txt`)
       if (trackInfo.LYRICS?.LYRICS_TEXT && !(preferSynced && willWriteLrc)) {
-        const lyricsPath = path.join(outputDir, `${baseName}.txt`)
         fs.writeFileSync(lyricsPath, trackInfo.LYRICS.LYRICS_TEXT)
+      } else if (preferSynced && willWriteLrc && deleteSuperseded && fs.existsSync(lyricsPath)) {
+        // The .txt this run would have skipped already exists from an earlier
+        // run; the .lrc written below supersedes it (#141, delete half).
+        fs.unlinkSync(lyricsPath)
+        console.log(`[Downloader] Removed superseded lyrics file: ${lyricsPath}`)
       }
 
       // Save synced lyrics as LRC — gated on the "Synced lyrics" setting so users

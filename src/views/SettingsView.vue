@@ -1357,6 +1357,17 @@ async function reindexLibrary() {
             {{ t('settings.preferSyncedLyrics') }}
           </span>
         </label>
+        <label class="flex items-center gap-3 cursor-pointer ml-12">
+          <input
+            type="checkbox"
+            v-model="settingsStore.settings.deleteSupersededLyrics"
+            :disabled="!settingsStore.settings.saveLyrics || !settingsStore.settings.syncedLyrics || !settingsStore.settings.preferSyncedLyrics"
+            class="w-4 h-4 accent-primary-500 disabled:opacity-50"
+          />
+          <span :class="{ 'opacity-50': !settingsStore.settings.saveLyrics || !settingsStore.settings.syncedLyrics || !settingsStore.settings.preferSyncedLyrics }">
+            {{ t('settings.deleteSupersededLyrics') }}
+          </span>
+        </label>
       </div>
     </section>
 

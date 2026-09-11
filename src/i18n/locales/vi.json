@@ -302,6 +302,7 @@
     "saveLyrics": "Lưu lời bài hát",
     "syncedLyrics": "Lời đồng bộ (.lrc)",
     "preferSyncedLyrics": "Bỏ qua tệp .txt thường khi đã có lời đồng bộ",
+    "deleteSupersededLyrics": "Xóa cả tệp .txt cũ sau khi lời đồng bộ được lưu",
     "embeddedArtwork": "Kích thước ảnh bìa nhúng",
     "localArtwork": "Kích thước ảnh bìa cục bộ",
     "saveCovers": "Lưu bìa album",

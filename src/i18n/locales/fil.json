@@ -251,6 +251,7 @@
     "saveLyrics": "I-save ang lyrics",
     "syncedLyrics": "Synced na lyrics (.lrc)",
     "preferSyncedLyrics": "Laktawan ang plain .txt kapag may synced na lyrics",
+    "deleteSupersededLyrics": "Burahin din ang mas lumang .txt kapag na-save na ang synced na lyrics",
     "embeddedArtwork": "Sukat ng embedded artwork",
     "localArtwork": "Sukat ng local artwork",
     "saveCovers": "I-save ang mga album cover",

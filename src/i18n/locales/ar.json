@@ -251,6 +251,7 @@
     "saveLyrics": "حفظ كلمات الأغاني",
     "syncedLyrics": "كلمات متزامنة (.lrc)",
     "preferSyncedLyrics": "تخطي ملف .txt عند توفر الكلمات المتزامنة",
+    "deleteSupersededLyrics": "حذف ملف .txt الأقدم أيضاً بعد حفظ كلمات الأغاني المتزامنة",
     "embeddedArtwork": "حجم الغلاف المضمن",
     "localArtwork": "حجم الغلاف المحلي",
     "saveCovers": "حفظ أغلفة الألبومات",

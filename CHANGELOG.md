@@ -16,6 +16,8 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 - **Favorites loads each section on its own and can open on the tab you choose (#149, requested by @GravuTrad).** Import from Deezer used to fetch tracks, albums, artists and playlists as one request and show nothing until the largest had finished, so a library with thousands of favourite tracks made every tab wait on the tracks. Each section is now its own request and appears the moment it arrives, with a small spinner on any tab still loading. A section that fails to load is reported and left as it was instead of sinking the whole import. Settings > Appearance has a new "Favorites: open on" choice for which tab the Favorites page opens to.
 
+- **Optional clean-up of an older lyrics .txt (#141, requested by @shark0151).** Under Skip the plain .txt when synced lyrics exist there is a new opt-in toggle that also removes a .txt written by an earlier run once the synced .lrc for the same track is saved. Off by default, and it only ever touches the lyrics file that shares the track's exact name.
+
 ## [2.6.1] - 2026-09-10
 
 ### Summary

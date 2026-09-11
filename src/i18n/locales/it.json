@@ -251,6 +251,7 @@
     "saveLyrics": "Salva testi",
     "syncedLyrics": "Testi sincronizzati (.lrc)",
     "preferSyncedLyrics": "Salta il .txt semplice quando esistono testi sincronizzati",
+    "deleteSupersededLyrics": "Elimina anche il vecchio .txt una volta salvati i testi sincronizzati",
     "embeddedArtwork": "Dimensione copertina incorporata",
     "localArtwork": "Dimensione copertina locale",
     "saveCovers": "Salva copertine album",

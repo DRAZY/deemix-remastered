@@ -500,6 +500,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         saveLyrics: settingsStore.settings.saveLyrics,
         syncedLyrics: settingsStore.settings.syncedLyrics,
         preferSyncedLyrics: settingsStore.settings.preferSyncedLyrics,
+        deleteSupersededLyrics: settingsStore.settings.deleteSupersededLyrics,
         tags: settingsStore.settings.tags,
         albumCovers: settingsStore.settings.albumCovers,
         savePlaylistAsCompilation: settingsStore.settings.savePlaylistAsCompilation,

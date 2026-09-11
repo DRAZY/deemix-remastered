@@ -302,6 +302,7 @@
     "saveLyrics": "儲存歌詞",
     "syncedLyrics": "同步歌詞 (.lrc)",
     "preferSyncedLyrics": "存在同步歌詞時略過純文字 .txt",
+    "deleteSupersededLyrics": "儲存同步歌詞後一併刪除舊的 .txt",
     "embeddedArtwork": "嵌入封面大小",
     "localArtwork": "本機封面大小",
     "saveCovers": "儲存專輯封面",

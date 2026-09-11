@@ -108,6 +108,7 @@ export interface Settings {
   saveLyrics: boolean
   syncedLyrics: boolean
   preferSyncedLyrics: boolean
+  deleteSupersededLyrics: boolean
   // Tag settings
   tags: TagSettings
   // Appearance settings
@@ -185,6 +186,7 @@ export const defaultSettings: Settings = {
   saveLyrics: true,
   syncedLyrics: true,
   preferSyncedLyrics: false,
+  deleteSupersededLyrics: false,
   // Tag settings
   tags: {
     title: true,

@@ -251,6 +251,7 @@
     "saveLyrics": "Spremi tekstove",
     "syncedLyrics": "Sinkronizirani tekstovi (.lrc)",
     "preferSyncedLyrics": "Preskoči obični .txt kada postoje sinkronizirani tekstovi",
+    "deleteSupersededLyrics": "Izbriši i stariji .txt nakon što se spreme sinkronizirani stihovi",
     "embeddedArtwork": "Veličina ugrađenog omota",
     "localArtwork": "Veličina lokalnog omota",
     "saveCovers": "Spremi omote albuma",

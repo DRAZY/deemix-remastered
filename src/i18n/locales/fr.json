@@ -427,6 +427,7 @@
     "saveLyrics": "Enregistrer les paroles",
     "syncedLyrics": "Paroles synchronisées (.lrc)",
     "preferSyncedLyrics": "Ne pas enregistrer le .txt simple lorsque des paroles synchronisées existent",
+    "deleteSupersededLyrics": "Supprimer aussi l'ancien .txt une fois les paroles synchronisées enregistrées",
     "embeddedArtwork": "Taille de la pochette intégrée",
     "localArtwork": "Taille de la pochette locale",
     "saveCovers": "Enregistrer les pochettes d’album",

@@ -251,6 +251,7 @@
     "saveLyrics": "Salvar letras",
     "syncedLyrics": "Letras sincronizadas (.lrc)",
     "preferSyncedLyrics": "Ignorar o .txt simples quando houver letras sincronizadas",
+    "deleteSupersededLyrics": "Excluir também o .txt antigo quando as letras sincronizadas forem salvas",
     "embeddedArtwork": "Tamanho da capa incorporada",
     "localArtwork": "Tamanho da capa local",
     "saveCovers": "Salvar capas de álbum",
