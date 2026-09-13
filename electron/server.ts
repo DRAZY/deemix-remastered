@@ -2824,7 +2824,11 @@ export class DeemixServer extends EventEmitter {
       }
 
       if (requested !== null) {
-        const section = requested as Section
+        // Re-derive the section from the literal list rather than reusing the
+        // query string: the value is already allowlisted above, and reading it
+        // back from `sections` makes that explicit to readers and to CodeQL
+        // (js/remote-property-injection, js/log-injection on the two uses).
+        const section = sections[sections.indexOf(requested as Section)]
         const items = await fetchSection(section)
         console.log(`[Server] Fetched favorites: ${items.length} ${section}`)
         this.sendJSON(res, { [section]: items })
