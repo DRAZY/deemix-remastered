@@ -73,6 +73,30 @@ single feature-surface sweep. Run progressively deeper passes:
 Each layer of the Qobuz-alongside-Deezer effort caught gaps the previous layer
 missed. Do not stop at layer one.
 
+## Localization
+
+- **No hard-coded UI copy.** Every toast, label, status word and help text goes
+  through vue-i18n (`t()` in components, `i18n.global.t()` in stores and
+  composables). A string typed into a component is invisible to all 21
+  languages. The only exemption is the app's branded labels ("Transfer Rack",
+  "Signal Deck", "AGGREGATE RATE", "Pull the signal"), which stay English on
+  purpose. (Learned 2026-09-13 from #148: about 130 strings had bypassed the
+  system, and nineteen locales were each missing a third of the app.)
+
+- **A new key ships in all 21 locale files in the same commit.** English first,
+  then every other locale, so the fallback never leaves a language half
+  English. `bun scripts/i18n-check.ts` must pass before a release; it checks
+  key parity and scans for hard-coded English.
+
+## Settings
+
+- **A server-side setting has four links plus the profile keys.** Type and
+  default and validation in `electron/server.ts`, every download option site,
+  the `settingsToSync` allowlist in `downloadStore.ts`, and the profile key
+  list. Missing the allowlist ships a toggle that saves, displays, and does
+  nothing (#131, #134, #141). Re-run the allowlist sweep and prove the setting
+  both ways through the real app before it ships.
+
 ## Docs and disclaimers
 
 - **Disclaimer coverage is audited per integrated service** across README,
