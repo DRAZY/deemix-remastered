@@ -385,7 +385,7 @@ async function openItemFolder(item: DownloadItem) {
                   <span class="text-foreground-muted flex-shrink-0">|</span>
                   <span class="text-foreground font-medium">{{ track.artist ? `${track.artist} - ${track.title}` : track.title }}</span>
                   <span class="text-foreground-muted flex-shrink-0">|</span>
-                  <span class="text-red-400 break-words">{{ track.error || 'Unknown error' }}</span>
+                  <span class="text-red-400 break-words">{{ track.error || t('common.unknownError') }}</span>
                 </div>
               </div>
             </div>

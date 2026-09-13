@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { useToastStore } from '../stores/toastStore'
+import i18n from '../i18n'
 
 export interface ContextMenuState {
   show: boolean
@@ -46,7 +47,7 @@ export function useContextMenu() {
         document.execCommand('copy')
         toastStore.success(label ? `${label} copied` : 'Copied to clipboard')
       } catch {
-        toastStore.error('Failed to copy')
+        toastStore.error(i18n.global.t('notifications.copyFailed'))
       }
       document.body.removeChild(textarea)
     }
@@ -57,7 +58,7 @@ export function useContextMenu() {
       const text = await navigator.clipboard.readText()
       return text
     } catch (err) {
-      toastStore.error('Failed to paste - clipboard access denied')
+      toastStore.error(i18n.global.t('notifications.pasteFailed'))
       return null
     }
   }

@@ -448,7 +448,7 @@ async function downloadAllFavorites() {
         }
       }
       if (stillFailed.length > 0) {
-        toastStore.warning(`${stillFailed.length} album${stillFailed.length > 1 ? 's' : ''} couldn't be loaded (Deezer rate limit) — try again to grab the rest`)
+        toastStore.warning(t('notifications.rateLimitedAlbums', { count: stillFailed.length }, stillFailed.length))
       }
     } else if (activeTab.value === 'playlists') {
       let skipped = 0
@@ -474,12 +474,12 @@ async function downloadAllFavorites() {
         await deezerAPI.pace()
       }
       if (skipped > 0) {
-        toastStore.info(`${skipped} playlist${skipped > 1 ? 's' : ''} skipped (empty or unavailable)`)
+        toastStore.info(t('notifications.playlistsSkipped', { count: skipped }, skipped))
       }
     }
 
     if (queued > 0) {
-      toastStore.success(`Queued ${queued} ${activeTab.value} for download`)
+      toastStore.success(t('notifications.queuedForDownload', { count: queued, type: t('common.' + activeTab.value) }))
     }
   } catch (e: any) {
     toastStore.error(e.message || 'Failed to start downloads')
@@ -492,18 +492,18 @@ async function importFromDeezer() {
   try {
     const { imported, skipped, pruned, failed, syncStale } = await favoritesStore.importDeezerFavorites(serverPort.value)
     if (failed.length > 0) {
-      toastStore.error(`Could not load ${failed.map(f => f + 's').join(', ')} from Deezer. Other sections were updated.`)
+      toastStore.error(t('notifications.favoritesSectionsFailed', { sections: failed.map(f => t('common.' + f + 's')).join(', ') }))
     }
     const parts: string[] = []
-    if (imported > 0) parts.push(`+${imported} imported`)
-    if (pruned > 0) parts.push(`−${pruned} pruned`)
-    if (skipped > 0) parts.push(`${skipped} unchanged`)
-    const summary = parts.length > 0 ? parts.join(', ') : 'No favorites found on your Deezer account'
+    if (imported > 0) parts.push(t('favorites.importedCount', { n: imported }))
+    if (pruned > 0) parts.push(t('favorites.prunedCount', { n: pruned }))
+    if (skipped > 0) parts.push(t('favorites.unchangedCount', { n: skipped }))
+    const summary = parts.length > 0 ? parts.join(', ') : t('favorites.noneOnAccount')
 
     if (imported > 0 || pruned > 0) {
-      toastStore.success(`Synced with Deezer favorites: ${summary}`)
+      toastStore.success(t('notifications.favoritesSynced', { summary }))
     } else if (skipped > 0) {
-      toastStore.info('All Deezer favorites are already imported')
+      toastStore.info(t('notifications.favoritesAlreadyImported'))
     } else {
       toastStore.info(summary)
     }
@@ -513,7 +513,7 @@ async function importFromDeezer() {
       const detail: string[] = []
       if (syncStale.playlists > 0) detail.push(`${syncStale.playlists} playlist${syncStale.playlists > 1 ? 's' : ''}`)
       if (syncStale.artists > 0) detail.push(`${syncStale.artists} artist${syncStale.artists > 1 ? 's' : ''}`)
-      toastStore.info(`${detail.join(' + ')} in Sync no longer in your Deezer favorites — review on the Sync page.`)
+      toastStore.info(t('notifications.favoritesStale', { detail: detail.join(' + ') }))
     }
   } catch (e: any) {
     toastStore.error(e.message || 'Failed to import Deezer favorites')
@@ -584,7 +584,7 @@ async function importFromDeezer() {
         <svg v-else class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
-        {{ favoritesStore.isImporting ? 'Importing...' : 'Import from Deezer' }}
+        {{ favoritesStore.isImporting ? t('favorites.importing') : t('favorites.importFromDeezer') }}
       </button>
       </div>
     </div>
@@ -624,9 +624,9 @@ async function importFromDeezer() {
         v-model="sortOrder"
         class="text-sm bg-background-secondary text-foreground px-3 py-1.5 border border-white/[0.1] focus:border-primary-500/50 outline-none"
       >
-        <option value="added">Date Added</option>
-        <option value="name-asc">Name A-Z</option>
-        <option value="name-desc">Name Z-A</option>
+        <option value="added">{{ t('favorites.sortAdded') }}</option>
+        <option value="name-asc">{{ t('common.sortNameAsc') }}</option>
+        <option value="name-desc">{{ t('common.sortNameDesc') }}</option>
       </select>
     </div>
 

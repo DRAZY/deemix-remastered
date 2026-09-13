@@ -146,7 +146,7 @@ const close = () => window.electronAPI?.close()
 
     <!-- Window controls (Windows only — Mac shows native traffic lights, Linux
          is natively framed for WM snapping so the OS draws these). -->
-    <div v-if="!isMac && !isLinux" class="flex items-center h-full no-drag" role="group" aria-label="Window controls">
+    <div v-if="!isMac && !isLinux" class="flex items-center h-full no-drag" role="group" :aria-label="t('accessibility.windowControls')">
       <button
         @click="minimize"
         :aria-label="t('accessibility.minimizeWindow')"

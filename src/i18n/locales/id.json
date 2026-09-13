@@ -6,7 +6,8 @@
     "downloads": "Unduhan",
     "favorites": "Favorit",
     "linkAnalyzer": "Penganalisis Tautan",
-    "settings": "Pengaturan"
+    "settings": "Pengaturan",
+    "genres": "Genre"
   },
   "sidebar": {
     "appName": "Deemix Remastered",
@@ -94,7 +95,22 @@
     "noHistoryYet": "Belum ada riwayat unduhan",
     "retryFailedTip": "Coba lagi {n} trek yang gagal | Coba lagi {n} trek yang gagal",
     "retryTip": "Coba lagi unduhan",
-    "showFailedTracks": "Tampilkan trek yang gagal"
+    "showFailedTracks": "Tampilkan trek yang gagal",
+    "statistics": "Statistik Unduhan",
+    "totalTracks": "Total Lagu",
+    "thisWeek": "Minggu Ini",
+    "topArtists": "Artis Teratas",
+    "qobuzCauseQuality": "Lagu tidak tersedia di Qobuz pada kualitas yang diminta atau di paket Anda",
+    "qobuzCauseSession": "Sesi Qobuz berakhir, sambungkan kembali di Pengaturan",
+    "qobuzCauseNetwork": "Masalah jaringan atau konektivitas CDN Qobuz, mencoba lagi biasanya berhasil",
+    "trackStatus": {
+      "done": "Selesai",
+      "failed": "Gagal",
+      "downloading": "Mengunduh",
+      "decrypting": "Mendekripsi",
+      "tagging": "Menandai",
+      "pending": "Menunggu"
+    }
   },
   "charts": {
     "title": "Tangga Lagu",
@@ -110,12 +126,19 @@
     "artists": "Artis Favorit",
     "playlists": "Playlist Favorit",
     "noFavorites": "Belum ada favorit",
-    "loginToSee": "Masuk untuk melihat favorit Deezer Anda"
+    "loginToSee": "Masuk untuk melihat favorit Deezer Anda",
+    "sortAdded": "Tanggal Ditambahkan",
+    "importFromDeezer": "Impor dari Deezer",
+    "importing": "Mengimpor...",
+    "importedCount": "+{n} diimpor",
+    "prunedCount": "−{n} dihapus",
+    "unchangedCount": "{n} tidak berubah",
+    "noneOnAccount": "Tidak ada favorit yang ditemukan di akun Deezer Anda"
   },
   "analyzer": {
     "title": "Penganalisis Tautan",
-    "subtitle": "Tempel tautan Deezer untuk menganalisis metadata dan opsi unduhan",
-    "placeholder": "Tempel tautan Deezer (lagu, album, artis, atau playlist)...",
+    "subtitle": "Tempel tautan Deezer, Spotify, atau Qobuz untuk menganalisis metadata dan opsi unduhannya",
+    "placeholder": "Tempel satu atau beberapa tautan Deezer, Spotify, atau Qobuz (lagu, album, artis, atau playlist)...",
     "analyze": "Analisis",
     "analyzing": "Menganalisis...",
     "metadata": "Metadata",
@@ -154,7 +177,8 @@
       "albumCount": "Jumlah Album",
       "creator": "Pembuat",
       "public": "Publik",
-      "fans": "Penggemar"
+      "fans": "Penggemar",
+      "name": "Nama"
     },
     "types": {
       "track": "Lagu",
@@ -167,7 +191,30 @@
       "unsupported": "Tipe tautan ini tidak didukung",
       "notFound": "Konten tidak ditemukan di Deezer",
       "networkError": "Gagal menganalisis. Silakan coba lagi."
-    }
+    },
+    "loginRequired": "Diperlukan masuk untuk mengunduh",
+    "convertTo": "Konversi ke",
+    "compareNeedsBoth": "Membandingkan keduanya memerlukan Deezer dan Qobuz terhubung.",
+    "noneFoundBoth": "Tidak ada lagu yang ditemukan di Deezer maupun Qobuz.",
+    "noneFoundService": "Tidak ditemukan lagu {service} yang cocok. Lagu dalam playlist mungkin tidak tersedia di {service}.",
+    "matchingTracks": "Lagu yang cocok",
+    "loginRequiredConvert": "Diperlukan masuk untuk mengonversi dan mengunduh",
+    "conversionResults": "Hasil Konversi",
+    "qobuzOnly": "Hanya Qobuz",
+    "deezerOnly": "Hanya Deezer",
+    "prefer": "Utamakan",
+    "fallbackHint": "beralih ke yang lain · klik sel yang menyala untuk mengganti satu lagu",
+    "getStarted": "Tempel tautan Deezer atau Spotify untuk memulai",
+    "converting": "Mengonversi...",
+    "compareBoth": "Bandingkan Deezer & Qobuz",
+    "convertToQobuz": "Konversi ke Qobuz",
+    "convertToDeezer": "Konversi ke Deezer",
+    "matchSearch": "Cari",
+    "batchSummary": "{links} tautan · {ready} siap",
+    "batchAnalyzed": "{done}/{total} dianalisis",
+    "batchFailed": "{count} gagal",
+    "queuing": "Memasukkan ke antrean...",
+    "downloadAllReady": "Unduh semua yang siap ({count})"
   },
   "settings": {
     "title": "Pengaturan",
@@ -385,7 +432,10 @@
       "userIdPlaceholder": "User ID (opsional)",
       "disclaimer": "Memerlukan akun Qobuz berbayar milik Anda sendiri yang masih aktif. Aplikasi ini tidak berafiliasi dengan Qobuz. Harap patuhi ketentuan layanan Qobuz."
     },
-    "deezerDisclaimer": "Gunakan akun Deezer Anda sendiri. Aplikasi ini tidak berafiliasi dengan Deezer. Harap patuhi ketentuan layanan Deezer."
+    "deezerDisclaimer": "Gunakan akun Deezer Anda sendiri. Aplikasi ini tidak berafiliasi dengan Deezer. Harap patuhi ketentuan layanan Deezer.",
+    "exportConfig": "Ekspor Konfigurasi",
+    "importConfig": "Impor Konfigurasi",
+    "m3uTemplate": "Templat nama berkas M3U"
   },
   "login": {
     "title": "Masuk ke Deezer",
@@ -412,7 +462,14 @@
     "captchaHelpText": "Jika CAPTCHA tidak dimuat atau tidak terverifikasi, coba masuk terlebih dahulu di situs web Deezer, lalu gunakan metode token ARL.",
     "verifying": "Memverifikasi...",
     "backToLogin": "Kembali ke Masuk",
-    "openDeezerLogin": "Buka Deezer di Browser"
+    "openDeezerLogin": "Buka Deezer di Browser",
+    "sessionExpiredDownloading": "Sesi berakhir. Silakan masuk kembali untuk melanjutkan mengunduh.",
+    "logIn": "Masuk",
+    "emailPasswordLogin": "Masuk dengan Email & Kata Sandi",
+    "emailPasswordHelp": "Gunakan kredensial akun Deezer Anda. Ini adalah metode yang direkomendasikan karena lebih sederhana dan mengelola sesi secara otomatis.",
+    "whatIsArl": "Apa itu token ARL?",
+    "arlExplainer": "Token ARL (Authentication Request Login) adalah cookie dari akun Deezer Anda yang memungkinkan pengunduhan musik. Tersimpan di browser Anda saat Anda masuk ke Deezer.",
+    "passwordPlaceholder": "Kata sandi Deezer Anda"
   },
   "common": {
     "download": "Unduh",
@@ -439,7 +496,14 @@
     "playlists": "playlist",
     "unknown": "Tidak Diketahui",
     "unknownArtist": "Artis Tidak Dikenal",
-    "variousArtists": "Berbagai Artis"
+    "variousArtists": "Berbagai Artis",
+    "keyboardShortcuts": "Pintasan Keyboard",
+    "unknownError": "Kesalahan tidak diketahui",
+    "sortNameAsc": "Nama A-Z",
+    "sortNameDesc": "Nama Z-A",
+    "pasteFromClipboard": "Tempel dari clipboard",
+    "paste": "Tempel",
+    "copy": "Salin"
   },
   "errors": {
     "generic": "Terjadi kesalahan",
@@ -456,7 +520,66 @@
     "downloadFailed": "Unduhan gagal",
     "addedToQueue": "Ditambahkan ke antrian",
     "settingsSaved": "Pengaturan disimpan",
-    "copiedToClipboard": "Disalin ke clipboard"
+    "copiedToClipboard": "Disalin ke clipboard",
+    "downloadsPaused": "Unduhan dijeda",
+    "downloadsResumed": "Unduhan dilanjutkan",
+    "alreadyDownloaded": "\"{title}\" sudah diunduh",
+    "alreadyDownloading": "\"{title}\" sedang diunduh",
+    "sessionExpiredDownload": "Sesi berakhir. Silakan masuk kembali untuk mengunduh.",
+    "existsOnDisk": "\"{title}\" sudah ada di disk ({have}/{total} lagu), tetap mengunduh",
+    "thisAlbum": "Album ini",
+    "thisArtist": "artis ini",
+    "tagsRefreshed": "Tag diperbarui untuk \"{title}\"",
+    "tagRefreshFailed": "Pembaruan tag gagal: \"{title}\"",
+    "tagsRefreshedSkipped": "Tag diperbarui untuk \"{title}\" ({count} lagu dilewati) | Tag diperbarui untuk \"{title}\" ({count} lagu dilewati)",
+    "downloaded": "Berhasil mengunduh \"{title}\"",
+    "downloadFailedTitle": "Unduhan gagal: \"{title}\"",
+    "downloadedWithFailures": "Berhasil mengunduh \"{title}\" dengan {count} lagu gagal | Berhasil mengunduh \"{title}\" dengan {count} lagu gagal",
+    "retrying": "Mencoba lagi \"{title}\"...",
+    "retryingAlbum": "Mencoba lagi album \"{title}\"...",
+    "retryingPlaylist": "Mencoba lagi playlist \"{title}\"...",
+    "retryFailed": "Gagal mencoba lagi \"{title}\"",
+    "retryNoContext": "Tidak dapat mencoba lagi \"{title}\", konteks unduhan tidak ada",
+    "retryingFailedTracks": "Mencoba lagi {count} lagu gagal dari \"{title}\"... | Mencoba lagi {count} lagu gagal dari \"{title}\"...",
+    "retryingTracks": "Mencoba lagi {count} lagu | Mencoba lagi {count} lagu",
+    "retryNone": "Gagal mencoba lagi semua lagu",
+    "resumingInterrupted": "Melanjutkan {count} unduhan yang terputus… | Melanjutkan {count} unduhan yang terputus…",
+    "removedFromFavorites": "\"{name}\" dihapus dari favorit",
+    "addedToFavorites": "\"{name}\" ditambahkan ke favorit",
+    "updateAvailable": "Pembaruan tersedia: v{version}. Kunjungi Pengaturan > Tentang untuk mengunduh.",
+    "profileSaveFailed": "Gagal menyimpan profil",
+    "configExported": "Konfigurasi diekspor (pengaturan + profil)",
+    "configImported": "Konfigurasi diimpor (pengaturan + profil)",
+    "settingsImported": "Pengaturan berhasil diimpor",
+    "configImportFailed": "Gagal mengimpor konfigurasi. Format berkas tidak valid.",
+    "clearedDownloads": "{count} unduhan dihapus | {count} unduhan dihapus",
+    "clearedCompleted": "{count} unduhan selesai dihapus | {count} unduhan selesai dihapus",
+    "rateLimitedReleases": "{count} rilis gagal dimuat (batas Deezer), klik unduh lagi untuk mendapatkan sisanya | {count} rilis gagal dimuat (batas Deezer), klik unduh lagi untuk mendapatkan sisanya",
+    "rateLimitedAlbums": "{count} album gagal dimuat (batas Deezer), coba lagi untuk mendapatkan sisanya | {count} album gagal dimuat (batas Deezer), coba lagi untuk mendapatkan sisanya",
+    "rateLimitedArtistReleases": "{count} rilis dari {artist} gagal dimuat (batas Deezer), jalankan lagi untuk mendapatkan sisanya | {count} rilis dari {artist} gagal dimuat (batas Deezer), jalankan lagi untuk mendapatkan sisanya",
+    "playlistsSkipped": "{count} playlist dilewati (kosong atau tidak tersedia) | {count} playlist dilewati (kosong atau tidak tersedia)",
+    "queuedForDownload": "{count} {type} ditambahkan ke antrean unduhan",
+    "favoritesSectionsFailed": "Tidak dapat memuat {sections} dari Deezer. Bagian lain telah diperbarui.",
+    "favoritesSynced": "Disinkronkan dengan favorit Deezer: {summary}",
+    "favoritesAlreadyImported": "Semua favorit Deezer sudah diimpor",
+    "favoritesStale": "{detail} di Sinkronisasi sudah tidak ada di favorit Deezer Anda, periksa di halaman Sinkronisasi.",
+    "queuedLinks": "{n} dari {total} tautan dimasukkan ke antrean",
+    "queuedQobuzItem": "\"{title}\" dimasukkan ke antrean ({count} lagu)",
+    "queuedQobuzTrack": "Lagu Qobuz dimasukkan ke antrean unduhan",
+    "qobuzDownloadFailed": "Unduhan Qobuz gagal: {message}",
+    "noConversionResults": "Tidak ada hasil konversi yang tersedia",
+    "noDownloadableTracks": "Tidak ada lagu yang dapat diunduh dalam pilihan ini",
+    "addedTracksToQueue": "{count} lagu ditambahkan ke antrean unduhan",
+    "downloadStartFailed": "Gagal memulai unduhan: {message}",
+    "noMatchingTracks": "Tidak ditemukan lagu {service} yang cocok untuk diunduh",
+    "addedItemsToQueue": "{count} item ditambahkan ke antrean unduhan | {count} item ditambahkan ke antrean unduhan",
+    "addSomeFailed": "Gagal menambahkan beberapa item ke antrean unduhan",
+    "processingLinks": "Memproses {count} tautan...",
+    "queuedFromLinks": "{queued} item dimasukkan ke antrean dari {links} tautan | {queued} item dimasukkan ke antrean dari {links} tautan",
+    "queuedFromLinksFailed": "({failed} gagal)",
+    "noneQueued": "Tidak ada unduhan yang dapat dimasukkan ke antrean, periksa apakah Anda sudah masuk",
+    "copyFailed": "Gagal menyalin",
+    "pasteFailed": "Gagal menempel, akses clipboard ditolak"
   },
   "sync": {
     "sortBy": "Urutkan berdasarkan",
@@ -466,7 +589,13 @@
     "sortStatus": "Status",
     "sortTracks": "Lagu yang diunduh",
     "filterPlaceholder": "Filter berdasarkan nama…",
-    "noMatches": "Tidak ada hasil"
+    "noMatches": "Tidak ada hasil",
+    "scheduleLaunch": "Saat aplikasi dibuka",
+    "scheduleHourly": "Setiap jam",
+    "scheduleEvery": "Setiap {hours} jam",
+    "scheduleManual": "Hanya manual",
+    "resolvingShareLink": "Memproses tautan berbagi...",
+    "playlistDetected": "Playlist {service} terdeteksi"
   },
   "userPlaylists": {
     "creator": "Pembuat",
@@ -498,7 +627,8 @@
     "seeAll": "LIHAT SEMUA",
     "sortDefault": "URUTAN FEED",
     "sortName": "A–Z",
-    "sortTracks": "TRACK TERBANYAK"
+    "sortTracks": "TRACK TERBANYAK",
+    "connectInSettings": "Hubungkan di Pengaturan"
   },
   "retag": {
     "viaQobuzTip": "Tag bersumber dari Qobuz — Deezer tidak memiliki kecocokan untuk ISRC ini"
@@ -509,5 +639,15 @@
   },
   "about": {
     "disclaimer": "Aplikasi ini tidak berafiliasi dengan, tidak diizinkan oleh, dan tidak didukung oleh Deezer, Qobuz, atau Spotify. Aplikasi ini ditujukan untuk penggunaan pribadi dengan akun Anda sendiri. Harap gunakan secara bertanggung jawab dan sesuai dengan hukum setempat mengenai pengunduhan musik, serta hormati hak cipta dan ketentuan layanan dari setiap platform streaming. Pengunduhan Qobuz memerlukan langganan Qobuz berbayar milik Anda sendiri yang masih aktif."
+  },
+  "accessibility": {
+    "windowControls": "Kontrol jendela",
+    "closeNotification": "Tutup notifikasi"
+  },
+  "artistView": {
+    "sortNewest": "Terbaru Dulu",
+    "sortOldest": "Terlama Dulu",
+    "releases": "rilisan",
+    "featuredAppearances": "penampilan tamu"
   }
 }

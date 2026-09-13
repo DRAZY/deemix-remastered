@@ -197,7 +197,7 @@ async function downloadChart() {
     await downloadStore.addDownload({
       id: track.id,
       title: track.title,
-      artist: track.artist || { id: 0, name: 'Unknown Artist' },
+      artist: track.artist || { id: 0, name: t('common.unknownArtist') },
       album: track.album,
       duration: track.duration || 0,
       cover: track.album?.cover_medium || ''

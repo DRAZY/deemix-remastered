@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useToastStore } from '../stores/toastStore'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const toastStore = useToastStore()
 
 const iconColor: Record<string, string> = {
@@ -55,7 +57,7 @@ const bgColor: Record<string, string> = {
           <button
             @click="toastStore.remove(toast.id)"
             class="flex-shrink-0 text-foreground-muted hover:text-foreground transition-colors"
-            aria-label="Close notification"
+            :aria-label="t('accessibility.closeNotification')"
           >
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

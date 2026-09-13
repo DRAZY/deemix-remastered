@@ -238,7 +238,7 @@ const sections = [
       <button
         @click="router.push('/settings')"
         class="font-mono text-[11px] tracking-[0.12em] uppercase px-4 py-2 border border-qobuz-500/60 text-qobuz-400 hover:bg-qobuz-500 hover:text-background-main transition-colors"
-      >Connect in Settings</button>
+      >{{ t('qobuz.connectInSettings') }}</button>
     </div>
 
     <!-- Loading -->

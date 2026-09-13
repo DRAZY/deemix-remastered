@@ -6,7 +6,8 @@
     "downloads": "Preuzimanja",
     "favorites": "Favoriti",
     "linkAnalyzer": "Analizator Linkova",
-    "settings": "Postavke"
+    "settings": "Postavke",
+    "genres": "Žanrovi"
   },
   "sidebar": {
     "appName": "Deemix Remastered",
@@ -94,7 +95,22 @@
     "noHistoryYet": "Još nema povijesti preuzimanja",
     "retryFailedTip": "Ponovi {n} neuspjelu pjesmu | Ponovi {n} neuspjelih pjesama",
     "retryTip": "Ponovi preuzimanje",
-    "showFailedTracks": "Prikaži neuspjele pjesme"
+    "showFailedTracks": "Prikaži neuspjele pjesme",
+    "statistics": "Statistika preuzimanja",
+    "totalTracks": "Ukupno pjesama",
+    "thisWeek": "Ovaj tjedan",
+    "topArtists": "Najbolji izvođači",
+    "qobuzCauseQuality": "Pjesma nije dostupna na Qobuzu u traženoj kvaliteti ili na vašem planu",
+    "qobuzCauseSession": "Qobuz sesija je istekla, ponovno se povežite u Postavkama",
+    "qobuzCauseNetwork": "Problemi s mrežom ili Qobuz CDN vezom, ponovni pokušaj obično pomaže",
+    "trackStatus": {
+      "done": "Gotovo",
+      "failed": "Neuspjelo",
+      "downloading": "Preuzimanje",
+      "decrypting": "Dešifriranje",
+      "tagging": "Označavanje",
+      "pending": "Na čekanju"
+    }
   },
   "charts": {
     "title": "Ljestvice",
@@ -110,12 +126,19 @@
     "artists": "Omiljeni Izvođači",
     "playlists": "Omiljeni Popisi",
     "noFavorites": "Još nema favorita",
-    "loginToSee": "Prijavite se za prikaz vaših Deezer favorita"
+    "loginToSee": "Prijavite se za prikaz vaših Deezer favorita",
+    "sortAdded": "Datum dodavanja",
+    "importFromDeezer": "Uvezi s Deezera",
+    "importing": "Uvoženje...",
+    "importedCount": "+{n} uvezeno",
+    "prunedCount": "−{n} uklonjeno",
+    "unchangedCount": "{n} nepromijenjeno",
+    "noneOnAccount": "Nema pronađenih favorita na vašem Deezer računu"
   },
   "analyzer": {
     "title": "Analizator Linkova",
-    "subtitle": "Zalijepite Deezer link za analizu metapodataka i opcija preuzimanja",
-    "placeholder": "Zalijepite Deezer link (pjesma, album, izvođač ili popis)...",
+    "subtitle": "Zalijepite Deezer, Spotify ili Qobuz poveznicu za analizu metapodataka i opcija preuzimanja",
+    "placeholder": "Zalijepite jednu ili više Deezer, Spotify ili Qobuz poveznica (pjesma, album, izvođač ili popis za reprodukciju)...",
     "analyze": "Analiziraj",
     "analyzing": "Analiziranje...",
     "metadata": "Metapodaci",
@@ -154,7 +177,8 @@
       "albumCount": "Broj Albuma",
       "creator": "Kreator",
       "public": "Javno",
-      "fans": "Obožavatelji"
+      "fans": "Obožavatelji",
+      "name": "Naziv"
     },
     "types": {
       "track": "Pjesma",
@@ -167,7 +191,30 @@
       "unsupported": "Ova vrsta linka nije podržana",
       "notFound": "Sadržaj nije pronađen na Deezeru",
       "networkError": "Analiza nije uspjela. Pokušajte ponovo."
-    }
+    },
+    "loginRequired": "Potrebna prijava za preuzimanje",
+    "convertTo": "Pretvori u",
+    "compareNeedsBoth": "Za usporedbu oboje potrebna je veza s Deezerom i Qobuzom.",
+    "noneFoundBoth": "Nisu pronađene pjesme ni na Deezeru ni na Qobuzu.",
+    "noneFoundService": "Nisu pronađene odgovarajuće {service} pjesme. Pjesme s popisa za reprodukciju možda nisu dostupne na {service}.",
+    "matchingTracks": "Odgovarajuće pjesme",
+    "loginRequiredConvert": "Potrebna prijava za pretvorbu i preuzimanje",
+    "conversionResults": "Rezultati pretvorbe",
+    "qobuzOnly": "Samo Qobuz",
+    "deezerOnly": "Samo Deezer",
+    "prefer": "Preferiraj",
+    "fallbackHint": "vrati se na drugi · kliknite osvijetljenu ćeliju za zamjenu jedne pjesme",
+    "getStarted": "Zalijepite Deezer ili Spotify poveznicu za početak",
+    "converting": "Pretvaranje...",
+    "compareBoth": "Usporedi Deezer i Qobuz",
+    "convertToQobuz": "Pretvori u Qobuz",
+    "convertToDeezer": "Pretvori u Deezer",
+    "matchSearch": "Pretraži",
+    "batchSummary": "{links} poveznica · {ready} spremno",
+    "batchAnalyzed": "{done}/{total} analizirano",
+    "batchFailed": "{count} neuspjelo",
+    "queuing": "Dodavanje u red...",
+    "downloadAllReady": "Preuzmi sve spremno ({count})"
   },
   "settings": {
     "title": "Postavke",
@@ -385,7 +432,10 @@
       "userIdPlaceholder": "User ID (neobavezno)",
       "disclaimer": "Zahtijeva vlastiti aktivni plaćeni Qobuz račun. Ova aplikacija nije povezana s Qobuzom. Molimo pridržavajte se uvjeta pružanja usluge Qobuza."
     },
-    "deezerDisclaimer": "Koristite vlastiti Deezer račun. Ova aplikacija nije povezana s Deezerom. Molimo pridržavajte se uvjeta pružanja usluge Deezera."
+    "deezerDisclaimer": "Koristite vlastiti Deezer račun. Ova aplikacija nije povezana s Deezerom. Molimo pridržavajte se uvjeta pružanja usluge Deezera.",
+    "exportConfig": "Izvoz konfiguracije",
+    "importConfig": "Uvoz konfiguracije",
+    "m3uTemplate": "Predložak naziva M3U datoteke"
   },
   "login": {
     "title": "Prijava na Deezer",
@@ -412,7 +462,14 @@
     "captchaHelpText": "Ako se CAPTCHA ne učitava ili ne provjerava, pokušajte se prvo prijaviti na Deezer web stranici, zatim koristite ARL token metodu.",
     "verifying": "Provjera...",
     "backToLogin": "Natrag na prijavu",
-    "openDeezerLogin": "Otvori Deezer u pregledniku"
+    "openDeezerLogin": "Otvori Deezer u pregledniku",
+    "sessionExpiredDownloading": "Sesija je istekla. Prijavite se ponovno za nastavak preuzimanja.",
+    "logIn": "Prijava",
+    "emailPasswordLogin": "Prijava e-poštom i lozinkom",
+    "emailPasswordHelp": "Koristite podatke svog Deezer računa. Ovo je preporučena metoda jer je jednostavnija i automatski upravlja sesijom.",
+    "whatIsArl": "Što je ARL token?",
+    "arlExplainer": "ARL (Authentication Request Login) token je kolačić s vašeg Deezer računa koji omogućuje preuzimanje glazbe. Sprema se u vašem pregledniku kada se prijavite na Deezer.",
+    "passwordPlaceholder": "Vaša Deezer lozinka"
   },
   "common": {
     "download": "Preuzmi",
@@ -447,7 +504,14 @@
     "favorited": "U favoritima",
     "fans": "Obožavatelji",
     "by": "od",
-    "new": "NOVO"
+    "new": "NOVO",
+    "keyboardShortcuts": "Prečaci na tipkovnici",
+    "unknownError": "Nepoznata pogreška",
+    "sortNameAsc": "Naziv A-Ž",
+    "sortNameDesc": "Naziv Ž-A",
+    "pasteFromClipboard": "Zalijepi iz međuspremnika",
+    "paste": "Zalijepi",
+    "copy": "Kopiraj"
   },
   "trackCard": {
     "stop": "Zaustavi",
@@ -482,7 +546,11 @@
     "showing": "Prikazuje {count} od {total} izdanja",
     "downloadFiltered": "Preuzmi {count} {type}",
     "noReleases": "Nema {type}",
-    "loadingDetailsShort": "(učitavanje...)"
+    "loadingDetailsShort": "(učitavanje...)",
+    "sortNewest": "Prvo najnovije",
+    "sortOldest": "Prvo najstarije",
+    "releases": "izdanja",
+    "featuredAppearances": "gostujući nastupi"
   },
   "playlistView": {
     "downloadPlaylist": "Preuzmi popis",
@@ -519,7 +587,66 @@
     "downloadFailed": "Preuzimanje nije uspjelo",
     "addedToQueue": "Dodano u red čekanja",
     "settingsSaved": "Postavke spremljene",
-    "copiedToClipboard": "Kopirano u međuspremnik"
+    "copiedToClipboard": "Kopirano u međuspremnik",
+    "downloadsPaused": "Preuzimanja pauzirana",
+    "downloadsResumed": "Preuzimanja nastavljena",
+    "alreadyDownloaded": "\"{title}\" je već preuzeto",
+    "alreadyDownloading": "\"{title}\" se već preuzima",
+    "sessionExpiredDownload": "Sesija je istekla. Prijavite se ponovno za preuzimanje.",
+    "existsOnDisk": "\"{title}\" već postoji na disku ({have}/{total} pjesama), svejedno preuzimam",
+    "thisAlbum": "Ovaj album",
+    "thisArtist": "ovog izvođača",
+    "tagsRefreshed": "Oznake osvježene za \"{title}\"",
+    "tagRefreshFailed": "Osvježavanje oznaka nije uspjelo: \"{title}\"",
+    "tagsRefreshedSkipped": "Oznake osvježene za \"{title}\" ({count} pjesma preskočena) | Oznake osvježene za \"{title}\" ({count} pjesama preskočeno)",
+    "downloaded": "Preuzeto \"{title}\"",
+    "downloadFailedTitle": "Preuzimanje nije uspjelo: \"{title}\"",
+    "downloadedWithFailures": "Preuzeto \"{title}\" s {count} neuspjelom pjesmom | Preuzeto \"{title}\" s {count} neuspjelih pjesama",
+    "retrying": "Ponovni pokušaj \"{title}\"...",
+    "retryingAlbum": "Ponovni pokušaj albuma \"{title}\"...",
+    "retryingPlaylist": "Ponovni pokušaj popisa za reprodukciju \"{title}\"...",
+    "retryFailed": "Neuspio ponovni pokušaj za \"{title}\"",
+    "retryNoContext": "Nije moguće ponoviti \"{title}\", nedostaje kontekst preuzimanja",
+    "retryingFailedTracks": "Ponovni pokušaj {count} neuspjele pjesme iz \"{title}\"... | Ponovni pokušaj {count} neuspjelih pjesama iz \"{title}\"...",
+    "retryingTracks": "Ponovni pokušaj {count} pjesme | Ponovni pokušaj {count} pjesama",
+    "retryNone": "Nije uspjelo ponoviti nijednu pjesmu",
+    "resumingInterrupted": "Nastavljanje {count} prekinutog preuzimanja… | Nastavljanje {count} prekinutih preuzimanja…",
+    "removedFromFavorites": "\"{name}\" uklonjen iz favorita",
+    "addedToFavorites": "\"{name}\" dodan u favorite",
+    "updateAvailable": "Dostupno ažuriranje: v{version}. Idite na Postavke > O aplikaciji za preuzimanje.",
+    "profileSaveFailed": "Spremanje profila nije uspjelo",
+    "configExported": "Konfiguracija izvezena (postavke + profili)",
+    "configImported": "Konfiguracija uvezena (postavke + profili)",
+    "settingsImported": "Postavke su uspješno uvezene",
+    "configImportFailed": "Uvoz konfiguracije nije uspio. Nevažeći format datoteke.",
+    "clearedDownloads": "Uklonjeno {count} preuzimanje | Uklonjeno {count} preuzimanja",
+    "clearedCompleted": "Uklonjeno {count} završeno preuzimanje | Uklonjeno {count} završenih preuzimanja",
+    "rateLimitedReleases": "{count} izdanje nije moglo biti učitano (Deezer ograničenje), kliknite ponovno preuzmi za ostatak | {count} izdanja nije moglo biti učitano (Deezer ograničenje), kliknite ponovno preuzmi za ostatak",
+    "rateLimitedAlbums": "{count} album nije mogao biti učitan (Deezer ograničenje), pokušajte ponovno za ostatak | {count} albuma nije moglo biti učitano (Deezer ograničenje), pokušajte ponovno za ostatak",
+    "rateLimitedArtistReleases": "{count} izdanje izvođača {artist} nije moglo biti učitano (Deezer ograničenje), pokrenite ponovno za ostatak | {count} izdanja izvođača {artist} nije moglo biti učitano (Deezer ograničenje), pokrenite ponovno za ostatak",
+    "playlistsSkipped": "{count} popis za reprodukciju preskočen (prazan ili nedostupan) | {count} popisa za reprodukciju preskočeno (praznih ili nedostupnih)",
+    "queuedForDownload": "Dodano u red za preuzimanje: {count} {type}",
+    "favoritesSectionsFailed": "Nije moguće učitati {sections} s Deezera. Ostali odjeljci su ažurirani.",
+    "favoritesSynced": "Sinkronizirano s Deezer favoritima: {summary}",
+    "favoritesAlreadyImported": "Svi Deezer favoriti su već uvezeni",
+    "favoritesStale": "{detail} u Sinkronizaciji više nisu u vašim Deezer favoritima, pregledajte na stranici Sinkronizacije.",
+    "queuedLinks": "Dodano u red {n} od {total} poveznica",
+    "queuedQobuzItem": "\"{title}\" dodano u red ({count} pjesama)",
+    "queuedQobuzTrack": "Qobuz pjesma dodana u red za preuzimanje",
+    "qobuzDownloadFailed": "Preuzimanje s Qobuza nije uspjelo: {message}",
+    "noConversionResults": "Nema dostupnih rezultata pretvorbe",
+    "noDownloadableTracks": "Nema pjesama dostupnih za preuzimanje u ovom odabiru",
+    "addedTracksToQueue": "{count} pjesama dodano u red za preuzimanje",
+    "downloadStartFailed": "Pokretanje preuzimanja nije uspjelo: {message}",
+    "noMatchingTracks": "Nisu pronađene odgovarajuće {service} pjesme za preuzimanje",
+    "addedItemsToQueue": "{count} stavka dodana u red za preuzimanje | {count} stavki dodano u red za preuzimanje",
+    "addSomeFailed": "Nije uspjelo dodati neke stavke u red za preuzimanje",
+    "processingLinks": "Obrada {count} poveznica...",
+    "queuedFromLinks": "Dodana {queued} stavka iz {links} poveznica u red | Dodano {queued} stavki iz {links} poveznica u red",
+    "queuedFromLinksFailed": "({failed} neuspjelo)",
+    "noneQueued": "Nijedno preuzimanje nije moglo biti dodano u red, provjerite jeste li prijavljeni",
+    "copyFailed": "Kopiranje nije uspjelo",
+    "pasteFailed": "Lijepljenje nije uspjelo, pristup međuspremniku odbijen"
   },
   "sync": {
     "sortBy": "Razvrstaj po",
@@ -529,7 +656,13 @@
     "sortStatus": "Status",
     "sortTracks": "Preuzete pjesme",
     "filterPlaceholder": "Filtriraj po nazivu…",
-    "noMatches": "Nema rezultata"
+    "noMatches": "Nema rezultata",
+    "scheduleLaunch": "Pri pokretanju aplikacije",
+    "scheduleHourly": "Svaki sat",
+    "scheduleEvery": "Svakih {hours} sati",
+    "scheduleManual": "Samo ručno",
+    "resolvingShareLink": "Rješavanje poveznice za dijeljenje...",
+    "playlistDetected": "Otkriven {service} popis za reprodukciju"
   },
   "userPlaylists": {
     "creator": "Autor",
@@ -561,7 +694,8 @@
     "seeAll": "PRIKAŽI SVE",
     "sortDefault": "REDOSLIJED FEEDA",
     "sortName": "A–Ž",
-    "sortTracks": "NAJVIŠE PJESAMA"
+    "sortTracks": "NAJVIŠE PJESAMA",
+    "connectInSettings": "Poveži u Postavkama"
   },
   "retag": {
     "viaQobuzTip": "Oznake preuzete s Qobuza — Deezer nije imao podudaranje za ovaj ISRC"
@@ -572,5 +706,9 @@
   },
   "about": {
     "disclaimer": "Ova aplikacija nije povezana s Deezerom, Qobuzom ni Spotifyjem, niti su je oni odobrili ili podržali. Namijenjena je osobnoj upotrebi s vlastitim računima. Molimo koristite je odgovorno i u skladu s lokalnim zakonima o preuzimanju glazbe te poštujte autorska prava i uvjete pružanja usluge svake streaming platforme. Preuzimanja s Qobuza zahtijevaju vlastitu aktivnu plaćenu Qobuz pretplatu."
+  },
+  "accessibility": {
+    "windowControls": "Kontrole prozora",
+    "closeNotification": "Zatvori obavijest"
   }
 }

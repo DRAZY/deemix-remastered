@@ -6,7 +6,8 @@
     "downloads": "İndirmeler",
     "favorites": "Favoriler",
     "linkAnalyzer": "Bağlantı Analizcisi",
-    "settings": "Ayarlar"
+    "settings": "Ayarlar",
+    "genres": "Türler"
   },
   "sidebar": {
     "appName": "Deemix Remastered",
@@ -94,7 +95,22 @@
     "noHistoryYet": "Henüz indirme geçmişi yok",
     "retryFailedTip": "{n} başarısız parçayı yeniden dene | {n} başarısız parçayı yeniden dene",
     "retryTip": "İndirmeyi yeniden dene",
-    "showFailedTracks": "Başarısız parçaları göster"
+    "showFailedTracks": "Başarısız parçaları göster",
+    "statistics": "İndirme İstatistikleri",
+    "totalTracks": "Toplam Şarkı",
+    "thisWeek": "Bu Hafta",
+    "topArtists": "En İyi Sanatçılar",
+    "qobuzCauseQuality": "Şarkı, istenen kalitede veya planınızda Qobuz'da mevcut değil",
+    "qobuzCauseSession": "Qobuz oturumunun süresi doldu, Ayarlar'dan yeniden bağlanın",
+    "qobuzCauseNetwork": "Ağ veya Qobuz CDN bağlantı sorunları, tekrar denemek genellikle çözer",
+    "trackStatus": {
+      "done": "Tamamlandı",
+      "failed": "Başarısız",
+      "downloading": "İndiriliyor",
+      "decrypting": "Şifre Çözülüyor",
+      "tagging": "Etiketleniyor",
+      "pending": "Bekliyor"
+    }
   },
   "charts": {
     "title": "Listeler",
@@ -110,12 +126,19 @@
     "artists": "Favori Sanatçılar",
     "playlists": "Favori Çalma Listeleri",
     "noFavorites": "Henüz favori yok",
-    "loginToSee": "Deezer favorilerinizi görmek için giriş yapın"
+    "loginToSee": "Deezer favorilerinizi görmek için giriş yapın",
+    "sortAdded": "Eklenme Tarihi",
+    "importFromDeezer": "Deezer'dan İçe Aktar",
+    "importing": "İçe aktarılıyor...",
+    "importedCount": "+{n} içe aktarıldı",
+    "prunedCount": "−{n} kaldırıldı",
+    "unchangedCount": "{n} değişmedi",
+    "noneOnAccount": "Deezer hesabınızda favori bulunamadı"
   },
   "analyzer": {
     "title": "Bağlantı Analizcisi",
-    "subtitle": "Meta verileri ve indirme seçeneklerini analiz etmek için bir Deezer bağlantısı yapıştırın",
-    "placeholder": "Deezer bağlantısı yapıştırın (şarkı, albüm, sanatçı veya çalma listesi)...",
+    "subtitle": "Meta verilerini ve indirme seçeneklerini analiz etmek için bir Deezer, Spotify veya Qobuz bağlantısı yapıştırın",
+    "placeholder": "Bir veya daha fazla Deezer, Spotify veya Qobuz bağlantısı yapıştırın (şarkı, albüm, sanatçı veya çalma listesi)...",
     "analyze": "Analiz Et",
     "analyzing": "Analiz ediliyor...",
     "metadata": "Meta Veriler",
@@ -154,7 +177,8 @@
       "albumCount": "Albüm Sayısı",
       "creator": "Oluşturan",
       "public": "Herkese Açık",
-      "fans": "Hayranlar"
+      "fans": "Hayranlar",
+      "name": "İsim"
     },
     "types": {
       "track": "Şarkı",
@@ -167,7 +191,30 @@
       "unsupported": "Bu bağlantı türü desteklenmiyor",
       "notFound": "Deezer'da içerik bulunamadı",
       "networkError": "Analiz başarısız. Lütfen tekrar deneyin."
-    }
+    },
+    "loginRequired": "İndirmek için giriş gerekli",
+    "convertTo": "Şuna dönüştür",
+    "compareNeedsBoth": "İkisini de karşılaştırmak için Deezer ve Qobuz bağlı olmalı.",
+    "noneFoundBoth": "Deezer'da veya Qobuz'da hiç şarkı bulunamadı.",
+    "noneFoundService": "Eşleşen {service} şarkısı bulunamadı. Çalma listesindeki şarkılar {service}'te mevcut olmayabilir.",
+    "matchingTracks": "Eşleşen şarkılar",
+    "loginRequiredConvert": "Dönüştürmek ve indirmek için giriş gerekli",
+    "conversionResults": "Dönüştürme Sonuçları",
+    "qobuzOnly": "Yalnızca Qobuz",
+    "deezerOnly": "Yalnızca Deezer",
+    "prefer": "Tercih et",
+    "fallbackHint": "diğerine geri dön · bir şarkıyı geçersiz kılmak için yanan hücreye tıklayın",
+    "getStarted": "Başlamak için bir Deezer veya Spotify bağlantısı yapıştırın",
+    "converting": "Dönüştürülüyor...",
+    "compareBoth": "Deezer ve Qobuz'u Karşılaştır",
+    "convertToQobuz": "Qobuz'a Dönüştür",
+    "convertToDeezer": "Deezer'a Dönüştür",
+    "matchSearch": "Ara",
+    "batchSummary": "{links} bağlantı · {ready} hazır",
+    "batchAnalyzed": "{done}/{total} analiz edildi",
+    "batchFailed": "{count} başarısız",
+    "queuing": "Kuyruğa ekleniyor...",
+    "downloadAllReady": "Hazır olanların tümünü indir ({count})"
   },
   "settings": {
     "title": "Ayarlar",
@@ -385,7 +432,10 @@
       "userIdPlaceholder": "User ID (isteğe bağlı)",
       "disclaimer": "Kendinize ait etkin ve ücretli bir Qobuz hesabı gerektirir. Bu uygulama Qobuz ile bağlantılı değildir. Lütfen Qobuz'un hizmet şartlarına uyun."
     },
-    "deezerDisclaimer": "Kendi Deezer hesabınızı kullanın. Bu uygulama Deezer ile bağlantılı değildir. Lütfen Deezer'ın hizmet şartlarına uyun."
+    "deezerDisclaimer": "Kendi Deezer hesabınızı kullanın. Bu uygulama Deezer ile bağlantılı değildir. Lütfen Deezer'ın hizmet şartlarına uyun.",
+    "exportConfig": "Yapılandırmayı Dışa Aktar",
+    "importConfig": "Yapılandırmayı İçe Aktar",
+    "m3uTemplate": "M3U dosya adı şablonu"
   },
   "login": {
     "title": "Deezer'a Giriş Yap",
@@ -412,7 +462,14 @@
     "captchaHelpText": "CAPTCHA yüklenmiyorsa veya doğrulanmıyorsa, önce Deezer web sitesinde giriş yapmayı deneyin, ardından ARL token yöntemini kullanın.",
     "verifying": "Doğrulanıyor...",
     "backToLogin": "Girişe Geri Dön",
-    "openDeezerLogin": "Deezer'ı Tarayıcıda Aç"
+    "openDeezerLogin": "Deezer'ı Tarayıcıda Aç",
+    "sessionExpiredDownloading": "Oturum süresi doldu. İndirmeye devam etmek için tekrar giriş yapın.",
+    "logIn": "Giriş Yap",
+    "emailPasswordLogin": "E-posta ve Şifre ile Giriş",
+    "emailPasswordHelp": "Deezer hesap bilgilerinizi kullanın. Daha basit olduğu ve oturumu otomatik yönettiği için önerilen yöntem budur.",
+    "whatIsArl": "ARL token nedir?",
+    "arlExplainer": "ARL (Authentication Request Login) token, Deezer hesabınızdan alınan ve müzik indirmeye izin veren bir çerezdir. Deezer'a giriş yaptığınızda tarayıcınızda saklanır.",
+    "passwordPlaceholder": "Deezer şifreniz"
   },
   "common": {
     "download": "İndir",
@@ -447,7 +504,14 @@
     "favorited": "Favorilerde",
     "fans": "Hayran",
     "by": "tarafından",
-    "new": "YENİ"
+    "new": "YENİ",
+    "keyboardShortcuts": "Klavye Kısayolları",
+    "unknownError": "Bilinmeyen hata",
+    "sortNameAsc": "İsim A-Z",
+    "sortNameDesc": "İsim Z-A",
+    "pasteFromClipboard": "Panodan yapıştır",
+    "paste": "Yapıştır",
+    "copy": "Kopyala"
   },
   "trackCard": {
     "stop": "Durdur",
@@ -482,7 +546,11 @@
     "showing": "{total} yayından {count} tanesi gösteriliyor",
     "downloadFiltered": "{count} {type} indir",
     "noReleases": "{type} bulunamadı",
-    "loadingDetailsShort": "(yükleniyor...)"
+    "loadingDetailsShort": "(yükleniyor...)",
+    "sortNewest": "Önce En Yeni",
+    "sortOldest": "Önce En Eski",
+    "releases": "yayınlar",
+    "featuredAppearances": "konuk katkıları"
   },
   "playlistView": {
     "downloadPlaylist": "Çalma listesini indir",
@@ -519,7 +587,66 @@
     "downloadFailed": "İndirme başarısız",
     "addedToQueue": "Kuyruğa eklendi",
     "settingsSaved": "Ayarlar kaydedildi",
-    "copiedToClipboard": "Panoya kopyalandı"
+    "copiedToClipboard": "Panoya kopyalandı",
+    "downloadsPaused": "İndirmeler duraklatıldı",
+    "downloadsResumed": "İndirmeler sürdürüldü",
+    "alreadyDownloaded": "\"{title}\" zaten indirildi",
+    "alreadyDownloading": "\"{title}\" zaten indiriliyor",
+    "sessionExpiredDownload": "Oturum süresi doldu. İndirmek için tekrar giriş yapın.",
+    "existsOnDisk": "\"{title}\" zaten diskte mevcut ({have}/{total} şarkı), yine de indiriliyor",
+    "thisAlbum": "Bu albüm",
+    "thisArtist": "bu sanatçı",
+    "tagsRefreshed": "\"{title}\" için etiketler yenilendi",
+    "tagRefreshFailed": "Etiket yenileme başarısız: \"{title}\"",
+    "tagsRefreshedSkipped": "\"{title}\" için etiketler yenilendi ({count} şarkı atlandı) | \"{title}\" için etiketler yenilendi ({count} şarkı atlandı)",
+    "downloaded": "\"{title}\" indirildi",
+    "downloadFailedTitle": "İndirme başarısız: \"{title}\"",
+    "downloadedWithFailures": "\"{title}\" indirildi, {count} şarkı başarısız oldu | \"{title}\" indirildi, {count} şarkı başarısız oldu",
+    "retrying": "\"{title}\" tekrar deneniyor...",
+    "retryingAlbum": "\"{title}\" albümü tekrar deneniyor...",
+    "retryingPlaylist": "\"{title}\" çalma listesi tekrar deneniyor...",
+    "retryFailed": "\"{title}\" tekrar denenemedi",
+    "retryNoContext": "\"{title}\" tekrar denenemedi, indirme bağlamı eksik",
+    "retryingFailedTracks": "\"{title}\" içinden {count} başarısız şarkı tekrar deneniyor... | \"{title}\" içinden {count} başarısız şarkı tekrar deneniyor...",
+    "retryingTracks": "{count} şarkı tekrar deneniyor | {count} şarkı tekrar deneniyor",
+    "retryNone": "Hiçbir şarkı tekrar denenemedi",
+    "resumingInterrupted": "{count} yarıda kalan indirme sürdürülüyor… | {count} yarıda kalan indirme sürdürülüyor…",
+    "removedFromFavorites": "\"{name}\" favorilerden kaldırıldı",
+    "addedToFavorites": "\"{name}\" favorilere eklendi",
+    "updateAvailable": "Güncelleme mevcut: v{version}. İndirmek için Ayarlar > Hakkında bölümüne gidin.",
+    "profileSaveFailed": "Profil kaydedilemedi",
+    "configExported": "Yapılandırma dışa aktarıldı (ayarlar + profiller)",
+    "configImported": "Yapılandırma içe aktarıldı (ayarlar + profiller)",
+    "settingsImported": "Ayarlar başarıyla içe aktarıldı",
+    "configImportFailed": "Yapılandırma içe aktarılamadı. Geçersiz dosya biçimi.",
+    "clearedDownloads": "{count} indirme temizlendi | {count} indirme temizlendi",
+    "clearedCompleted": "{count} tamamlanmış indirme temizlendi | {count} tamamlanmış indirme temizlendi",
+    "rateLimitedReleases": "{count} yayın yüklenemedi (Deezer hız sınırı), kalanını almak için tekrar indir'e tıklayın | {count} yayın yüklenemedi (Deezer hız sınırı), kalanını almak için tekrar indir'e tıklayın",
+    "rateLimitedAlbums": "{count} albüm yüklenemedi (Deezer hız sınırı), kalanını almak için tekrar deneyin | {count} albüm yüklenemedi (Deezer hız sınırı), kalanını almak için tekrar deneyin",
+    "rateLimitedArtistReleases": "{artist} sanatçısından {count} yayın yüklenemedi (Deezer hız sınırı), kalanını almak için tekrar çalıştırın | {artist} sanatçısından {count} yayın yüklenemedi (Deezer hız sınırı), kalanını almak için tekrar çalıştırın",
+    "playlistsSkipped": "{count} çalma listesi atlandı (boş veya kullanılamıyor) | {count} çalma listesi atlandı (boş veya kullanılamıyor)",
+    "queuedForDownload": "İndirme için {count} {type} kuyruğa eklendi",
+    "favoritesSectionsFailed": "{sections} Deezer'dan yüklenemedi. Diğer bölümler güncellendi.",
+    "favoritesSynced": "Deezer favorileriyle senkronize edildi: {summary}",
+    "favoritesAlreadyImported": "Tüm Deezer favorileri zaten içe aktarılmış",
+    "favoritesStale": "Senkronizasyon'daki {detail} artık Deezer favorilerinizde değil, Senkronizasyon sayfasında inceleyin.",
+    "queuedLinks": "{total} bağlantıdan {n} tanesi kuyruğa eklendi",
+    "queuedQobuzItem": "\"{title}\" kuyruğa eklendi ({count} şarkı)",
+    "queuedQobuzTrack": "Qobuz şarkısı indirme kuyruğuna eklendi",
+    "qobuzDownloadFailed": "Qobuz indirmesi başarısız: {message}",
+    "noConversionResults": "Kullanılabilir dönüştürme sonucu yok",
+    "noDownloadableTracks": "Bu seçimde indirilebilir şarkı yok",
+    "addedTracksToQueue": "{count} şarkı indirme kuyruğuna eklendi",
+    "downloadStartFailed": "İndirme başlatılamadı: {message}",
+    "noMatchingTracks": "İndirmek için eşleşen {service} şarkısı bulunamadı",
+    "addedItemsToQueue": "{count} öğe indirme kuyruğuna eklendi | {count} öğe indirme kuyruğuna eklendi",
+    "addSomeFailed": "Bazı öğeler indirme kuyruğuna eklenemedi",
+    "processingLinks": "{count} bağlantı işleniyor...",
+    "queuedFromLinks": "{links} bağlantıdan {queued} öğe kuyruğa eklendi | {links} bağlantıdan {queued} öğe kuyruğa eklendi",
+    "queuedFromLinksFailed": "({failed} başarısız)",
+    "noneQueued": "Hiçbir indirme kuyruğa eklenemedi, giriş yaptığınızdan emin olun",
+    "copyFailed": "Kopyalanamadı",
+    "pasteFailed": "Yapıştırılamadı, pano erişimi reddedildi"
   },
   "sync": {
     "sortBy": "Sıralama ölçütü",
@@ -529,7 +656,13 @@
     "sortStatus": "Durum",
     "sortTracks": "İndirilen parçalar",
     "filterPlaceholder": "Ada göre filtrele…",
-    "noMatches": "Eşleşme yok"
+    "noMatches": "Eşleşme yok",
+    "scheduleLaunch": "Uygulama açılışında",
+    "scheduleHourly": "Her saat",
+    "scheduleEvery": "Her {hours} saatte bir",
+    "scheduleManual": "Yalnızca manuel",
+    "resolvingShareLink": "Paylaşım bağlantısı çözümleniyor...",
+    "playlistDetected": "{service} çalma listesi algılandı"
   },
   "userPlaylists": {
     "creator": "Oluşturan",
@@ -564,7 +697,8 @@
     "more": "DAHA FAZLA",
     "sortDefault": "AKIŞ SIRASI",
     "sortName": "A–Z",
-    "sortTracks": "EN ÇOK PARÇA"
+    "sortTracks": "EN ÇOK PARÇA",
+    "connectInSettings": "Ayarlar'dan bağlan"
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz bağlı",
@@ -572,5 +706,9 @@
   },
   "about": {
     "disclaimer": "Bu uygulama Deezer, Qobuz veya Spotify ile bağlantılı değildir, onlar tarafından yetkilendirilmemiş ve onaylanmamıştır. Kendi hesaplarınızla kişisel kullanım için tasarlanmıştır. Lütfen uygulamayı sorumlu bir şekilde ve müzik indirmeyle ilgili yerel yasalarınıza uygun olarak kullanın, ayrıca her yayın platformunun telif haklarına ve hizmet şartlarına saygı gösterin. Qobuz indirmeleri, kendinize ait etkin ve ücretli bir Qobuz aboneliği gerektirir."
+  },
+  "accessibility": {
+    "windowControls": "Pencere kontrolleri",
+    "closeNotification": "Bildirimi kapat"
   }
 }

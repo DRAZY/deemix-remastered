@@ -6,7 +6,8 @@
     "downloads": "ดาวน์โหลด",
     "favorites": "รายการโปรด",
     "linkAnalyzer": "วิเคราะห์ลิงก์",
-    "settings": "ตั้งค่า"
+    "settings": "ตั้งค่า",
+    "genres": "แนวเพลง"
   },
   "sidebar": {
     "appName": "Deemix Remastered",
@@ -128,7 +129,22 @@
     "noHistoryYet": "ยังไม่มีประวัติการดาวน์โหลด",
     "retryFailedTip": "ลองใหม่ {n} เพลงที่ล้มเหลว | ลองใหม่ {n} เพลงที่ล้มเหลว",
     "retryTip": "ลองดาวน์โหลดอีกครั้ง",
-    "showFailedTracks": "แสดงเพลงที่ล้มเหลว"
+    "showFailedTracks": "แสดงเพลงที่ล้มเหลว",
+    "statistics": "สถิติการดาวน์โหลด",
+    "totalTracks": "เพลงทั้งหมด",
+    "thisWeek": "สัปดาห์นี้",
+    "topArtists": "ศิลปินยอดนิยม",
+    "qobuzCauseQuality": "ไม่มีเพลงนี้บน Qobuz ในคุณภาพที่ร้องขอหรือในแพ็กเกจของคุณ",
+    "qobuzCauseSession": "เซสชัน Qobuz หมดอายุ โปรดเชื่อมต่อใหม่ในการตั้งค่า",
+    "qobuzCauseNetwork": "ปัญหาการเชื่อมต่อเครือข่ายหรือ CDN ของ Qobuz มักแก้ไขได้ด้วยการลองใหม่",
+    "trackStatus": {
+      "done": "เสร็จสิ้น",
+      "failed": "ล้มเหลว",
+      "downloading": "กำลังดาวน์โหลด",
+      "decrypting": "กำลังถอดรหัส",
+      "tagging": "กำลังใส่แท็ก",
+      "pending": "รอดำเนินการ"
+    }
   },
   "charts": {
     "title": "ชาร์ต",
@@ -154,12 +170,19 @@
     "playlists": "เพลย์ลิสต์โปรด",
     "noFavorites": "ยังไม่มีรายการโปรด",
     "noFavoritesHint": "คลิกไอคอนรูปหัวใจบนเพลง อัลบั้ม หรือศิลปินเพื่อบันทึกไว้ที่นี่",
-    "loginToSee": "เข้าสู่ระบบเพื่อดูรายการโปรด Deezer ของคุณ"
+    "loginToSee": "เข้าสู่ระบบเพื่อดูรายการโปรด Deezer ของคุณ",
+    "sortAdded": "วันที่เพิ่ม",
+    "importFromDeezer": "นำเข้าจาก Deezer",
+    "importing": "กำลังนำเข้า...",
+    "importedCount": "+{n} นำเข้าแล้ว",
+    "prunedCount": "−{n} ถูกลบ",
+    "unchangedCount": "{n} ไม่มีการเปลี่ยนแปลง",
+    "noneOnAccount": "ไม่พบรายการโปรดในบัญชี Deezer ของคุณ"
   },
   "analyzer": {
     "title": "วิเคราะห์ลิงก์",
-    "subtitle": "วางลิงก์ Deezer เพื่อวิเคราะห์ข้อมูลเมตาและตัวเลือกการดาวน์โหลด",
-    "placeholder": "วางลิงก์ Deezer (เพลง อัลบั้ม ศิลปิน หรือเพลย์ลิสต์)...",
+    "subtitle": "วางลิงก์ Deezer, Spotify หรือ Qobuz เพื่อวิเคราะห์ข้อมูลเมตาและตัวเลือกการดาวน์โหลด",
+    "placeholder": "วางลิงก์ Deezer, Spotify หรือ Qobuz หนึ่งลิงก์ขึ้นไป (เพลง, อัลบั้ม, ศิลปิน หรือเพลย์ลิสต์)...",
     "analyze": "วิเคราะห์",
     "analyzing": "กำลังวิเคราะห์...",
     "metadata": "ข้อมูลเมตา",
@@ -198,7 +221,8 @@
       "albumCount": "จำนวนอัลบั้ม",
       "creator": "ผู้สร้าง",
       "public": "สาธารณะ",
-      "fans": "แฟนๆ"
+      "fans": "แฟนๆ",
+      "name": "ชื่อ"
     },
     "types": {
       "track": "เพลง",
@@ -211,7 +235,30 @@
       "unsupported": "ไม่รองรับประเภทลิงก์นี้",
       "notFound": "ไม่พบเนื้อหาบน Deezer",
       "networkError": "วิเคราะห์ลิงก์ไม่สำเร็จ กรุณาลองอีกครั้ง"
-    }
+    },
+    "loginRequired": "ต้องเข้าสู่ระบบก่อนดาวน์โหลด",
+    "convertTo": "แปลงเป็น",
+    "compareNeedsBoth": "การเปรียบเทียบทั้งสองต้องเชื่อมต่อทั้ง Deezer และ Qobuz",
+    "noneFoundBoth": "ไม่พบเพลงทั้งใน Deezer และ Qobuz",
+    "noneFoundService": "ไม่พบเพลง {service} ที่ตรงกัน เพลงในเพลย์ลิสต์อาจไม่มีอยู่บน {service}",
+    "matchingTracks": "เพลงที่ตรงกัน",
+    "loginRequiredConvert": "ต้องเข้าสู่ระบบก่อนแปลงและดาวน์โหลด",
+    "conversionResults": "ผลลัพธ์การแปลง",
+    "qobuzOnly": "Qobuz เท่านั้น",
+    "deezerOnly": "Deezer เท่านั้น",
+    "prefer": "ตัวเลือกที่ต้องการ",
+    "fallbackHint": "จะสลับไปใช้อีกฝั่งโดยอัตโนมัติ · คลิกช่องที่ติดไฟเพื่อกำหนดเพลงนั้นเอง",
+    "getStarted": "วางลิงก์ Deezer หรือ Spotify เพื่อเริ่มต้น",
+    "converting": "กำลังแปลง...",
+    "compareBoth": "เปรียบเทียบ Deezer และ Qobuz",
+    "convertToQobuz": "แปลงเป็น Qobuz",
+    "convertToDeezer": "แปลงเป็น Deezer",
+    "matchSearch": "ค้นหา",
+    "batchSummary": "{links} ลิงก์ · พร้อม {ready} รายการ",
+    "batchAnalyzed": "วิเคราะห์แล้ว {done}/{total}",
+    "batchFailed": "ล้มเหลว {count} รายการ",
+    "queuing": "กำลังเข้าคิว...",
+    "downloadAllReady": "ดาวน์โหลดทั้งหมดที่พร้อม ({count})"
   },
   "settings": {
     "title": "ตั้งค่า",
@@ -440,7 +487,10 @@
       "userIdPlaceholder": "User ID (ไม่บังคับ)",
       "disclaimer": "จำเป็นต้องมีบัญชี Qobuz แบบชำระเงินที่ยังใช้งานอยู่ของคุณเอง แอปนี้ไม่ได้มีส่วนเกี่ยวข้องกับ Qobuz โปรดปฏิบัติตามเงื่อนไขการให้บริการของ Qobuz"
     },
-    "deezerDisclaimer": "ใช้บัญชี Deezer ของคุณเอง แอปนี้ไม่ได้มีส่วนเกี่ยวข้องกับ Deezer โปรดปฏิบัติตามเงื่อนไขการให้บริการของ Deezer"
+    "deezerDisclaimer": "ใช้บัญชี Deezer ของคุณเอง แอปนี้ไม่ได้มีส่วนเกี่ยวข้องกับ Deezer โปรดปฏิบัติตามเงื่อนไขการให้บริการของ Deezer",
+    "exportConfig": "ส่งออกการกำหนดค่า",
+    "importConfig": "นำเข้าการกำหนดค่า",
+    "m3uTemplate": "เทมเพลตชื่อไฟล์ M3U"
   },
   "login": {
     "title": "เข้าสู่ระบบ Deezer",
@@ -472,7 +522,14 @@
     "openingBrowser": "กำลังเปิดหน้าเข้าสู่ระบบ Deezer...",
     "openInExternalBrowser": "เปิดในเบราว์เซอร์ภายนอกแทน",
     "browserLoginHelp": "วิธีการทำงาน",
-    "browserLoginHelpText": "หน้าต่างเข้าสู่ระบบ Deezer จะเปิดขึ้น เข้าสู่ระบบด้วยบัญชีของคุณ และเซสชันจะถูกบันทึกโดยอัตโนมัติเมื่อเสร็จสิ้น"
+    "browserLoginHelpText": "หน้าต่างเข้าสู่ระบบ Deezer จะเปิดขึ้น เข้าสู่ระบบด้วยบัญชีของคุณ และเซสชันจะถูกบันทึกโดยอัตโนมัติเมื่อเสร็จสิ้น",
+    "sessionExpiredDownloading": "เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งเพื่อดาวน์โหลดต่อ",
+    "logIn": "เข้าสู่ระบบ",
+    "emailPasswordLogin": "เข้าสู่ระบบด้วยอีเมลและรหัสผ่าน",
+    "emailPasswordHelp": "ใช้ข้อมูลบัญชี Deezer ของคุณ นี่คือวิธีที่แนะนำเพราะง่ายกว่าและจัดการเซสชันให้โดยอัตโนมัติ",
+    "whatIsArl": "โทเคน ARL คืออะไร",
+    "arlExplainer": "โทเคน ARL (Authentication Request Login) คือคุกกี้จากบัญชี Deezer ของคุณที่ใช้ดาวน์โหลดเพลงได้ โดยจะถูกเก็บไว้ในเบราว์เซอร์เมื่อคุณเข้าสู่ระบบ Deezer",
+    "passwordPlaceholder": "รหัสผ่าน Deezer ของคุณ"
   },
   "common": {
     "download": "ดาวน์โหลด",
@@ -507,7 +564,14 @@
     "favorited": "ในรายการโปรด",
     "fans": "แฟนๆ",
     "by": "โดย",
-    "new": "ใหม่"
+    "new": "ใหม่",
+    "keyboardShortcuts": "แป้นพิมพ์ลัด",
+    "unknownError": "ข้อผิดพลาดที่ไม่ทราบสาเหตุ",
+    "sortNameAsc": "ชื่อ A-Z",
+    "sortNameDesc": "ชื่อ Z-A",
+    "pasteFromClipboard": "วางจากคลิปบอร์ด",
+    "paste": "วาง",
+    "copy": "คัดลอก"
   },
   "trackCard": {
     "stop": "หยุด",
@@ -550,7 +614,11 @@
     "showing": "แสดง {count} จาก {total} ผลงาน",
     "downloadFiltered": "ดาวน์โหลด {count} {type}",
     "noReleases": "ไม่พบ {type}",
-    "loadingDetailsShort": "(กำลังโหลดรายละเอียด...)"
+    "loadingDetailsShort": "(กำลังโหลดรายละเอียด...)",
+    "sortNewest": "ใหม่ล่าสุดก่อน",
+    "sortOldest": "เก่าที่สุดก่อน",
+    "releases": "ผลงาน",
+    "featuredAppearances": "ผลงานร่วม"
   },
   "playlistView": {
     "downloadPlaylist": "ดาวน์โหลดเพลย์ลิสต์",
@@ -582,7 +650,66 @@
     "downloadFailed": "ดาวน์โหลดไม่สำเร็จ",
     "addedToQueue": "เพิ่มในคิวดาวน์โหลดแล้ว",
     "settingsSaved": "บันทึกการตั้งค่าแล้ว",
-    "copiedToClipboard": "คัดลอกไปยังคลิปบอร์ดแล้ว"
+    "copiedToClipboard": "คัดลอกไปยังคลิปบอร์ดแล้ว",
+    "downloadsPaused": "หยุดการดาวน์โหลดชั่วคราว",
+    "downloadsResumed": "ดำเนินการดาวน์โหลดต่อแล้ว",
+    "alreadyDownloaded": "\"{title}\" ดาวน์โหลดไว้แล้ว",
+    "alreadyDownloading": "\"{title}\" กำลังดาวน์โหลดอยู่แล้ว",
+    "sessionExpiredDownload": "เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้งเพื่อดาวน์โหลด",
+    "existsOnDisk": "\"{title}\" มีอยู่ในดิสก์แล้ว ({have}/{total} เพลง) ดาวน์โหลดต่อไปอยู่ดี",
+    "thisAlbum": "อัลบั้มนี้",
+    "thisArtist": "ศิลปินคนนี้",
+    "tagsRefreshed": "รีเฟรชแท็กของ \"{title}\" แล้ว",
+    "tagRefreshFailed": "รีเฟรชแท็กไม่สำเร็จ: \"{title}\"",
+    "tagsRefreshedSkipped": "รีเฟรชแท็กของ \"{title}\" แล้ว (ข้าม {count} เพลง) | รีเฟรชแท็กของ \"{title}\" แล้ว (ข้าม {count} เพลง)",
+    "downloaded": "ดาวน์โหลด \"{title}\" แล้ว",
+    "downloadFailedTitle": "ดาวน์โหลดไม่สำเร็จ: \"{title}\"",
+    "downloadedWithFailures": "ดาวน์โหลด \"{title}\" แล้ว โดยมี {count} เพลงล้มเหลว | ดาวน์โหลด \"{title}\" แล้ว โดยมี {count} เพลงล้มเหลว",
+    "retrying": "กำลังลองใหม่ \"{title}\"...",
+    "retryingAlbum": "กำลังลองใหม่อัลบั้ม \"{title}\"...",
+    "retryingPlaylist": "กำลังลองใหม่เพลย์ลิสต์ \"{title}\"...",
+    "retryFailed": "ลองใหม่ \"{title}\" ไม่สำเร็จ",
+    "retryNoContext": "ลองใหม่ \"{title}\" ไม่ได้ ไม่มีข้อมูลการดาวน์โหลด",
+    "retryingFailedTracks": "กำลังลองใหม่ {count} เพลงที่ล้มเหลวจาก \"{title}\"... | กำลังลองใหม่ {count} เพลงที่ล้มเหลวจาก \"{title}\"...",
+    "retryingTracks": "กำลังลองใหม่ {count} เพลง | กำลังลองใหม่ {count} เพลง",
+    "retryNone": "ลองใหม่เพลงใด ๆ ไม่สำเร็จ",
+    "resumingInterrupted": "กำลังดำเนินการดาวน์โหลดที่ถูกขัดจังหวะต่อ {count} รายการ… | กำลังดำเนินการดาวน์โหลดที่ถูกขัดจังหวะต่อ {count} รายการ…",
+    "removedFromFavorites": "ลบ \"{name}\" ออกจากรายการโปรดแล้ว",
+    "addedToFavorites": "เพิ่ม \"{name}\" ในรายการโปรดแล้ว",
+    "updateAvailable": "มีอัปเดต: v{version} ไปที่การตั้งค่า > เกี่ยวกับ เพื่อดาวน์โหลด",
+    "profileSaveFailed": "บันทึกโปรไฟล์ไม่สำเร็จ",
+    "configExported": "ส่งออกการกำหนดค่าแล้ว (การตั้งค่า + โปรไฟล์)",
+    "configImported": "นำเข้าการกำหนดค่าแล้ว (การตั้งค่า + โปรไฟล์)",
+    "settingsImported": "นำเข้าการตั้งค่าสำเร็จ",
+    "configImportFailed": "นำเข้าการกำหนดค่าไม่สำเร็จ รูปแบบไฟล์ไม่ถูกต้อง",
+    "clearedDownloads": "ล้าง {count} รายการดาวน์โหลดแล้ว | ล้าง {count} รายการดาวน์โหลดแล้ว",
+    "clearedCompleted": "ล้างรายการดาวน์โหลดที่เสร็จสิ้น {count} รายการแล้ว | ล้างรายการดาวน์โหลดที่เสร็จสิ้น {count} รายการแล้ว",
+    "rateLimitedReleases": "โหลด {count} ผลงานไม่ได้ (Deezer จำกัดอัตรา) คลิกดาวน์โหลดอีกครั้งเพื่อรับส่วนที่เหลือ | โหลด {count} ผลงานไม่ได้ (Deezer จำกัดอัตรา) คลิกดาวน์โหลดอีกครั้งเพื่อรับส่วนที่เหลือ",
+    "rateLimitedAlbums": "โหลด {count} อัลบั้มไม่ได้ (Deezer จำกัดอัตรา) ลองอีกครั้งเพื่อรับส่วนที่เหลือ | โหลด {count} อัลบั้มไม่ได้ (Deezer จำกัดอัตรา) ลองอีกครั้งเพื่อรับส่วนที่เหลือ",
+    "rateLimitedArtistReleases": "โหลด {count} ผลงานจาก {artist} ไม่ได้ (Deezer จำกัดอัตรา) รันอีกครั้งเพื่อรับส่วนที่เหลือ | โหลด {count} ผลงานจาก {artist} ไม่ได้ (Deezer จำกัดอัตรา) รันอีกครั้งเพื่อรับส่วนที่เหลือ",
+    "playlistsSkipped": "ข้ามเพลย์ลิสต์ {count} รายการ (ว่างเปล่าหรือใช้งานไม่ได้) | ข้ามเพลย์ลิสต์ {count} รายการ (ว่างเปล่าหรือใช้งานไม่ได้)",
+    "queuedForDownload": "เพิ่ม {type} {count} รายการในคิวดาวน์โหลดแล้ว",
+    "favoritesSectionsFailed": "โหลด {sections} จาก Deezer ไม่ได้ ส่วนอื่น ๆ อัปเดตแล้ว",
+    "favoritesSynced": "ซิงค์กับรายการโปรดของ Deezer แล้ว: {summary}",
+    "favoritesAlreadyImported": "นำเข้ารายการโปรดของ Deezer ทั้งหมดแล้ว",
+    "favoritesStale": "{detail} ในหน้าซิงค์ไม่อยู่ในรายการโปรดของ Deezer แล้ว โปรดตรวจสอบที่หน้าซิงค์",
+    "queuedLinks": "เพิ่มลิงก์ {n} จาก {total} ลิงก์ในคิวแล้ว",
+    "queuedQobuzItem": "เพิ่ม \"{title}\" ในคิวแล้ว ({count} เพลง)",
+    "queuedQobuzTrack": "เพิ่มเพลง Qobuz ในคิวดาวน์โหลดแล้ว",
+    "qobuzDownloadFailed": "ดาวน์โหลด Qobuz ไม่สำเร็จ: {message}",
+    "noConversionResults": "ไม่มีผลลัพธ์การแปลง",
+    "noDownloadableTracks": "ไม่มีเพลงที่ดาวน์โหลดได้ในรายการที่เลือกนี้",
+    "addedTracksToQueue": "เพิ่ม {count} เพลงในคิวดาวน์โหลดแล้ว",
+    "downloadStartFailed": "เริ่มดาวน์โหลดไม่สำเร็จ: {message}",
+    "noMatchingTracks": "ไม่พบเพลง {service} ที่ตรงกันสำหรับดาวน์โหลด",
+    "addedItemsToQueue": "เพิ่ม {count} รายการในคิวดาวน์โหลดแล้ว | เพิ่ม {count} รายการในคิวดาวน์โหลดแล้ว",
+    "addSomeFailed": "เพิ่มบางรายการในคิวดาวน์โหลดไม่สำเร็จ",
+    "processingLinks": "กำลังประมวลผล {count} ลิงก์...",
+    "queuedFromLinks": "เพิ่ม {queued} รายการจาก {links} ลิงก์ในคิวแล้ว | เพิ่ม {queued} รายการจาก {links} ลิงก์ในคิวแล้ว",
+    "queuedFromLinksFailed": "(ล้มเหลว {failed} รายการ)",
+    "noneQueued": "ไม่สามารถเพิ่มการดาวน์โหลดในคิวได้ โปรดตรวจสอบว่าคุณเข้าสู่ระบบแล้ว",
+    "copyFailed": "คัดลอกไม่สำเร็จ",
+    "pasteFailed": "วางไม่สำเร็จ การเข้าถึงคลิปบอร์ดถูกปฏิเสธ"
   },
   "accessibility": {
     "mainNavigation": "การนำทางหลัก",
@@ -601,7 +728,9 @@
     "loading": "กำลังโหลด",
     "minimizeWindow": "ย่อหน้าต่าง",
     "maximizeWindow": "ขยายหน้าต่าง",
-    "closeWindow": "ปิดหน้าต่าง"
+    "closeWindow": "ปิดหน้าต่าง",
+    "windowControls": "ตัวควบคุมหน้าต่าง",
+    "closeNotification": "ปิดการแจ้งเตือน"
   },
   "sync": {
     "sortBy": "เรียงตาม",
@@ -611,7 +740,13 @@
     "sortStatus": "สถานะ",
     "sortTracks": "เพลงที่ดาวน์โหลด",
     "filterPlaceholder": "กรองตามชื่อ…",
-    "noMatches": "ไม่พบรายการ"
+    "noMatches": "ไม่พบรายการ",
+    "scheduleLaunch": "เมื่อเปิดแอป",
+    "scheduleHourly": "ทุกชั่วโมง",
+    "scheduleEvery": "ทุก {hours} ชั่วโมง",
+    "scheduleManual": "ด้วยตนเองเท่านั้น",
+    "resolvingShareLink": "กำลังแปลงลิงก์แชร์...",
+    "playlistDetected": "ตรวจพบเพลย์ลิสต์ {service}"
   },
   "userPlaylists": {
     "creator": "ผู้สร้าง",
@@ -646,7 +781,8 @@
     "more": "เพิ่มเติม",
     "sortDefault": "ลำดับฟีด",
     "sortName": "ก–ฮ",
-    "sortTracks": "แทร็กมากที่สุด"
+    "sortTracks": "แทร็กมากที่สุด",
+    "connectInSettings": "เชื่อมต่อในการตั้งค่า"
   },
   "titleBar": {
     "qobuzLinkedTip": "เชื่อมต่อ Qobuz แล้ว",

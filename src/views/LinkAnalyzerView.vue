@@ -9,7 +9,9 @@ import BackButton from '../components/BackButton.vue'
 import { isDeezerUrl, isSpotifyUrl, isQobuzUrl } from '../utils/urlHost'
 import ContextMenu from '../components/ContextMenu.vue'
 import { useContextMenu } from '../composables/useContextMenu'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const downloadStore = useDownloadStore()
@@ -215,7 +217,7 @@ async function downloadAllReady() {
       await downloadBatchRow(i)
       n++
     }
-    toastStore.success(`Queued ${n} of ${batch.value.length} links`)
+    toastStore.success(t('notifications.queuedLinks', { n, total: batch.value.length }))
   } finally {
     batchDownloading.value = false
   }
@@ -398,7 +400,7 @@ async function downloadQobuz() {
       // Grouped: one Transfer Rack row aggregating all tracks (like Deezer albums).
       await downloadStore.addQobuzAlbumDownload(q)
       const n = qobuzTrackIds(q).length
-      toastStore.success(`Queued "${q.data?.title || 'Qobuz ' + q.type}" (${n} tracks)`)
+      toastStore.success(t('notifications.queuedQobuzItem', { title: q.data?.title || 'Qobuz ' + q.type, count: n }))
     } else {
       // Single track. A non-OK response must NOT toast success — surface the
       // server's actual error instead.
@@ -411,10 +413,10 @@ async function downloadQobuz() {
         const err = await resp.json().catch(() => ({} as any))
         throw new Error(err.error || `server returned HTTP ${resp.status}`)
       }
-      toastStore.success('Queued Qobuz track for download')
+      toastStore.success(t('notifications.queuedQobuzTrack'))
     }
   } catch (e: any) {
-    toastStore.error(`Qobuz download failed: ${e.message}`)
+    toastStore.error(t('notifications.qobuzDownloadFailed', { message: e.message }))
   } finally {
     qobuzDownloading.value = false
   }
@@ -515,7 +517,7 @@ async function convertSpotifyToDeezer() {
 
 async function downloadConvertedTracks() {
   if (!conversionResult.value?.matched) {
-    toastStore.error('No conversion results available')
+    toastStore.error(t('notifications.noConversionResults'))
     return
   }
 
@@ -535,7 +537,7 @@ async function downloadConvertedTracks() {
       if (hit && hit.id) tracks.push({ id: Number(hit.id), service: svc })
     }
     if (tracks.length === 0) {
-      toastStore.error('No downloadable tracks in this selection')
+      toastStore.error(t('notifications.noDownloadableTracks'))
       return
     }
     try {
@@ -546,9 +548,9 @@ async function downloadConvertedTracks() {
         cover: coverUrl,
         totalTracks: tracks.length
       })
-      toastStore.success(`Added ${tracks.length} tracks to download queue`)
+      toastStore.success(t('notifications.addedTracksToQueue', { count: tracks.length }))
     } catch (err: any) {
-      toastStore.error(`Failed to start download: ${err.message || 'Unknown error'}`)
+      toastStore.error(t('notifications.downloadStartFailed', { message: err.message || t('common.unknownError') }))
     }
     return
   }
@@ -568,7 +570,7 @@ async function downloadConvertedTracks() {
   }
 
   if (trackIds.length === 0) {
-    toastStore.error(`No matching ${serviceLabel} tracks found to download`)
+    toastStore.error(t('notifications.noMatchingTracks', { service: serviceLabel }))
     return
   }
 
@@ -584,9 +586,9 @@ async function downloadConvertedTracks() {
       totalTracks: trackIds.length,
       service
     })
-    toastStore.success(`Added ${trackIds.length} tracks to download queue`)
+    toastStore.success(t('notifications.addedTracksToQueue', { count: trackIds.length }))
   } catch (err: any) {
-    toastStore.error(`Failed to start download: ${err.message || 'Unknown error'}`)
+    toastStore.error(t('notifications.downloadStartFailed', { message: err.message || t('common.unknownError') }))
   }
 }
 
@@ -846,91 +848,91 @@ const metadataRows = computed(() => {
     case 'track':
       // Match original deemix-gui 2-column layout
       pairs.push({
-        left: { label: 'ID', value: String(result.value.id) },
-        right: { label: 'Type', value: 'Track' }
+        left: { label: t('analyzer.fields.id'), value: String(result.value.id) },
+        right: { label: t('analyzer.fields.type'), value: t('analyzer.types.track') }
       })
       pairs.push({
-        left: { label: 'Title', value: data.title || '-' },
-        right: { label: 'Artist', value: data.artist?.name || '-' }
+        left: { label: t('analyzer.fields.title'), value: data.title || '-' },
+        right: { label: t('analyzer.fields.artist'), value: data.artist?.name || '-' }
       })
       pairs.push({
-        left: { label: 'Album', value: data.album?.title || '-' },
-        right: { label: 'Duration', value: formatDuration(data.duration) }
+        left: { label: t('analyzer.fields.album'), value: data.album?.title || '-' },
+        right: { label: t('analyzer.fields.duration'), value: formatDuration(data.duration) }
       })
       pairs.push({
-        left: { label: 'ISRC', value: result.value.isrc || '-' },
-        right: { label: 'Release Date', value: formatDate(data.release_date) }
+        left: { label: t('analyzer.fields.isrc'), value: result.value.isrc || '-' },
+        right: { label: t('analyzer.fields.releaseDate'), value: formatDate(data.release_date) }
       })
       pairs.push({
-        left: { label: 'BPM', value: result.value.bpm ? String(result.value.bpm) : '-' },
-        right: { label: 'Track Number', value: `${data.track_position || '-'} / ${data.disk_number || 1}` }
+        left: { label: t('analyzer.fields.bpm'), value: result.value.bpm ? String(result.value.bpm) : '-' },
+        right: { label: t('analyzer.fields.trackNumber'), value: `${data.track_position || '-'} / ${data.disk_number || 1}` }
       })
       pairs.push({
-        left: { label: 'Explicit', value: data.explicit_lyrics ? 'Yes' : 'No' },
-        right: { label: 'Readable', value: result.value.readable ? 'Yes' : 'No' }
+        left: { label: t('analyzer.fields.explicit'), value: data.explicit_lyrics ? t('common.yes') : t('common.no') },
+        right: { label: t('analyzer.fields.readable'), value: result.value.readable ? t('common.yes') : t('common.no') }
       })
       pairs.push({
-        left: { label: 'Available', value: result.value.available ? 'Yes' : 'No' }
+        left: { label: t('analyzer.fields.available'), value: result.value.available ? t('common.yes') : t('common.no') }
       })
       break
 
     case 'album':
       pairs.push({
-        left: { label: 'ID', value: String(result.value.id) },
-        right: { label: 'Type', value: 'Album' }
+        left: { label: t('analyzer.fields.id'), value: String(result.value.id) },
+        right: { label: t('analyzer.fields.type'), value: t('analyzer.types.album') }
       })
       pairs.push({
-        left: { label: 'Title', value: data.title || '-' },
-        right: { label: 'Artist', value: data.artist?.name || '-' }
+        left: { label: t('analyzer.fields.title'), value: data.title || '-' },
+        right: { label: t('analyzer.fields.artist'), value: data.artist?.name || '-' }
       })
       pairs.push({
-        left: { label: 'Release Date', value: formatDate(data.release_date) },
-        right: { label: 'Track Count', value: formatNumber(result.value.trackCount) }
+        left: { label: t('analyzer.fields.releaseDate'), value: formatDate(data.release_date) },
+        right: { label: t('analyzer.fields.trackCount'), value: formatNumber(result.value.trackCount) }
       })
       pairs.push({
-        left: { label: 'Duration', value: formatDuration(data.duration) },
-        right: { label: 'UPC/Barcode', value: result.value.upc || '-' }
+        left: { label: t('analyzer.fields.duration'), value: formatDuration(data.duration) },
+        right: { label: t('analyzer.fields.upc'), value: result.value.upc || '-' }
       })
       pairs.push({
-        left: { label: 'Label', value: result.value.label || '-' },
-        right: { label: 'Genres', value: result.value.genres?.join(', ') || '-' }
+        left: { label: t('analyzer.fields.label'), value: result.value.label || '-' },
+        right: { label: t('analyzer.fields.genres'), value: result.value.genres?.join(', ') || '-' }
       })
       pairs.push({
-        left: { label: 'Record Type', value: data.record_type || '-' },
-        right: { label: 'Explicit', value: data.explicit_lyrics ? 'Yes' : 'No' }
+        left: { label: t('analyzer.fields.recordType'), value: data.record_type || '-' },
+        right: { label: t('analyzer.fields.explicit'), value: data.explicit_lyrics ? t('common.yes') : t('common.no') }
       })
       break
 
     case 'artist':
       pairs.push({
-        left: { label: 'ID', value: String(result.value.id) },
-        right: { label: 'Type', value: 'Artist' }
+        left: { label: t('analyzer.fields.id'), value: String(result.value.id) },
+        right: { label: t('analyzer.fields.type'), value: t('analyzer.types.artist') }
       })
       pairs.push({
-        left: { label: 'Name', value: data.name || '-' },
-        right: { label: 'Fan Count', value: formatNumber(result.value.fanCount) }
+        left: { label: t('analyzer.fields.name'), value: data.name || '-' },
+        right: { label: t('analyzer.fields.fanCount'), value: formatNumber(result.value.fanCount) }
       })
       pairs.push({
-        left: { label: 'Album Count', value: formatNumber(result.value.albumCount) }
+        left: { label: t('analyzer.fields.albumCount'), value: formatNumber(result.value.albumCount) }
       })
       break
 
     case 'playlist':
       pairs.push({
-        left: { label: 'ID', value: String(result.value.id) },
-        right: { label: 'Type', value: 'Playlist' }
+        left: { label: t('analyzer.fields.id'), value: String(result.value.id) },
+        right: { label: t('analyzer.fields.type'), value: t('analyzer.types.playlist') }
       })
       pairs.push({
-        left: { label: 'Title', value: data.title || '-' },
-        right: { label: 'Creator', value: result.value.creator || '-' }
+        left: { label: t('analyzer.fields.title'), value: data.title || '-' },
+        right: { label: t('analyzer.fields.creator'), value: result.value.creator || '-' }
       })
       pairs.push({
-        left: { label: 'Track Count', value: formatNumber(result.value.trackCount) },
-        right: { label: 'Duration', value: formatDuration(result.value.totalDuration) }
+        left: { label: t('analyzer.fields.trackCount'), value: formatNumber(result.value.trackCount) },
+        right: { label: t('analyzer.fields.duration'), value: formatDuration(result.value.totalDuration) }
       })
       pairs.push({
-        left: { label: 'Public', value: result.value.isPublic ? 'Yes' : 'No' },
-        right: { label: 'Fans', value: formatNumber(data.fans) }
+        left: { label: t('analyzer.fields.public'), value: result.value.isPublic ? t('common.yes') : t('common.no') },
+        right: { label: t('analyzer.fields.fans'), value: formatNumber(data.fans) }
       })
       break
   }
@@ -962,7 +964,7 @@ const contextMenuItems = computed(() => {
   if (contextMenuMode.value === 'input') {
     return [
       {
-        label: 'Paste',
+        label: t('common.paste'),
         icon: 'paste',
         action: async () => {
           const text = await pasteFromClipboard()
@@ -972,7 +974,7 @@ const contextMenuItems = computed(() => {
         }
       },
       {
-        label: 'Copy',
+        label: t('common.copy'),
         icon: 'copy',
         action: () => copyToClipboard(linkInput.value, 'Link'),
         disabled: !linkInput.value
@@ -1005,9 +1007,9 @@ async function pasteLink() {
 
     <!-- Header -->
     <div class="mb-6">
-      <h1 class="font-display uppercase text-[22px] tracking-[0.02em] mb-2">Link Analyzer</h1>
+      <h1 class="font-display uppercase text-[22px] tracking-[0.02em] mb-2">{{ t('analyzer.title') }}</h1>
       <p class="text-foreground-muted">
-        Paste a Deezer or Spotify link to analyze its metadata and download options
+        {{ t('analyzer.subtitle') }}
       </p>
     </div>
 
@@ -1019,7 +1021,7 @@ async function pasteLink() {
           <input
             v-model="linkInput"
             type="text"
-            placeholder="Paste one or more Deezer, Spotify or Qobuz links (track, album, artist, or playlist)..."
+            :placeholder="t('analyzer.placeholder')"
             class="flex-1 min-w-0 bg-transparent border-none outline-none font-mono text-[13px] px-4 text-foreground placeholder:text-foreground-muted caret-primary-500"
             @paste="handlePaste"
             @contextmenu="openInputMenu"
@@ -1029,7 +1031,7 @@ async function pasteLink() {
             type="button"
             @click="pasteLink"
             class="flex items-center gap-1.5 px-3.5 border-l border-white/[0.08] font-mono text-[10.5px] uppercase tracking-[0.12em] text-foreground-muted hover:text-primary-500 transition-colors"
-            title="Paste from clipboard"
+            :title="t('common.pasteFromClipboard')"
           >
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -1045,7 +1047,7 @@ async function pasteLink() {
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
             </svg>
-            <span>{{ isAnalyzing ? 'Analyzing...' : 'Analyze' }}</span>
+            <span>{{ isAnalyzing ? t('analyzer.analyzing') : t('analyzer.analyze') }}</span>
           </button>
         </div>
       </form>
@@ -1066,7 +1068,7 @@ async function pasteLink() {
     <div v-if="batch.length" class="bg-background-secondary/60 border border-white/[0.08]">
       <div class="flex items-center gap-3 px-4 py-2.5 border-b border-white/[0.08]">
         <span class="font-mono text-[10.5px] uppercase tracking-[0.12em] text-foreground-muted">
-          {{ batch.length }} links · {{ batchReady }} ready<span v-if="batchDone < batch.length"> · {{ batchDone }}/{{ batch.length }} analyzed</span><span v-else-if="batch.length - batchReady > 0"> · {{ batch.length - batchReady }} failed</span>
+          {{ t('analyzer.batchSummary', { links: batch.length, ready: batchReady }) }}<span v-if="batchDone < batch.length"> · {{ t('analyzer.batchAnalyzed', { done: batchDone, total: batch.length }) }}</span><span v-else-if="batch.length - batchReady > 0"> · {{ t('analyzer.batchFailed', { count: batch.length - batchReady }) }}</span>
         </span>
         <svg v-if="batchRunning" class="animate-spin w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -1079,7 +1081,7 @@ async function pasteLink() {
           class="px-3 py-1.5 font-mono text-[10.5px] uppercase tracking-[0.1em] bg-primary-500 text-background-main hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           @click="downloadAllReady"
         >
-          {{ batchDownloading ? 'Queuing...' : `Download all ready (${batchReady})` }}
+          {{ batchDownloading ? t('analyzer.queuing') : t('analyzer.downloadAllReady', { count: batchReady }) }}
         </button>
         <button
           type="button"
@@ -1191,16 +1193,16 @@ async function pasteLink() {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
-              {{ result.type === 'track' ? 'View Album' : 'View Details' }}
+              {{ result.type === 'track' ? t('analyzer.viewAlbum') : t('analyzer.viewDetails') }}
             </button>
           </div>
 
           <!-- Download Notice -->
           <p v-if="!authStore.isLoggedIn && result.type !== 'artist'" class="text-sm text-foreground-muted mt-2">
-            Login required to download
+            {{ t('analyzer.loginRequired') }}
           </p>
           <p v-else-if="result.type === 'track' && !result.available" class="text-sm text-red-400 mt-2">
-            This track is not available for download
+            {{ t('analyzer.notAvailable') }}
           </p>
         </div>
       </div>
@@ -1257,7 +1259,7 @@ async function pasteLink() {
               </svg>
             </div>
             <span class="font-mono text-[11px] tracking-[0.08em] uppercase" :class="result.readable ? 'text-green-400' : 'text-red-400'">
-              {{ result.readable ? 'Streamable' : 'Not Streamable' }}
+              {{ result.readable ? t('analyzer.streamable') : t('analyzer.notStreamable') }}
             </span>
           </div>
           <div class="flex items-center gap-2">
@@ -1273,7 +1275,7 @@ async function pasteLink() {
               </svg>
             </div>
             <span class="font-mono text-[11px] tracking-[0.08em] uppercase" :class="result.available ? 'text-green-400' : 'text-red-400'">
-              {{ result.available ? 'Downloadable' : 'Not Downloadable' }}
+              {{ result.available ? t('analyzer.downloadable') : t('analyzer.notDownloadable') }}
             </span>
           </div>
         </div>
@@ -1302,7 +1304,7 @@ async function pasteLink() {
           <h3 class="font-display text-[14px] uppercase tracking-[0.06em] text-foreground-muted">Countries</h3>
           <div class="flex-1 h-px bg-white/[0.06]"></div>
         </div>
-        <p class="text-sm text-foreground-muted">Login to view country availability</p>
+        <p class="text-sm text-foreground-muted">{{ t('analyzer.loginForCountries') }}</p>
       </div>
     </div>
 
@@ -1387,7 +1389,7 @@ async function pasteLink() {
           <!-- Target service picker (2.4): resolve the Spotify link against
                Deezer (default) or Qobuz. Hidden once a conversion has run. -->
           <div v-if="!conversionResult" class="mt-4">
-            <p class="font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted mb-1.5">Convert to</p>
+            <p class="font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted mb-1.5">{{ t('analyzer.convertTo') }}</p>
             <div class="inline-flex border border-white/[0.08] p-0.5 gap-0.5 bg-background-main">
               <button
                 v-for="svc in (['deezer','qobuz','both'] as const)"
@@ -1404,7 +1406,7 @@ async function pasteLink() {
               </button>
             </div>
             <p v-if="targetService === 'both' && !(deezerConnected && qobuzConnected)" class="font-mono text-[10px] text-yellow-400/80 mt-1.5">
-              Comparing both needs Deezer and Qobuz connected.
+              {{ t('analyzer.compareNeedsBoth') }}
             </p>
           </div>
 
@@ -1427,7 +1429,7 @@ async function pasteLink() {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              {{ isConverting ? 'Converting...' : (targetService === 'both' ? 'Compare Deezer & Qobuz' : targetService === 'qobuz' ? 'Convert to Qobuz' : 'Convert to Deezer') }}
+              {{ isConverting ? t('analyzer.converting') : (targetService === 'both' ? t('analyzer.compareBoth') : targetService === 'qobuz' ? t('analyzer.convertToQobuz') : t('analyzer.convertToDeezer')) }}
             </button>
 
             <button
@@ -1455,8 +1457,8 @@ async function pasteLink() {
               Download {{ conversionResult.matched.length }} Tracks
             </button>
             <p v-if="conversionResult && !conversionResult.matched?.length" class="text-sm text-yellow-400">
-              <template v-if="conversionResult.service === 'both'">No tracks were found on either Deezer or Qobuz.</template>
-              <template v-else>No matching {{ conversionResult.service === 'qobuz' ? 'Qobuz' : 'Deezer' }} tracks found. The playlist tracks may not be available on {{ conversionResult.service === 'qobuz' ? 'Qobuz' : 'Deezer' }}.</template>
+              <template v-if="conversionResult.service === 'both'">{{ t('analyzer.noneFoundBoth') }}</template>
+              <template v-else>{{ t('analyzer.noneFoundService', { service: conversionResult.service === 'qobuz' ? 'Qobuz' : 'Deezer' }) }}</template>
             </p>
           </div>
 
@@ -1464,7 +1466,7 @@ async function pasteLink() {
                reads as moving, not hung. -->
           <div v-if="isConverting && conversionProgress.total > 0" class="mt-3 max-w-sm">
             <div class="flex items-center justify-between font-mono text-[9.5px] tracking-[0.15em] uppercase text-foreground-muted mb-1">
-              <span>Matching tracks</span>
+              <span>{{ t('analyzer.matchingTracks') }}</span>
               <span>{{ conversionProgress.current }} / {{ conversionProgress.total }}</span>
             </div>
             <div class="h-1 bg-white/[0.08] overflow-hidden">
@@ -1477,7 +1479,7 @@ async function pasteLink() {
           </div>
 
           <p v-if="!authStore.isLoggedIn" class="text-sm text-foreground-muted mt-2">
-            Login required to convert and download
+            {{ t('analyzer.loginRequiredConvert') }}
           </p>
         </div>
       </div>
@@ -1485,7 +1487,7 @@ async function pasteLink() {
       <!-- Conversion Results -->
       <div v-if="conversionResult" class="border-t border-white/[0.08] pt-6">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="font-display text-[14px] uppercase tracking-[0.06em]">Conversion Results</h3>
+          <h3 class="font-display text-[14px] uppercase tracking-[0.06em]">{{ t('analyzer.conversionResults') }}</h3>
           <span class="font-mono text-[10px] tracking-[0.08em] uppercase px-1.5 py-0.5 border" :class="conversionResult.matchRate >= 80 ? 'bg-green-500/10 text-green-400 border-green-500/30' : conversionResult.matchRate >= 50 ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' : 'bg-red-500/10 text-red-400 border-red-500/30'">
             {{ conversionResult.matchRate }}% matched
           </span>
@@ -1496,21 +1498,21 @@ async function pasteLink() {
           <!-- summary tally -->
           <div class="flex flex-wrap items-center gap-x-4 gap-y-1 p-2.5 bg-background-main border border-white/[0.06] text-[11px] text-foreground-muted">
             <span><span class="inline-block w-2 h-2 rounded-sm bg-green-400 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.both || 0 }}</b> on both</span>
-            <span><span class="inline-block w-2 h-2 rounded-sm bg-qobuz-500 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.qobuzOnly || 0 }}</b> Qobuz only</span>
-            <span><span class="inline-block w-2 h-2 rounded-sm bg-deezer-500 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.deezerOnly || 0 }}</b> Deezer only</span>
+            <span><span class="inline-block w-2 h-2 rounded-sm bg-qobuz-500 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.qobuzOnly || 0 }}</b> {{ t('analyzer.qobuzOnly') }}</span>
+            <span><span class="inline-block w-2 h-2 rounded-sm bg-deezer-500 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.deezerOnly || 0 }}</b> {{ t('analyzer.deezerOnly') }}</span>
             <span><span class="inline-block w-2 h-2 rounded-sm bg-white/20 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.neither || 0 }}</b> unavailable</span>
           </div>
 
           <!-- preference control -->
           <div class="flex flex-wrap items-center gap-2 text-[11px] text-foreground-muted">
-            <span class="font-mono text-[9.5px] tracking-[0.15em] uppercase">Prefer</span>
+            <span class="font-mono text-[9.5px] tracking-[0.15em] uppercase">{{ t('analyzer.prefer') }}</span>
             <div class="inline-flex border border-white/[0.08] p-0.5 gap-0.5">
               <button @click="bothPreference = 'qobuz'" class="font-mono text-[10px] tracking-[0.1em] uppercase px-2.5 py-1 transition-colors"
                 :class="bothPreference === 'qobuz' ? 'bg-qobuz-500/20 text-qobuz-400' : 'text-foreground-muted hover:text-foreground-muted'">Qobuz</button>
               <button @click="bothPreference = 'deezer'" class="font-mono text-[10px] tracking-[0.1em] uppercase px-2.5 py-1 transition-colors"
                 :class="bothPreference === 'deezer' ? 'bg-deezer-500/20 text-deezer-400' : 'text-foreground-muted hover:text-foreground-muted'">Deezer</button>
             </div>
-            <span class="opacity-80">fall back to the other · click a lit cell to override one track</span>
+            <span class="opacity-80">{{ t('analyzer.fallbackHint') }}</span>
           </div>
 
           <!-- matrix header -->
@@ -1568,7 +1570,7 @@ async function pasteLink() {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
               <span class="truncate text-sm">{{ match.spotify?.name || match.spotifyTrack?.name }}</span>
-              <span class="font-mono text-[9.5px] tracking-[0.1em] uppercase text-foreground-muted ml-auto flex-shrink-0">{{ match.matchType === 'isrc' ? 'ISRC' : 'Search' }}</span>
+              <span class="font-mono text-[9.5px] tracking-[0.1em] uppercase text-foreground-muted ml-auto flex-shrink-0">{{ match.matchType === 'isrc' ? 'ISRC' : t('analyzer.matchSearch') }}</span>
             </div>
           </div>
         </div>
@@ -1598,7 +1600,7 @@ async function pasteLink() {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
           d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
       </svg>
-      <p class="text-foreground-muted text-lg mb-2">Paste a Deezer or Spotify link to get started</p>
+      <p class="text-foreground-muted text-lg mb-2">{{ t('analyzer.getStarted') }}</p>
       <p class="text-foreground-muted text-sm">
         Supported: tracks, albums, artists, and playlists
       </p>

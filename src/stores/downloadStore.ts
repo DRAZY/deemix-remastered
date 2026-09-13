@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { publicLinkForItem } from '../utils/sourceLinks'
+import i18n from '../i18n'
 import { ref, computed } from 'vue'
 import type { Track, Album, Playlist, DownloadItem, DownloadStatus, FailedTrack, SubstitutedTrack, DownloadHistoryEntry, DownloadTrackEntry } from '../types'
 import { useSettingsStore } from './settingsStore'
@@ -295,7 +296,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         const data = await response.json()
         isPaused.value = data.isPaused
         const toastStore = useToastStore()
-        toastStore.info('Downloads paused')
+        toastStore.info(i18n.global.t('notifications.downloadsPaused'))
       }
     } catch (e) {
       console.error('[DownloadStore] Failed to pause queue:', e)
@@ -311,7 +312,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         const data = await response.json()
         isPaused.value = data.isPaused
         const toastStore = useToastStore()
-        toastStore.info('Downloads resumed')
+        toastStore.info(i18n.global.t('notifications.downloadsResumed'))
       }
     } catch (e) {
       console.error('[DownloadStore] Failed to resume queue:', e)
@@ -567,7 +568,7 @@ export const useDownloadStore = defineStore('downloads', () => {
       if (isCompletedAtLowerTier('track', track.id)) {
         console.log(`[DownloadStore] Track ${track.id} was downloaded at a lower tier — re-downloading at current quality`)
       } else {
-        toastStore.info(`"${track.title}" was already downloaded`)
+        toastStore.info(i18n.global.t('notifications.alreadyDownloaded', { title: track.title }))
         console.log(`[DownloadStore] Track ${track.id} already completed, skipping`)
         return // Early return - already downloaded
       }
@@ -575,7 +576,7 @@ export const useDownloadStore = defineStore('downloads', () => {
 
     // Check for duplicate - prevent adding track already in queue
     if (isTrackInQueue(track.id)) {
-      toastStore.info(`"${track.title}" is already downloading`)
+      toastStore.info(i18n.global.t('notifications.alreadyDownloading', { title: track.title }))
       console.log(`[DownloadStore] Track ${track.id} already in queue, skipping`)
       return // Early return - don't add duplicate
     }
@@ -626,7 +627,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         // Handle session expiration - trigger auth store to handle re-login
         if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
           const toastStore = useToastStore()
-          toastStore.error('Session expired. Please log in again to download.')
+          toastStore.error(i18n.global.t('notifications.sessionExpiredDownload'))
           throw new Error('Session expired: Please log in again')
         }
 
@@ -670,7 +671,7 @@ export const useDownloadStore = defineStore('downloads', () => {
       if (isCompletedAtLowerTier('album', album.id)) {
         console.log(`[DownloadStore] Album ${album.id} was downloaded at a lower tier — re-downloading at current quality (#144)`)
       } else {
-        toastStore.info(`"${album.title}" was already downloaded`)
+        toastStore.info(i18n.global.t('notifications.alreadyDownloaded', { title: album.title }))
         console.log(`[DownloadStore] Album ${album.id} already completed, skipping`)
         return // Early return - already downloaded
       }
@@ -678,7 +679,7 @@ export const useDownloadStore = defineStore('downloads', () => {
 
     // Check for duplicate - prevent adding album already in queue
     if (isAlbumInQueue(album.id)) {
-      toastStore.info(`"${album.title}" is already downloading`)
+      toastStore.info(i18n.global.t('notifications.alreadyDownloading', { title: album.title }))
       console.log(`[DownloadStore] Album ${album.id} already in queue, skipping`)
       return // Early return - don't add duplicate
     }
@@ -688,7 +689,7 @@ export const useDownloadStore = defineStore('downloads', () => {
       const checkResponse = await fetch(`http://127.0.0.1:${serverPort.value}/api/album/check?id=${album.id}`)
       const checkData = await checkResponse.json()
       if (checkData.exists && checkData.trackCount > 0) {
-        toastStore.info(`"${album.title}" already exists on disk (${checkData.trackCount}/${checkData.albumTracks} tracks) — downloading anyway`)
+        toastStore.info(i18n.global.t('notifications.existsOnDisk', { title: album.title, have: checkData.trackCount, total: checkData.albumTracks }))
       }
     } catch { /* ignore check failures — don't block download */ }
 
@@ -739,7 +740,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         // Handle session expiration - trigger auth store to handle re-login
         if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
           const toastStore = useToastStore()
-          toastStore.error('Session expired. Please log in again to download.')
+          toastStore.error(i18n.global.t('notifications.sessionExpiredDownload'))
           throw new Error('Session expired: Please log in again')
         }
 
@@ -790,11 +791,11 @@ export const useDownloadStore = defineStore('downloads', () => {
     const rowMatches = (dl: DownloadItem) =>
       dl.type === 'album' && dl.source === 'qobuz' && String((dl.album as any)?.id) === qobuz.id
     if (downloads.value.some(dl => rowMatches(dl) && (dl.status === 'pending' || dl.status === 'downloading'))) {
-      toastStore.info(`"${d.title || 'This album'}" is already downloading`)
+      toastStore.info(i18n.global.t('notifications.alreadyDownloading', { title: d.title || i18n.global.t('notifications.thisAlbum') }))
       return
     }
     if (downloads.value.some(dl => rowMatches(dl) && dl.status === 'completed')) {
-      toastStore.info(`"${d.title || 'This album'}" was already downloaded`)
+      toastStore.info(i18n.global.t('notifications.alreadyDownloaded', { title: d.title || i18n.global.t('notifications.thisAlbum') }))
       return
     }
 
@@ -881,7 +882,7 @@ export const useDownloadStore = defineStore('downloads', () => {
       if (isCompletedAtLowerTier('playlist', playlist.id)) {
         console.log(`[DownloadStore] Playlist ${playlist.id} was downloaded at a lower tier — re-downloading at current quality (#144)`)
       } else {
-        toastStore.info(`"${playlist.title}" was already downloaded`)
+        toastStore.info(i18n.global.t('notifications.alreadyDownloaded', { title: playlist.title }))
         console.log(`[DownloadStore] Playlist ${playlist.id} already completed, skipping`)
         return // Early return - already downloaded
       }
@@ -889,7 +890,7 @@ export const useDownloadStore = defineStore('downloads', () => {
 
     // Check for duplicate - prevent adding playlist already in queue
     if (isPlaylistInQueue(playlist.id)) {
-      toastStore.info(`"${playlist.title}" is already downloading`)
+      toastStore.info(i18n.global.t('notifications.alreadyDownloading', { title: playlist.title }))
       console.log(`[DownloadStore] Playlist ${playlist.id} already in queue, skipping`)
       return // Early return - don't add duplicate
     }
@@ -940,7 +941,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         // Handle session expiration - trigger auth store to handle re-login
         if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
           const toastStore = useToastStore()
-          toastStore.error('Session expired. Please log in again to download.')
+          toastStore.error(i18n.global.t('notifications.sessionExpiredDownload'))
           throw new Error('Session expired: Please log in again')
         }
 
@@ -1041,7 +1042,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         const errorMsg = errorData.error || 'Batch download request failed'
 
         if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
-          toastStore.error('Session expired. Please log in again to download.')
+          toastStore.error(i18n.global.t('notifications.sessionExpiredDownload'))
           throw new Error('Session expired: Please log in again')
         }
 
@@ -1129,7 +1130,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         const errorData = await response.json().catch(() => ({}))
         const errorMsg = errorData.error || 'Mixed batch download request failed'
         if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
-          toastStore.error('Session expired. Please log in again to download.')
+          toastStore.error(i18n.global.t('notifications.sessionExpiredDownload'))
           throw new Error('Session expired: Please log in again')
         }
         throw new Error(errorMsg)
@@ -1555,18 +1556,18 @@ export const useDownloadStore = defineStore('downloads', () => {
         const toastStore = useToastStore()
         if (item.refresh) {
           if (newStatus === 'completed') {
-            toastStore.success(`Refreshed tags for "${item.title}"`)
+            toastStore.success(i18n.global.t('notifications.tagsRefreshed', { title: item.title }))
           } else if (errorCount === trackIds.length) {
-            toastStore.error(`Tag refresh failed: "${item.title}"`)
+            toastStore.error(i18n.global.t('notifications.tagRefreshFailed', { title: item.title }))
           } else {
-            toastStore.warning(`Refreshed tags for "${item.title}" (${errorCount} track${errorCount > 1 ? 's' : ''} skipped)`)
+            toastStore.warning(i18n.global.t('notifications.tagsRefreshedSkipped', { title: item.title, count: errorCount }, errorCount))
           }
         } else if (newStatus === 'completed') {
-          toastStore.success(`Downloaded "${item.title}"`)
+          toastStore.success(i18n.global.t('notifications.downloaded', { title: item.title }))
         } else if (errorCount === trackIds.length) {
-          toastStore.error(`Download failed: "${item.title}"`)
+          toastStore.error(i18n.global.t('notifications.downloadFailedTitle', { title: item.title }))
         } else {
-          toastStore.warning(`Downloaded "${item.title}" with ${errorCount} failed track${errorCount > 1 ? 's' : ''}`)
+          toastStore.warning(i18n.global.t('notifications.downloadedWithFailures', { title: item.title, count: errorCount }, errorCount))
         }
         recordHistory(item) // no-ops for refresh items
       }
@@ -1673,10 +1674,10 @@ export const useDownloadStore = defineStore('downloads', () => {
 
     // Re-add based on type
     if (item.type === 'track' && item.track) {
-      toastStore.info(`Retrying "${item.title}"...`)
+      toastStore.info(i18n.global.t('notifications.retrying', { title: item.title }))
       await addDownload(item.track)
     } else if (item.type === 'album' && item.album) {
-      toastStore.info(`Retrying album "${item.title}"...`)
+      toastStore.info(i18n.global.t('notifications.retryingAlbum', { title: item.title }))
       // Qobuz albums re-route straight to the Qobuz pipeline (their id isn't a
       // Deezer id; the server refetches the tracklist, existing files skip).
       // Call addQobuzAlbumDownload directly and reconstruct the Qobuz ref from
@@ -1694,7 +1695,7 @@ export const useDownloadStore = defineStore('downloads', () => {
           })
         } catch (e) {
           console.error('[DownloadStore] Failed to retry Qobuz album:', e)
-          toastStore.error(`Failed to retry "${item.title}"`)
+          toastStore.error(i18n.global.t('notifications.retryFailed', { title: item.title }))
         }
         return
       }
@@ -1708,11 +1709,11 @@ export const useDownloadStore = defineStore('downloads', () => {
         await addAlbumDownload(item.album, data.tracks || [])
       } catch (e) {
         console.error('[DownloadStore] Failed to retry album:', e)
-        toastStore.error(`Failed to retry "${item.title}"`)
+        toastStore.error(i18n.global.t('notifications.retryFailed', { title: item.title }))
       }
     } else if (item.type === 'playlist' && item.batchConfig) {
       // Batch download (converted Spotify playlist from Link Analyzer)
-      toastStore.info(`Retrying "${item.title}"...`)
+      toastStore.info(i18n.global.t('notifications.retrying', { title: item.title }))
       await addBatchDownload({
         trackIds: item.batchConfig.trackIds,
         playlistName: item.batchConfig.playlistName,
@@ -1721,7 +1722,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         totalTracks: item.batchConfig.trackIds.length
       })
     } else if (item.type === 'playlist' && item.playlist) {
-      toastStore.info(`Retrying playlist "${item.title}"...`)
+      toastStore.info(i18n.global.t('notifications.retryingPlaylist', { title: item.title }))
       // Fetch fresh track list for the playlist using correct endpoint
       try {
         const response = await fetch(`http://127.0.0.1:${serverPort.value}/api/playlist?id=${item.playlist.id}`)
@@ -1732,7 +1733,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         await addPlaylistDownload(item.playlist, data.tracks || [])
       } catch (e) {
         console.error('[DownloadStore] Failed to retry playlist:', e)
-        toastStore.error(`Failed to retry "${item.title}"`)
+        toastStore.error(i18n.global.t('notifications.retryFailed', { title: item.title }))
       }
     } else {
       // No branch could handle this row (missing track/album/playlist context).
@@ -1741,7 +1742,7 @@ export const useDownloadStore = defineStore('downloads', () => {
       downloads.value.unshift(item)
       rebuildLookupMaps()
       saveDownloads()
-      toastStore.error(`Couldn't retry "${item.title}" — missing download context`)
+      toastStore.error(i18n.global.t('notifications.retryNoContext', { title: item.title }))
     }
   }
 
@@ -1751,7 +1752,7 @@ export const useDownloadStore = defineStore('downloads', () => {
 
     const toastStore = useToastStore()
     const failedCount = item.failedTracks.length
-    toastStore.info(`Retrying ${failedCount} failed track${failedCount > 1 ? 's' : ''} from "${item.title}"...`)
+    toastStore.info(i18n.global.t('notifications.retryingFailedTracks', { count: failedCount, title: item.title }, failedCount))
 
     await syncSettingsToServer()
 
@@ -1806,9 +1807,9 @@ export const useDownloadStore = defineStore('downloads', () => {
       item.status = 'downloading'
       saveDownloads()
       registerForPolling(item.id, newTrackIds, 'album')
-      toastStore.success(`Retrying ${newTrackIds.length} track${newTrackIds.length > 1 ? 's' : ''}`)
+      toastStore.success(i18n.global.t('notifications.retryingTracks', { count: newTrackIds.length }, newTrackIds.length))
     } else {
-      toastStore.error('Failed to retry any tracks')
+      toastStore.error(i18n.global.t('notifications.retryNone'))
     }
   }
 
@@ -1961,7 +1962,7 @@ export const useDownloadStore = defineStore('downloads', () => {
     // Clear first so this can never double-fire within a session.
     interruptedDownloadIds.value = []
     const toastStore = useToastStore()
-    toastStore.info(`Resuming ${ids.length} interrupted download${ids.length === 1 ? '' : 's'}…`)
+    toastStore.info(i18n.global.t('notifications.resumingInterrupted', { count: ids.length }, ids.length))
     console.log(`[DownloadStore] Auto-resuming ${ids.length} interrupted download(s) on startup`)
     // Sequential: retryDownload re-adds through add* paths; serialising avoids a
     // burst of list-build requests, and the global concurrency gate + pacing

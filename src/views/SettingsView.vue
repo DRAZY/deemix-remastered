@@ -89,7 +89,7 @@ function handleExportSettings() {
   a.click()
   URL.revokeObjectURL(url)
   const toastStore = useToastStore()
-  toastStore.success('Configuration exported (settings + profiles)')
+  toastStore.success(t('notifications.configExported'))
 }
 
 function handleImportSettings() {
@@ -113,11 +113,11 @@ function handleImportSettings() {
           }
         }
       }
-      toastStore.success('Configuration imported (settings + profiles)')
+      toastStore.success(t('notifications.configImported'))
     } else if (settingsStore.importSettings(text)) {
-      toastStore.success('Settings imported successfully')
+      toastStore.success(t('notifications.settingsImported'))
     } else {
-      toastStore.error('Failed to import configuration. Invalid file format.')
+      toastStore.error(t('notifications.configImportFailed'))
     }
   }
   input.click()
@@ -953,7 +953,7 @@ async function reindexLibrary() {
               <span class="text-xs text-foreground-muted cursor-help" :title="t('settings.createAlbumPlaylistFileHelp')">ⓘ</span>
             </label>
             <div>
-            <label class="block font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted mb-1.5">M3U filename template</label>
+            <label class="block font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted mb-1.5">{{ t('settings.m3uTemplate') }}</label>
             <input
               v-model="settingsStore.settings.m3uNameTemplate"
               type="text"
@@ -1972,7 +1972,7 @@ async function reindexLibrary() {
             type="button"
             @click="pasteArl"
             class="px-3 py-2 font-mono text-[10.5px] uppercase tracking-[0.12em] border border-white/[0.1] text-foreground-muted hover:text-primary-500 hover:border-primary-500/50 transition-colors"
-            title="Paste from clipboard"
+            :title="t('common.pasteFromClipboard')"
           >
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -2173,7 +2173,7 @@ async function reindexLibrary() {
             type="button"
             @click="pasteSpotifyClientId"
             class="px-3 py-2 font-mono text-[10.5px] uppercase tracking-[0.12em] border border-white/[0.1] text-foreground-muted hover:text-primary-500 hover:border-primary-500/50 transition-colors"
-            title="Paste from clipboard"
+            :title="t('common.pasteFromClipboard')"
           >
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -2196,7 +2196,7 @@ async function reindexLibrary() {
             type="button"
             @click="pasteSpotifyClientSecret"
             class="px-3 py-2 font-mono text-[10.5px] uppercase tracking-[0.12em] border border-white/[0.1] text-foreground-muted hover:text-primary-500 hover:border-primary-500/50 transition-colors"
-            title="Paste from clipboard"
+            :title="t('common.pasteFromClipboard')"
           >
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />

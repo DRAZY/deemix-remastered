@@ -231,7 +231,7 @@ function executeClearAll() {
   const count = downloadStore.downloads.length
   downloadStore.clearAll()
   showClearAllConfirm.value = false
-  toastStore.info(`Cleared ${count} download${count !== 1 ? 's' : ''}`)
+  toastStore.info(t('notifications.clearedDownloads', { count }, count))
 }
 
 function confirmClearCompleted() {
@@ -242,7 +242,7 @@ function executeClearCompleted() {
   const count = downloadStore.completedDownloads.length
   downloadStore.clearCompleted()
   showClearCompletedConfirm.value = false
-  toastStore.info(`Cleared ${count} completed download${count !== 1 ? 's' : ''}`)
+  toastStore.info(t('notifications.clearedCompleted', { count }, count))
 }
 
 // Get the best available cover image for a download item
@@ -567,7 +567,7 @@ function copyAllErrorDetails() {
         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-90': showStats }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
-        <span class="font-mono text-[10px] tracking-[0.2em] uppercase">Download Statistics</span>
+        <span class="font-mono text-[10px] tracking-[0.2em] uppercase">{{ t('downloads.statistics') }}</span>
       </button>
 
       <div v-if="showStats" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
@@ -577,11 +577,11 @@ function copyAllErrorDetails() {
         </div>
         <div class="card p-4 text-center">
           <div class="text-2xl font-bold text-green-400">{{ downloadStats.totalTracks }}</div>
-          <div class="text-xs text-foreground-muted mt-1">Total Tracks</div>
+          <div class="text-xs text-foreground-muted mt-1">{{ t('downloads.totalTracks') }}</div>
         </div>
         <div class="card p-4 text-center">
           <div class="text-2xl font-bold text-blue-400">{{ downloadStats.thisWeek }}</div>
-          <div class="text-xs text-foreground-muted mt-1">This Week</div>
+          <div class="text-xs text-foreground-muted mt-1">{{ t('downloads.thisWeek') }}</div>
         </div>
         <div class="card p-4 text-center">
           <div class="text-2xl font-bold text-red-400">{{ downloadStats.failedCount }}</div>
@@ -591,7 +591,7 @@ function copyAllErrorDetails() {
 
       <div v-if="showStats && downloadStats.topArtists.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div class="card p-4">
-          <h4 class="font-mono text-[9.5px] text-foreground-muted mb-3 uppercase tracking-[0.2em]">Top Artists</h4>
+          <h4 class="font-mono text-[9.5px] text-foreground-muted mb-3 uppercase tracking-[0.2em]">{{ t('downloads.topArtists') }}</h4>
           <div class="space-y-2">
             <div v-for="([artist, count], i) in downloadStats.topArtists" :key="artist" class="flex items-center justify-between">
               <span class="text-sm truncate">
@@ -988,12 +988,12 @@ function copyAllErrorDetails() {
                   : (tr.status === 'downloading' || tr.status === 'decrypting' || tr.status === 'tagging') ? 'text-foreground'
                   : 'text-foreground-muted'"
               >
-                {{ tr.status === 'completed' ? 'Done'
-                  : tr.status === 'error' ? 'Failed'
-                  : tr.status === 'downloading' ? 'Downloading'
-                  : tr.status === 'decrypting' ? 'Decrypting'
-                  : tr.status === 'tagging' ? 'Tagging'
-                  : 'Pending' }}
+                {{ tr.status === 'completed' ? t('downloads.trackStatus.done')
+                  : tr.status === 'error' ? t('downloads.trackStatus.failed')
+                  : tr.status === 'downloading' ? t('downloads.trackStatus.downloading')
+                  : tr.status === 'decrypting' ? t('downloads.trackStatus.decrypting')
+                  : tr.status === 'tagging' ? t('downloads.trackStatus.tagging')
+                  : t('downloads.trackStatus.pending') }}
               </span>
             </div>
           </div>
@@ -1143,9 +1143,9 @@ function copyAllErrorDetails() {
           <p class="font-medium mb-2">{{ t('downloads.possibleCauses') }}:</p>
           <!-- Source-aware: a Qobuz failure must not suggest Deezer causes -->
           <ul v-if="errorDetails.source === 'qobuz'" class="list-disc list-inside space-y-1 text-xs">
-            <li>Track not available on Qobuz at the requested quality or on your plan</li>
-            <li>Qobuz session expired — reconnect in Settings</li>
-            <li>Network or Qobuz CDN connectivity issues — retry usually recovers</li>
+            <li>{{ t('downloads.qobuzCauseQuality') }}</li>
+            <li>{{ t('downloads.qobuzCauseSession') }}</li>
+            <li>{{ t('downloads.qobuzCauseNetwork') }}</li>
           </ul>
           <ul v-else class="list-disc list-inside space-y-1 text-xs">
             <li>{{ t('downloads.causeGeoRestriction') }}</li>

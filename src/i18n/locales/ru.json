@@ -6,7 +6,8 @@
     "downloads": "Загрузки",
     "favorites": "Избранное",
     "linkAnalyzer": "Анализатор ссылок",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "genres": "Жанры"
   },
   "sidebar": {
     "appName": "Deemix Remastered",
@@ -94,7 +95,22 @@
     "noHistoryYet": "Истории загрузок пока нет",
     "retryFailedTip": "Повторить {n} неудавшийся трек | Повторить {n} неудавшихся треков",
     "retryTip": "Повторить загрузку",
-    "showFailedTracks": "Показать неудавшиеся треки"
+    "showFailedTracks": "Показать неудавшиеся треки",
+    "statistics": "Статистика загрузок",
+    "totalTracks": "Всего треков",
+    "thisWeek": "На этой неделе",
+    "topArtists": "Топ исполнителей",
+    "qobuzCauseQuality": "Трек недоступен на Qobuz в запрошенном качестве или по вашему тарифу",
+    "qobuzCauseSession": "Сессия Qobuz истекла, переподключитесь в настройках",
+    "qobuzCauseNetwork": "Проблемы с сетью или подключением к CDN Qobuz, повтор обычно помогает",
+    "trackStatus": {
+      "done": "Готово",
+      "failed": "Ошибка",
+      "downloading": "Загрузка",
+      "decrypting": "Расшифровка",
+      "tagging": "Добавление тегов",
+      "pending": "Ожидание"
+    }
   },
   "charts": {
     "title": "Чарты",
@@ -110,12 +126,19 @@
     "artists": "Избранные исполнители",
     "playlists": "Избранные плейлисты",
     "noFavorites": "Пока нет избранного",
-    "loginToSee": "Войдите, чтобы увидеть избранное Deezer"
+    "loginToSee": "Войдите, чтобы увидеть избранное Deezer",
+    "sortAdded": "Дата добавления",
+    "importFromDeezer": "Импорт из Deezer",
+    "importing": "Импорт...",
+    "importedCount": "+{n} импортировано",
+    "prunedCount": "−{n} удалено",
+    "unchangedCount": "{n} без изменений",
+    "noneOnAccount": "В вашей учётной записи Deezer не найдено избранного"
   },
   "analyzer": {
     "title": "Анализатор ссылок",
-    "subtitle": "Вставьте ссылку Deezer для анализа метаданных и опций загрузки",
-    "placeholder": "Вставьте ссылку Deezer (трек, альбом, исполнитель или плейлист)...",
+    "subtitle": "Вставьте ссылку Deezer, Spotify или Qobuz, чтобы проанализировать метаданные и параметры загрузки",
+    "placeholder": "Вставьте одну или несколько ссылок Deezer, Spotify или Qobuz (трек, альбом, исполнитель или плейлист)...",
     "analyze": "Анализировать",
     "analyzing": "Анализ...",
     "metadata": "Метаданные",
@@ -154,7 +177,8 @@
       "albumCount": "Количество альбомов",
       "creator": "Создатель",
       "public": "Публичный",
-      "fans": "Фанаты"
+      "fans": "Фанаты",
+      "name": "Название"
     },
     "types": {
       "track": "Трек",
@@ -167,7 +191,30 @@
       "unsupported": "Этот тип ссылки не поддерживается",
       "notFound": "Контент не найден в Deezer",
       "networkError": "Ошибка анализа. Попробуйте снова."
-    }
+    },
+    "loginRequired": "Для скачивания необходимо войти",
+    "convertTo": "Конвертировать в",
+    "compareNeedsBoth": "Для сравнения обоих сервисов нужно подключить Deezer и Qobuz.",
+    "noneFoundBoth": "Треки не найдены ни на Deezer, ни на Qobuz.",
+    "noneFoundService": "Не найдено подходящих треков {service}. Возможно, треки плейлиста недоступны на {service}.",
+    "matchingTracks": "Совпадающие треки",
+    "loginRequiredConvert": "Для конвертации и скачивания необходимо войти",
+    "conversionResults": "Результаты конвертации",
+    "qobuzOnly": "Только Qobuz",
+    "deezerOnly": "Только Deezer",
+    "prefer": "Предпочитать",
+    "fallbackHint": "переключиться на другой · нажмите на выделенную ячейку, чтобы изменить один трек",
+    "getStarted": "Вставьте ссылку Deezer или Spotify, чтобы начать",
+    "converting": "Конвертация...",
+    "compareBoth": "Сравнить Deezer и Qobuz",
+    "convertToQobuz": "Конвертировать в Qobuz",
+    "convertToDeezer": "Конвертировать в Deezer",
+    "matchSearch": "Поиск",
+    "batchSummary": "{links} ссылок · {ready} готово",
+    "batchAnalyzed": "{done}/{total} проанализировано",
+    "batchFailed": "{count} с ошибкой",
+    "queuing": "Добавление в очередь...",
+    "downloadAllReady": "Скачать все готовые ({count})"
   },
   "settings": {
     "title": "Настройки",
@@ -385,7 +432,10 @@
       "userIdPlaceholder": "User ID (необязательно)",
       "disclaimer": "Требуется ваш собственный активный платный аккаунт Qobuz. Это приложение не связано с Qobuz. Пожалуйста, соблюдайте условия использования Qobuz."
     },
-    "deezerDisclaimer": "Используйте собственный аккаунт Deezer. Это приложение не связано с Deezer. Пожалуйста, соблюдайте условия использования Deezer."
+    "deezerDisclaimer": "Используйте собственный аккаунт Deezer. Это приложение не связано с Deezer. Пожалуйста, соблюдайте условия использования Deezer.",
+    "exportConfig": "Экспортировать конфигурацию",
+    "importConfig": "Импортировать конфигурацию",
+    "m3uTemplate": "Шаблон имени файла M3U"
   },
   "login": {
     "title": "Вход в Deezer",
@@ -412,7 +462,14 @@
     "captchaHelpText": "Если CAPTCHA не загружается или не проверяется, попробуйте сначала войти на сайте Deezer, затем используйте метод ARL токена.",
     "verifying": "Проверка...",
     "backToLogin": "Назад к входу",
-    "openDeezerLogin": "Открыть Deezer в браузере"
+    "openDeezerLogin": "Открыть Deezer в браузере",
+    "sessionExpiredDownloading": "Сессия истекла. Войдите снова, чтобы продолжить загрузку.",
+    "logIn": "Войти",
+    "emailPasswordLogin": "Вход по email и паролю",
+    "emailPasswordHelp": "Используйте данные вашей учётной записи Deezer. Это рекомендуемый способ, так как он проще и автоматически управляет сессией.",
+    "whatIsArl": "Что такое ARL токен?",
+    "arlExplainer": "ARL-токен (Authentication Request Login) — это файл cookie вашей учётной записи Deezer, позволяющий скачивать музыку. Он сохраняется в браузере при входе в Deezer.",
+    "passwordPlaceholder": "Ваш пароль от Deezer"
   },
   "common": {
     "download": "Скачать",
@@ -439,7 +496,14 @@
     "playlists": "плейлистов",
     "unknown": "Неизвестно",
     "unknownArtist": "Неизвестный исполнитель",
-    "variousArtists": "Разные исполнители"
+    "variousArtists": "Разные исполнители",
+    "keyboardShortcuts": "Горячие клавиши",
+    "unknownError": "Неизвестная ошибка",
+    "sortNameAsc": "Имя А-Я",
+    "sortNameDesc": "Имя Я-А",
+    "pasteFromClipboard": "Вставить из буфера обмена",
+    "paste": "Вставить",
+    "copy": "Копировать"
   },
   "errors": {
     "generic": "Произошла ошибка",
@@ -456,7 +520,66 @@
     "downloadFailed": "Ошибка загрузки",
     "addedToQueue": "Добавлено в очередь",
     "settingsSaved": "Настройки сохранены",
-    "copiedToClipboard": "Скопировано в буфер обмена"
+    "copiedToClipboard": "Скопировано в буфер обмена",
+    "downloadsPaused": "Загрузки приостановлены",
+    "downloadsResumed": "Загрузки возобновлены",
+    "alreadyDownloaded": "\"{title}\" уже скачан",
+    "alreadyDownloading": "\"{title}\" уже скачивается",
+    "sessionExpiredDownload": "Сессия истекла. Войдите снова, чтобы скачать.",
+    "existsOnDisk": "\"{title}\" уже есть на диске ({have}/{total} треков), всё равно скачиваю",
+    "thisAlbum": "Этот альбом",
+    "thisArtist": "этого исполнителя",
+    "tagsRefreshed": "Теги обновлены для \"{title}\"",
+    "tagRefreshFailed": "Не удалось обновить теги: \"{title}\"",
+    "tagsRefreshedSkipped": "Теги обновлены для \"{title}\" ({count} трек пропущен) | Теги обновлены для \"{title}\" ({count} треков пропущено)",
+    "downloaded": "Скачан \"{title}\"",
+    "downloadFailedTitle": "Ошибка загрузки: \"{title}\"",
+    "downloadedWithFailures": "Скачан \"{title}\", {count} трек не загружен | Скачан \"{title}\", {count} треков не загружено",
+    "retrying": "Повтор \"{title}\"...",
+    "retryingAlbum": "Повтор альбома \"{title}\"...",
+    "retryingPlaylist": "Повтор плейлиста \"{title}\"...",
+    "retryFailed": "Не удалось повторить \"{title}\"",
+    "retryNoContext": "Не удалось повторить \"{title}\": отсутствует контекст загрузки",
+    "retryingFailedTracks": "Повтор {count} неудавшегося трека из \"{title}\"... | Повтор {count} неудавшихся треков из \"{title}\"...",
+    "retryingTracks": "Повтор {count} трека | Повтор {count} треков",
+    "retryNone": "Не удалось повторить ни один трек",
+    "resumingInterrupted": "Возобновление {count} прерванной загрузки… | Возобновление {count} прерванных загрузок…",
+    "removedFromFavorites": "\"{name}\" удалён из избранного",
+    "addedToFavorites": "\"{name}\" добавлен в избранное",
+    "updateAvailable": "Доступно обновление: v{version}. Перейдите в Настройки > О программе, чтобы скачать.",
+    "profileSaveFailed": "Не удалось сохранить профиль",
+    "configExported": "Конфигурация экспортирована (настройки + профили)",
+    "configImported": "Конфигурация импортирована (настройки + профили)",
+    "settingsImported": "Настройки успешно импортированы",
+    "configImportFailed": "Не удалось импортировать конфигурацию. Неверный формат файла.",
+    "clearedDownloads": "Очищена {count} загрузка | Очищено {count} загрузок",
+    "clearedCompleted": "Очищена {count} завершённая загрузка | Очищено {count} завершённых загрузок",
+    "rateLimitedReleases": "{count} релиз не удалось загрузить (лимит запросов Deezer), нажмите «Скачать» ещё раз, чтобы получить остальное | {count} релизов не удалось загрузить (лимит запросов Deezer), нажмите «Скачать» ещё раз, чтобы получить остальное",
+    "rateLimitedAlbums": "{count} альбом не удалось загрузить (лимит запросов Deezer), попробуйте снова, чтобы получить остальное | {count} альбомов не удалось загрузить (лимит запросов Deezer), попробуйте снова, чтобы получить остальное",
+    "rateLimitedArtistReleases": "{count} релиз исполнителя {artist} не удалось загрузить (лимит запросов Deezer), запустите ещё раз, чтобы получить остальное | {count} релизов исполнителя {artist} не удалось загрузить (лимит запросов Deezer), запустите ещё раз, чтобы получить остальное",
+    "playlistsSkipped": "Пропущен {count} плейлист (пустой или недоступен) | Пропущено {count} плейлистов (пустых или недоступных)",
+    "queuedForDownload": "В очередь на загрузку добавлено: {count} {type}",
+    "favoritesSectionsFailed": "Не удалось загрузить {sections} из Deezer. Остальные разделы обновлены.",
+    "favoritesSynced": "Синхронизировано с избранным Deezer: {summary}",
+    "favoritesAlreadyImported": "Всё избранное Deezer уже импортировано",
+    "favoritesStale": "{detail} в разделе «Синхронизация» больше нет в вашем избранном Deezer, проверьте на странице синхронизации.",
+    "queuedLinks": "В очередь добавлено {n} из {total} ссылок",
+    "queuedQobuzItem": "\"{title}\" добавлен в очередь ({count} треков)",
+    "queuedQobuzTrack": "Трек Qobuz добавлен в очередь загрузки",
+    "qobuzDownloadFailed": "Ошибка загрузки с Qobuz: {message}",
+    "noConversionResults": "Нет доступных результатов конвертации",
+    "noDownloadableTracks": "В этой подборке нет треков, доступных для скачивания",
+    "addedTracksToQueue": "{count} треков добавлено в очередь загрузки",
+    "downloadStartFailed": "Не удалось начать загрузку: {message}",
+    "noMatchingTracks": "Не найдено подходящих треков {service} для скачивания",
+    "addedItemsToQueue": "{count} объект добавлен в очередь загрузки | {count} объектов добавлено в очередь загрузки",
+    "addSomeFailed": "Не удалось добавить некоторые элементы в очередь загрузки",
+    "processingLinks": "Обработка {count} ссылок...",
+    "queuedFromLinks": "В очередь добавлен {queued} объект из {links} ссылок | В очередь добавлено {queued} объектов из {links} ссылок",
+    "queuedFromLinksFailed": "({failed} не удалось)",
+    "noneQueued": "Не удалось добавить загрузки в очередь, проверьте, что вы вошли в систему",
+    "copyFailed": "Не удалось скопировать",
+    "pasteFailed": "Не удалось вставить, доступ к буферу обмена запрещён"
   },
   "sync": {
     "sortBy": "Сортировать по",
@@ -466,7 +589,13 @@
     "sortStatus": "Статус",
     "sortTracks": "Загруженные треки",
     "filterPlaceholder": "Фильтр по названию…",
-    "noMatches": "Ничего не найдено"
+    "noMatches": "Ничего не найдено",
+    "scheduleLaunch": "При запуске приложения",
+    "scheduleHourly": "Каждый час",
+    "scheduleEvery": "Каждые {hours} часов",
+    "scheduleManual": "Только вручную",
+    "resolvingShareLink": "Обработка ссылки...",
+    "playlistDetected": "Обнаружен плейлист {service}"
   },
   "userPlaylists": {
     "creator": "Создатель",
@@ -498,7 +627,8 @@
     "seeAll": "СМОТРЕТЬ ВСЕ",
     "sortDefault": "ПОРЯДОК ЛЕНТЫ",
     "sortName": "А–Я",
-    "sortTracks": "БОЛЬШЕ ТРЕКОВ"
+    "sortTracks": "БОЛЬШЕ ТРЕКОВ",
+    "connectInSettings": "Подключить в настройках"
   },
   "retag": {
     "viaQobuzTip": "Теги получены из Qobuz — Deezer не нашёл совпадения для этого ISRC"
@@ -509,5 +639,15 @@
   },
   "about": {
     "disclaimer": "Это приложение не связано с Deezer, Qobuz или Spotify, не одобрено и не поддерживается ими. Оно предназначено для личного использования с вашими собственными аккаунтами. Пожалуйста, используйте его ответственно и в соответствии с местными законами о скачивании музыки, а также уважайте авторские права и условия использования каждой стриминговой платформы. Для скачивания с Qobuz требуется ваша собственная активная платная подписка Qobuz."
+  },
+  "accessibility": {
+    "windowControls": "Управление окном",
+    "closeNotification": "Закрыть уведомление"
+  },
+  "artistView": {
+    "sortNewest": "Сначала новые",
+    "sortOldest": "Сначала старые",
+    "releases": "релизы",
+    "featuredAppearances": "гостевые участия"
   }
 }

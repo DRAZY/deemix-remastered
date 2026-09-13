@@ -6,7 +6,8 @@
     "downloads": "Mga Download",
     "favorites": "Mga Paborito",
     "linkAnalyzer": "Link Analyzer",
-    "settings": "Mga Setting"
+    "settings": "Mga Setting",
+    "genres": "Mga Genre"
   },
   "sidebar": {
     "appName": "Deemix Remastered",
@@ -94,7 +95,22 @@
     "clearAllMessage": "Sigurado ka bang gusto mong burahin lahat ng {count} download? Aalisin nito ang lahat ng item sa listahan ng download ngunit hindi buburahin ang mga na-download na file.",
     "clearCompletedConfirm": "Burahin ang Nakumpleto",
     "clearCompletedTitle": "Burahin ang mga Nakumpletong Download",
-    "clearCompletedMessage": "Sigurado ka bang gusto mong burahin ang {count} nakumpletong download? Aalisin nito ang mga ito sa listahan ng download ngunit hindi buburahin ang mga na-download na file."
+    "clearCompletedMessage": "Sigurado ka bang gusto mong burahin ang {count} nakumpletong download? Aalisin nito ang mga ito sa listahan ng download ngunit hindi buburahin ang mga na-download na file.",
+    "statistics": "Istatistika ng Download",
+    "totalTracks": "Kabuuang Track",
+    "thisWeek": "Ngayong Linggo",
+    "topArtists": "Mga Top Artist",
+    "qobuzCauseQuality": "Hindi available ang track sa Qobuz sa hiniling na kalidad o sa plano mo",
+    "qobuzCauseSession": "Nag-expire ang Qobuz session, kumonekta ulit sa Mga Setting",
+    "qobuzCauseNetwork": "Isyu sa network o koneksyon sa Qobuz CDN, karaniwang gumagana ang subukan ulit",
+    "trackStatus": {
+      "done": "Tapos na",
+      "failed": "Nabigo",
+      "downloading": "Dina-download",
+      "decrypting": "Dini-decrypt",
+      "tagging": "Tinatag",
+      "pending": "Nakabinbin"
+    }
   },
   "charts": {
     "title": "Mga Chart",
@@ -110,12 +126,19 @@
     "artists": "Mga Paboritong Artist",
     "playlists": "Mga Paboritong Playlist",
     "noFavorites": "Wala pang mga paborito",
-    "loginToSee": "Mag-login para makita ang iyong mga paborito sa Deezer"
+    "loginToSee": "Mag-login para makita ang iyong mga paborito sa Deezer",
+    "sortAdded": "Petsa ng Pagdagdag",
+    "importFromDeezer": "I-import mula sa Deezer",
+    "importing": "Iniimport...",
+    "importedCount": "+{n} na-import",
+    "prunedCount": "−{n} tinanggal",
+    "unchangedCount": "{n} walang pagbabago",
+    "noneOnAccount": "Walang nahanap na paborito sa iyong Deezer account"
   },
   "analyzer": {
     "title": "Link Analyzer",
-    "subtitle": "I-paste ang Deezer link para suriin ang metadata at mga opsyon sa download",
-    "placeholder": "I-paste ang Deezer link (kanta, album, artist, o playlist)...",
+    "subtitle": "I-paste ang link ng Deezer, Spotify, o Qobuz para suriin ang metadata at mga opsyon sa pag-download nito",
+    "placeholder": "I-paste ang isa o higit pang link ng Deezer, Spotify, o Qobuz (track, album, artist, o playlist)...",
     "analyze": "Suriin",
     "analyzing": "Sinusuri...",
     "metadata": "Metadata",
@@ -154,7 +177,8 @@
       "albumCount": "Bilang ng mga Album",
       "creator": "Tagalikha",
       "public": "Pampubliko",
-      "fans": "Mga Fan"
+      "fans": "Mga Fan",
+      "name": "Pangalan"
     },
     "types": {
       "track": "Kanta",
@@ -167,7 +191,30 @@
       "unsupported": "Hindi sinusuportahan ang ganitong uri ng link",
       "notFound": "Hindi nahanap ang content sa Deezer",
       "networkError": "Nabigo ang pagsuri. Pakisubukang muli."
-    }
+    },
+    "loginRequired": "Kailangang mag-login para mag-download",
+    "convertTo": "I-convert sa",
+    "compareNeedsBoth": "Kailangan ng magkasabay na Deezer at Qobuz na naka-connect para ihambing ang dalawa.",
+    "noneFoundBoth": "Walang nahanap na track sa Deezer o sa Qobuz.",
+    "noneFoundService": "Walang nahanap na tugmang {service} track. Maaaring hindi available ang mga track ng playlist sa {service}.",
+    "matchingTracks": "Mga tugmang track",
+    "loginRequiredConvert": "Kailangang mag-login para mag-convert at mag-download",
+    "conversionResults": "Resulta ng Conversion",
+    "qobuzOnly": "Qobuz lang",
+    "deezerOnly": "Deezer lang",
+    "prefer": "Piliin muna",
+    "fallbackHint": "babalik sa kabila · i-click ang naliliwanagang cell para i-override ang isang track",
+    "getStarted": "I-paste ang link ng Deezer o Spotify para magsimula",
+    "converting": "Kino-convert...",
+    "compareBoth": "Ihambing ang Deezer at Qobuz",
+    "convertToQobuz": "I-convert sa Qobuz",
+    "convertToDeezer": "I-convert sa Deezer",
+    "matchSearch": "Maghanap",
+    "batchSummary": "{links} link · {ready} handa na",
+    "batchAnalyzed": "{done}/{total} na-analyze",
+    "batchFailed": "{count} nabigo",
+    "queuing": "Inequeue...",
+    "downloadAllReady": "I-download ang lahat ng handa na ({count})"
   },
   "settings": {
     "title": "Mga Setting",
@@ -385,7 +432,10 @@
       "userIdPlaceholder": "User ID (opsyonal)",
       "disclaimer": "Nangangailangan ng sarili mong aktibo at bayad na Qobuz account. Ang app na ito ay hindi kaakibat ng Qobuz. Pakisunod ang mga tuntunin ng serbisyo ng Qobuz."
     },
-    "deezerDisclaimer": "Gamitin ang sarili mong Deezer account. Ang app na ito ay hindi kaakibat ng Deezer. Pakisunod ang mga tuntunin ng serbisyo ng Deezer."
+    "deezerDisclaimer": "Gamitin ang sarili mong Deezer account. Ang app na ito ay hindi kaakibat ng Deezer. Pakisunod ang mga tuntunin ng serbisyo ng Deezer.",
+    "exportConfig": "I-export ang Configuration",
+    "importConfig": "I-import ang Configuration",
+    "m3uTemplate": "Template ng pangalan ng M3U file"
   },
   "login": {
     "title": "Mag-login sa Deezer",
@@ -412,7 +462,14 @@
     "captchaHelpText": "Kung hindi naglo-load o hindi ma-verify ang CAPTCHA, subukang mag-login muna sa Deezer website, pagkatapos ay gamitin ang ARL token method.",
     "verifying": "Vini-verify...",
     "backToLogin": "Bumalik sa Login",
-    "openDeezerLogin": "Buksan ang Deezer sa Browser"
+    "openDeezerLogin": "Buksan ang Deezer sa Browser",
+    "sessionExpiredDownloading": "Nag-expire ang session. Mag-login ulit para magpatuloy sa pag-download.",
+    "logIn": "Mag-login",
+    "emailPasswordLogin": "Login gamit ang Email & Password",
+    "emailPasswordHelp": "Gamitin ang credentials ng iyong Deezer account. Ito ang inirerekomendang paraan dahil mas simple at awtomatikong pinapangasiwaan ang session.",
+    "whatIsArl": "Ano ang ARL token?",
+    "arlExplainer": "Ang ARL (Authentication Request Login) token ay isang cookie mula sa iyong Deezer account na nagbibigay-daan sa pag-download ng musika. Naka-store ito sa iyong browser kapag naka-login ka sa Deezer.",
+    "passwordPlaceholder": "Ang password mo sa Deezer"
   },
   "common": {
     "download": "I-download",
@@ -447,7 +504,14 @@
     "favorited": "Paborito na",
     "fans": "Mga Fan",
     "by": "ni",
-    "new": "BAGO"
+    "new": "BAGO",
+    "keyboardShortcuts": "Mga Keyboard Shortcut",
+    "unknownError": "Hindi kilalang error",
+    "sortNameAsc": "Pangalan A-Z",
+    "sortNameDesc": "Pangalan Z-A",
+    "pasteFromClipboard": "I-paste mula sa clipboard",
+    "paste": "I-paste",
+    "copy": "Kopyahin"
   },
   "trackCard": {
     "stop": "Ihinto",
@@ -482,7 +546,11 @@
     "showing": "Nagpapakita ng {count} sa {total} release",
     "downloadFiltered": "I-download ang {count} {type}",
     "noReleases": "Walang {type} na nahanap",
-    "loadingDetailsShort": "(naglo-load...)"
+    "loadingDetailsShort": "(naglo-load...)",
+    "sortNewest": "Pinakabago Muna",
+    "sortOldest": "Pinakaluma Muna",
+    "releases": "release",
+    "featuredAppearances": "featured na paglabas"
   },
   "playlistView": {
     "downloadPlaylist": "I-download ang playlist",
@@ -519,7 +587,66 @@
     "downloadFailed": "Nabigo ang download",
     "addedToQueue": "Naidagdag sa pila",
     "settingsSaved": "Na-save ang mga setting",
-    "copiedToClipboard": "Nakopya sa clipboard"
+    "copiedToClipboard": "Nakopya sa clipboard",
+    "downloadsPaused": "Naka-pause ang mga download",
+    "downloadsResumed": "Ipinagpatuloy ang mga download",
+    "alreadyDownloaded": "Na-download na ang \"{title}\"",
+    "alreadyDownloading": "Dina-download na ang \"{title}\"",
+    "sessionExpiredDownload": "Nag-expire ang session. Mag-login ulit para mag-download.",
+    "existsOnDisk": "Mayroon nang \"{title}\" sa disk ({have}/{total} track), dine-download pa rin",
+    "thisAlbum": "Ang album na ito",
+    "thisArtist": "ang artist na ito",
+    "tagsRefreshed": "Na-refresh ang mga tag para sa \"{title}\"",
+    "tagRefreshFailed": "Nabigo ang pag-refresh ng tag: \"{title}\"",
+    "tagsRefreshedSkipped": "Na-refresh ang mga tag para sa \"{title}\" ({count} track ang nilaktawan) | Na-refresh ang mga tag para sa \"{title}\" ({count} na track ang nilaktawan)",
+    "downloaded": "Na-download ang \"{title}\"",
+    "downloadFailedTitle": "Nabigo ang pag-download: \"{title}\"",
+    "downloadedWithFailures": "Na-download ang \"{title}\" na may {count} nabigong track | Na-download ang \"{title}\" na may {count} na nabigong track",
+    "retrying": "Sinusubukan ulit ang \"{title}\"...",
+    "retryingAlbum": "Sinusubukan ulit ang album na \"{title}\"...",
+    "retryingPlaylist": "Sinusubukan ulit ang playlist na \"{title}\"...",
+    "retryFailed": "Nabigong subukan ulit ang \"{title}\"",
+    "retryNoContext": "Hindi masubukan ulit ang \"{title}\", kulang ang download context",
+    "retryingFailedTracks": "Sinusubukan ulit ang {count} nabigong track mula sa \"{title}\"... | Sinusubukan ulit ang {count} na nabigong track mula sa \"{title}\"...",
+    "retryingTracks": "Sinusubukan ulit ang {count} track | Sinusubukan ulit ang {count} na track",
+    "retryNone": "Nabigong subukan ulit ang kahit anong track",
+    "resumingInterrupted": "Ipinagpapatuloy ang {count} naantalang download… | Ipinagpapatuloy ang {count} na naantalang download…",
+    "removedFromFavorites": "Inalis ang \"{name}\" sa mga paborito",
+    "addedToFavorites": "Idinagdag ang \"{name}\" sa mga paborito",
+    "updateAvailable": "May available na update: v{version}. Pumunta sa Mga Setting > Tungkol para mag-download.",
+    "profileSaveFailed": "Nabigong i-save ang profile",
+    "configExported": "Na-export ang configuration (mga setting + profile)",
+    "configImported": "Na-import ang configuration (mga setting + profile)",
+    "settingsImported": "Matagumpay na na-import ang mga setting",
+    "configImportFailed": "Nabigong i-import ang configuration. Invalid na format ng file.",
+    "clearedDownloads": "{count} download ang na-clear | {count} na download ang na-clear",
+    "clearedCompleted": "{count} nakumpletong download ang na-clear | {count} na nakumpletong download ang na-clear",
+    "rateLimitedReleases": "{count} release ang hindi na-load (limitasyon ng Deezer), i-click ulit ang download para makuha ang natitira | {count} na release ang hindi na-load (limitasyon ng Deezer), i-click ulit ang download para makuha ang natitira",
+    "rateLimitedAlbums": "{count} album ang hindi na-load (limitasyon ng Deezer), subukan ulit para makuha ang natitira | {count} na album ang hindi na-load (limitasyon ng Deezer), subukan ulit para makuha ang natitira",
+    "rateLimitedArtistReleases": "{count} release mula kay {artist} ang hindi na-load (limitasyon ng Deezer), patakbuhin ulit para makuha ang natitira | {count} na release mula kay {artist} ang hindi na-load (limitasyon ng Deezer), patakbuhin ulit para makuha ang natitira",
+    "playlistsSkipped": "{count} playlist ang nilaktawan (walang laman o hindi available) | {count} na playlist ang nilaktawan (walang laman o hindi available)",
+    "queuedForDownload": "Na-queue ang {count} {type} para i-download",
+    "favoritesSectionsFailed": "Hindi ma-load ang {sections} mula sa Deezer. Na-update ang ibang seksyon.",
+    "favoritesSynced": "Na-sync sa mga paborito sa Deezer: {summary}",
+    "favoritesAlreadyImported": "Na-import na lahat ng paborito sa Deezer",
+    "favoritesStale": "Wala na sa mga paborito mo sa Deezer ang {detail} sa Sync, tingnan sa Sync page.",
+    "queuedLinks": "Na-queue ang {n} sa {total} na link",
+    "queuedQobuzItem": "Na-queue ang \"{title}\" ({count} track)",
+    "queuedQobuzTrack": "Na-queue ang Qobuz track para i-download",
+    "qobuzDownloadFailed": "Nabigo ang pag-download sa Qobuz: {message}",
+    "noConversionResults": "Walang available na resulta ng conversion",
+    "noDownloadableTracks": "Walang track na puwedeng i-download sa napiling ito",
+    "addedTracksToQueue": "Idinagdag ang {count} track sa download queue",
+    "downloadStartFailed": "Nabigong simulan ang pag-download: {message}",
+    "noMatchingTracks": "Walang nahanap na tugmang {service} track na puwedeng i-download",
+    "addedItemsToQueue": "Idinagdag ang {count} item sa download queue | Idinagdag ang {count} na item sa download queue",
+    "addSomeFailed": "Nabigong idagdag ang ilang item sa download queue",
+    "processingLinks": "Pinoproseso ang {count} link...",
+    "queuedFromLinks": "Na-queue ang {queued} item mula sa {links} link | Na-queue ang {queued} na item mula sa {links} na link",
+    "queuedFromLinksFailed": "({failed} nabigo)",
+    "noneQueued": "Walang na-queue na download, tiyaking naka-login ka",
+    "copyFailed": "Nabigong kopyahin",
+    "pasteFailed": "Nabigong i-paste, tinanggihan ang access sa clipboard"
   },
   "sync": {
     "sortBy": "Ayusin ayon sa",
@@ -529,7 +656,13 @@
     "sortStatus": "Katayuan",
     "sortTracks": "Na-download na mga track",
     "filterPlaceholder": "I-filter ayon sa pangalan…",
-    "noMatches": "Walang tugma"
+    "noMatches": "Walang tugma",
+    "scheduleLaunch": "Kapag binuksan ang app",
+    "scheduleHourly": "Bawat oras",
+    "scheduleEvery": "Bawat {hours} oras",
+    "scheduleManual": "Manual lang",
+    "resolvingShareLink": "Pinoproseso ang share link...",
+    "playlistDetected": "Na-detect ang {service} playlist"
   },
   "userPlaylists": {
     "creator": "Creator",
@@ -561,7 +694,8 @@
     "more": "HIGIT PA",
     "sortDefault": "AYOS NG FEED",
     "sortName": "A–Z",
-    "sortTracks": "PINAKAMARAMING TRACK"
+    "sortTracks": "PINAKAMARAMING TRACK",
+    "connectInSettings": "Kumonekta sa Mga Setting"
   },
   "retag": {
     "viaQobuzTip": "Nagmula sa Qobuz ang mga tag — walang tugma ang Deezer para sa ISRC na ito"
@@ -572,5 +706,9 @@
   },
   "about": {
     "disclaimer": "Ang app na ito ay hindi kaakibat, hindi awtorisado, at hindi inirerekomenda ng Deezer, Qobuz, o Spotify. Nilalayon itong gamitin para sa personal na paggamit gamit ang sarili mong mga account. Pakigamit ito nang responsable at alinsunod sa iyong mga lokal na batas tungkol sa pag-download ng musika, at igalang ang copyright at ang mga tuntunin ng serbisyo ng bawat streaming platform. Ang mga download sa Qobuz ay nangangailangan ng sarili mong aktibo at bayad na subscription sa Qobuz."
+  },
+  "accessibility": {
+    "windowControls": "Mga kontrol ng window",
+    "closeNotification": "Isara ang notification"
   }
 }

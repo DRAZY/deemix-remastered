@@ -6,7 +6,8 @@
     "downloads": "Tải xuống",
     "favorites": "Yêu thích",
     "linkAnalyzer": "Phân tích link",
-    "settings": "Cài đặt"
+    "settings": "Cài đặt",
+    "genres": "Thể loại"
   },
   "sidebar": {
     "appName": "Deemix Remastered",
@@ -128,7 +129,22 @@
     "noHistoryYet": "Chưa có lịch sử tải xuống",
     "retryFailedTip": "Thử lại {n} bản nhạc thất bại | Thử lại {n} bản nhạc thất bại",
     "retryTip": "Thử tải lại",
-    "showFailedTracks": "Hiện các bản nhạc thất bại"
+    "showFailedTracks": "Hiện các bản nhạc thất bại",
+    "statistics": "Thống kê tải xuống",
+    "totalTracks": "Tổng số bài hát",
+    "thisWeek": "Tuần này",
+    "topArtists": "Nghệ sĩ hàng đầu",
+    "qobuzCauseQuality": "Bài hát không có sẵn trên Qobuz ở chất lượng yêu cầu hoặc trong gói của bạn",
+    "qobuzCauseSession": "Phiên Qobuz đã hết hạn, kết nối lại trong Cài đặt",
+    "qobuzCauseNetwork": "Sự cố kết nối mạng hoặc CDN của Qobuz, thử lại thường sẽ khắc phục được",
+    "trackStatus": {
+      "done": "Hoàn tất",
+      "failed": "Thất bại",
+      "downloading": "Đang tải xuống",
+      "decrypting": "Đang giải mã",
+      "tagging": "Đang gắn thẻ",
+      "pending": "Đang chờ"
+    }
   },
   "charts": {
     "title": "Bảng xếp hạng",
@@ -154,12 +170,19 @@
     "playlists": "Playlist yêu thích",
     "noFavorites": "Chưa có yêu thích nào",
     "noFavoritesHint": "Nhấp vào biểu tượng trái tim trên bài hát, album hoặc nghệ sĩ để lưu ở đây",
-    "loginToSee": "Đăng nhập để xem yêu thích Deezer của bạn"
+    "loginToSee": "Đăng nhập để xem yêu thích Deezer của bạn",
+    "sortAdded": "Ngày thêm",
+    "importFromDeezer": "Nhập từ Deezer",
+    "importing": "Đang nhập...",
+    "importedCount": "+{n} đã nhập",
+    "prunedCount": "−{n} đã loại bỏ",
+    "unchangedCount": "{n} không thay đổi",
+    "noneOnAccount": "Không tìm thấy mục yêu thích nào trong tài khoản Deezer của bạn"
   },
   "analyzer": {
     "title": "Phân tích link",
-    "subtitle": "Dán link Deezer để phân tích metadata và tùy chọn tải xuống",
-    "placeholder": "Dán link Deezer (bài hát, album, nghệ sĩ hoặc playlist)...",
+    "subtitle": "Dán liên kết Deezer, Spotify hoặc Qobuz để phân tích siêu dữ liệu và tùy chọn tải xuống",
+    "placeholder": "Dán một hoặc nhiều liên kết Deezer, Spotify hoặc Qobuz (bài hát, album, nghệ sĩ hoặc playlist)...",
     "analyze": "Phân tích",
     "analyzing": "Đang phân tích...",
     "metadata": "Metadata",
@@ -198,7 +221,8 @@
       "albumCount": "Số album",
       "creator": "Người tạo",
       "public": "Công khai",
-      "fans": "Fan"
+      "fans": "Fan",
+      "name": "Tên"
     },
     "types": {
       "track": "Bài hát",
@@ -211,7 +235,30 @@
       "unsupported": "Loại link này không được hỗ trợ",
       "notFound": "Không tìm thấy nội dung trên Deezer",
       "networkError": "Phân tích link thất bại. Vui lòng thử lại."
-    }
+    },
+    "loginRequired": "Cần đăng nhập để tải xuống",
+    "convertTo": "Chuyển đổi sang",
+    "compareNeedsBoth": "So sánh cả hai cần kết nối cả Deezer và Qobuz.",
+    "noneFoundBoth": "Không tìm thấy bài hát nào trên cả Deezer lẫn Qobuz.",
+    "noneFoundService": "Không tìm thấy bài hát {service} phù hợp. Các bài hát trong playlist có thể không có sẵn trên {service}.",
+    "matchingTracks": "Bài hát phù hợp",
+    "loginRequiredConvert": "Cần đăng nhập để chuyển đổi và tải xuống",
+    "conversionResults": "Kết quả chuyển đổi",
+    "qobuzOnly": "Chỉ Qobuz",
+    "deezerOnly": "Chỉ Deezer",
+    "prefer": "Ưu tiên",
+    "fallbackHint": "chuyển sang bên còn lại · nhấp vào ô đang sáng để ghi đè riêng một bài",
+    "getStarted": "Dán liên kết Deezer hoặc Spotify để bắt đầu",
+    "converting": "Đang chuyển đổi...",
+    "compareBoth": "So sánh Deezer & Qobuz",
+    "convertToQobuz": "Chuyển đổi sang Qobuz",
+    "convertToDeezer": "Chuyển đổi sang Deezer",
+    "matchSearch": "Tìm kiếm",
+    "batchSummary": "{links} liên kết · {ready} sẵn sàng",
+    "batchAnalyzed": "Đã phân tích {done}/{total}",
+    "batchFailed": "{count} thất bại",
+    "queuing": "Đang xếp hàng đợi...",
+    "downloadAllReady": "Tải xuống tất cả mục đã sẵn sàng ({count})"
   },
   "settings": {
     "title": "Cài đặt",
@@ -440,7 +487,10 @@
       "userIdPlaceholder": "User ID (tùy chọn)",
       "disclaimer": "Yêu cầu tài khoản Qobuz trả phí đang hoạt động của riêng bạn. Ứng dụng này không liên kết với Qobuz. Vui lòng tuân thủ điều khoản dịch vụ của Qobuz."
     },
-    "deezerDisclaimer": "Sử dụng tài khoản Deezer của riêng bạn. Ứng dụng này không liên kết với Deezer. Vui lòng tuân thủ điều khoản dịch vụ của Deezer."
+    "deezerDisclaimer": "Sử dụng tài khoản Deezer của riêng bạn. Ứng dụng này không liên kết với Deezer. Vui lòng tuân thủ điều khoản dịch vụ của Deezer.",
+    "exportConfig": "Xuất cấu hình",
+    "importConfig": "Nhập cấu hình",
+    "m3uTemplate": "Mẫu tên tệp M3U"
   },
   "login": {
     "title": "Đăng nhập Deezer",
@@ -472,7 +522,14 @@
     "openingBrowser": "Đang mở đăng nhập Deezer...",
     "openInExternalBrowser": "Mở trong trình duyệt bên ngoài thay thế",
     "browserLoginHelp": "Cách hoạt động",
-    "browserLoginHelpText": "Cửa sổ đăng nhập Deezer sẽ mở. Đăng nhập với tài khoản của bạn, và phiên sẽ được tự động ghi lại khi hoàn thành."
+    "browserLoginHelpText": "Cửa sổ đăng nhập Deezer sẽ mở. Đăng nhập với tài khoản của bạn, và phiên sẽ được tự động ghi lại khi hoàn thành.",
+    "sessionExpiredDownloading": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại để tiếp tục tải xuống.",
+    "logIn": "Đăng nhập",
+    "emailPasswordLogin": "Đăng nhập bằng email và mật khẩu",
+    "emailPasswordHelp": "Sử dụng thông tin tài khoản Deezer của bạn. Đây là phương pháp được khuyến nghị vì đơn giản hơn và tự động quản lý phiên đăng nhập.",
+    "whatIsArl": "Token ARL là gì?",
+    "arlExplainer": "Token ARL (Authentication Request Login) là một cookie từ tài khoản Deezer của bạn cho phép tải nhạc. Nó được lưu trong trình duyệt khi bạn đăng nhập vào Deezer.",
+    "passwordPlaceholder": "Mật khẩu Deezer của bạn"
   },
   "common": {
     "download": "Tải xuống",
@@ -507,7 +564,14 @@
     "favorited": "Đã yêu thích",
     "fans": "fan",
     "by": "bởi",
-    "new": "MỚI"
+    "new": "MỚI",
+    "keyboardShortcuts": "Phím tắt",
+    "unknownError": "Lỗi không xác định",
+    "sortNameAsc": "Tên A-Z",
+    "sortNameDesc": "Tên Z-A",
+    "pasteFromClipboard": "Dán từ clipboard",
+    "paste": "Dán",
+    "copy": "Sao chép"
   },
   "trackCard": {
     "stop": "Dừng",
@@ -550,7 +614,11 @@
     "showing": "Hiển thị {count} trong {total} phát hành",
     "downloadFiltered": "Tải {count} {type}",
     "noReleases": "Không tìm thấy {type}",
-    "loadingDetailsShort": "(đang tải chi tiết...)"
+    "loadingDetailsShort": "(đang tải chi tiết...)",
+    "sortNewest": "Mới nhất trước",
+    "sortOldest": "Cũ nhất trước",
+    "releases": "bản phát hành",
+    "featuredAppearances": "lượt góp mặt"
   },
   "playlistView": {
     "downloadPlaylist": "Tải playlist",
@@ -582,7 +650,66 @@
     "downloadFailed": "Tải xuống thất bại",
     "addedToQueue": "Đã thêm vào hàng đợi tải xuống",
     "settingsSaved": "Đã lưu cài đặt",
-    "copiedToClipboard": "Đã sao chép vào clipboard"
+    "copiedToClipboard": "Đã sao chép vào clipboard",
+    "downloadsPaused": "Đã tạm dừng tải xuống",
+    "downloadsResumed": "Đã tiếp tục tải xuống",
+    "alreadyDownloaded": "\"{title}\" đã được tải xuống trước đó",
+    "alreadyDownloading": "\"{title}\" đang được tải xuống",
+    "sessionExpiredDownload": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại để tải xuống.",
+    "existsOnDisk": "\"{title}\" đã có sẵn trên ổ đĩa ({have}/{total} bài), vẫn tiến hành tải xuống",
+    "thisAlbum": "Album này",
+    "thisArtist": "nghệ sĩ này",
+    "tagsRefreshed": "Đã làm mới thẻ cho \"{title}\"",
+    "tagRefreshFailed": "Làm mới thẻ thất bại: \"{title}\"",
+    "tagsRefreshedSkipped": "Đã làm mới thẻ cho \"{title}\" (bỏ qua {count} bài) | Đã làm mới thẻ cho \"{title}\" (bỏ qua {count} bài)",
+    "downloaded": "Đã tải xuống \"{title}\"",
+    "downloadFailedTitle": "Tải xuống thất bại: \"{title}\"",
+    "downloadedWithFailures": "Đã tải xuống \"{title}\" với {count} bài thất bại | Đã tải xuống \"{title}\" với {count} bài thất bại",
+    "retrying": "Đang thử lại \"{title}\"...",
+    "retryingAlbum": "Đang thử lại album \"{title}\"...",
+    "retryingPlaylist": "Đang thử lại playlist \"{title}\"...",
+    "retryFailed": "Thử lại \"{title}\" thất bại",
+    "retryNoContext": "Không thể thử lại \"{title}\", thiếu thông tin tải xuống",
+    "retryingFailedTracks": "Đang thử lại {count} bài thất bại từ \"{title}\"... | Đang thử lại {count} bài thất bại từ \"{title}\"...",
+    "retryingTracks": "Đang thử lại {count} bài | Đang thử lại {count} bài",
+    "retryNone": "Thử lại thất bại, không có bài nào thành công",
+    "resumingInterrupted": "Đang tiếp tục {count} lượt tải bị gián đoạn… | Đang tiếp tục {count} lượt tải bị gián đoạn…",
+    "removedFromFavorites": "Đã xóa \"{name}\" khỏi mục yêu thích",
+    "addedToFavorites": "Đã thêm \"{name}\" vào mục yêu thích",
+    "updateAvailable": "Có bản cập nhật: v{version}. Vào Cài đặt > Giới thiệu để tải xuống.",
+    "profileSaveFailed": "Lưu hồ sơ thất bại",
+    "configExported": "Đã xuất cấu hình (cài đặt + hồ sơ)",
+    "configImported": "Đã nhập cấu hình (cài đặt + hồ sơ)",
+    "settingsImported": "Nhập cài đặt thành công",
+    "configImportFailed": "Nhập cấu hình thất bại. Định dạng tệp không hợp lệ.",
+    "clearedDownloads": "Đã xóa {count} lượt tải xuống | Đã xóa {count} lượt tải xuống",
+    "clearedCompleted": "Đã xóa {count} lượt tải xuống đã hoàn thành | Đã xóa {count} lượt tải xuống đã hoàn thành",
+    "rateLimitedReleases": "Không thể tải {count} bản phát hành (Deezer giới hạn tốc độ), nhấn tải xuống lại để lấy phần còn lại | Không thể tải {count} bản phát hành (Deezer giới hạn tốc độ), nhấn tải xuống lại để lấy phần còn lại",
+    "rateLimitedAlbums": "Không thể tải {count} album (Deezer giới hạn tốc độ), thử lại để lấy phần còn lại | Không thể tải {count} album (Deezer giới hạn tốc độ), thử lại để lấy phần còn lại",
+    "rateLimitedArtistReleases": "Không thể tải {count} bản phát hành từ {artist} (Deezer giới hạn tốc độ), chạy lại để lấy phần còn lại | Không thể tải {count} bản phát hành từ {artist} (Deezer giới hạn tốc độ), chạy lại để lấy phần còn lại",
+    "playlistsSkipped": "Đã bỏ qua {count} playlist (trống hoặc không khả dụng) | Đã bỏ qua {count} playlist (trống hoặc không khả dụng)",
+    "queuedForDownload": "Đã thêm {count} {type} vào hàng đợi tải xuống",
+    "favoritesSectionsFailed": "Không thể tải {sections} từ Deezer. Các mục khác đã được cập nhật.",
+    "favoritesSynced": "Đã đồng bộ với mục yêu thích trên Deezer: {summary}",
+    "favoritesAlreadyImported": "Tất cả mục yêu thích trên Deezer đã được nhập",
+    "favoritesStale": "{detail} trong Đồng bộ không còn trong mục yêu thích Deezer của bạn, kiểm tra trên trang Đồng bộ.",
+    "queuedLinks": "Đã thêm {n} trong số {total} liên kết vào hàng đợi",
+    "queuedQobuzItem": "Đã thêm \"{title}\" vào hàng đợi ({count} bài)",
+    "queuedQobuzTrack": "Đã thêm bài hát Qobuz vào hàng đợi tải xuống",
+    "qobuzDownloadFailed": "Tải xuống Qobuz thất bại: {message}",
+    "noConversionResults": "Không có kết quả chuyển đổi",
+    "noDownloadableTracks": "Không có bài hát nào có thể tải xuống trong lựa chọn này",
+    "addedTracksToQueue": "Đã thêm {count} bài hát vào hàng đợi tải xuống",
+    "downloadStartFailed": "Không thể bắt đầu tải xuống: {message}",
+    "noMatchingTracks": "Không tìm thấy bài hát {service} phù hợp để tải xuống",
+    "addedItemsToQueue": "Đã thêm {count} mục vào hàng đợi tải xuống | Đã thêm {count} mục vào hàng đợi tải xuống",
+    "addSomeFailed": "Không thể thêm một số mục vào hàng đợi tải xuống",
+    "processingLinks": "Đang xử lý {count} liên kết...",
+    "queuedFromLinks": "Đã thêm {queued} mục từ {links} liên kết vào hàng đợi | Đã thêm {queued} mục từ {links} liên kết vào hàng đợi",
+    "queuedFromLinksFailed": "({failed} thất bại)",
+    "noneQueued": "Không thể thêm mục nào vào hàng đợi tải xuống, hãy kiểm tra lại việc đăng nhập",
+    "copyFailed": "Sao chép thất bại",
+    "pasteFailed": "Dán thất bại, quyền truy cập clipboard bị từ chối"
   },
   "accessibility": {
     "mainNavigation": "Điều hướng chính",
@@ -601,7 +728,9 @@
     "loading": "Đang tải",
     "minimizeWindow": "Thu nhỏ cửa sổ",
     "maximizeWindow": "Phóng to cửa sổ",
-    "closeWindow": "Đóng cửa sổ"
+    "closeWindow": "Đóng cửa sổ",
+    "windowControls": "Điều khiển cửa sổ",
+    "closeNotification": "Đóng thông báo"
   },
   "sync": {
     "sortBy": "Sắp xếp theo",
@@ -611,7 +740,13 @@
     "sortStatus": "Trạng thái",
     "sortTracks": "Bản nhạc đã tải",
     "filterPlaceholder": "Lọc theo tên…",
-    "noMatches": "Không có kết quả"
+    "noMatches": "Không có kết quả",
+    "scheduleLaunch": "Khi mở ứng dụng",
+    "scheduleHourly": "Mỗi giờ",
+    "scheduleEvery": "Mỗi {hours} giờ",
+    "scheduleManual": "Chỉ thủ công",
+    "resolvingShareLink": "Đang phân giải liên kết chia sẻ...",
+    "playlistDetected": "Đã phát hiện playlist {service}"
   },
   "userPlaylists": {
     "creator": "Người tạo",
@@ -646,7 +781,8 @@
     "more": "THÊM",
     "sortDefault": "Thứ tự bảng tin",
     "sortName": "A–Z",
-    "sortTracks": "Nhiều bản nhạc nhất"
+    "sortTracks": "Nhiều bản nhạc nhất",
+    "connectInSettings": "Kết nối trong Cài đặt"
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz đã kết nối",

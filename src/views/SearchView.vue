@@ -147,9 +147,9 @@ async function downloadSelected() {
     }
 
     const addedCount = trackCount + albumCount - failedAlbums.length
-    toastStore.success(`Added ${addedCount} item${addedCount > 1 ? 's' : ''} to download queue`)
+    toastStore.success(t('notifications.addedItemsToQueue', { count: addedCount }, addedCount))
     if (failedAlbums.length > 0) {
-      toastStore.warning(`${failedAlbums.length} album${failedAlbums.length > 1 ? 's' : ''} couldn't be loaded (Deezer rate limit) — try again to grab the rest`)
+      toastStore.warning(t('notifications.rateLimitedAlbums', { count: failedAlbums.length }, failedAlbums.length))
     }
 
     // Clear selection and exit selection mode
@@ -157,7 +157,7 @@ async function downloadSelected() {
     isSelectionMode.value = false
   } catch (error) {
     console.error('Failed to download selected:', error)
-    toastStore.error('Failed to add some items to download queue')
+    toastStore.error(t('notifications.addSomeFailed'))
   } finally {
     isDownloadingSelected.value = false
   }
@@ -543,13 +543,13 @@ async function handlePaste(e: ClipboardEvent) {
   e.preventDefault()
 
   if (!authStore.isLoggedIn) {
-    toastStore.error('Login required to download')
+    toastStore.error(t('sidebar.loginRequired'))
     return
   }
 
   isBulkDownloading.value = true
   bulkAborted.value = false
-  toastStore.info(`Processing ${links.length} links...`)
+  toastStore.info(t('notifications.processingLinks', { count: links.length }))
   await downloadStore.syncSettingsToServer()
 
   let queued = 0
@@ -649,7 +649,7 @@ async function handlePaste(e: ClipboardEvent) {
           else failed++
           if (stillFailed.length > 0) {
             console.warn(`[Search] Artist ${artistInfo?.name}: ${albumsQueued} queued, ${stillFailed.length} could not be loaded`)
-            toastStore.warning(`${stillFailed.length} release${stillFailed.length > 1 ? 's' : ''} from ${artistInfo?.name || 'this artist'} couldn't be loaded (Deezer rate limit) — run it again to grab the rest`)
+            toastStore.warning(t('notifications.rateLimitedArtistReleases', { count: stillFailed.length, artist: artistInfo?.name || t('notifications.thisArtist') }, stillFailed.length))
           }
         } else {
           failed++
@@ -667,9 +667,9 @@ async function handlePaste(e: ClipboardEvent) {
   isBulkDownloading.value = false
 
   if (queued > 0) {
-    toastStore.success(`Queued ${queued} item${queued > 1 ? 's' : ''} from ${links.length} links${failed > 0 ? ` (${failed} failed)` : ''}`)
+    toastStore.success(t('notifications.queuedFromLinks', { queued, links: links.length }, queued) + (failed > 0 ? ' ' + t('notifications.queuedFromLinksFailed', { failed }) : ''))
   } else {
-    toastStore.error('No downloads could be queued — check that you are logged in')
+    toastStore.error(t('notifications.noneQueued'))
   }
 }
 

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Track, Album, Artist, Playlist } from '../types'
 import { useToastStore } from './toastStore'
+import i18n from '../i18n'
 
 interface FavoriteItem {
   id: string
@@ -76,10 +77,10 @@ export const useFavoritesStore = defineStore('favorites', () => {
 
     if (isFavorite(item.id, type)) {
       removeFavorite(id)
-      toastStore.info(`Removed "${itemName}" from favorites`)
+      toastStore.info(i18n.global.t('notifications.removedFromFavorites', { name: itemName }))
     } else {
       addFavorite(item, type)
-      toastStore.success(`Added "${itemName}" to favorites`)
+      toastStore.success(i18n.global.t('notifications.addedToFavorites', { name: itemName }))
     }
   }
 

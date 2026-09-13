@@ -6,7 +6,8 @@
     "downloads": "Pobieranie",
     "favorites": "Ulubione",
     "linkAnalyzer": "Analizator linków",
-    "settings": "Ustawienia"
+    "settings": "Ustawienia",
+    "genres": "Gatunki"
   },
   "sidebar": {
     "appName": "Deemix Remastered",
@@ -94,7 +95,22 @@
     "noHistoryYet": "Brak historii pobierania",
     "retryFailedTip": "Ponów {n} nieudany utwór | Ponów {n} nieudanych utworów",
     "retryTip": "Ponów pobieranie",
-    "showFailedTracks": "Pokaż nieudane utwory"
+    "showFailedTracks": "Pokaż nieudane utwory",
+    "statistics": "Statystyki pobierania",
+    "totalTracks": "Łącznie utworów",
+    "thisWeek": "W tym tygodniu",
+    "topArtists": "Najlepsi artyści",
+    "qobuzCauseQuality": "Utwór niedostępny w Qobuz w żądanej jakości lub w Twoim planie",
+    "qobuzCauseSession": "Sesja Qobuz wygasła, połącz ponownie w Ustawieniach",
+    "qobuzCauseNetwork": "Problemy z siecią lub łącznością z CDN Qobuz, ponowienie zwykle pomaga",
+    "trackStatus": {
+      "done": "Ukończono",
+      "failed": "Nieudane",
+      "downloading": "Pobieranie",
+      "decrypting": "Odszyfrowywanie",
+      "tagging": "Tagowanie",
+      "pending": "Oczekujące"
+    }
   },
   "charts": {
     "title": "Rankingi",
@@ -110,12 +126,19 @@
     "artists": "Ulubieni artyści",
     "playlists": "Ulubione playlisty",
     "noFavorites": "Brak ulubionych",
-    "loginToSee": "Zaloguj się, aby zobaczyć swoje ulubione z Deezer"
+    "loginToSee": "Zaloguj się, aby zobaczyć swoje ulubione z Deezer",
+    "sortAdded": "Data dodania",
+    "importFromDeezer": "Importuj z Deezer",
+    "importing": "Importowanie...",
+    "importedCount": "+{n} zaimportowanych",
+    "prunedCount": "−{n} usuniętych",
+    "unchangedCount": "{n} bez zmian",
+    "noneOnAccount": "Nie znaleziono ulubionych na Twoim koncie Deezer"
   },
   "analyzer": {
     "title": "Analizator linków",
-    "subtitle": "Wklej link Deezer, aby przeanalizować metadane i opcje pobierania",
-    "placeholder": "Wklej link Deezer (utwór, album, artysta lub playlista)...",
+    "subtitle": "Wklej link Deezer, Spotify lub Qobuz, aby przeanalizować jego metadane i opcje pobierania",
+    "placeholder": "Wklej co najmniej jeden link Deezer, Spotify lub Qobuz (utwór, album, artysta lub playlista)...",
     "analyze": "Analizuj",
     "analyzing": "Analizowanie...",
     "metadata": "Metadane",
@@ -154,7 +177,8 @@
       "albumCount": "Liczba albumów",
       "creator": "Twórca",
       "public": "Publiczny",
-      "fans": "Fani"
+      "fans": "Fani",
+      "name": "Nazwa"
     },
     "types": {
       "track": "Utwór",
@@ -167,7 +191,30 @@
       "unsupported": "Ten typ linku nie jest obsługiwany",
       "notFound": "Nie znaleziono zawartości w Deezer",
       "networkError": "Analiza nie powiodła się. Spróbuj ponownie."
-    }
+    },
+    "loginRequired": "Wymagane logowanie, aby pobrać",
+    "convertTo": "Konwertuj na",
+    "compareNeedsBoth": "Porównanie obu wymaga połączenia z Deezer i Qobuz.",
+    "noneFoundBoth": "Nie znaleziono utworów ani na Deezer, ani na Qobuz.",
+    "noneFoundService": "Nie znaleziono pasujących utworów {service}. Utwory z playlisty mogą być niedostępne w {service}.",
+    "matchingTracks": "Pasujące utwory",
+    "loginRequiredConvert": "Wymagane logowanie, aby konwertować i pobierać",
+    "conversionResults": "Wyniki konwersji",
+    "qobuzOnly": "Tylko Qobuz",
+    "deezerOnly": "Tylko Deezer",
+    "prefer": "Preferuj",
+    "fallbackHint": "przełącz na drugi · kliknij podświetloną komórkę, aby zmienić jeden utwór",
+    "getStarted": "Wklej link Deezer lub Spotify, aby rozpocząć",
+    "converting": "Konwertowanie...",
+    "compareBoth": "Porównaj Deezer i Qobuz",
+    "convertToQobuz": "Konwertuj na Qobuz",
+    "convertToDeezer": "Konwertuj na Deezer",
+    "matchSearch": "Szukaj",
+    "batchSummary": "{links} linków · {ready} gotowych",
+    "batchAnalyzed": "{done}/{total} przeanalizowanych",
+    "batchFailed": "{count} nieudanych",
+    "queuing": "Dodawanie do kolejki...",
+    "downloadAllReady": "Pobierz wszystkie gotowe ({count})"
   },
   "settings": {
     "title": "Ustawienia",
@@ -385,7 +432,10 @@
       "userIdPlaceholder": "User ID (opcjonalnie)",
       "disclaimer": "Wymaga Twojego własnego aktywnego, płatnego konta Qobuz. Ta aplikacja nie jest powiązana z Qobuz. Przestrzegaj warunków korzystania z usługi Qobuz."
     },
-    "deezerDisclaimer": "Używaj własnego konta Deezer. Ta aplikacja nie jest powiązana z Deezer. Przestrzegaj warunków korzystania z usługi Deezer."
+    "deezerDisclaimer": "Używaj własnego konta Deezer. Ta aplikacja nie jest powiązana z Deezer. Przestrzegaj warunków korzystania z usługi Deezer.",
+    "exportConfig": "Eksportuj konfigurację",
+    "importConfig": "Importuj konfigurację",
+    "m3uTemplate": "Szablon nazwy pliku M3U"
   },
   "login": {
     "title": "Zaloguj się do Deezer",
@@ -412,7 +462,14 @@
     "captchaHelpText": "Jeśli CAPTCHA się nie ładuje lub nie weryfikuje, spróbuj najpierw zalogować się na stronie Deezer, a następnie użyj metody tokenu ARL.",
     "verifying": "Weryfikacja...",
     "backToLogin": "Powrót do logowania",
-    "openDeezerLogin": "Otwórz Deezer w przeglądarce"
+    "openDeezerLogin": "Otwórz Deezer w przeglądarce",
+    "sessionExpiredDownloading": "Sesja wygasła. Zaloguj się ponownie, aby kontynuować pobieranie.",
+    "logIn": "Zaloguj się",
+    "emailPasswordLogin": "Logowanie e-mailem i hasłem",
+    "emailPasswordHelp": "Użyj danych logowania swojego konta Deezer. To zalecana metoda, ponieważ jest prostsza i automatycznie zarządza sesją.",
+    "whatIsArl": "Czym jest token ARL?",
+    "arlExplainer": "Token ARL (Authentication Request Login) to plik cookie z Twojego konta Deezer, który umożliwia pobieranie muzyki. Jest zapisywany w przeglądarce po zalogowaniu się do Deezer.",
+    "passwordPlaceholder": "Twoje hasło do Deezer"
   },
   "common": {
     "download": "Pobierz",
@@ -447,7 +504,14 @@
     "favorited": "W ulubionych",
     "fans": "Fani",
     "by": "autor:",
-    "new": "NOWY"
+    "new": "NOWY",
+    "keyboardShortcuts": "Skróty klawiszowe",
+    "unknownError": "Nieznany błąd",
+    "sortNameAsc": "Nazwa A-Z",
+    "sortNameDesc": "Nazwa Z-A",
+    "pasteFromClipboard": "Wklej ze schowka",
+    "paste": "Wklej",
+    "copy": "Kopiuj"
   },
   "trackCard": {
     "stop": "Zatrzymaj",
@@ -482,7 +546,11 @@
     "showing": "Wyświetlanie {count} z {total} wydań",
     "downloadFiltered": "Pobierz {count} {type}",
     "noReleases": "Nie znaleziono {type}",
-    "loadingDetailsShort": "(ładowanie...)"
+    "loadingDetailsShort": "(ładowanie...)",
+    "sortNewest": "Od najnowszych",
+    "sortOldest": "Od najstarszych",
+    "releases": "wydania",
+    "featuredAppearances": "gościnne występy"
   },
   "playlistView": {
     "downloadPlaylist": "Pobierz playlistę",
@@ -519,7 +587,66 @@
     "downloadFailed": "Pobieranie nie powiodło się",
     "addedToQueue": "Dodano do kolejki",
     "settingsSaved": "Ustawienia zapisane",
-    "copiedToClipboard": "Skopiowano do schowka"
+    "copiedToClipboard": "Skopiowano do schowka",
+    "downloadsPaused": "Pobieranie wstrzymane",
+    "downloadsResumed": "Pobieranie wznowione",
+    "alreadyDownloaded": "\"{title}\" zostało już pobrane",
+    "alreadyDownloading": "\"{title}\" jest już pobierane",
+    "sessionExpiredDownload": "Sesja wygasła. Zaloguj się ponownie, aby pobierać.",
+    "existsOnDisk": "\"{title}\" już istnieje na dysku ({have}/{total} utworów), mimo to pobieram",
+    "thisAlbum": "Ten album",
+    "thisArtist": "tego artystę",
+    "tagsRefreshed": "Odświeżono tagi dla \"{title}\"",
+    "tagRefreshFailed": "Odświeżenie tagów nie powiodło się: \"{title}\"",
+    "tagsRefreshedSkipped": "Odświeżono tagi dla \"{title}\" (pominięto {count} utwór) | Odświeżono tagi dla \"{title}\" (pominięto {count} utworów)",
+    "downloaded": "Pobrano \"{title}\"",
+    "downloadFailedTitle": "Pobieranie nie powiodło się: \"{title}\"",
+    "downloadedWithFailures": "Pobrano \"{title}\" z {count} nieudanym utworem | Pobrano \"{title}\" z {count} nieudanymi utworami",
+    "retrying": "Ponawianie \"{title}\"...",
+    "retryingAlbum": "Ponawianie albumu \"{title}\"...",
+    "retryingPlaylist": "Ponawianie playlisty \"{title}\"...",
+    "retryFailed": "Nie udało się ponowić \"{title}\"",
+    "retryNoContext": "Nie można ponowić \"{title}\", brak kontekstu pobierania",
+    "retryingFailedTracks": "Ponawianie {count} nieudanego utworu z \"{title}\"... | Ponawianie {count} nieudanych utworów z \"{title}\"...",
+    "retryingTracks": "Ponawianie {count} utworu | Ponawianie {count} utworów",
+    "retryNone": "Nie udało się ponowić żadnego utworu",
+    "resumingInterrupted": "Wznawianie {count} przerwanego pobierania… | Wznawianie {count} przerwanych pobierań…",
+    "removedFromFavorites": "Usunięto \"{name}\" z ulubionych",
+    "addedToFavorites": "Dodano \"{name}\" do ulubionych",
+    "updateAvailable": "Dostępna aktualizacja: v{version}. Przejdź do Ustawienia > O programie, aby pobrać.",
+    "profileSaveFailed": "Nie udało się zapisać profilu",
+    "configExported": "Konfiguracja wyeksportowana (ustawienia + profile)",
+    "configImported": "Konfiguracja zaimportowana (ustawienia + profile)",
+    "settingsImported": "Ustawienia zaimportowane pomyślnie",
+    "configImportFailed": "Nie udało się zaimportować konfiguracji. Nieprawidłowy format pliku.",
+    "clearedDownloads": "Wyczyszczono {count} pobieranie | Wyczyszczono {count} pobrań",
+    "clearedCompleted": "Wyczyszczono {count} ukończone pobieranie | Wyczyszczono {count} ukończonych pobrań",
+    "rateLimitedReleases": "{count} wydanie nie mogło zostać wczytane (limit zapytań Deezer), kliknij pobierz ponownie, aby uzyskać resztę | {count} wydań nie mogło zostać wczytanych (limit zapytań Deezer), kliknij pobierz ponownie, aby uzyskać resztę",
+    "rateLimitedAlbums": "{count} album nie mógł zostać wczytany (limit zapytań Deezer), spróbuj ponownie, aby uzyskać resztę | {count} albumów nie mogło zostać wczytanych (limit zapytań Deezer), spróbuj ponownie, aby uzyskać resztę",
+    "rateLimitedArtistReleases": "{count} wydanie artysty {artist} nie mogło zostać wczytane (limit zapytań Deezer), uruchom ponownie, aby uzyskać resztę | {count} wydań artysty {artist} nie mogło zostać wczytanych (limit zapytań Deezer), uruchom ponownie, aby uzyskać resztę",
+    "playlistsSkipped": "Pominięto {count} playlistę (pustą lub niedostępną) | Pominięto {count} playlist (pustych lub niedostępnych)",
+    "queuedForDownload": "Dodano do kolejki {count} {type} do pobrania",
+    "favoritesSectionsFailed": "Nie udało się wczytać {sections} z Deezer. Pozostałe sekcje zostały zaktualizowane.",
+    "favoritesSynced": "Zsynchronizowano z ulubionymi Deezer: {summary}",
+    "favoritesAlreadyImported": "Wszystkie ulubione z Deezer zostały już zaimportowane",
+    "favoritesStale": "{detail} w Synchronizacji nie są już w Twoich ulubionych Deezer, sprawdź na stronie Synchronizacji.",
+    "queuedLinks": "Dodano do kolejki {n} z {total} linków",
+    "queuedQobuzItem": "Dodano do kolejki \"{title}\" ({count} utworów)",
+    "queuedQobuzTrack": "Dodano utwór Qobuz do kolejki pobierania",
+    "qobuzDownloadFailed": "Pobieranie z Qobuz nie powiodło się: {message}",
+    "noConversionResults": "Brak dostępnych wyników konwersji",
+    "noDownloadableTracks": "Brak utworów możliwych do pobrania w tym wyborze",
+    "addedTracksToQueue": "Dodano {count} utworów do kolejki pobierania",
+    "downloadStartFailed": "Nie udało się rozpocząć pobierania: {message}",
+    "noMatchingTracks": "Nie znaleziono pasujących utworów {service} do pobrania",
+    "addedItemsToQueue": "Dodano {count} element do kolejki pobierania | Dodano {count} elementów do kolejki pobierania",
+    "addSomeFailed": "Nie udało się dodać niektórych elementów do kolejki pobierania",
+    "processingLinks": "Przetwarzanie {count} linków...",
+    "queuedFromLinks": "Dodano do kolejki {queued} element z {links} linków | Dodano do kolejki {queued} elementów z {links} linków",
+    "queuedFromLinksFailed": "({failed} nieudanych)",
+    "noneQueued": "Nie udało się dodać żadnych pobrań do kolejki, sprawdź, czy jesteś zalogowany",
+    "copyFailed": "Nie udało się skopiować",
+    "pasteFailed": "Nie udało się wkleić, odmowa dostępu do schowka"
   },
   "sync": {
     "sortBy": "Sortuj według",
@@ -529,7 +656,13 @@
     "sortStatus": "Status",
     "sortTracks": "Pobrane utwory",
     "filterPlaceholder": "Filtruj według nazwy…",
-    "noMatches": "Brak wyników"
+    "noMatches": "Brak wyników",
+    "scheduleLaunch": "Przy uruchomieniu aplikacji",
+    "scheduleHourly": "Co godzinę",
+    "scheduleEvery": "Co {hours} godzin",
+    "scheduleManual": "Tylko ręcznie",
+    "resolvingShareLink": "Rozwiązywanie linku udostępniania...",
+    "playlistDetected": "Wykryto playlistę {service}"
   },
   "userPlaylists": {
     "creator": "Twórca",
@@ -561,7 +694,8 @@
     "seeAll": "ZOBACZ WSZYSTKO",
     "sortDefault": "KOLEJNOŚĆ FEEDU",
     "sortName": "A–Z",
-    "sortTracks": "NAJWIĘCEJ UTWORÓW"
+    "sortTracks": "NAJWIĘCEJ UTWORÓW",
+    "connectInSettings": "Połącz w Ustawieniach"
   },
   "retag": {
     "viaQobuzTip": "Tagi pobrane z Qobuz — Deezer nie znalazł dopasowania dla tego ISRC"
@@ -572,5 +706,9 @@
   },
   "about": {
     "disclaimer": "Ta aplikacja nie jest powiązana z Deezer, Qobuz ani Spotify, nie jest przez nie autoryzowana ani wspierana. Jest przeznaczona do użytku osobistego z Twoimi własnymi kontami. Korzystaj z niej odpowiedzialnie i zgodnie z lokalnymi przepisami dotyczącymi pobierania muzyki oraz szanuj prawa autorskie i warunki korzystania z usługi każdej platformy streamingowej. Pobieranie z Qobuz wymaga Twojej własnej aktywnej, płatnej subskrypcji Qobuz."
+  },
+  "accessibility": {
+    "windowControls": "Sterowanie oknem",
+    "closeNotification": "Zamknij powiadomienie"
   }
 }

@@ -6,7 +6,8 @@
     "downloads": "Λήψεις",
     "favorites": "Αγαπημένα",
     "linkAnalyzer": "Αναλυτής Συνδέσμων",
-    "settings": "Ρυθμίσεις"
+    "settings": "Ρυθμίσεις",
+    "genres": "Είδη"
   },
   "sidebar": {
     "appName": "Deemix Remastered",
@@ -94,7 +95,22 @@
     "clearAllMessage": "Είστε βέβαιοι ότι θέλετε να εκκαθαρίσετε και τις {count} λήψεις; Αυτό θα αφαιρέσει όλα τα στοιχεία από τη λίστα λήψεων, αλλά δεν θα διαγράψει τα ληφθέντα αρχεία.",
     "clearCompletedConfirm": "Εκκαθάριση ολοκληρωμένων",
     "clearCompletedTitle": "Εκκαθάριση ολοκληρωμένων λήψεων",
-    "clearCompletedMessage": "Είστε βέβαιοι ότι θέλετε να εκκαθαρίσετε {count} ολοκληρωμένες λήψεις; Αυτό θα τις αφαιρέσει από τη λίστα λήψεων, αλλά δεν θα διαγράψει τα ληφθέντα αρχεία."
+    "clearCompletedMessage": "Είστε βέβαιοι ότι θέλετε να εκκαθαρίσετε {count} ολοκληρωμένες λήψεις; Αυτό θα τις αφαιρέσει από τη λίστα λήψεων, αλλά δεν θα διαγράψει τα ληφθέντα αρχεία.",
+    "statistics": "Στατιστικά Λήψεων",
+    "totalTracks": "Συνολικά Κομμάτια",
+    "thisWeek": "Αυτή την Εβδομάδα",
+    "topArtists": "Κορυφαίοι Καλλιτέχνες",
+    "qobuzCauseQuality": "Το κομμάτι δεν είναι διαθέσιμο στο Qobuz στην ζητούμενη ποιότητα ή στο πλάνο σας",
+    "qobuzCauseSession": "Η σύνδεση Qobuz έληξε, επανασυνδεθείτε από τις Ρυθμίσεις",
+    "qobuzCauseNetwork": "Προβλήματα δικτύου ή σύνδεσης με το CDN του Qobuz, η επανάληψη συνήθως λύνει το πρόβλημα",
+    "trackStatus": {
+      "done": "Ολοκληρώθηκε",
+      "failed": "Απέτυχε",
+      "downloading": "Λήψη σε εξέλιξη",
+      "decrypting": "Αποκρυπτογράφηση",
+      "tagging": "Επισήμανση",
+      "pending": "Σε αναμονή"
+    }
   },
   "charts": {
     "title": "Κατατάξεις",
@@ -110,12 +126,19 @@
     "artists": "Αγαπημένοι Καλλιτέχνες",
     "playlists": "Αγαπημένες Λίστες",
     "noFavorites": "Δεν υπάρχουν αγαπημένα ακόμα",
-    "loginToSee": "Συνδεθείτε για να δείτε τα αγαπημένα σας στο Deezer"
+    "loginToSee": "Συνδεθείτε για να δείτε τα αγαπημένα σας στο Deezer",
+    "sortAdded": "Ημερομηνία Προσθήκης",
+    "importFromDeezer": "Εισαγωγή από Deezer",
+    "importing": "Εισαγωγή...",
+    "importedCount": "+{n} εισήχθησαν",
+    "prunedCount": "−{n} αφαιρέθηκαν",
+    "unchangedCount": "{n} αμετάβλητα",
+    "noneOnAccount": "Δεν βρέθηκαν αγαπημένα στον λογαριασμό σας Deezer"
   },
   "analyzer": {
     "title": "Αναλυτής Συνδέσμων",
-    "subtitle": "Επικολλήστε έναν σύνδεσμο Deezer για ανάλυση μεταδεδομένων και επιλογών λήψης",
-    "placeholder": "Επικολλήστε σύνδεσμο Deezer (τραγούδι, άλμπουμ, καλλιτέχνης ή λίστα)...",
+    "subtitle": "Επικολλήστε σύνδεσμο Deezer, Spotify ή Qobuz για να αναλύσετε τα μεταδεδομένα και τις επιλογές λήψης του",
+    "placeholder": "Επικολλήστε έναν ή περισσότερους συνδέσμους Deezer, Spotify ή Qobuz (κομμάτι, άλμπουμ, καλλιτέχνη ή λίστα αναπαραγωγής)...",
     "analyze": "Ανάλυση",
     "analyzing": "Ανάλυση...",
     "metadata": "Μεταδεδομένα",
@@ -154,7 +177,8 @@
       "albumCount": "Αριθμός Άλμπουμ",
       "creator": "Δημιουργός",
       "public": "Δημόσιο",
-      "fans": "Θαυμαστές"
+      "fans": "Θαυμαστές",
+      "name": "Όνομα"
     },
     "types": {
       "track": "Τραγούδι",
@@ -167,7 +191,30 @@
       "unsupported": "Αυτός ο τύπος συνδέσμου δεν υποστηρίζεται",
       "notFound": "Το περιεχόμενο δεν βρέθηκε στο Deezer",
       "networkError": "Η ανάλυση απέτυχε. Παρακαλώ προσπαθήστε ξανά."
-    }
+    },
+    "loginRequired": "Απαιτείται σύνδεση για λήψη",
+    "convertTo": "Μετατροπή σε",
+    "compareNeedsBoth": "Η σύγκριση και των δύο απαιτεί σύνδεση με Deezer και Qobuz.",
+    "noneFoundBoth": "Δεν βρέθηκαν κομμάτια ούτε στο Deezer ούτε στο Qobuz.",
+    "noneFoundService": "Δεν βρέθηκαν αντίστοιχα κομμάτια {service}. Τα κομμάτια της λίστας ενδέχεται να μην είναι διαθέσιμα στο {service}.",
+    "matchingTracks": "Αντίστοιχα κομμάτια",
+    "loginRequiredConvert": "Απαιτείται σύνδεση για μετατροπή και λήψη",
+    "conversionResults": "Αποτελέσματα Μετατροπής",
+    "qobuzOnly": "Μόνο Qobuz",
+    "deezerOnly": "Μόνο Deezer",
+    "prefer": "Προτίμηση",
+    "fallbackHint": "επιστροφή στην άλλη υπηρεσία · κάντε κλικ σε αναμμένο κελί για παράκαμψη ενός κομματιού",
+    "getStarted": "Επικολλήστε σύνδεσμο Deezer ή Spotify για να ξεκινήσετε",
+    "converting": "Μετατροπή...",
+    "compareBoth": "Σύγκριση Deezer & Qobuz",
+    "convertToQobuz": "Μετατροπή σε Qobuz",
+    "convertToDeezer": "Μετατροπή σε Deezer",
+    "matchSearch": "Αναζήτηση",
+    "batchSummary": "{links} σύνδεσμοι · {ready} έτοιμοι",
+    "batchAnalyzed": "{done}/{total} αναλύθηκαν",
+    "batchFailed": "{count} απέτυχαν",
+    "queuing": "Προσθήκη στην ουρά...",
+    "downloadAllReady": "Λήψη όλων των έτοιμων ({count})"
   },
   "settings": {
     "title": "Ρυθμίσεις",
@@ -385,7 +432,10 @@
       "userIdPlaceholder": "User ID (προαιρετικό)",
       "disclaimer": "Απαιτεί τον δικό σας ενεργό επί πληρωμή λογαριασμό Qobuz. Αυτή η εφαρμογή δεν συνδέεται με το Qobuz. Παρακαλούμε να τηρείτε τους όρους χρήσης του Qobuz."
     },
-    "deezerDisclaimer": "Χρησιμοποιήστε τον δικό σας λογαριασμό Deezer. Αυτή η εφαρμογή δεν συνδέεται με τη Deezer. Παρακαλούμε να τηρείτε τους όρους χρήσης της Deezer."
+    "deezerDisclaimer": "Χρησιμοποιήστε τον δικό σας λογαριασμό Deezer. Αυτή η εφαρμογή δεν συνδέεται με τη Deezer. Παρακαλούμε να τηρείτε τους όρους χρήσης της Deezer.",
+    "exportConfig": "Εξαγωγή Διαμόρφωσης",
+    "importConfig": "Εισαγωγή Διαμόρφωσης",
+    "m3uTemplate": "Πρότυπο ονόματος αρχείου M3U"
   },
   "login": {
     "title": "Σύνδεση στο Deezer",
@@ -412,7 +462,14 @@
     "captchaHelpText": "Αν το CAPTCHA δεν φορτώνει ή δεν επαληθεύεται, δοκιμάστε πρώτα να συνδεθείτε στην ιστοσελίδα του Deezer, μετά χρησιμοποιήστε τη μέθοδο token ARL.",
     "verifying": "Επαλήθευση...",
     "backToLogin": "Πίσω στη Σύνδεση",
-    "openDeezerLogin": "Άνοιγμα Deezer στο Πρόγραμμα Περιήγησης"
+    "openDeezerLogin": "Άνοιγμα Deezer στο Πρόγραμμα Περιήγησης",
+    "sessionExpiredDownloading": "Η σύνδεση έληξε. Συνδεθείτε ξανά για να συνεχίσετε τη λήψη.",
+    "logIn": "Σύνδεση",
+    "emailPasswordLogin": "Σύνδεση με Email & Κωδικό",
+    "emailPasswordHelp": "Χρησιμοποιήστε τα στοιχεία του λογαριασμού σας Deezer. Αυτή είναι η προτεινόμενη μέθοδος καθώς είναι απλούστερη και διαχειρίζεται αυτόματα τη σύνδεση.",
+    "whatIsArl": "Τι είναι το token ARL;",
+    "arlExplainer": "Το token ARL (Authentication Request Login) είναι ένα cookie από τον λογαριασμό σας Deezer που επιτρέπει τη λήψη μουσικής. Αποθηκεύεται στο πρόγραμμα περιήγησής σας όταν συνδέεστε στο Deezer.",
+    "passwordPlaceholder": "Ο κωδικός σας Deezer"
   },
   "common": {
     "download": "Λήψη",
@@ -447,7 +504,14 @@
     "favorited": "Στα αγαπημένα",
     "fans": "Θαυμαστές",
     "by": "από",
-    "new": "ΝΕΟ"
+    "new": "ΝΕΟ",
+    "keyboardShortcuts": "Συντομεύσεις Πληκτρολογίου",
+    "unknownError": "Άγνωστο σφάλμα",
+    "sortNameAsc": "Όνομα Α-Ω",
+    "sortNameDesc": "Όνομα Ω-Α",
+    "pasteFromClipboard": "Επικόλληση από το πρόχειρο",
+    "paste": "Επικόλληση",
+    "copy": "Αντιγραφή"
   },
   "trackCard": {
     "stop": "Διακοπή",
@@ -482,7 +546,11 @@
     "showing": "Εμφάνιση {count} από {total} κυκλοφορίες",
     "downloadFiltered": "Λήψη {count} {type}",
     "noReleases": "Δεν βρέθηκαν {type}",
-    "loadingDetailsShort": "(φόρτωση...)"
+    "loadingDetailsShort": "(φόρτωση...)",
+    "sortNewest": "Νεότερα Πρώτα",
+    "sortOldest": "Παλαιότερα Πρώτα",
+    "releases": "κυκλοφορίες",
+    "featuredAppearances": "συμμετοχές"
   },
   "playlistView": {
     "downloadPlaylist": "Λήψη λίστας",
@@ -519,7 +587,66 @@
     "downloadFailed": "Η λήψη απέτυχε",
     "addedToQueue": "Προστέθηκε στην ουρά",
     "settingsSaved": "Οι ρυθμίσεις αποθηκεύτηκαν",
-    "copiedToClipboard": "Αντιγράφηκε στο πρόχειρο"
+    "copiedToClipboard": "Αντιγράφηκε στο πρόχειρο",
+    "downloadsPaused": "Οι λήψεις τέθηκαν σε παύση",
+    "downloadsResumed": "Οι λήψεις συνεχίστηκαν",
+    "alreadyDownloaded": "Το \"{title}\" έχει ήδη ληφθεί",
+    "alreadyDownloading": "Το \"{title}\" λαμβάνεται ήδη",
+    "sessionExpiredDownload": "Η σύνδεση έληξε. Συνδεθείτε ξανά για λήψη.",
+    "existsOnDisk": "Το \"{title}\" υπάρχει ήδη στον δίσκο ({have}/{total} κομμάτια), γίνεται λήψη ούτως ή άλλως",
+    "thisAlbum": "Αυτό το άλμπουμ",
+    "thisArtist": "αυτόν τον καλλιτέχνη",
+    "tagsRefreshed": "Ανανεώθηκαν οι ετικέτες για \"{title}\"",
+    "tagRefreshFailed": "Αποτυχία ανανέωσης ετικετών: \"{title}\"",
+    "tagsRefreshedSkipped": "Ανανεώθηκαν οι ετικέτες για \"{title}\" ({count} κομμάτι παραλείφθηκε) | Ανανεώθηκαν οι ετικέτες για \"{title}\" ({count} κομμάτια παραλείφθηκαν)",
+    "downloaded": "Έγινε λήψη \"{title}\"",
+    "downloadFailedTitle": "Αποτυχία λήψης: \"{title}\"",
+    "downloadedWithFailures": "Έγινε λήψη \"{title}\" με {count} αποτυχημένο κομμάτι | Έγινε λήψη \"{title}\" με {count} αποτυχημένα κομμάτια",
+    "retrying": "Επανάληψη \"{title}\"...",
+    "retryingAlbum": "Επανάληψη άλμπουμ \"{title}\"...",
+    "retryingPlaylist": "Επανάληψη λίστας αναπαραγωγής \"{title}\"...",
+    "retryFailed": "Αποτυχία επανάληψης: \"{title}\"",
+    "retryNoContext": "Δεν ήταν δυνατή η επανάληψη \"{title}\", λείπουν στοιχεία λήψης",
+    "retryingFailedTracks": "Επανάληψη {count} αποτυχημένου κομματιού από \"{title}\"... | Επανάληψη {count} αποτυχημένων κομματιών από \"{title}\"...",
+    "retryingTracks": "Επανάληψη {count} κομματιού | Επανάληψη {count} κομματιών",
+    "retryNone": "Αποτυχία επανάληψης οποιουδήποτε κομματιού",
+    "resumingInterrupted": "Συνέχιση {count} διακοπείσας λήψης… | Συνέχιση {count} διακοπεισών λήψεων…",
+    "removedFromFavorites": "Αφαιρέθηκε το \"{name}\" από τα αγαπημένα",
+    "addedToFavorites": "Προστέθηκε το \"{name}\" στα αγαπημένα",
+    "updateAvailable": "Διαθέσιμη ενημέρωση: v{version}. Επισκεφθείτε Ρυθμίσεις > Σχετικά για λήψη.",
+    "profileSaveFailed": "Αποτυχία αποθήκευσης προφίλ",
+    "configExported": "Η διαμόρφωση εξήχθη (ρυθμίσεις + προφίλ)",
+    "configImported": "Η διαμόρφωση εισήχθη (ρυθμίσεις + προφίλ)",
+    "settingsImported": "Οι ρυθμίσεις εισήχθησαν με επιτυχία",
+    "configImportFailed": "Αποτυχία εισαγωγής διαμόρφωσης. Μη έγκυρη μορφή αρχείου.",
+    "clearedDownloads": "Διαγράφηκε {count} λήψη | Διαγράφηκαν {count} λήψεις",
+    "clearedCompleted": "Διαγράφηκε {count} ολοκληρωμένη λήψη | Διαγράφηκαν {count} ολοκληρωμένες λήψεις",
+    "rateLimitedReleases": "{count} κυκλοφορία δεν φορτώθηκε (όριο Deezer), κάντε ξανά κλικ στη λήψη για να πάρετε τα υπόλοιπα | {count} κυκλοφορίες δεν φορτώθηκαν (όριο Deezer), κάντε ξανά κλικ στη λήψη για να πάρετε τα υπόλοιπα",
+    "rateLimitedAlbums": "{count} άλμπουμ δεν φορτώθηκε (όριο Deezer), δοκιμάστε ξανά για να πάρετε τα υπόλοιπα | {count} άλμπουμ δεν φορτώθηκαν (όριο Deezer), δοκιμάστε ξανά για να πάρετε τα υπόλοιπα",
+    "rateLimitedArtistReleases": "{count} κυκλοφορία από {artist} δεν φορτώθηκε (όριο Deezer), εκτελέστε το ξανά για να πάρετε τα υπόλοιπα | {count} κυκλοφορίες από {artist} δεν φορτώθηκαν (όριο Deezer), εκτελέστε το ξανά για να πάρετε τα υπόλοιπα",
+    "playlistsSkipped": "{count} λίστα αναπαραγωγής παραλείφθηκε (κενή ή μη διαθέσιμη) | {count} λίστες αναπαραγωγής παραλείφθηκαν (κενές ή μη διαθέσιμες)",
+    "queuedForDownload": "{count} {type} μπήκαν στην ουρά λήψης",
+    "favoritesSectionsFailed": "Δεν ήταν δυνατή η φόρτωση {sections} από το Deezer. Οι υπόλοιπες ενότητες ενημερώθηκαν.",
+    "favoritesSynced": "Συγχρονίστηκε με τα αγαπημένα Deezer: {summary}",
+    "favoritesAlreadyImported": "Όλα τα αγαπημένα Deezer έχουν ήδη εισαχθεί",
+    "favoritesStale": "{detail} στον συγχρονισμό δεν βρίσκονται πλέον στα αγαπημένα σας Deezer, ελέγξτε στη σελίδα Συγχρονισμού.",
+    "queuedLinks": "Μπήκαν στην ουρά {n} από {total} συνδέσμους",
+    "queuedQobuzItem": "Μπήκε στην ουρά \"{title}\" ({count} κομμάτια)",
+    "queuedQobuzTrack": "Το κομμάτι Qobuz μπήκε στην ουρά λήψης",
+    "qobuzDownloadFailed": "Αποτυχία λήψης Qobuz: {message}",
+    "noConversionResults": "Δεν υπάρχουν διαθέσιμα αποτελέσματα μετατροπής",
+    "noDownloadableTracks": "Δεν υπάρχουν κομμάτια για λήψη σε αυτή την επιλογή",
+    "addedTracksToQueue": "Προστέθηκαν {count} κομμάτια στην ουρά λήψης",
+    "downloadStartFailed": "Αποτυχία έναρξης λήψης: {message}",
+    "noMatchingTracks": "Δεν βρέθηκαν αντίστοιχα κομμάτια {service} για λήψη",
+    "addedItemsToQueue": "Προστέθηκε {count} στοιχείο στην ουρά λήψης | Προστέθηκαν {count} στοιχεία στην ουρά λήψης",
+    "addSomeFailed": "Αποτυχία προσθήκης ορισμένων στοιχείων στην ουρά λήψης",
+    "processingLinks": "Επεξεργασία {count} συνδέσμων...",
+    "queuedFromLinks": "Μπήκε στην ουρά {queued} στοιχείο από {links} συνδέσμους | Μπήκαν στην ουρά {queued} στοιχεία από {links} συνδέσμους",
+    "queuedFromLinksFailed": "({failed} απέτυχαν)",
+    "noneQueued": "Καμία λήψη δεν μπόρεσε να μπει στην ουρά, ελέγξτε ότι είστε συνδεδεμένοι",
+    "copyFailed": "Αποτυχία αντιγραφής",
+    "pasteFailed": "Αποτυχία επικόλλησης, η πρόσβαση στο πρόχειρο απορρίφθηκε"
   },
   "sync": {
     "sortBy": "Ταξινόμηση κατά",
@@ -529,7 +656,13 @@
     "sortStatus": "Κατάσταση",
     "sortTracks": "Ληφθέντα κομμάτια",
     "filterPlaceholder": "Φιλτράρισμα κατά όνομα…",
-    "noMatches": "Κανένα αποτέλεσμα"
+    "noMatches": "Κανένα αποτέλεσμα",
+    "scheduleLaunch": "Κατά την εκκίνηση της εφαρμογής",
+    "scheduleHourly": "Κάθε ώρα",
+    "scheduleEvery": "Κάθε {hours} ώρες",
+    "scheduleManual": "Μόνο χειροκίνητα",
+    "resolvingShareLink": "Επίλυση συνδέσμου κοινοποίησης...",
+    "playlistDetected": "Εντοπίστηκε λίστα αναπαραγωγής {service}"
   },
   "userPlaylists": {
     "creator": "Δημιουργός",
@@ -561,7 +694,8 @@
     "more": "ΠΕΡΙΣΣΟΤΕΡΑ",
     "sortDefault": "ΣΕΙΡΑ ΡΟΗΣ",
     "sortName": "Α–Ω",
-    "sortTracks": "ΠΕΡΙΣΣΟΤΕΡΑ ΚΟΜΜΑΤΙΑ"
+    "sortTracks": "ΠΕΡΙΣΣΟΤΕΡΑ ΚΟΜΜΑΤΙΑ",
+    "connectInSettings": "Σύνδεση από τις Ρυθμίσεις"
   },
   "retag": {
     "viaQobuzTip": "Οι ετικέτες προέρχονται από το Qobuz — το Deezer δεν είχε αντιστοίχιση για αυτό το ISRC"
@@ -572,5 +706,9 @@
   },
   "about": {
     "disclaimer": "Αυτή η εφαρμογή δεν συνδέεται με τη Deezer, το Qobuz ή το Spotify, ούτε έχει εγκριθεί ή υποστηριχθεί από αυτά. Προορίζεται για προσωπική χρήση με τους δικούς σας λογαριασμούς. Παρακαλούμε να τη χρησιμοποιείτε υπεύθυνα και σύμφωνα με τους τοπικούς νόμους σχετικά με τη λήψη μουσικής, και να σέβεστε τα πνευματικά δικαιώματα και τους όρους χρήσης κάθε πλατφόρμας streaming. Οι λήψεις από το Qobuz απαιτούν τη δική σας ενεργή επί πληρωμή συνδρομή Qobuz."
+  },
+  "accessibility": {
+    "windowControls": "Στοιχεία ελέγχου παραθύρου",
+    "closeNotification": "Κλείσιμο ειδοποίησης"
   }
 }

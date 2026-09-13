@@ -22,6 +22,8 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 - **Preview playback on favourites imported from Deezer (#153, reported by @GravuTrad).** Tracks brought in with Import from Deezer arrive without the preview link that the play button keys on, so the button never appeared on those rows while it did on tracks hearted inside the app. The player now fetches the preview the first time you click, and remembers it. Tracks Deezer has no clip for show no button rather than one that does nothing.
 
+- **Every message in the app now follows your language setting (reported by @GravuTrad on #148).** About 130 strings were written straight into the interface and never went through the translation system, so they stayed English whatever language you chose: the download and favourites notifications, the Link Analyzer page, the sort menus, the Downloads statistics, the login help text and the sync schedule options. They are all translatable now, and every language ships with them filled in. A handful of the app's own labels, such as Transfer Rack and Signal Deck, stay in English by design.
+
 ## [2.6.1] - 2026-09-10
 
 ### Summary
