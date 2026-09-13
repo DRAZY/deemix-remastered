@@ -26,7 +26,12 @@ for (const file of [...walk(join(root, 'src/views')), ...walk(join(root, 'src/co
   const hits: string[] = []
   const tplStart = s.indexOf('<template>'); const tplEnd = s.lastIndexOf('</template>')
   if (tplStart >= 0) {
-    const tpl = s.slice(tplStart, tplEnd).replace(/<!--[\s\S]*?-->/g, '')
+    // Strip HTML comments until none remain, so an overlapping form such as
+    // "<!-<!--- -->" cannot leave a "<!--" behind (CodeQL
+    // js/incomplete-multi-character-sanitization). This scanner only reads the
+    // repo's own source, but the loop costs nothing.
+    let tpl = s.slice(tplStart, tplEnd)
+    for (let prev = ''; prev !== tpl;) { prev = tpl; tpl = tpl.replace(/<!--[\s\S]*?-->/g, '') }
     for (const m of tpl.matchAll(/>\s*([^<{}]*?[A-Za-z]{3,}[^<{}]*?)\s*</g)) {
       const t = m[1].replace(/\s+/g, ' ').trim()
       if (english.test(t) && !/["=@:]|^\/\/|^\d/.test(t) && !BRAND.test(t)) hits.push(`text: ${t.slice(0, 60)}`)
