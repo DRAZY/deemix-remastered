@@ -18,6 +18,10 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 - **Optional clean-up of an older lyrics .txt (#141, requested by @shark0151).** Under Skip the plain .txt when synced lyrics exist there is a new opt-in toggle that also removes a .txt written by an earlier run once the synced .lrc for the same track is saved. Off by default, and it only ever touches the lyrics file that shares the track's exact name.
 
+### Fixed
+
+- **Preview playback on favourites imported from Deezer (#153, reported by @GravuTrad).** Tracks brought in with Import from Deezer arrive without the preview link that the play button keys on, so the button never appeared on those rows while it did on tracks hearted inside the app. The player now fetches the preview the first time you click, and remembers it. Tracks Deezer has no clip for show no button rather than one that does nothing.
+
 ## [2.6.1] - 2026-09-10
 
 ### Summary

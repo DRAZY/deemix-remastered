@@ -145,10 +145,11 @@ const contextMenuItems = computed(() => [
       <!-- Show index normally, play button on hover -->
       <template v-else>
         <span class="group-hover:hidden font-mono text-[12px] text-foreground-muted">{{ index || '' }}</span>
-        <!-- Qobuz tracks have no static preview URL — the player resolves a
-             signed stream on demand, so the button shows for them too. -->
+        <!-- Shown unless Deezer has said there is no clip (preview === '').
+             Qobuz rows and Deezer rows from list endpoints carry no preview
+             field at all; the player resolves both on demand (#153). -->
         <button
-          v-if="track.preview || track.source === 'qobuz'"
+          v-if="track.preview !== ''"
           @click="togglePlay"
           class="hidden group-hover:block text-foreground-muted"
           :class="track.source === 'qobuz' ? 'hover:text-qobuz-400' : 'hover:text-primary-400'"
