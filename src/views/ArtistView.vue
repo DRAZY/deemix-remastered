@@ -436,7 +436,7 @@ async function downloadFilteredAlbums() {
     }
 
     if (stillFailed.length > 0) {
-      toastStore.warning(`${stillFailed.length} release${stillFailed.length > 1 ? 's' : ''} couldn't be loaded (Deezer rate limit) — click download again to grab the rest`)
+      toastStore.warning(t('notifications.rateLimitedReleases', { count: stillFailed.length }, stillFailed.length))
     }
   } catch (error) {
     console.error('Failed to download albums:', error)
@@ -646,10 +646,10 @@ const contextMenuItems = computed(() => {
             class="text-sm bg-background-secondary text-foreground rounded-lg px-3 py-1.5 border border-zinc-700 focus:border-primary-500 outline-none"
           >
             <option value="default">Default</option>
-            <option value="name-asc">Name A-Z</option>
-            <option value="name-desc">Name Z-A</option>
-            <option value="date-newest">Newest First</option>
-            <option value="date-oldest">Oldest First</option>
+            <option value="name-asc">{{ t('common.sortNameAsc') }}</option>
+            <option value="name-desc">{{ t('common.sortNameDesc') }}</option>
+            <option value="date-newest">{{ t('artistView.sortNewest') }}</option>
+            <option value="date-oldest">{{ t('artistView.sortOldest') }}</option>
           </select>
         </div>
 
@@ -733,7 +733,7 @@ const contextMenuItems = computed(() => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
             </svg>
-            <p>No {{ activeFilter === 'all' ? 'releases' : activeFilter === 'featured' ? 'featured appearances' : activeFilter + 's' }} found</p>
+            <p>{{ t('artistView.noReleases', { type: activeFilter === 'all' ? t('artistView.releases') : activeFilter === 'featured' ? t('artistView.featuredAppearances') : activeFilter + 's' }) }}</p>
           </div>
         </div>
 
@@ -742,7 +742,7 @@ const contextMenuItems = computed(() => {
           <p class="text-sm text-foreground-muted">
             Showing {{ filteredAlbums.length }} of {{ albums.length }} releases
             <span v-if="isLoadingDetails" class="text-primary-400">
-              (loading details...)
+              {{ t('artistView.loadingDetailsShort') }}
             </span>
           </p>
           <!-- Download all filtered albums button -->
@@ -757,7 +757,7 @@ const contextMenuItems = computed(() => {
                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
             </svg>
             <div v-else class="animate-spin w-4 h-4 border-2 border-current border-t-transparent rounded-full"></div>
-            Download {{ activeFilter === 'all' ? 'All' : filteredAlbums.length }} {{ activeFilter === 'all' ? 'Releases' : getTypeLabel(activeFilter) + 's' }}
+            {{ t('artistView.downloadFiltered', { count: activeFilter === 'all' ? t('artistView.all') : filteredAlbums.length, type: activeFilter === 'all' ? t('artistView.releases') : getTypeLabel(activeFilter) + 's' }) }}
           </button>
         </div>
       </section>

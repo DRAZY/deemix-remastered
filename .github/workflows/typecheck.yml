@@ -32,5 +32,8 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
 
+      - name: Localization parity and hard-coded string check
+        run: bun scripts/i18n-check.ts
+
       - name: Build renderer
         run: bun run build:vite

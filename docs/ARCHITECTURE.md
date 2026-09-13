@@ -59,8 +59,11 @@ Where the UI runs. Sandboxed, no Node.js access, no filesystem access. Pure brow
 
 - **Stack:** Vue 3 + Pinia stores + Vue Router + vue-i18n + Tailwind
 - **State:** Pinia stores in `src/stores/` (auth, download queue, settings, profiles, playlist sync, artist sync, toast notifications, favorites, player)
-- **Pages:** 14 view components in `src/views/` (Home, Search, Charts, Downloads, Favorites, Album, Artist, Playlist, Link Analyzer, New Releases, Sync, Retag Library, Settings, About). The Sync page sorts/filters its playlist and artist lists entirely client-side via computed views over the Pinia store arrays — no backend round-trip; sort preference persists in `localStorage` (#90).
+- **Pages:** 18 view components in `src/views/` (Home, Search, Charts, Genres, Downloads, Favorites, Album, Artist, Playlist, User Playlists, Link Analyzer, New Releases, Channel Q and its feeds, Sync, Retag Library, Settings, About). Link Analyzer accepts one link or a pasted list (2.6.2, #142): links are analyzed one at a time into a batch table with per-row status, and the single-link path is unchanged. The Sync page sorts/filters its playlist and artist lists entirely client-side via computed views over the Pinia store arrays — no backend round-trip; sort preference persists in `localStorage` (#90).
 - **Components:** 21 reusable UI pieces in `src/components/`
+- **Localization (2.6.2):** every user-facing string goes through vue-i18n, `t()` in components and `i18n.global.t()` in stores and composables, with English as the fallback locale. Two invariants, both learned from #148: functional copy (toasts, labels, help text, status words) is never typed into a component, and a new key ships in all 21 locale files in the same commit. The exceptions are the app's own branded labels ("Transfer Rack", "Signal Deck", "AGGREGATE RATE", "Pull the signal"), which stay English by design. `scripts/i18n-check.ts` enforces parity (every locale carries every English key) and flags hard-coded English in templates, toasts and attributes; CI runs it.
+- **Player:** 30-second previews from the shared `TrackCard` row. Deezer list endpoints (the favourites import in particular) return slim track objects with no preview URL, so the player resolves the full track on first click and caches the link on the row (#153); Qobuz previews are resolved per play through `/api/qobuz/preview` because their URLs are short-lived signed links.
+- **Clipboard:** all copy actions funnel through `useContextMenu().copyToClipboard`, which prefers the native `clipboard:writeText` IPC channel (Electron's clipboard module, no focus or permission constraints), then the browser API, then `execCommand`, and only reports success when a write succeeded (discussion #105).
 - **Design system (2.0 "Signal Deck"):** theming is a CSS-variable system in `src/assets/main.css` — each theme block under `[data-theme="..."]` defines RGB-triple variables (`--bg-main`, `--primary-500`, `--logo-*`, …) that `tailwind.config.js` consumes via `rgb(var(--…))`, so Tailwind utility classes are theme-agnostic and switching theme is one attribute flip on `<html>`. `[data-mode="light"]` blocks override per theme (Signal gets a dedicated "paper console" olive variant because chartreuse fails contrast on paper). Fonts (Archivo Black display, IBM Plex Sans/Mono) are bundled via `@fontsource` imports in `src/main.ts` — no network fetch, fully offline. The Signal-only scanline/vignette atmosphere is two pointer-transparent divs in `App.vue` (`.theme-crt`/`.theme-vig`) whose visibility is gated by theme in CSS, off in light mode. **Contrast invariant (2.5.4):** `--fg-muted` must clear WCAG AA (4.5:1) against all three surface tokens (`--bg-main`, `--bg-secondary`, `--bg-tertiary`) in every theme and mode, and secondary text must not stack an opacity modifier on top of it. The palette has no headroom left below `--fg-muted` (the tightest set clears at 4.52:1), so a `text-foreground-muted/NN` on real text will fail somewhere. Opacity modifiers on muted text remain legitimate in exactly two cases, both exempt under WCAG 1.4.3: inactive controls, where the dimming *is* the disabled affordance, and purely decorative graphics such as the `EmptyState` illustrations. Changing any surface token means re-checking the muted colour against it.
 - **Directives:** `src/directives/` — `v-tooltip` (registered in `main.ts`) is the standard tooltip primitive going forward, replacing native HTML `title` where reliability matters. It renders a single body-teleported, instantly-shown, correctly-positioned tooltip per element (native `title` was inconsistent — see the Sync-view row icons). Adopted in the Sync view; the rest of the app still uses native `title` until migrated.
 - **Talks to backend** via two channels: HTTP fetch to `127.0.0.1:6595` for queryable data, or the `window.electronAPI` bridge for OS-level operations (file dialog, deep link, encrypt secret)
@@ -69,7 +72,7 @@ Where the UI runs. Sandboxed, no Node.js access, no filesystem access. Pure brow
 
 Runs in a special privileged context that exposes a small, allow-listed API to the renderer via `contextBridge.exposeInMainWorld`. The renderer cannot bypass this list; this is what keeps the UI sandboxed.
 
-- **Exposes:** `window.electronAPI.*` with strongly-typed methods for window controls, file dialogs, opening external URLs, encrypted storage, login window orchestration, and playlist-sync event subscriptions
+- **Exposes:** `window.electronAPI.*` with strongly-typed methods for window controls, file dialogs, opening external URLs, encrypted storage, the native clipboard, login window orchestration, and playlist-sync event subscriptions
 - **Type definitions** mirror to renderer-side `src/types/electron.d.ts` so Vue components get autocomplete for the API
 - **Boundary:** any new IPC call has to be added in three places — preload exposure, main-process IPC handler, and the renderer-side type. This is intentional friction.
 
@@ -83,7 +86,7 @@ Runs on `127.0.0.1:6595` (port shifts on collision). Serves `/api/*` endpoints t
 
 - **Auth:** `/api/auth/{login,login-email,login-captcha,captcha-status,logout,status,health}`
 - **Catalog:** `/api/{search,track,album,artist,artist/discography,playlist}`
-- **Editorial:** `/api/{chart,chart/countries,editorial/releases,user/favorites}`
+- **Editorial:** `/api/{chart,chart/countries,editorial/releases,user/favorites}`. `user/favorites` takes an optional `?type=tracks|albums|artists|playlists` so the renderer can import each section as its own request and show it as it lands (2.6.2, #149); with no type it returns all four.
 - **Spotify:** `/api/spotify/{auth,status,analyze,convert}`. Note that `auth` deliberately performs a real read after the client-credentials exchange, not just the token call. Spotify keeps issuing tokens under both failure modes the integration hits (the app owner lacking Premium since 9 March 2026, and Spotify-owned playlists being unreadable), so a token-only check reports success to users for whom every subsequent request will fail. `describeSpotifyError()` in `spotifyAPI.ts` is the single place those statuses are turned into user-facing text; route new Spotify failures through it rather than surfacing raw API messages.
 - **Downloads:** `/api/{download,download/album,download/playlist,download/batch,queue,queue/cancel,queue/priority,queue/clear,queue/pause,queue/resume,queue/status}`
 - **Playlist Sync:** `/api/sync/{playlists,run,run-all,reset,cancel,resolve-url}`
@@ -240,8 +243,8 @@ Password never crosses the IPC boundary. Only the resulting ARL cookie does, and
 | New API endpoint | `electron/server.ts` route + handler, plus `src/services/deezerAPI.ts` client method |
 | New Pinia store | `src/stores/newStore.ts` |
 | New OS-level capability (file dialog, etc.) | Three places: `electron/main.ts` (`ipcMain.handle`) + `electron/preload.ts` (`contextBridge` + global type) + `src/types/electron.d.ts` (renderer-side type) |
-| New setting | `src/stores/settingsStore.ts` (default + interface) + `src/views/SettingsView.vue` (UI) + electron-side use site if it affects downloads |
-| New i18n string | All 21 locale files in `src/i18n/locales/` (English first; others can wait) |
+| New setting | `src/stores/settingsStore.ts` (default + interface) + `src/views/SettingsView.vue` (UI). If the server needs it, four more links or it silently does nothing (#131, #134, #141): `ServerSettings` type and default plus the boolean validation list in `electron/server.ts`, every `downloader.download({...})` option site, the `settingsToSync` allowlist in `src/stores/downloadStore.ts`, and the profile key list in `src/stores/profileStore.ts`. Re-run the allowlist sweep in `docs/AUDIO_FIDELITY_AUDIT.md` and prove the setting both ways through the real app before shipping. Renderer-only settings (appearance) skip the server links but must survive profile switches. |
+| New i18n string | Never hard-code it. Add the key to `src/i18n/locales/en.json` and to all 20 other locale files in the same commit; `bun scripts/i18n-check.ts` must pass. Branded labels are the only exemption. |
 | New Deezer API call | `src/services/deezerAPI.ts` (renderer-side, public REST) or `electron/services/deezerAuth.ts` (`apiCall` for authenticated gateway) |
 
 ---
@@ -252,7 +255,7 @@ Password never crosses the IPC boundary. Only the resulting ARL cookie does, and
 - **UI framework:** Vue 3 with Composition API + `<script setup>` syntax
 - **State:** Pinia 4 (Composition API style stores)
 - **Routing:** Vue Router 5
-- **i18n:** vue-i18n (21 languages)
+- **i18n:** vue-i18n, 21 languages, all complete to key parity since 2.6.2 and checked by `scripts/i18n-check.ts`
 - **Styling:** Tailwind CSS 3 over a CSS-variable theme system — 9 color themes (Signal default) with per-theme light-mode variants; Archivo Black + IBM Plex Sans/Mono bundled via @fontsource
 - **Bundler:** Vite 8 with vite-plugin-electron
 - **Type safety:** TypeScript 5, `vue-tsc --noEmit` enforced via CI

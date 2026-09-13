@@ -258,7 +258,7 @@ const contextMenuItems = computed(() => {
         />
         <div class="flex-1">
           <p class="font-mono text-[10px] tracking-[0.3em] uppercase text-primary-500 mb-2">
-            {{ album.record_type || 'Album' }}
+            {{ album.record_type || t('analyzer.types.album') }}
           </p>
           <h1 class="font-display uppercase text-[34px] leading-[1.02] tracking-[-0.01em] mb-2">{{ album.title }}</h1>
           <p class="text-foreground-muted mb-4">

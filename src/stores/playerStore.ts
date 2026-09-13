@@ -48,6 +48,23 @@ export const usePlayerStore = defineStore('player', () => {
           if (d.url) previewUrl = d.url
         }
       } catch { /* no preview available — play() falls through silently */ }
+    } else if (previewUrl === undefined) {
+      // Deezer list endpoints (favourites import in particular) return slim
+      // track objects with no preview field, so rows built from them never
+      // had a clip to play (#153). Resolve the full track once on demand and
+      // cache the result on the row: Deezer preview links are stable CDN
+      // URLs, unlike the signed Qobuz ones above. An empty string from the
+      // API means Deezer has no clip for this track; caching that hides the
+      // button instead of leaving a control that does nothing.
+      try {
+        const port = window.electronAPI ? await window.electronAPI.getServerPort() : 6595
+        const r = await fetch(`http://127.0.0.1:${port}/api/track?id=${track.id}`)
+        if (r.ok) {
+          const d = await r.json()
+          track.preview = typeof d.preview === 'string' ? d.preview : ''
+          previewUrl = track.preview || undefined
+        }
+      } catch { /* leave preview unresolved; the button stays and retries next click */ }
     }
 
     // Start new track if it has a preview

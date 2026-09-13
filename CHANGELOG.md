@@ -10,6 +10,28 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+## [2.6.2] - 2026-09-13
+
+### Summary
+
+- **Link Analyzer takes a whole list of links at once, Favorites loads each section on its own and can open on the tab you choose, imported favourites play their previews, an older lyrics .txt can be cleaned up when the synced one arrives, Copy Link now always copies, and every one of the 21 languages is complete for the first time.**
+
+### Added
+
+- **Link Analyzer takes many links at once (#142, requested by @cisko99za).** Paste any number of Deezer, Spotify or Qobuz links into the box, separated by spaces, commas or new lines, and the analyzer works through them one at a time with a row per link. Each row turns green when it is ready or red with the reason when it fails, and one failure does not stop the rest. Spotify links are matched during the run, so a green row is ready to download. Click a row to see its full details below, download a single row, or use Download all ready to queue everything that resolved. A single link behaves exactly as before.
+
+- **Favorites loads each section on its own and can open on the tab you choose (#149, requested by @GravuTrad).** Import from Deezer used to fetch tracks, albums, artists and playlists as one request and show nothing until the largest had finished, so a library with thousands of favourite tracks made every tab wait on the tracks. Each section is now its own request and appears the moment it arrives, with a small spinner on any tab still loading. A section that fails to load is reported and left as it was instead of sinking the whole import. Settings > Appearance has a new "Favorites: open on" choice for which tab the Favorites page opens to.
+
+- **Optional clean-up of an older lyrics .txt (#141, requested by @shark0151).** Under Skip the plain .txt when synced lyrics exist there is a new opt-in toggle that also removes a .txt written by an earlier run once the synced .lrc for the same track is saved. Off by default, and it only ever touches the lyrics file that shares the track's exact name.
+
+### Fixed
+
+- **Preview playback on favourites imported from Deezer (#153, reported by @GravuTrad).** Tracks brought in with Import from Deezer arrive without the preview link that the play button keys on, so the button never appeared on those rows while it did on tracks hearted inside the app. The player now fetches the preview the first time you click, and remembers it. Tracks Deezer has no clip for show no button rather than one that does nothing.
+
+- **Copy actions now use the system clipboard directly and only say "copied" when they did (reported by @alex5908 on #105).** Copy Link and Copy Title went through the browser clipboard, which can refuse a write depending on window focus, and the fallback reported success whether or not anything was written. So a second copy could leave the previous link on the clipboard while the app said it had copied the new one. Every copy in the app now goes through Electron's clipboard, and a write that fails is reported as a failure.
+
+- **Every message in the app now follows your language setting (reported by @GravuTrad on #148).** About 130 strings were written straight into the interface and never went through the translation system, so they stayed English whatever language you chose: the download and favourites notifications, the Link Analyzer page, the sort menus, the Downloads statistics, the login help text and the sync schedule options. They are all translatable now, and every language ships with them filled in. The same pass also found that only French was actually complete: the other nineteen languages had each been missing between 255 and 388 of the app's strings since earlier releases, so a German or Chinese user was seeing roughly a third of the interface in English. Every language is now complete at 969 strings. A handful of the app's own labels, such as Transfer Rack and Signal Deck, stay in English by design.
+
 ## [2.6.1] - 2026-09-10
 
 ### Summary

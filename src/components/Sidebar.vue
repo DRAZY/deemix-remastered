@@ -27,7 +27,7 @@ const navItems = computed(() => {
     { path: '/charts', icon: 'chart', label: t('nav.charts') },
     // Genre browse (#106) — literal label like the Qobuz channel; i18n keys in
     // the pre-release localization pass.
-    { path: '/genres', icon: 'genres', label: 'Genres' },
+    { path: '/genres', icon: 'genres', label: t('nav.genres') },
     // Channel Q — visible only when a Qobuz account is connected. Brand name,
     // not translated (matches the QOBUZ badges elsewhere).
     { path: '/qobuz', icon: 'qobuz', label: 'Qobuz', hidden: !settingsStore.isQobuzConnected },

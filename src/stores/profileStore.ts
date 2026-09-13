@@ -13,7 +13,7 @@ type ProfileSettingsKeys =
   | 'createShortReleaseFolder'
   | 'playlistFolderTemplate' | 'albumFolderTemplate' | 'artistFolderTemplate'
   | 'trackNameTemplate' | 'albumTrackTemplate' | 'playlistTrackTemplate'
-  | 'saveArtwork' | 'embedArtwork' | 'saveLyrics' | 'syncedLyrics' | 'preferSyncedLyrics'
+  | 'saveArtwork' | 'embedArtwork' | 'saveLyrics' | 'syncedLyrics' | 'preferSyncedLyrics' | 'deleteSupersededLyrics'
   | 'tags' | 'albumCovers'
   | 'savePlaylistAsCompilation' | 'useNullSeparator' | 'saveID3v1'
   | 'saveOnlyMainArtist' | 'keepVariousArtists' | 'removeAlbumVersion'
@@ -42,7 +42,7 @@ const PROFILE_SETTINGS_KEYS: ProfileSettingsKeys[] = [
   'createShortReleaseFolder',
   'playlistFolderTemplate', 'albumFolderTemplate', 'artistFolderTemplate',
   'trackNameTemplate', 'albumTrackTemplate', 'playlistTrackTemplate',
-  'saveArtwork', 'embedArtwork', 'saveLyrics', 'syncedLyrics', 'preferSyncedLyrics',
+  'saveArtwork', 'embedArtwork', 'saveLyrics', 'syncedLyrics', 'preferSyncedLyrics', 'deleteSupersededLyrics',
   'tags', 'albumCovers',
   'savePlaylistAsCompilation', 'useNullSeparator', 'saveID3v1',
   'saveOnlyMainArtist', 'keepVariousArtists', 'removeAlbumVersion',

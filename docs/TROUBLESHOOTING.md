@@ -4,6 +4,17 @@ Common problems and how to fix them. If your issue isn't listed here, search [op
 
 ---
 
+## Installation
+
+### Windows blocks the installer (SmartScreen or Smart App Control)
+
+The Windows builds are not code signed, so every new release starts with no reputation on Microsoft's side. What you see depends on which protection is active:
+
+- **SmartScreen** ("Windows protected your PC"): click **More info**, then **Run anyway**. The warning is about the missing certificate, not about anything found in the file.
+- **Smart App Control** (Windows 11, on by default on some new installs): there is no "run anyway". It blocks unsigned files with no reputation outright, and it can only be turned off, permanently until Windows is reinstalled, under Windows Security > App & browser control. A release that worked for you last month and is blocked this month is the same situation: the new file has a new hash and no reputation yet.
+
+Signing the builds is the real fix and is being looked at.
+
 ## Login & Authentication
 
 ### "Invalid ARL token format" or "Invalid or expired ARL token"

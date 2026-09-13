@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Track, Album, Artist, Playlist } from '../types'
 import { useToastStore } from './toastStore'
+import i18n from '../i18n'
 
 interface FavoriteItem {
   id: string
@@ -76,14 +77,20 @@ export const useFavoritesStore = defineStore('favorites', () => {
 
     if (isFavorite(item.id, type)) {
       removeFavorite(id)
-      toastStore.info(`Removed "${itemName}" from favorites`)
+      toastStore.info(i18n.global.t('notifications.removedFromFavorites', { name: itemName }))
     } else {
       addFavorite(item, type)
-      toastStore.success(`Added "${itemName}" to favorites`)
+      toastStore.success(i18n.global.t('notifications.addedToFavorites', { name: itemName }))
     }
   }
 
   const isImporting = ref(false)
+
+  // #149: per-section import progress so the view can show which tabs are
+  // still loading while the others are already usable.
+  const importingSections = ref<Record<FavoriteItem['type'], boolean>>({
+    track: false, album: false, artist: false, playlist: false
+  })
 
   // v1.6.3 — was additive-only (issue #64). Now bidirectional: imports new
   // favorites AND prunes locally-cached entries that have been un-favorited
@@ -94,88 +101,109 @@ export const useFavoritesStore = defineStore('favorites', () => {
     imported: number
     skipped: number
     pruned: number
+    failed: FavoriteItem['type'][]
     syncStale: { playlists: number; artists: number }
   }> {
     isImporting.value = true
     let imported = 0
     let skipped = 0
     let pruned = 0
+    const failed: FavoriteItem['type'][] = []
+
+    // #149: each section is its own request and is applied the moment it
+    // lands, so a 7,000-track list no longer delays albums, artists and
+    // playlists. A section that fails is left untouched locally (no prune
+    // against a missing response) and reported to the caller.
+    const sectionOf: Record<FavoriteItem['type'], string> = {
+      track: 'tracks', album: 'albums', artist: 'artists', playlist: 'playlists'
+    }
+    const deezerIds: Record<FavoriteItem['type'], Set<string> | null> = {
+      track: null, album: null, artist: null, playlist: null
+    }
+
+    const importSection = async (type: FavoriteItem['type']): Promise<void> => {
+      const section = sectionOf[type]
+      importingSections.value[type] = true
+      try {
+        const response = await fetch(`http://127.0.0.1:${serverPort}/api/user/favorites?type=${section}`)
+        if (!response.ok) {
+          const err = await response.json().catch(() => ({}))
+          throw new Error(err.error || `Server returned ${response.status}`)
+        }
+        const data = await response.json()
+        const items: any[] = data[section] || []
+        const ids = new Set(items.map((i: any) => String(i.id)))
+        deezerIds[type] = ids
+
+        let changed = false
+        for (const item of items) {
+          if (!isFavorite(item.id, type)) {
+            favorites.value.push({
+              id: `${type}_${item.id}`,
+              type,
+              data: item,
+              addedAt: new Date().toISOString()
+            })
+            imported++
+            changed = true
+          } else {
+            skipped++
+          }
+        }
+
+        // Prune: anything in our local cache of this type whose ID is no
+        // longer in the Deezer response.
+        const before = favorites.value.length
+        favorites.value = favorites.value.filter(f => f.type !== type || ids.has(String((f.data as any).id)))
+        const prunedHere = before - favorites.value.length
+        pruned += prunedHere
+        if (prunedHere > 0) changed = true
+
+        if (changed) saveFavorites()
+      } catch (e: any) {
+        console.error(`[FavoritesStore] Import of ${section} failed:`, e?.message ?? e)
+        failed.push(type)
+      } finally {
+        importingSections.value[type] = false
+      }
+    }
 
     try {
-      const response = await fetch(`http://127.0.0.1:${serverPort}/api/user/favorites`)
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}))
-        throw new Error(err.error || `Server returned ${response.status}`)
-      }
+      await Promise.all((['track', 'album', 'artist', 'playlist'] as FavoriteItem['type'][]).map(importSection))
 
-      const data = await response.json()
-
-      // Build the authoritative ID sets from the Deezer response so we can
-      // (a) skip-vs-import and (b) prune locally-cached entries no longer
-      // present on Deezer in one pass per type.
-      const deezerIds: Record<FavoriteItem['type'], Set<string>> = {
-        track: new Set((data.tracks || []).map((t: any) => String(t.id))),
-        album: new Set((data.albums || []).map((a: any) => String(a.id))),
-        artist: new Set((data.artists || []).map((a: any) => String(a.id))),
-        playlist: new Set((data.playlists || []).map((p: any) => String(p.id)))
-      }
-
-      const addIfMissing = (item: any, type: FavoriteItem['type']) => {
-        if (!isFavorite(item.id, type)) {
-          favorites.value.push({
-            id: `${type}_${item.id}`,
-            type,
-            data: item,
-            addedAt: new Date().toISOString()
-          })
-          imported++
-        } else {
-          skipped++
-        }
-      }
-      for (const track of (data.tracks || [])) addIfMissing(track, 'track')
-      for (const album of (data.albums || [])) addIfMissing(album, 'album')
-      for (const artist of (data.artists || [])) addIfMissing(artist, 'artist')
-      for (const playlist of (data.playlists || [])) addIfMissing(playlist, 'playlist')
-
-      // Prune: anything in our local cache whose ID is no longer in the
-      // Deezer response of its type.
-      const before = favorites.value.length
-      favorites.value = favorites.value.filter(f => {
-        const localId = String((f.data as any).id)
-        return deezerIds[f.type].has(localId)
-      })
-      pruned = before - favorites.value.length
-
-      if (imported > 0 || pruned > 0) {
-        saveFavorites()
+      if (failed.length === 4) {
+        throw new Error('Failed to import Deezer favorites')
       }
 
       // Ask the sync engines to refresh favorites-membership against the
       // same ID sets we just used. We pass the IDs we already have rather
-      // than making the server hit Deezer a second time.
+      // than making the server hit Deezer a second time. The server treats a
+      // missing list as empty and would flag every entry stale, so the
+      // refresh only runs when both the playlist and artist sections arrived.
       let syncStale = { playlists: 0, artists: 0 }
-      try {
-        const refreshRes = await fetch(`http://127.0.0.1:${serverPort}/api/sync/refresh-favorites`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            playlistIds: Array.from(deezerIds.playlist),
-            artistIds: Array.from(deezerIds.artist)
+      if (deezerIds.playlist && deezerIds.artist) {
+        try {
+          const refreshRes = await fetch(`http://127.0.0.1:${serverPort}/api/sync/refresh-favorites`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              playlistIds: Array.from(deezerIds.playlist),
+              artistIds: Array.from(deezerIds.artist)
+            })
           })
-        })
-        if (refreshRes.ok) {
-          const r = await refreshRes.json()
-          syncStale = {
-            playlists: r.playlists?.stale ?? 0,
-            artists: r.artists?.stale ?? 0
+          if (refreshRes.ok) {
+            const r = await refreshRes.json()
+            syncStale = {
+              playlists: r.playlists?.stale ?? 0,
+              artists: r.artists?.stale ?? 0
+            }
           }
+        } catch (e) {
+          console.warn('[FavoritesStore] sync refresh-favorites call failed (non-fatal):', e)
         }
-      } catch (e) {
-        console.warn('[FavoritesStore] sync refresh-favorites call failed (non-fatal):', e)
       }
 
-      return { imported, skipped, pruned, syncStale }
+      return { imported, skipped, pruned, failed, syncStale }
     } finally {
       isImporting.value = false
     }
@@ -188,6 +216,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
     favoriteArtists,
     favoritePlaylists,
     isImporting,
+    importingSections,
     loadFavorites,
     addFavorite,
     removeFavorite,

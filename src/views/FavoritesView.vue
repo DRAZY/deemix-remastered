@@ -7,7 +7,7 @@ import { useDownloadStore } from '../stores/downloadStore'
 import { useToastStore } from '../stores/toastStore'
 import { useSyncStore, type SyncedPlaylist } from '../stores/syncStore'
 import { useArtistSyncStore, type SyncedArtist, type FirstSyncMode } from '../stores/artistSyncStore'
-import { useSettingsStore } from '../stores/settingsStore'
+import { useSettingsStore, type FavoritesTab } from '../stores/settingsStore'
 import { deezerAPI } from '../services/deezerAPI'
 import TrackCard from '../components/TrackCard.vue'
 import AlbumCard from '../components/AlbumCard.vue'
@@ -23,7 +23,8 @@ const toastStore = useToastStore()
 const syncStore = useSyncStore()
 const artistSyncStore = useArtistSyncStore()
 const settingsStore = useSettingsStore()
-const activeTab = ref<'tracks' | 'albums' | 'artists' | 'playlists'>('tracks')
+// #149: open on the tab chosen in Settings > Appearance (default: tracks)
+const activeTab = ref<FavoritesTab>(settingsStore.settings.appearance.favoritesDefaultTab || 'tracks')
 const isDownloading = ref(false)
 const isBulkSyncing = ref(false)
 
@@ -68,10 +69,10 @@ const sortedArtists = computed(() => sortByName(favoritesStore.favoriteArtists, 
 const sortedPlaylists = computed(() => sortByName(favoritesStore.favoritePlaylists, 'title', sortOrder.value))
 
 const tabs = computed(() => [
-  { id: 'tracks', label: t('favorites.tracks'), count: () => favoritesStore.favoriteTracks.length },
-  { id: 'albums', label: t('favorites.albums'), count: () => favoritesStore.favoriteAlbums.length },
-  { id: 'artists', label: t('favorites.artists'), count: () => favoritesStore.favoriteArtists.length },
-  { id: 'playlists', label: t('favorites.playlists'), count: () => favoritesStore.favoritePlaylists.length }
+  { id: 'tracks', label: t('favorites.tracks'), count: () => favoritesStore.favoriteTracks.length, loading: () => favoritesStore.importingSections.track },
+  { id: 'albums', label: t('favorites.albums'), count: () => favoritesStore.favoriteAlbums.length, loading: () => favoritesStore.importingSections.album },
+  { id: 'artists', label: t('favorites.artists'), count: () => favoritesStore.favoriteArtists.length, loading: () => favoritesStore.importingSections.artist },
+  { id: 'playlists', label: t('favorites.playlists'), count: () => favoritesStore.favoritePlaylists.length, loading: () => favoritesStore.importingSections.playlist }
 ])
 
 onMounted(async () => {
@@ -447,7 +448,7 @@ async function downloadAllFavorites() {
         }
       }
       if (stillFailed.length > 0) {
-        toastStore.warning(`${stillFailed.length} album${stillFailed.length > 1 ? 's' : ''} couldn't be loaded (Deezer rate limit) — try again to grab the rest`)
+        toastStore.warning(t('notifications.rateLimitedAlbums', { count: stillFailed.length }, stillFailed.length))
       }
     } else if (activeTab.value === 'playlists') {
       let skipped = 0
@@ -473,12 +474,12 @@ async function downloadAllFavorites() {
         await deezerAPI.pace()
       }
       if (skipped > 0) {
-        toastStore.info(`${skipped} playlist${skipped > 1 ? 's' : ''} skipped (empty or unavailable)`)
+        toastStore.info(t('notifications.playlistsSkipped', { count: skipped }, skipped))
       }
     }
 
     if (queued > 0) {
-      toastStore.success(`Queued ${queued} ${activeTab.value} for download`)
+      toastStore.success(t('notifications.queuedForDownload', { count: queued, type: t('common.' + activeTab.value) }))
     }
   } catch (e: any) {
     toastStore.error(e.message || 'Failed to start downloads')
@@ -489,17 +490,20 @@ async function downloadAllFavorites() {
 
 async function importFromDeezer() {
   try {
-    const { imported, skipped, pruned, syncStale } = await favoritesStore.importDeezerFavorites(serverPort.value)
+    const { imported, skipped, pruned, failed, syncStale } = await favoritesStore.importDeezerFavorites(serverPort.value)
+    if (failed.length > 0) {
+      toastStore.error(t('notifications.favoritesSectionsFailed', { sections: failed.map(f => t('common.' + f + 's')).join(', ') }))
+    }
     const parts: string[] = []
-    if (imported > 0) parts.push(`+${imported} imported`)
-    if (pruned > 0) parts.push(`−${pruned} pruned`)
-    if (skipped > 0) parts.push(`${skipped} unchanged`)
-    const summary = parts.length > 0 ? parts.join(', ') : 'No favorites found on your Deezer account'
+    if (imported > 0) parts.push(t('favorites.importedCount', { n: imported }))
+    if (pruned > 0) parts.push(t('favorites.prunedCount', { n: pruned }))
+    if (skipped > 0) parts.push(t('favorites.unchangedCount', { n: skipped }))
+    const summary = parts.length > 0 ? parts.join(', ') : t('favorites.noneOnAccount')
 
     if (imported > 0 || pruned > 0) {
-      toastStore.success(`Synced with Deezer favorites: ${summary}`)
+      toastStore.success(t('notifications.favoritesSynced', { summary }))
     } else if (skipped > 0) {
-      toastStore.info('All Deezer favorites are already imported')
+      toastStore.info(t('notifications.favoritesAlreadyImported'))
     } else {
       toastStore.info(summary)
     }
@@ -509,7 +513,7 @@ async function importFromDeezer() {
       const detail: string[] = []
       if (syncStale.playlists > 0) detail.push(`${syncStale.playlists} playlist${syncStale.playlists > 1 ? 's' : ''}`)
       if (syncStale.artists > 0) detail.push(`${syncStale.artists} artist${syncStale.artists > 1 ? 's' : ''}`)
-      toastStore.info(`${detail.join(' + ')} in Sync no longer in your Deezer favorites — review on the Sync page.`)
+      toastStore.info(t('notifications.favoritesStale', { detail: detail.join(' + ') }))
     }
   } catch (e: any) {
     toastStore.error(e.message || 'Failed to import Deezer favorites')
@@ -580,7 +584,7 @@ async function importFromDeezer() {
         <svg v-else class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
-        {{ favoritesStore.isImporting ? 'Importing...' : 'Import from Deezer' }}
+        {{ favoritesStore.isImporting ? t('favorites.importing') : t('favorites.importFromDeezer') }}
       </button>
       </div>
     </div>
@@ -597,8 +601,12 @@ async function importFromDeezer() {
           : 'text-foreground-muted border-white/[0.08] hover:text-foreground hover:border-white/20'"
       >
         {{ tab.label }}
+        <svg v-if="tab.loading()" class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+        </svg>
         <span
-          v-if="tab.count() > 0"
+          v-else-if="tab.count() > 0"
           class="text-[9.5px]"
           :class="activeTab === tab.id ? 'text-primary-500/80' : 'text-foreground-muted'"
         >
@@ -616,9 +624,9 @@ async function importFromDeezer() {
         v-model="sortOrder"
         class="text-sm bg-background-secondary text-foreground px-3 py-1.5 border border-white/[0.1] focus:border-primary-500/50 outline-none"
       >
-        <option value="added">Date Added</option>
-        <option value="name-asc">Name A-Z</option>
-        <option value="name-desc">Name Z-A</option>
+        <option value="added">{{ t('favorites.sortAdded') }}</option>
+        <option value="name-asc">{{ t('common.sortNameAsc') }}</option>
+        <option value="name-desc">{{ t('common.sortNameDesc') }}</option>
       </select>
     </div>
 

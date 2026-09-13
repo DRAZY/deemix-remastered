@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell, dialog, Menu, session, safeStorage } from 'electron'
+import { app, BrowserWindow, ipcMain, shell, dialog, Menu, session, safeStorage, clipboard } from 'electron'
 import { join, normalize, resolve } from 'path'
 import { rm, stat, readFile, writeFile, mkdir, rename } from 'fs/promises'
 import { existsSync } from 'fs'
@@ -432,6 +432,7 @@ async function initServer() {
         saveLyrics: s.saveLyrics,
         syncedLyrics: s.syncedLyrics,
         preferSyncedLyrics: s.preferSyncedLyrics,
+        deleteSupersededLyrics: s.deleteSupersededLyrics,
         createErrorLog: s.createErrorLog,
         savePlaylistAsCompilation: s.savePlaylistAsCompilation,
         createPlaylistFile: s.createPlaylistFile,
@@ -516,6 +517,7 @@ async function initServer() {
         saveLyrics: s.saveLyrics,
         syncedLyrics: s.syncedLyrics,
         preferSyncedLyrics: s.preferSyncedLyrics,
+        deleteSupersededLyrics: s.deleteSupersededLyrics,
         createErrorLog: s.createErrorLog,
         overwriteFiles: s.overwriteFiles,
         skipDuplicateTracks: s.skipDuplicateTracks,
@@ -647,6 +649,17 @@ ipcMain.handle('dialog:selectFolder', async (_, defaultPath?: string) => {
     properties: ['openDirectory', 'createDirectory']
   })
   return result.filePaths[0] || null
+})
+
+// Native clipboard write. The renderer's navigator.clipboard.writeText needs a
+// focused document and can reject after the first use in some window states,
+// and the execCommand fallback reports nothing, so users saw "Link copied"
+// while the clipboard kept the previous value (alex5908, discussion #105).
+// Electron's clipboard module has neither constraint.
+ipcMain.handle('clipboard:writeText', (_, text: string) => {
+  if (typeof text !== 'string') return false
+  clipboard.writeText(text)
+  return true
 })
 
 ipcMain.handle('shell:openPath', async (_, path: string) => {

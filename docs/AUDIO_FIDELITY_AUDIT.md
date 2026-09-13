@@ -370,6 +370,7 @@ Confirmed 2026-07-31 by parsing both allowlists out of source:
 | `createPlaylistFile` | yes | yes |
 | `createAlbumPlaylistFile` | yes | yes |
 | `preferSyncedLyrics` | **no until 2.6.1** | yes |
+| `deleteSupersededLyrics` (2.6.2) | yes | yes |
 
 A full sweep of both directions found exactly one key the server declares that
 the renderer never sends: `checkForUpdates`, which is deliberate (main-process
@@ -381,6 +382,14 @@ link 2. The reporter came back eleven days later with "I can't seem to get the
 feature to work." The July table above was never re-run for the new key. Fixed on
 `rc/2.6.1` (`48c08a1`). The allowlist sweep was re-run after the fix and again
 reports only `checkForUpdates`.
+
+The delete half of #141 (`deleteSupersededLyrics`, 2026-09-11, `rc/2.6.2`) was
+wired into all four links and the profile keys in one pass, the sweep re-run
+(still only `checkForUpdates`), and proven on real downloads of the same track
+in three directions: seeded .txt plus .lrc then re-downloaded with prefer and
+delete on leaves the .lrc only and an unrelated .txt in the folder untouched;
+with delete off the old .txt stays; with delete on but prefer off nothing is
+removed.
 
 The behavioral test was then run the way this section says to, through the real
 renderer and not the HTTP shortcut: the Pinia settings store was flipped over the

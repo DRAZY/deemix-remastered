@@ -310,7 +310,7 @@ function openDeezerExternal() {
                   <input
                     v-model="password"
                     :type="showPassword ? 'text' : 'password'"
-                    placeholder="Your Deezer password"
+                    :placeholder="t('login.passwordPlaceholder')"
                     class="input pr-10"
                     :class="{ 'border-red-500': authStore.error }"
                     autocomplete="current-password"
@@ -417,18 +417,12 @@ function openDeezerExternal() {
               </svg>
               <div class="text-sm text-foreground-muted">
                 <template v-if="loginMethod === 'email'">
-                  <p class="font-medium text-foreground mb-1">Email & Password Login</p>
-                  <p>
-                    Use your Deezer account credentials. This is the recommended method
-                    as it's simpler and automatically handles session management.
-                  </p>
+                  <p class="font-medium text-foreground mb-1">{{ t('login.emailPasswordLogin') }}</p>
+                  <p>{{ t('login.emailPasswordHelp') }}</p>
                 </template>
                 <template v-else>
-                  <p class="font-medium text-foreground mb-1">What is an ARL token?</p>
-                  <p>
-                    The ARL (Authentication Request Login) token is a cookie from your Deezer account
-                    that allows downloading music. It's stored in your browser when you log into Deezer.
-                  </p>
+                  <p class="font-medium text-foreground mb-1">{{ t('login.whatIsArl') }}</p>
+                  <p>{{ t('login.arlExplainer') }}</p>
                 </template>
               </div>
             </div>
