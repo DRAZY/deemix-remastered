@@ -139,7 +139,8 @@
     "serverResponse": "Odgovor poslužitelja (tehnički detalji)",
     "speed": "Brzina",
     "substitutedListTitle": "Alternativne verzije",
-    "substitutedListTip": "Kliknite za prikaz pjesama koje dolaze iz alternativnog izdanja"
+    "substitutedListTip": "Kliknite za prikaz pjesama koje dolaze iz alternativnog izdanja",
+    "clearHistory": "Očisti povijest"
   },
   "charts": {
     "title": "Ljestvice",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "({failed} neuspjelo)",
     "noneQueued": "Nijedno preuzimanje nije moglo biti dodano u red, provjerite jeste li prijavljeni",
     "copyFailed": "Kopiranje nije uspjelo",
-    "pasteFailed": "Lijepljenje nije uspjelo, pristup međuspremniku odbijen"
+    "pasteFailed": "Lijepljenje nije uspjelo, pristup međuspremniku odbijen",
+    "copiedLabel": "{label} kopirano"
   },
   "sync": {
     "sortBy": "Razvrstaj po",

@@ -156,7 +156,8 @@
     "substituted": "替代版本",
     "substitutedTip": "原始曲目無法取得（通常是地區或版權限制），因此下載了來自另一發行版本中 ISRC 相符的版本。此音訊是該發行版本的完整複製，但可能來自不同的母帶，因此聽起來可能與您所選的版本略有差異。",
     "substitutedListTitle": "替代版本",
-    "substitutedListTip": "點擊以查看哪些曲目來自替代發行版本"
+    "substitutedListTip": "點擊以查看哪些曲目來自替代發行版本",
+    "clearHistory": "清除歷史記錄"
   },
   "charts": {
     "title": "排行榜",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "（{failed} 個失敗）",
     "noneQueued": "無法將任何下載加入佇列，請確認您已登入",
     "copyFailed": "複製失敗",
-    "pasteFailed": "貼上失敗，剪貼簿存取遭拒"
+    "pasteFailed": "貼上失敗，剪貼簿存取遭拒",
+    "copiedLabel": "已複製{label}"
   },
   "accessibility": {
     "mainNavigation": "主導覽",

@@ -139,7 +139,8 @@
     "serverResponse": "Serverantwort (technische Details)",
     "speed": "Geschwindigkeit",
     "substitutedListTitle": "Alternative Versionen",
-    "substitutedListTip": "Klicken, um zu sehen, welche Titel aus einer alternativen Veröffentlichung stammen"
+    "substitutedListTip": "Klicken, um zu sehen, welche Titel aus einer alternativen Veröffentlichung stammen",
+    "clearHistory": "Verlauf löschen"
   },
   "charts": {
     "title": "Charts",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "({failed} fehlgeschlagen)",
     "noneQueued": "Es konnten keine Downloads in die Warteschlange gestellt werden, überprüfe, ob du angemeldet bist",
     "copyFailed": "Kopieren fehlgeschlagen",
-    "pasteFailed": "Einfügen fehlgeschlagen, Zugriff auf Zwischenablage verweigert"
+    "pasteFailed": "Einfügen fehlgeschlagen, Zugriff auf Zwischenablage verweigert",
+    "copiedLabel": "{label} kopiert"
   },
   "sync": {
     "sortBy": "Sortieren nach",

@@ -139,7 +139,8 @@
     "serverResponse": "Respons server (detail teknis)",
     "speed": "Kecepatan",
     "substitutedListTitle": "Versi alternatif",
-    "substitutedListTip": "Klik untuk melihat lagu mana yang berasal dari rilis alternatif"
+    "substitutedListTip": "Klik untuk melihat lagu mana yang berasal dari rilis alternatif",
+    "clearHistory": "Hapus riwayat"
   },
   "charts": {
     "title": "Tangga Lagu",
@@ -760,7 +761,8 @@
     "queuedFromLinksFailed": "({failed} gagal)",
     "noneQueued": "Tidak ada unduhan yang dapat dimasukkan ke antrean, periksa apakah Anda sudah masuk",
     "copyFailed": "Gagal menyalin",
-    "pasteFailed": "Gagal menempel, akses clipboard ditolak"
+    "pasteFailed": "Gagal menempel, akses clipboard ditolak",
+    "copiedLabel": "{label} disalin"
   },
   "sync": {
     "sortBy": "Urutkan berdasarkan",

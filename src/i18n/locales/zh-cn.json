@@ -139,7 +139,8 @@
     "serverResponse": "服务器响应（技术详情）",
     "speed": "速度",
     "substitutedListTitle": "替代版本",
-    "substitutedListTip": "点击查看哪些曲目来自替代版本"
+    "substitutedListTip": "点击查看哪些曲目来自替代版本",
+    "clearHistory": "清除历史记录"
   },
   "charts": {
     "title": "排行榜",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "（{failed} 个失败）",
     "noneQueued": "无法加入任何下载队列，请检查是否已登录",
     "copyFailed": "复制失败",
-    "pasteFailed": "粘贴失败，剪贴板访问被拒绝"
+    "pasteFailed": "粘贴失败，剪贴板访问被拒绝",
+    "copiedLabel": "已复制{label}"
   },
   "sync": {
     "sortBy": "排序方式",

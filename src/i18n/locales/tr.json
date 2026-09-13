@@ -139,7 +139,8 @@
     "serverResponse": "Sunucu yanıtı (teknik detaylar)",
     "speed": "Hız",
     "substitutedListTitle": "Alternatif sürümler",
-    "substitutedListTip": "Hangi şarkıların alternatif bir sürümden geldiğini görmek için tıklayın"
+    "substitutedListTip": "Hangi şarkıların alternatif bir sürümden geldiğini görmek için tıklayın",
+    "clearHistory": "Geçmişi temizle"
   },
   "charts": {
     "title": "Listeler",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "({failed} başarısız)",
     "noneQueued": "Hiçbir indirme kuyruğa eklenemedi, giriş yaptığınızdan emin olun",
     "copyFailed": "Kopyalanamadı",
-    "pasteFailed": "Yapıştırılamadı, pano erişimi reddedildi"
+    "pasteFailed": "Yapıştırılamadı, pano erişimi reddedildi",
+    "copiedLabel": "{label} kopyalandı"
   },
   "sync": {
     "sortBy": "Sıralama ölçütü",

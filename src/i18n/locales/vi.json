@@ -156,7 +156,8 @@
     "substituted": "Phiên bản thay thế",
     "substitutedTip": "Bài hát chính xác không khả dụng (thường do hạn chế khu vực hoặc bản quyền), nên một phiên bản khớp ISRC từ bản phát hành khác đã được tải. Âm thanh là bản sao chính xác của bản phát hành đó nhưng có thể là bản master khác, nên có thể nghe hơi khác so với bản bạn đã chọn.",
     "substitutedListTitle": "Phiên bản thay thế",
-    "substitutedListTip": "Nhấp để xem bài hát nào đến từ bản phát hành thay thế"
+    "substitutedListTip": "Nhấp để xem bài hát nào đến từ bản phát hành thay thế",
+    "clearHistory": "Xóa lịch sử"
   },
   "charts": {
     "title": "Bảng xếp hạng",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "({failed} thất bại)",
     "noneQueued": "Không thể thêm mục nào vào hàng đợi tải xuống, hãy kiểm tra lại việc đăng nhập",
     "copyFailed": "Sao chép thất bại",
-    "pasteFailed": "Dán thất bại, quyền truy cập clipboard bị từ chối"
+    "pasteFailed": "Dán thất bại, quyền truy cập clipboard bị từ chối",
+    "copiedLabel": "Đã sao chép {label}"
   },
   "accessibility": {
     "mainNavigation": "Điều hướng chính",

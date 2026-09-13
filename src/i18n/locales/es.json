@@ -139,7 +139,8 @@
     "serverResponse": "Respuesta del servidor (detalles técnicos)",
     "speed": "Velocidad",
     "substitutedListTitle": "Versiones alternativas",
-    "substitutedListTip": "Haz clic para ver qué pistas provienen de un lanzamiento alternativo"
+    "substitutedListTip": "Haz clic para ver qué pistas provienen de un lanzamiento alternativo",
+    "clearHistory": "Borrar historial"
   },
   "charts": {
     "title": "Rankings",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "({failed} fallido(s))",
     "noneQueued": "No se pudo poner en cola ninguna descarga, comprueba que has iniciado sesión",
     "copyFailed": "Error al copiar",
-    "pasteFailed": "Error al pegar, acceso al portapapeles denegado"
+    "pasteFailed": "Error al pegar, acceso al portapapeles denegado",
+    "copiedLabel": "{label} copiado"
   },
   "sync": {
     "sortBy": "Ordenar por",

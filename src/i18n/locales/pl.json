@@ -139,7 +139,8 @@
     "serverResponse": "Odpowiedź serwera (szczegóły techniczne)",
     "speed": "Szybkość",
     "substitutedListTitle": "Wersje alternatywne",
-    "substitutedListTip": "Kliknij, aby zobaczyć, które utwory pochodzą z alternatywnego wydania"
+    "substitutedListTip": "Kliknij, aby zobaczyć, które utwory pochodzą z alternatywnego wydania",
+    "clearHistory": "Wyczyść historię"
   },
   "charts": {
     "title": "Rankingi",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "({failed} nieudanych)",
     "noneQueued": "Nie udało się dodać żadnych pobrań do kolejki, sprawdź, czy jesteś zalogowany",
     "copyFailed": "Nie udało się skopiować",
-    "pasteFailed": "Nie udało się wkleić, odmowa dostępu do schowka"
+    "pasteFailed": "Nie udało się wkleić, odmowa dostępu do schowka",
+    "copiedLabel": "Skopiowano: {label}"
   },
   "sync": {
     "sortBy": "Sortuj według",

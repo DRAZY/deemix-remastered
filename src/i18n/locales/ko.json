@@ -139,7 +139,8 @@
     "serverResponse": "서버 응답 (기술 세부 정보)",
     "speed": "속도",
     "substitutedListTitle": "대체 버전",
-    "substitutedListTip": "어떤 트랙이 대체 릴리스에서 왔는지 확인하려면 클릭하세요"
+    "substitutedListTip": "어떤 트랙이 대체 릴리스에서 왔는지 확인하려면 클릭하세요",
+    "clearHistory": "기록 지우기"
   },
   "charts": {
     "title": "차트",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "({failed}개 실패)",
     "noneQueued": "다운로드를 대기열에 추가할 수 없음, 로그인 상태를 확인하세요",
     "copyFailed": "복사 실패",
-    "pasteFailed": "붙여넣기 실패, 클립보드 접근이 거부됨"
+    "pasteFailed": "붙여넣기 실패, 클립보드 접근이 거부됨",
+    "copiedLabel": "{label} 복사됨"
   },
   "sync": {
     "sortBy": "정렬 기준",

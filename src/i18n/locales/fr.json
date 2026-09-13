@@ -204,7 +204,8 @@
       "decrypting": "Déchiffrement",
       "tagging": "Étiquetage",
       "pending": "En attente"
-    }
+    },
+    "clearHistory": "Effacer l'historique"
   },
   "charts": {
     "title": "Classements",
@@ -905,7 +906,8 @@
     "queuedFromLinksFailed": "({failed} échec(s))",
     "noneQueued": "Aucun téléchargement n'a pu être mis en file, vérifiez que vous êtes bien connecté",
     "copyFailed": "Échec de la copie",
-    "pasteFailed": "Échec du collage, accès au presse-papiers refusé"
+    "pasteFailed": "Échec du collage, accès au presse-papiers refusé",
+    "copiedLabel": "{label} copié"
   },
   "accessibility": {
     "mainNavigation": "Navigation principale",

@@ -139,7 +139,8 @@
     "serverResponse": "Sagot ng server (teknikal na detalye)",
     "speed": "Bilis",
     "substitutedListTitle": "Mga alternatibong bersyon",
-    "substitutedListTip": "I-click para makita kung aling mga track ang galing sa alternatibong release"
+    "substitutedListTip": "I-click para makita kung aling mga track ang galing sa alternatibong release",
+    "clearHistory": "I-clear ang history"
   },
   "charts": {
     "title": "Mga Chart",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "({failed} nabigo)",
     "noneQueued": "Walang na-queue na download, tiyaking naka-login ka",
     "copyFailed": "Nabigong kopyahin",
-    "pasteFailed": "Nabigong i-paste, tinanggihan ang access sa clipboard"
+    "pasteFailed": "Nabigong i-paste, tinanggihan ang access sa clipboard",
+    "copiedLabel": "Na-copy ang {label}"
   },
   "sync": {
     "sortBy": "Ayusin ayon sa",

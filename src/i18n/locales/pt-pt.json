@@ -139,7 +139,8 @@
     "serverResponse": "Resposta do servidor (detalhes técnicos)",
     "speed": "Velocidade",
     "substitutedListTitle": "Versões alternativas",
-    "substitutedListTip": "Clique para ver que faixas vieram de um lançamento alternativo"
+    "substitutedListTip": "Clique para ver que faixas vieram de um lançamento alternativo",
+    "clearHistory": "Limpar histórico"
   },
   "charts": {
     "title": "Rankings",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "({failed} falhas)",
     "noneQueued": "Não foi possível adicionar transferências à fila, verifique se tem sessão iniciada",
     "copyFailed": "Falha ao copiar",
-    "pasteFailed": "Falha ao colar, acesso à área de transferência negado"
+    "pasteFailed": "Falha ao colar, acesso à área de transferência negado",
+    "copiedLabel": "{label} copiado"
   },
   "sync": {
     "sortBy": "Ordenar por",

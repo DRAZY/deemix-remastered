@@ -139,7 +139,8 @@
     "serverResponse": "Risposta del server (dettagli tecnici)",
     "speed": "Velocità",
     "substitutedListTitle": "Versioni alternative",
-    "substitutedListTip": "Clicca per vedere quali brani provengono da una release alternativa"
+    "substitutedListTip": "Clicca per vedere quali brani provengono da una release alternativa",
+    "clearHistory": "Cancella cronologia"
   },
   "charts": {
     "title": "Classifiche",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "({failed} falliti)",
     "noneQueued": "Impossibile mettere in coda i download, controlla di aver eseguito l'accesso",
     "copyFailed": "Copia non riuscita",
-    "pasteFailed": "Incolla non riuscito, accesso agli appunti negato"
+    "pasteFailed": "Incolla non riuscito, accesso agli appunti negato",
+    "copiedLabel": "{label} copiato"
   },
   "sync": {
     "sortBy": "Ordina per",

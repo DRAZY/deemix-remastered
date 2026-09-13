@@ -1224,7 +1224,7 @@ function copyAllErrorDetails() {
           @click="downloadStore.clearHistory()"
           class="text-xs text-red-400 hover:text-red-300 transition-colors"
         >
-          Clear History
+          {{ t('downloads.clearHistory') }}
         </button>
       </div>
 

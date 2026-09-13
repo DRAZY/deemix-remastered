@@ -139,7 +139,8 @@
     "serverResponse": "استجابة الخادم (تفاصيل تقنية)",
     "speed": "السرعة",
     "substitutedListTitle": "نسخ بديلة",
-    "substitutedListTip": "انقر لمعرفة أي المقاطع جاءت من إصدار بديل"
+    "substitutedListTip": "انقر لمعرفة أي المقاطع جاءت من إصدار بديل",
+    "clearHistory": "مسح السجل"
   },
   "charts": {
     "title": "الترتيب",
@@ -831,7 +832,8 @@
     "queuedFromLinksFailed": "(فشل {failed})",
     "noneQueued": "تعذّرت إضافة أي تنزيل إلى قائمة الانتظار، تحقق من أنك مسجّل الدخول",
     "copyFailed": "فشل النسخ",
-    "pasteFailed": "فشل اللصق، تم رفض الوصول إلى الحافظة"
+    "pasteFailed": "فشل اللصق، تم رفض الوصول إلى الحافظة",
+    "copiedLabel": "تم نسخ {label}"
   },
   "sync": {
     "sortBy": "ترتيب حسب",

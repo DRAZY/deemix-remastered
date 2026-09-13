@@ -18,6 +18,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openExternal: (url: string) => ipcRenderer.invoke('shell:openExternal', url),
   deletePath: (path: string) => ipcRenderer.invoke('shell:deletePath', path),
 
+  // Clipboard
+  clipboardWriteText: (text: string) => ipcRenderer.invoke('clipboard:writeText', text),
+
   // App info
   getVersion: () => ipcRenderer.invoke('app:getVersion'),
   getRuntimeInfo: () => ipcRenderer.invoke('app:getRuntimeInfo'),
@@ -152,6 +155,7 @@ declare global {
       openPath: (path: string) => Promise<void>
       openExternal: (url: string) => Promise<void>
       deletePath: (path: string) => Promise<void>
+      clipboardWriteText: (text: string) => Promise<boolean>
       getVersion: () => Promise<string>
       getRuntimeInfo: () => Promise<{ electron: string; chromium: string; node: string; v8: string; os: string }>
       getServerPort: () => Promise<number>

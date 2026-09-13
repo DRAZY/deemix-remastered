@@ -204,7 +204,8 @@
       "decrypting": "Decrypting",
       "tagging": "Tagging",
       "pending": "Pending"
-    }
+    },
+    "clearHistory": "Clear History"
   },
   "charts": {
     "title": "Charts",
@@ -905,7 +906,8 @@
     "queuedFromLinksFailed": "({failed} failed)",
     "noneQueued": "No downloads could be queued, check that you are logged in",
     "copyFailed": "Failed to copy",
-    "pasteFailed": "Failed to paste, clipboard access denied"
+    "pasteFailed": "Failed to paste, clipboard access denied",
+    "copiedLabel": "{label} copied"
   },
   "accessibility": {
     "mainNavigation": "Main navigation",
