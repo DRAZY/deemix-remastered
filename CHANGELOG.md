@@ -10,6 +10,12 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+## [2.6.2] - 2026-09-13
+
+### Summary
+
+- **Link Analyzer takes a whole list of links at once, Favorites loads each section on its own and can open on the tab you choose, imported favourites play their previews, an older lyrics .txt can be cleaned up when the synced one arrives, Copy Link now always copies, and every one of the 21 languages is complete for the first time.**
+
 ### Added
 
 - **Link Analyzer takes many links at once (#142, requested by @cisko99za).** Paste any number of Deezer, Spotify or Qobuz links into the box, separated by spaces, commas or new lines, and the analyzer works through them one at a time with a row per link. Each row turns green when it is ready or red with the reason when it fails, and one failure does not stop the rest. Spotify links are matched during the run, so a green row is ready to download. Click a row to see its full details below, download a single row, or use Download all ready to queue everything that resolved. A single link behaves exactly as before.

@@ -45,7 +45,7 @@
 - **Artist Pages:** full discographies filtered by albums, EPs, singles, compilations, and features, sortable by name or date
 - **Genres:** a dual-service genre browser with full Qobuz catalogs per genre plus Deezer editorial picks and charts
 - **Album & Playlist Views:** track listings with metadata, selective downloads, and audio previews
-- **Link Analyzer:** paste any Deezer, Spotify, or Qobuz URL to view details and download directly
+- **Link Analyzer:** paste one Deezer, Spotify, or Qobuz URL, or a whole list of them, to view details and download directly
 - **Favorites Import:** pull your liked tracks, albums, artists, and playlists from Deezer
 
 ### Downloading
