@@ -20,6 +20,7 @@
 // parseBackup so existing exports keep working.
 
 import { defineStore } from 'pinia'
+import { readFavorites, writeFavorites } from '../utils/favoritesStorage'
 import { ref } from 'vue'
 import { useSettingsStore, type Settings } from './settingsStore'
 import { useProfileStore, type SettingsProfile } from './profileStore'
@@ -97,7 +98,6 @@ export interface ApplyResult {
 // Fallback only — buildBackup asks the main process for the real version so
 // backup files stamp correctly without a hardcoded constant going stale.
 const BACKUP_APP_VERSION = '2.1.0'
-const FAVORITES_LOCALSTORAGE_KEY = 'favorites'
 
 export const useBackupStore = defineStore('backup', () => {
   const isBusy = ref(false)
@@ -169,8 +169,7 @@ export const useBackupStore = defineStore('backup', () => {
 
       if (selected.favourites) {
         try {
-          const raw = localStorage.getItem(FAVORITES_LOCALSTORAGE_KEY)
-          segments.favourites = raw ? JSON.parse(raw) : []
+          segments.favourites = (await readFavorites()) ?? []
         } catch {
           segments.favourites = []
         }
@@ -384,7 +383,7 @@ export const useBackupStore = defineStore('backup', () => {
 
       if (selected.favourites && file.segments.favourites) {
         try {
-          localStorage.setItem(FAVORITES_LOCALSTORAGE_KEY, JSON.stringify(file.segments.favourites))
+          await writeFavorites(file.segments.favourites)
           result.favourites = 'ok'
         } catch (e: any) {
           result.favourites = 'error'

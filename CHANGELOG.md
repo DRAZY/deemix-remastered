@@ -10,6 +10,10 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+### Fixed
+- Favorites no longer vanish on restart for large libraries (#149). Favourites now persist in IndexedDB instead of localStorage, whose 5 MB cap silently rejected libraries past roughly 3,000 tracks; existing favourites migrate on first launch. Import only counts a section once it has actually been saved, a failed save rolls that section back, and the app says so instead of reporting success.
+- The Favorites tracks tab renders in windows of 150 and grows as you scroll, so a 7,000-track library opens instantly instead of holding the page black for several seconds (#149).
+
 ## [2.6.2] - 2026-09-13
 
 ### Summary
