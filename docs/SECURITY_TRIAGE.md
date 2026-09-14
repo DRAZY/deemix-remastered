@@ -4,6 +4,18 @@ Running record of every CodeQL alert in the repo's Security tab: what it was,
 what we did, and why. Future scans that re-flag a dismissed pattern should be
 checked against this log before any code churn.
 
+## 2026-09-13, private advisory GHSA-3v8g-hjrg-cr33 (Electron RunAsNode fuse)
+
+| Report | Severity | Location | Disposition |
+|--------|----------|----------|-------------|
+| `ELECTRON_RUN_AS_NODE` fuse left at Electron's default, so the shipped binary can be launched as a bare Node interpreter under the app's code-signing identity. | Reported medium, assessed low | electron-builder config (`package.json` `build`) | **Fixed on the 2.6.3 branch, advisory closed without publication.** Verified against the 2.6.2 arm64 build: `ELECTRON_RUN_AS_NODE=1` did yield a Node 24 shell. Impact is narrow because the macOS build is ad-hoc signed (no durable identity for TCC to bind to) and `require('electron')` returns a path string in that mode, so safeStorage is not reachable. The reporter's template still holds as a hardening gap, so `electronFuses` now turns off `runAsNode`, `enableNodeOptionsEnvironmentVariable` and `enableNodeCliInspectArguments`, and turns on `onlyLoadAppFromAsar` and `enableEmbeddedAsarIntegrityValidation`. Confirmed with `electron-fuses read` on a fresh package and by launching it: the reproduction no longer runs, the app starts, serves its API, and `ElectronAsarIntegrity` is present in `Info.plist`. |
+
+### Standing posture (added 2026-09-13)
+
+- The fuse block in `package.json` ships in every build. Do not add
+  `child_process.fork` to the main process; `RunAsNode` is off and it will not
+  work. Use `utilityProcess` instead.
+
 ## 2026-07-19 — branch `security/codeql-hardening`
 
 | # | Rule | Severity | Location | Disposition |

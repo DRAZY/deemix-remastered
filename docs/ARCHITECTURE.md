@@ -228,6 +228,8 @@ Password never crosses the IPC boundary. Only the resulting ARL cookie does, and
 
 **Sandboxed renderer + allow-listed bridge.** Standard Electron security baseline. The UI cannot read arbitrary files, hit arbitrary URLs, or shell out — it can only do what `window.electronAPI` exposes. New capabilities require explicit additions in three places.
 
+**Fused Electron binary.** `electronFuses` in `package.json` flips Electron's build-time fuses when electron-builder packages the app: `RunAsNode`, `EnableNodeOptionsEnvironmentVariable` and `EnableNodeCliInspectArguments` are off, `OnlyLoadAppFromAsar` and `EnableEmbeddedAsarIntegrityValidation` are on. The signed binary ignores `ELECTRON_RUN_AS_NODE`, `NODE_OPTIONS` and `--inspect`, and refuses to load app code that is not the shipped, hash-checked `app.asar`. Because `RunAsNode` is off, the main process must not use `child_process.fork`; use Electron's `utilityProcess` if a standalone Node worker is ever needed.
+
 **HTTP server in the main process.** Lets the UI use familiar fetch semantics for streaming, polling, and CORS-friendly resource requests. Also serves as the OAuth callback target for Spotify. Bound to `127.0.0.1` only — never reachable from the network.
 
 **In-memory session, encrypted-at-rest credentials.** ARL and Client Secret are decrypted into memory at app start and stay there for the session. Disk storage is encrypted via OS keychain. No plaintext secrets ever land on disk.

@@ -115,6 +115,7 @@ Arabic, Chinese (Simplified & Traditional), Croatian, English, Filipino, French,
 - **Encrypted Credentials:** ARL tokens, Spotify secrets, and the Qobuz token stored via Electron safeStorage, never in settings, exports, or backups
 - **Recoverable Deletes:** "Delete Files" moves to the system Trash, and the download root itself can never be deleted
 - **Hardened I/O:** path-traversal and SSRF protection, URL validation, error sanitization, and sandboxed windows
+- **Fused Binary:** Electron's RunAsNode, NODE_OPTIONS and inspector fuses are off and only the integrity-checked `app.asar` is loaded, so the shipped binary cannot be repurposed as a Node interpreter
 
 ---
 
