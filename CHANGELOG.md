@@ -16,6 +16,7 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 ### Fixed
 - Favorites no longer vanish on restart for large libraries (#149). Favourites now persist in IndexedDB instead of localStorage, whose 5 MB cap silently rejected libraries past roughly 3,000 tracks; existing favourites migrate on first launch. Import only counts a section once it has actually been saved, a failed save rolls that section back, and the app says so instead of reporting success.
 - The Favorites tracks tab renders in windows of 150 and grows as you scroll, so a 7,000-track library opens instantly instead of holding the page black for several seconds (#149).
+- Synced lyrics (.lrc) come through again for newer tracks (#158, reported by @popoche). Deezer's legacy lyrics endpoint has started returning plain text only for part of the catalog while the Deezer app still shows timed lyrics. When that happens the app now asks Deezer's newer lyrics API for the timed lines, so the .lrc file, the SYLT tag and the FLAC synced comment all get them. Tracks Deezer has no lyrics licence for in your country still yield nothing, which is a Deezer gap no client can fill.
 
 ## [2.6.2] - 2026-09-13
 

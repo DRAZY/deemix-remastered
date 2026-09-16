@@ -1515,27 +1515,166 @@ export class DeezerAuth extends EventEmitter {
     return response.results
   }
 
+  // ---- Lyrics --------------------------------------------------------------
+  //
+  // Deezer's legacy gateway call (song.getLyrics) has been shedding its synced
+  // block on newer catalog while still returning the plain text (#158): the
+  // Deezer app shows timed lyrics for the track, the gateway answers with
+  // LYRICS_TEXT and no LYRICS_SYNC_JSON. The timed lines still exist behind the
+  // GraphQL lyrics API the Deezer app itself reads now, so when the gateway comes
+  // back without a synced block we ask there and map the lines into the gateway
+  // shape (line, milliseconds, lrc_timestamp) that every consumer already reads:
+  // the .lrc writer, the SYLT frame, and the FLAC SYNCEDLYRICS comment.
+  //
+  // The GraphQL API needs a short-lived JWT minted from the session's arl. It is
+  // cached per arl value so a login or logout self-invalidates it, and a 401/403
+  // forces one re-mint before giving up. Guests have no arl and get no fallback.
+
+  private static readonly PIPE_API_URL = 'https://pipe.deezer.com/api'
+  private static readonly PIPE_AUTH_URL = 'https://auth.deezer.com/login/arl?jo=p&rto=c&i=c'
+  private pipeJwt: { token: string; expiresAt: number; arl: string } | null = null
+
   /**
    * Get lyrics for a track
    * Returns lyrics object with LYRICS_TEXT (plain text) and LYRICS_SYNC_JSON (synced/timestamped)
    */
   async getLyrics(trackId: string | number): Promise<any> {
+    let results: any = null
     try {
       const response = await this.apiCall('song.getLyrics', { sng_id: trackId })
       if (response.error && Object.keys(response.error).length > 0) {
-        console.log(`[DeezerAuth] No lyrics available for track ${trackId}:`, response.error)
-        return null
+        console.log(`[DeezerAuth] No lyrics from gateway for track ${logSafe(trackId)}:`, logSafe(JSON.stringify(response.error)))
+      } else {
+        results = response.results
       }
-      console.log(`[DeezerAuth] Got lyrics for track ${trackId}:`, {
-        hasText: !!response.results?.LYRICS_TEXT,
-        hasSynced: !!response.results?.LYRICS_SYNC_JSON,
-        syncedLines: response.results?.LYRICS_SYNC_JSON?.length || 0
-      })
-      return response.results
     } catch (error: any) {
       console.log(`[DeezerAuth] Failed to get lyrics for track ${logSafe(trackId)}:`, logSafe(error.message))
+    }
+
+    const gatewaySynced = Array.isArray(results?.LYRICS_SYNC_JSON) ? results.LYRICS_SYNC_JSON.length : 0
+    let syncedSource: 'gateway' | 'pipe' | 'none' = gatewaySynced > 0 ? 'gateway' : 'none'
+
+    if (gatewaySynced === 0) {
+      const pipe = await this.getLyricsFromPipe(trackId)
+      if (pipe) {
+        results = {
+          ...(results || {}),
+          LYRICS_TEXT: results?.LYRICS_TEXT || pipe.text,
+          ...(pipe.synced.length > 0 ? { LYRICS_SYNC_JSON: pipe.synced } : {})
+        }
+        if (pipe.synced.length > 0) syncedSource = 'pipe'
+      }
+    }
+
+    if (!results) return null
+    console.log(`[DeezerAuth] Got lyrics for track ${logSafe(trackId)}:`, {
+      hasText: !!results.LYRICS_TEXT,
+      hasSynced: !!results.LYRICS_SYNC_JSON,
+      syncedLines: results.LYRICS_SYNC_JSON?.length || 0,
+      syncedSource
+    })
+    return results
+  }
+
+  // Mint (or reuse) the JWT the GraphQL lyrics API expects. Returns null for
+  // guest sessions, or when Deezer declines to issue one.
+  private async getPipeJwt(force = false): Promise<string | null> {
+    const arl = this.cookies.get('arl')
+    if (!arl) return null
+    const cached = this.pipeJwt
+    if (!force && cached && cached.arl === arl && Date.now() < cached.expiresAt - 60_000) {
+      return cached.token
+    }
+    const res = await this.postJson(DeezerAuth.PIPE_AUTH_URL, { Cookie: `arl=${arl}` }, '')
+    const token = res.json?.jwt
+    if (typeof token !== 'string' || token.length === 0) {
+      console.log(`[DeezerAuth] Pipe auth issued no token (status ${res.status})`)
       return null
     }
+    // Trust the token's own exp claim; fall back to a conservative half hour.
+    let expiresAt = Date.now() + 30 * 60_000
+    try {
+      const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString('utf8'))
+      if (typeof payload.exp === 'number') expiresAt = payload.exp * 1000
+    } catch { /* keep the fallback */ }
+    this.pipeJwt = { token, expiresAt, arl }
+    return token
+  }
+
+  private async getLyricsFromPipe(trackId: string | number): Promise<{
+    text: string
+    synced: Array<{ line: string; milliseconds: number; lrc_timestamp: string; duration?: number }>
+  } | null> {
+    try {
+      let jwt = await this.getPipeJwt()
+      if (!jwt) return null
+      const body = JSON.stringify({
+        operationName: 'SynchronizedTrackLyrics',
+        variables: { trackId: String(trackId) },
+        query: 'query SynchronizedTrackLyrics($trackId: String!) { track(trackId: $trackId) { id lyrics { id text synchronizedLines { lrcTimestamp line milliseconds duration } } } }'
+      })
+      let res = await this.postJson(DeezerAuth.PIPE_API_URL, { Authorization: `Bearer ${jwt}` }, body)
+      if (res.status === 401 || res.status === 403) {
+        jwt = await this.getPipeJwt(true)
+        if (!jwt) return null
+        res = await this.postJson(DeezerAuth.PIPE_API_URL, { Authorization: `Bearer ${jwt}` }, body)
+      }
+      const lyrics = res.json?.data?.track?.lyrics
+      if (!lyrics) {
+        const reason = res.json?.errors?.[0]?.message || `status ${res.status}`
+        console.log(`[DeezerAuth] No lyrics from pipe for track ${logSafe(trackId)}: ${logSafe(reason)}`)
+        return null
+      }
+      const synced = Array.isArray(lyrics.synchronizedLines)
+        ? lyrics.synchronizedLines
+            .filter((l: any) => l && typeof l.line === 'string' && Number.isFinite(Number(l.milliseconds)))
+            .map((l: any) => ({
+              line: l.line,
+              milliseconds: Number(l.milliseconds),
+              lrc_timestamp: typeof l.lrcTimestamp === 'string' ? l.lrcTimestamp : '',
+              duration: Number.isFinite(Number(l.duration)) ? Number(l.duration) : undefined
+            }))
+        : []
+      return { text: typeof lyrics.text === 'string' ? lyrics.text : '', synced }
+    } catch (error: any) {
+      console.log(`[DeezerAuth] Pipe lyrics request failed for track ${logSafe(trackId)}:`, logSafe(error.message))
+      return null
+    }
+  }
+
+  // Small JSON POST over the shared agent. Never throws on a non-2xx status;
+  // callers read res.status. Rejects only on transport failure or unparseable
+  // JSON, which the lyrics callers catch and treat as "no lyrics".
+  private postJson(url: string, headers: Record<string, string>, body: string): Promise<{ status: number; json: any }> {
+    return new Promise((resolve, reject) => {
+      const req = https.request(url, {
+        method: 'POST',
+        agent: httpsAgent,
+        timeout: 30000,
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(body),
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'application/json',
+          'Origin': 'https://www.deezer.com',
+          'Referer': 'https://www.deezer.com/',
+          ...headers
+        }
+      }, (res) => {
+        let data = ''
+        res.on('data', chunk => data += chunk)
+        res.on('end', () => {
+          try {
+            resolve({ status: res.statusCode || 0, json: data ? JSON.parse(data) : null })
+          } catch {
+            reject(new Error(`Non-JSON response (status ${res.statusCode})`))
+          }
+        })
+      })
+      req.on('timeout', () => { req.destroy(); reject(new Error('Request timed out')) })
+      req.on('error', reject)
+      req.end(body)
+    })
   }
 
   async getAlbumInfo(albumId: string | number): Promise<any> {
