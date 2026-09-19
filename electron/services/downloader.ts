@@ -1106,7 +1106,7 @@ export class Downloader extends EventEmitter {
       // the Deezer path (saveCovers toggle, name template, never overwrites).
       if (options.saveArtwork && cover) {
         try {
-          this.saveArtworkBuffer(cover, path.dirname(result.path), options)
+          await this.saveArtworkBuffer(cover, path.dirname(result.path), options)
         } catch (artErr: any) {
           console.error('[Downloader] Qobuz artwork save error (non-fatal):', artErr.message)
         }
@@ -3124,7 +3124,7 @@ export class Downloader extends EventEmitter {
 
         if (taggedBuffer && Buffer.isBuffer(taggedBuffer)) {
           console.log(`[Downloader] Tagged buffer size: ${taggedBuffer.length} bytes`)
-          this.writeFileAtomic(filePath, taggedBuffer)
+          await this.writeFileAtomic(filePath, taggedBuffer)
           console.log('[Downloader] Tags written successfully via buffer method')
 
           // Write ID3v1 tags if enabled (for legacy player compatibility)
@@ -4092,7 +4092,7 @@ export class Downloader extends EventEmitter {
    *  no Deezer CDN hash to fetch from). Honors the same albumCovers settings as
    *  saveArtwork(): saveCovers toggle, cover name template, never overwrites an
    *  existing non-empty cover. */
-  private saveArtworkBuffer(cover: Buffer, outputDir: string, options: DownloadOptions): void {
+  private async saveArtworkBuffer(cover: Buffer, outputDir: string, options: DownloadOptions): Promise<void> {
     const albumCoverSettings = options.metadataSettings?.albumCovers || {
       saveCovers: true,
       coverNameTemplate: 'cover'
@@ -4111,7 +4111,7 @@ export class Downloader extends EventEmitter {
     // single step, so a zero-byte leftover is overwritten rather than removed
     // into a window where the path is briefly absent.
     if (fs.existsSync(artworkPath) && fs.statSync(artworkPath).size > 0) return
-    this.writeFileAtomic(artworkPath, cover)
+    await this.writeFileAtomic(artworkPath, cover)
     console.log(`[Downloader] Saved Qobuz artwork: ${artworkPath} (${cover.length} bytes)`)
   }
 
@@ -4125,14 +4125,91 @@ export class Downloader extends EventEmitter {
    * renaming makes the swap atomic within the filesystem, so the last writer
    * wins whole and no reader ever sees a half-written file.
    */
-  private writeFileAtomic(targetPath: string, data: Buffer): void {
+  private async writeFileAtomic(targetPath: string, data: Buffer): Promise<void> {
     const tmpPath = `${targetPath}.${process.pid}.${crypto.randomBytes(4).toString('hex')}.tmp`
     try {
-      fs.writeFileSync(tmpPath, data)
-      fs.renameSync(tmpPath, targetPath)
-    } catch (error) {
-      try { fs.unlinkSync(tmpPath) } catch { /* nothing left to clean up */ }
-      throw error
+      await fs.promises.writeFile(tmpPath, data)
+      try {
+        await this.renameWithRetry(tmpPath, targetPath)
+      } catch (renameError: any) {
+        // Windows: a virus scanner, Explorer's thumbnail pass or a cloud-sync
+        // client can hold the new file long enough that every rename attempt
+        // fails with EPERM/EBUSY. Landing the bytes non-atomically beats the
+        // v2.5.8–2.6.2 behaviour of leaving a stray .tmp and no cover at all
+        // (#159). The tmp is removed in `finally` below.
+        if (!Downloader.isTransientFsError(renameError)) throw renameError
+        console.warn(`[Downloader] Rename kept failing (${renameError.code}), writing ${targetPath} directly`)
+        await fs.promises.writeFile(targetPath, data)
+      }
+    } finally {
+      await Downloader.unlinkWithRetry(tmpPath)
+    }
+    await Downloader.sweepStaleTmpSiblings(targetPath)
+  }
+
+  // EPERM / EACCES / EBUSY on Windows usually mean "another process has a
+  // handle on this file right now", not a real permission problem. Retry.
+  private static isTransientFsError(error: any): boolean {
+    const code = error?.code
+    return code === 'EPERM' || code === 'EACCES' || code === 'EBUSY'
+  }
+
+  // Backoff schedule: ~3 s in total, most locks clear within the first 100 ms.
+  private static readonly RENAME_RETRY_DELAYS_MS = [25, 50, 100, 200, 400, 800, 1000]
+
+  private async renameWithRetry(from: string, to: string): Promise<void> {
+    for (let attempt = 0; ; attempt++) {
+      try {
+        await fs.promises.rename(from, to)
+        return
+      } catch (error: any) {
+        const delay = Downloader.RENAME_RETRY_DELAYS_MS[attempt]
+        if (delay === undefined || !Downloader.isTransientFsError(error)) throw error
+        await new Promise(resolve => setTimeout(resolve, delay))
+      }
+    }
+  }
+
+  // Best-effort removal of a staging file. A locked tmp gets the same patience
+  // as the rename; if it still will not go, say so and name the path.
+  private static async unlinkWithRetry(tmpPath: string): Promise<void> {
+    for (let attempt = 0; ; attempt++) {
+      try {
+        await fs.promises.unlink(tmpPath)
+        return
+      } catch (error: any) {
+        if (error?.code === 'ENOENT') return
+        const delay = Downloader.RENAME_RETRY_DELAYS_MS[attempt]
+        if (delay === undefined || !Downloader.isTransientFsError(error)) {
+          console.warn(`[Downloader] Could not remove staging file ${tmpPath} (${error?.code || error})`)
+          return
+        }
+        await new Promise(resolve => setTimeout(resolve, delay))
+      }
+    }
+  }
+
+  // Remove `<name>.<pid>.<hex>.tmp` leftovers from earlier runs that sat next
+  // to this target (the #159 symptom), so a re-sync cleans a folder up instead
+  // of adding to the pile. Only other processes' pids are touched: a tmp with
+  // our own pid may belong to a concurrent worker that has not renamed yet.
+  private static async sweepStaleTmpSiblings(targetPath: string): Promise<void> {
+    const dir = path.dirname(targetPath)
+    const base = path.basename(targetPath)
+    const stale = new RegExp(`^${base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\.(\\d+)\\.[0-9a-f]{8}\\.tmp$`)
+    let entries: string[]
+    try {
+      entries = await fs.promises.readdir(dir)
+    } catch {
+      return
+    }
+    for (const entry of entries) {
+      const match = stale.exec(entry)
+      if (!match || Number(match[1]) === process.pid) continue
+      try {
+        await fs.promises.unlink(path.join(dir, entry))
+        console.log(`[Downloader] Removed stale staging file: ${path.join(dir, entry)}`)
+      } catch { /* best effort */ }
     }
   }
 
@@ -4179,7 +4256,7 @@ export class Downloader extends EventEmitter {
       const buffer = await this.downloadBuffer(artworkUrl)
 
       if (buffer.length > 0) {
-        this.writeFileAtomic(artworkPath, buffer)
+        await this.writeFileAtomic(artworkPath, buffer)
         console.log(`[Downloader] Saved artwork: ${artworkPath} (${buffer.length} bytes)`)
       } else {
         console.error('[Downloader] Downloaded artwork is empty')
@@ -4248,7 +4325,7 @@ export class Downloader extends EventEmitter {
       const buffer = await this.downloadBuffer(url)
 
       if (buffer.length > 0) {
-        this.writeFileAtomic(artworkPath, buffer)
+        await this.writeFileAtomic(artworkPath, buffer)
         console.log(`[Downloader] Saved playlist cover: ${artworkPath} (${buffer.length} bytes)`)
       }
     } catch (error) {
@@ -4311,7 +4388,7 @@ export class Downloader extends EventEmitter {
       const buffer = await this.downloadBuffer(artworkUrl)
 
       if (buffer.length > 0) {
-        this.writeFileAtomic(artistImagePath, buffer)
+        await this.writeFileAtomic(artistImagePath, buffer)
         console.log(`[Downloader] Saved artist image: ${artistImagePath} (${buffer.length} bytes)`)
       } else {
         console.error('[Downloader] Downloaded artist image is empty')
