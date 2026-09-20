@@ -745,6 +745,9 @@
     "openFolder": "Otvori mapu preuzimanja",
     "clearFinished": "Očisti završeno",
     "cancelAll": "Poništi sve",
+    "rackFolder": "MAPA",
+    "rackClear": "OČISTI",
+    "rackAbort": "PONIŠTI",
     "errorDetails": "Detalji greške preuzimanja",
     "failedTracks": "Neuspjele pjesme",
     "downloadLocation": "Lokacija preuzimanja",
@@ -996,7 +999,9 @@
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz povezan",
-    "qobuzOfflineTip": "Qobuz nije povezan — povežite se u Postavkama"
+    "qobuzOfflineTip": "Qobuz nije povezan — povežite se u Postavkama",
+    "region": "REGIJA",
+    "quality": "KVALITETA"
   },
   "about": {
     "disclaimer": "Ova aplikacija nije povezana s Deezerom, Qobuzom ni Spotifyjem, niti su je oni odobrili ili podržali. Namijenjena je osobnoj upotrebi s vlastitim računima. Molimo koristite je odgovorno i u skladu s lokalnim zakonima o preuzimanju glazbe te poštujte autorska prava i uvjete pružanja usluge svake streaming platforme. Preuzimanja s Qobuza zahtijevaju vlastitu aktivnu plaćenu Qobuz pretplatu.",

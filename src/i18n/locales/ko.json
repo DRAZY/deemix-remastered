@@ -745,6 +745,9 @@
     "openFolder": "다운로드 폴더 열기",
     "clearFinished": "완료된 항목 지우기",
     "cancelAll": "모두 취소",
+    "rackFolder": "폴더",
+    "rackClear": "지우기",
+    "rackAbort": "취소",
     "errorDetails": "다운로드 오류 상세",
     "failedTracks": "실패한 트랙",
     "downloadLocation": "다운로드 위치",
@@ -996,7 +999,9 @@
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz 연결됨",
-    "qobuzOfflineTip": "Qobuz 연결 안 됨 — 설정에서 연결하세요"
+    "qobuzOfflineTip": "Qobuz 연결 안 됨 — 설정에서 연결하세요",
+    "region": "지역",
+    "quality": "음질"
   },
   "about": {
     "disclaimer": "이 앱은 Deezer, Qobuz 또는 Spotify와 제휴하거나 이들로부터 승인 또는 보증을 받지 않았습니다. 본인 계정으로 개인적으로 사용하도록 만들어졌습니다. 음악 다운로드에 관한 현지 법률에 따라 책임감 있게 사용하고, 각 스트리밍 플랫폼의 저작권과 서비스 약관을 존중해 주세요. Qobuz 다운로드에는 본인 명의의 활성 유료 Qobuz 구독이 필요합니다.",

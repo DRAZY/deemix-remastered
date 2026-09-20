@@ -745,6 +745,9 @@
     "openFolder": "Otwórz folder pobierania",
     "clearFinished": "Wyczyść ukończone",
     "cancelAll": "Anuluj wszystko",
+    "rackFolder": "FOLDER",
+    "rackClear": "WYCZYŚĆ",
+    "rackAbort": "ANULUJ",
     "errorDetails": "Szczegóły błędu pobierania",
     "failedTracks": "Nieudane utwory",
     "downloadLocation": "Lokalizacja pobierania",
@@ -996,7 +999,9 @@
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz połączony",
-    "qobuzOfflineTip": "Qobuz nie połączony — połącz w Ustawieniach"
+    "qobuzOfflineTip": "Qobuz nie połączony — połącz w Ustawieniach",
+    "region": "REGION",
+    "quality": "JAKOŚĆ"
   },
   "about": {
     "disclaimer": "Ta aplikacja nie jest powiązana z Deezer, Qobuz ani Spotify, nie jest przez nie autoryzowana ani wspierana. Jest przeznaczona do użytku osobistego z Twoimi własnymi kontami. Korzystaj z niej odpowiedzialnie i zgodnie z lokalnymi przepisami dotyczącymi pobierania muzyki oraz szanuj prawa autorskie i warunki korzystania z usługi każdej platformy streamingowej. Pobieranie z Qobuz wymaga Twojej własnej aktywnej, płatnej subskrypcji Qobuz.",

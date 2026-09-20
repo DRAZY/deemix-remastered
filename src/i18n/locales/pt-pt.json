@@ -745,6 +745,9 @@
     "openFolder": "Abrir pasta de transferências",
     "clearFinished": "Limpar concluídas",
     "cancelAll": "Cancelar tudo",
+    "rackFolder": "PASTA",
+    "rackClear": "LIMPAR",
+    "rackAbort": "CANCELAR",
     "errorDetails": "Detalhes do erro",
     "failedTracks": "Faixas com falha",
     "downloadLocation": "Local da transferência",
@@ -996,7 +999,9 @@
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz ligado",
-    "qobuzOfflineTip": "Qobuz não ligado — ligue nas Definições"
+    "qobuzOfflineTip": "Qobuz não ligado — ligue nas Definições",
+    "region": "REGIÃO",
+    "quality": "QUALIDADE"
   },
   "about": {
     "disclaimer": "Esta aplicação não está associada, autorizada nem aprovada pela Deezer, Qobuz ou Spotify. Destina-se a uso pessoal com as suas próprias contas. Utilize-a de forma responsável e em conformidade com as leis locais relativas à transferência de música, e respeite os direitos de autor e os termos de serviço de cada plataforma de streaming. As transferências do Qobuz exigem a sua própria subscrição Qobuz paga e ativa.",

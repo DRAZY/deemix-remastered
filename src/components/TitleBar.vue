@@ -123,12 +123,12 @@ const close = () => window.electronAPI?.close()
 
     <!-- Region -->
     <div v-if="region" class="hidden md:flex items-center h-full px-4 border-r border-white/[0.06] font-mono text-[10.5px] tracking-[0.08em] text-foreground-muted">
-      REGION · {{ region }}
+      {{ t('titleBar.region') }} · {{ region }}
     </div>
 
     <!-- Quality -->
     <div class="hidden md:flex items-center h-full px-4 border-r border-white/[0.06] font-mono text-[10.5px] tracking-[0.08em] text-foreground-muted">
-      QUALITY · {{ qualityLabel }}
+      {{ t('titleBar.quality') }} · {{ qualityLabel }}
     </div>
 
     <!-- Live throughput (only while downloading) -->

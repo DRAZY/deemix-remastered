@@ -745,6 +745,9 @@
     "openFolder": "打开下载文件夹",
     "clearFinished": "清除已完成",
     "cancelAll": "取消全部",
+    "rackFolder": "文件夹",
+    "rackClear": "清除",
+    "rackAbort": "中止",
     "errorDetails": "下载错误详情",
     "failedTracks": "失败的歌曲",
     "downloadLocation": "下载位置",
@@ -996,7 +999,9 @@
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz 已连接",
-    "qobuzOfflineTip": "Qobuz 未连接 — 请在设置中连接"
+    "qobuzOfflineTip": "Qobuz 未连接 — 请在设置中连接",
+    "region": "地区",
+    "quality": "音质"
   },
   "about": {
     "disclaimer": "本应用与 Deezer、Qobuz 或 Spotify 无任何隶属关系，未获得其授权，也未获得其认可。本应用仅供您使用自己的账户进行个人使用。请负责任地使用，并遵守您所在地关于音乐下载的法律，同时尊重版权以及各流媒体平台的服务条款。从 Qobuz 下载需要您本人有效的付费 Qobuz 订阅。",

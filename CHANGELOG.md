@@ -15,6 +15,7 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ### Changed
 - The "ISRC fallback" setting is now "Alternate version fallback", with a hover explanation, because it covers every kind of substitution. Your saved choice carries over.
+- The three Transfer Rack buttons (Folder, Clear, Abort) and the Region and Quality labels in the title bar are now translated in all 21 languages (#148, raised by @GravuTrad). They are controls and field labels, not branding. The status readouts that give the app its instrument-panel voice, such as LINK ESTABLISHED, LIVE and STORED, stay in English on purpose.
 - The alternate-version track list marks each track **Same recording** or **Different recording** by comparing the ISRC you asked for with the one you got, so you can see at a glance whether an album came down as a hybrid of masters. All five new and reworded strings ship in all 21 languages.
 
 ### Fixed

@@ -745,6 +745,9 @@
     "openFolder": "İndirme klasörünü aç",
     "clearFinished": "Tamamlananları temizle",
     "cancelAll": "Tümünü iptal et",
+    "rackFolder": "KLASÖR",
+    "rackClear": "TEMİZLE",
+    "rackAbort": "İPTAL",
     "errorDetails": "İndirme hata detayları",
     "failedTracks": "Başarısız şarkılar",
     "downloadLocation": "İndirme konumu",
@@ -996,7 +999,9 @@
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz bağlı",
-    "qobuzOfflineTip": "Qobuz bağlı değil — Ayarlar'dan bağlanın"
+    "qobuzOfflineTip": "Qobuz bağlı değil — Ayarlar'dan bağlanın",
+    "region": "BÖLGE",
+    "quality": "KALİTE"
   },
   "about": {
     "disclaimer": "Bu uygulama Deezer, Qobuz veya Spotify ile bağlantılı değildir, onlar tarafından yetkilendirilmemiş ve onaylanmamıştır. Kendi hesaplarınızla kişisel kullanım için tasarlanmıştır. Lütfen uygulamayı sorumlu bir şekilde ve müzik indirmeyle ilgili yerel yasalarınıza uygun olarak kullanın, ayrıca her yayın platformunun telif haklarına ve hizmet şartlarına saygı gösterin. Qobuz indirmeleri, kendinize ait etkin ve ücretli bir Qobuz aboneliği gerektirir.",

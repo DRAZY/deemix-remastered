@@ -836,6 +836,9 @@
     "openFolder": "Ouvrir le dossier de téléchargement",
     "clearFinished": "Effacer les terminés",
     "cancelAll": "Tout annuler",
+    "rackFolder": "DOSSIER",
+    "rackClear": "EFFACER",
+    "rackAbort": "ANNULER",
     "errorDetails": "Détails de l’erreur de téléchargement",
     "failedTracks": "Titres en échec",
     "downloadLocation": "Emplacement de téléchargement",
@@ -1063,6 +1066,8 @@
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz connecté",
-    "qobuzOfflineTip": "Qobuz non connecté — connectez-vous dans les Paramètres"
+    "qobuzOfflineTip": "Qobuz non connecté — connectez-vous dans les Paramètres",
+    "region": "RÉGION",
+    "quality": "QUALITÉ"
   }
 }
