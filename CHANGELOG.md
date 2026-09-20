@@ -10,6 +10,12 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+## [2.6.3] - 2026-09-19
+
+### Summary
+
+- **Albums with rights-locked tracks now come down looking like one album, and the app is honest about what it substituted: alternate versions keep the requested album's cover and dates, each one is marked same or different recording, and turning alternates off finally means the exact track or nothing. Also fixed: favourites vanishing on restart for large libraries, stray `.tmp` files in place of cover art on Windows, and missing synced lyrics on newer tracks. The rack buttons and title-bar labels are translated in all 21 languages, and the packaged app ships with Electron's hardening fuses.**
+
 ### Security
 - The packaged app now ships with Electron's hardening fuses set on every platform: `ELECTRON_RUN_AS_NODE`, `NODE_OPTIONS` and `--inspect` are ignored, and the app only loads its own integrity-checked `app.asar`. The shipped binary can no longer be repurposed as a bare Node interpreter running under the app's identity.
 

@@ -78,10 +78,14 @@ missed. Do not stop at layer one.
 - **No hard-coded UI copy.** Every toast, label, status word and help text goes
   through vue-i18n (`t()` in components, `i18n.global.t()` in stores and
   composables). A string typed into a component is invisible to all 21
-  languages. The only exemption is the app's branded labels ("Transfer Rack",
-  "Signal Deck", "AGGREGATE RATE", "Pull the signal"), which stay English on
-  purpose. (Learned 2026-09-13 from #148: about 130 strings had bypassed the
-  system, and nineteen locales were each missing a third of the app.)
+  languages. The only exemptions are the app's branded labels ("Transfer Rack",
+  "Signal Deck", "AGGREGATE RATE", "Pull the signal") and its instrument-panel
+  status readouts (LINK ESTABLISHED, LIVE, STORED, RECV and the like), which
+  stay English on purpose. A control or field label is never exempt, however it
+  is styled: the rack's Folder, Clear and Abort buttons were translated in 2.6.3
+  after a translator rightly called them out (#148). (Learned 2026-09-13 from
+  #148: about 130 strings had bypassed the system, and nineteen locales were
+  each missing a third of the app.)
 
 - **A new key ships in all 21 locale files in the same commit.** English first,
   then every other locale, so the fallback never leaves a language half
