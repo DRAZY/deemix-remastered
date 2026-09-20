@@ -7,9 +7,7 @@ import { spotifyConverter } from './spotifyConverter'
 import { deezerAuth } from './deezerAuth'
 import { downloader, type DownloadOptions, type FolderSettings, type TrackTemplates, type MetadataSettings } from './downloader'
 import { fetchDeezerPublicJson } from './deezerPublicApi'
-
-/** Collapse newlines so remote-supplied text cannot forge extra log lines. */
-const logSafe = (v: unknown): string => String(v ?? '').replace(/[\r\n]+/g, ' ')
+import { logSafe } from './logSafe'
 
 export interface SyncDownloadSettings {
   downloadPath: string

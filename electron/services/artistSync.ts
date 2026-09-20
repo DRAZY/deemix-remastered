@@ -7,9 +7,7 @@ import { downloader, type DownloadOptions, type FolderSettings, type TrackTempla
 import { runPool, safeWriteJson, quarantineCorruptFile } from './playlistSync'
 import { fetchDeezerPublicJson, fetchDeezerPublicPaginated } from './deezerPublicApi'
 import { buildAlbumContext, type AlbumContext } from './albumContext'
-
-/** Collapse newlines so remote-supplied text cannot forge extra log lines. */
-const logSafe = (v: unknown): string => String(v ?? '').replace(/[\r\n]+/g, ' ')
+import { logSafe } from './logSafe'
 
 // Reuse the SyncSchedule contract from playlistSync to keep one source of truth
 // for cadence semantics across both engines.

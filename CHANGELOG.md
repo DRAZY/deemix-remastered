@@ -10,6 +10,9 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+### Security
+- Log lines can no longer be tampered with through terminal escape codes. Text from outside the app (API errors, track and playlist names, links) was only having line breaks removed before it was logged, so an escape sequence could recolour, hide or rewrite lines for anyone reading the log in a terminal. One shared sanitiser now escapes every control character and replaces seven separate copies of the old one. Found while triaging the three code-scanning alerts raised by 2.6.3, two of which were false positives on the cover-writing code and are recorded in `docs/SECURITY_TRIAGE.md`.
+
 ## [2.6.3] - 2026-09-19
 
 ### Summary

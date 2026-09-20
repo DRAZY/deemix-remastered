@@ -36,9 +36,7 @@ import fs from 'fs'
 import path from 'path'
 import { EventEmitter } from 'events'
 import { app } from 'electron'
-
-/** Collapse newlines so remote-supplied text cannot forge extra log lines. */
-const logSafe = (v: unknown): string => String(v ?? '').replace(/[\r\n]+/g, ' ')
+import { logSafe } from './logSafe'
 
 const QOBUZ_API_BASE = 'https://www.qobuz.com/api.json/0.2'
 const QOBUZ_LOGIN_PAGE = 'https://play.qobuz.com/login'
