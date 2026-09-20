@@ -10,6 +10,7 @@ import { libraryIndex } from './libraryIndex'
 import { qobuzAuth } from './qobuzAuth'
 import { downloadQobuzTrack } from './qobuzDownloader'
 import { probeAudioFile, expectedContainer, isLowerTier } from './audioProbe'
+import { pinReleaseFields } from './albumContext'
 
 /** Collapse newlines so remote-supplied text cannot forge extra log lines. */
 const logSafe = (v: unknown): string => String(v ?? '').replace(/[\r\n]+/g, ' ')
@@ -160,6 +161,7 @@ export interface DownloadOptions {
     recordType?: string      // Deezer record_type (album/single/ep/compile) — drives the RELEASETYPE tag (#82)
     upc?: string             // Album UPC/barcode — drives %barcode% / %upc% template substitution
     label?: string           // Album record label — public API only; trackInfo.LABEL_NAME is empty on private-API fetches
+    coverMd5?: string        // Requested album's cover hash — keeps a substituted track on this album's artwork
   }
   // Error logging
   createErrorLog?: boolean
@@ -1362,8 +1364,16 @@ export class Downloader extends EventEmitter {
           progress.substitutedSameRecording = (requestedIsrc && resolvedIsrc)
             ? requestedIsrc === resolvedIsrc
             : undefined
+          // Album download: the file belongs to the requested album, so its
+          // cover, dates and other release-level fields stay that album's. Only
+          // the track-level truth (title, ISRC, gain…) comes from the alternate.
+          const requestedAlbumTitle = trackInfo.ALB_TITLE
+          const { info: pinnedInfo, leaked } = pinReleaseFields(resolvedInfo, trackInfo, options.albumContext)
+          if (options.albumContext) {
+            console.log(`[Downloader] Alternate kept on requested release "${requestedAlbumTitle || options.albumContext.albumTitle}"${leaked.length ? ` — no requested value for: ${leaked.join(', ')} (alternate's kept)` : ''}`)
+          }
           console.log(`[Downloader] Alternate recording check: requested ISRC ${requestedIsrc || '(none)'} vs ${resolvedIsrc || '(none)'} → ${progress.substitutedSameRecording === undefined ? 'unknown' : progress.substitutedSameRecording ? 'same recording' : 'DIFFERENT recording'}`)
-          trackInfo = resolvedInfo
+          trackInfo = pinnedInfo
           // Restore original position so the file is numbered correctly on this
           // album. Restricted tracks sometimes come back from song.getData without
           // usable numbers, so fall back to the album-tracklist position the
