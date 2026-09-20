@@ -33,6 +33,20 @@ rather than in a global config.
   if an asset is ever lost, since the API cannot recover a deleted asset's
   count.
 
+- **Windows and Linux installers need Rosetta on this Mac.** electron-builder's
+  cached `makensis` and AppImage tools are Intel-only, so without Rosetta 2 the
+  Mac targets build and everything else dies with `spawn Unknown system error
+  -86`. A major macOS upgrade can remove Rosetta, so check
+  `arch -x86_64 /usr/bin/true` before a rollout and fix with
+  `softwareupdate --install-rosetta --agree-to-license`. Run the builds outside
+  the Claude Code sandbox: its proxy aborts the large Electron download.
+  (Learned 2026-09-19 on 2.6.3, after the move to macOS 27.)
+
+- **Publish as a draft, then flip it.** The app's update check reads GitHub's
+  latest release, so a release that goes live before all ten installers are
+  attached tells users about an update they cannot download. Create with
+  `--draft`, upload, verify the count, then `gh release edit --draft=false`.
+
 - **Housekeeping ships with the version.** Each rollout audits and updates
   project structure and documentation surfaces so they describe what actually
   changed.
