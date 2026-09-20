@@ -1,6 +1,6 @@
 {
   "name": "deemix-app",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "description": "Modern Deezer music downloader",
   "author": {
     "name": "Team MAXIMUS",
@@ -76,6 +76,14 @@
       "public/**/*",
       "package.json"
     ],
+    "electronFuses": {
+      "runAsNode": false,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true,
+      "resetAdHocDarwinSignature": true
+    },
     "mac": {
       "target": [
         "dmg"

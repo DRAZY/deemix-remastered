@@ -10,6 +10,7 @@ import { libraryIndex } from './libraryIndex'
 import { qobuzAuth } from './qobuzAuth'
 import { downloadQobuzTrack } from './qobuzDownloader'
 import { probeAudioFile, expectedContainer, isLowerTier } from './audioProbe'
+import { pinReleaseFields } from './albumContext'
 
 /** Collapse newlines so remote-supplied text cannot forge extra log lines. */
 const logSafe = (v: unknown): string => String(v ?? '').replace(/[\r\n]+/g, ' ')
@@ -107,7 +108,7 @@ export interface DownloadOptions {
   prefetchedCover?: Buffer      // pre-fetched cover art (e.g. Qobuz URL), used instead of the Deezer-hash CDN fetch
   quality: 'MP3_128' | 'MP3_320' | 'FLAC'
   bitrateFallback?: boolean  // Whether to fallback to lower bitrates if preferred unavailable
-  isrcFallback?: boolean     // Whether to resolve an unavailable track to an ISRC-matched alternate release (may be a different master)
+  isrcFallback?: boolean     // Whether an unavailable track may resolve to an alternate version: Deezer's FALLBACK pointer or an ISRC-matched release (either may be a different master). Off = the exact track or nothing.
   createFolders: boolean
   artistFolder: boolean
   albumFolder: boolean
@@ -160,6 +161,7 @@ export interface DownloadOptions {
     recordType?: string      // Deezer record_type (album/single/ep/compile) — drives the RELEASETYPE tag (#82)
     upc?: string             // Album UPC/barcode — drives %barcode% / %upc% template substitution
     label?: string           // Album record label — public API only; trackInfo.LABEL_NAME is empty on private-API fetches
+    coverMd5?: string        // Requested album's cover hash — keeps a substituted track on this album's artwork
   }
   // Error logging
   createErrorLog?: boolean
@@ -216,6 +218,11 @@ export interface DownloadProgress {
   playlistFolder?: string  // Playlist root folder path - used for deletion of entire playlist
   actualFormat?: string  // Actual downloaded format (may differ from requested due to fallback)
   substituted?: boolean  // True when the exact track was unavailable and an ISRC/FALLBACK alternative (possibly a different master) was downloaded
+  // Only meaningful when substituted. true = the alternate carries the same ISRC
+  // as the requested track (same recording, other release); false = a different
+  // ISRC, i.e. a different recording or master; undefined = either side had no
+  // ISRC, so the app cannot say.
+  substitutedSameRecording?: boolean
   error?: string
   errorDetails?: DownloadErrorDetails  // Enhanced error information
   skippedAsDuplicate?: boolean  // Completed by being skipped as a library duplicate (by ISRC)
@@ -1106,7 +1113,7 @@ export class Downloader extends EventEmitter {
       // the Deezer path (saveCovers toggle, name template, never overwrites).
       if (options.saveArtwork && cover) {
         try {
-          this.saveArtworkBuffer(cover, path.dirname(result.path), options)
+          await this.saveArtworkBuffer(cover, path.dirname(result.path), options)
         } catch (artErr: any) {
           console.error('[Downloader] Qobuz artwork save error (non-fatal):', artErr.message)
         }
@@ -1346,13 +1353,27 @@ export class Downloader extends EventEmitter {
         // ISRC/FALLBACK-matched alternative from another release. Audio is bit-exact
         // to that source but may be a different master than the requested track.
         progress.substituted = true
+        const requestedIsrc = String(trackInfo.ISRC || '').trim().toUpperCase()
         // Preserve the original track/disc number — the resolved track may be from
         // a different album where it has a different position
         const originalTrackNumber = trackInfo.TRACK_NUMBER
         const originalDiskNumber = trackInfo.DISK_NUMBER
         const resolvedInfo = await deezerAuth.getTrackInfo(result.resolvedTrackId, { withCopyright: options.metadataSettings?.tags?.copyright === true })
         if (resolvedInfo) {
-          trackInfo = resolvedInfo
+          const resolvedIsrc = String(resolvedInfo.ISRC || '').trim().toUpperCase()
+          progress.substitutedSameRecording = (requestedIsrc && resolvedIsrc)
+            ? requestedIsrc === resolvedIsrc
+            : undefined
+          // Album download: the file belongs to the requested album, so its
+          // cover, dates and other release-level fields stay that album's. Only
+          // the track-level truth (title, ISRC, gain…) comes from the alternate.
+          const requestedAlbumTitle = trackInfo.ALB_TITLE
+          const { info: pinnedInfo, leaked } = pinReleaseFields(resolvedInfo, trackInfo, options.albumContext)
+          if (options.albumContext) {
+            console.log(`[Downloader] Alternate kept on requested release "${requestedAlbumTitle || options.albumContext.albumTitle}"${leaked.length ? ` — no requested value for: ${leaked.join(', ')} (alternate's kept)` : ''}`)
+          }
+          console.log(`[Downloader] Alternate recording check: requested ISRC ${requestedIsrc || '(none)'} vs ${resolvedIsrc || '(none)'} → ${progress.substitutedSameRecording === undefined ? 'unknown' : progress.substitutedSameRecording ? 'same recording' : 'DIFFERENT recording'}`)
+          trackInfo = pinnedInfo
           // Restore original position so the file is numbered correctly on this
           // album. Restricted tracks sometimes come back from song.getData without
           // usable numbers, so fall back to the album-tracklist position the
@@ -3124,7 +3145,7 @@ export class Downloader extends EventEmitter {
 
         if (taggedBuffer && Buffer.isBuffer(taggedBuffer)) {
           console.log(`[Downloader] Tagged buffer size: ${taggedBuffer.length} bytes`)
-          this.writeFileAtomic(filePath, taggedBuffer)
+          await this.writeFileAtomic(filePath, taggedBuffer)
           console.log('[Downloader] Tags written successfully via buffer method')
 
           // Write ID3v1 tags if enabled (for legacy player compatibility)
@@ -4092,7 +4113,7 @@ export class Downloader extends EventEmitter {
    *  no Deezer CDN hash to fetch from). Honors the same albumCovers settings as
    *  saveArtwork(): saveCovers toggle, cover name template, never overwrites an
    *  existing non-empty cover. */
-  private saveArtworkBuffer(cover: Buffer, outputDir: string, options: DownloadOptions): void {
+  private async saveArtworkBuffer(cover: Buffer, outputDir: string, options: DownloadOptions): Promise<void> {
     const albumCoverSettings = options.metadataSettings?.albumCovers || {
       saveCovers: true,
       coverNameTemplate: 'cover'
@@ -4111,7 +4132,7 @@ export class Downloader extends EventEmitter {
     // single step, so a zero-byte leftover is overwritten rather than removed
     // into a window where the path is briefly absent.
     if (fs.existsSync(artworkPath) && fs.statSync(artworkPath).size > 0) return
-    this.writeFileAtomic(artworkPath, cover)
+    await this.writeFileAtomic(artworkPath, cover)
     console.log(`[Downloader] Saved Qobuz artwork: ${artworkPath} (${cover.length} bytes)`)
   }
 
@@ -4125,14 +4146,91 @@ export class Downloader extends EventEmitter {
    * renaming makes the swap atomic within the filesystem, so the last writer
    * wins whole and no reader ever sees a half-written file.
    */
-  private writeFileAtomic(targetPath: string, data: Buffer): void {
+  private async writeFileAtomic(targetPath: string, data: Buffer): Promise<void> {
     const tmpPath = `${targetPath}.${process.pid}.${crypto.randomBytes(4).toString('hex')}.tmp`
     try {
-      fs.writeFileSync(tmpPath, data)
-      fs.renameSync(tmpPath, targetPath)
-    } catch (error) {
-      try { fs.unlinkSync(tmpPath) } catch { /* nothing left to clean up */ }
-      throw error
+      await fs.promises.writeFile(tmpPath, data)
+      try {
+        await this.renameWithRetry(tmpPath, targetPath)
+      } catch (renameError: any) {
+        // Windows: a virus scanner, Explorer's thumbnail pass or a cloud-sync
+        // client can hold the new file long enough that every rename attempt
+        // fails with EPERM/EBUSY. Landing the bytes non-atomically beats the
+        // v2.5.8–2.6.2 behaviour of leaving a stray .tmp and no cover at all
+        // (#159). The tmp is removed in `finally` below.
+        if (!Downloader.isTransientFsError(renameError)) throw renameError
+        console.warn(`[Downloader] Rename kept failing (${renameError.code}), writing ${targetPath} directly`)
+        await fs.promises.writeFile(targetPath, data)
+      }
+    } finally {
+      await Downloader.unlinkWithRetry(tmpPath)
+    }
+    await Downloader.sweepStaleTmpSiblings(targetPath)
+  }
+
+  // EPERM / EACCES / EBUSY on Windows usually mean "another process has a
+  // handle on this file right now", not a real permission problem. Retry.
+  private static isTransientFsError(error: any): boolean {
+    const code = error?.code
+    return code === 'EPERM' || code === 'EACCES' || code === 'EBUSY'
+  }
+
+  // Backoff schedule: ~3 s in total, most locks clear within the first 100 ms.
+  private static readonly RENAME_RETRY_DELAYS_MS = [25, 50, 100, 200, 400, 800, 1000]
+
+  private async renameWithRetry(from: string, to: string): Promise<void> {
+    for (let attempt = 0; ; attempt++) {
+      try {
+        await fs.promises.rename(from, to)
+        return
+      } catch (error: any) {
+        const delay = Downloader.RENAME_RETRY_DELAYS_MS[attempt]
+        if (delay === undefined || !Downloader.isTransientFsError(error)) throw error
+        await new Promise(resolve => setTimeout(resolve, delay))
+      }
+    }
+  }
+
+  // Best-effort removal of a staging file. A locked tmp gets the same patience
+  // as the rename; if it still will not go, say so and name the path.
+  private static async unlinkWithRetry(tmpPath: string): Promise<void> {
+    for (let attempt = 0; ; attempt++) {
+      try {
+        await fs.promises.unlink(tmpPath)
+        return
+      } catch (error: any) {
+        if (error?.code === 'ENOENT') return
+        const delay = Downloader.RENAME_RETRY_DELAYS_MS[attempt]
+        if (delay === undefined || !Downloader.isTransientFsError(error)) {
+          console.warn(`[Downloader] Could not remove staging file ${tmpPath} (${error?.code || error})`)
+          return
+        }
+        await new Promise(resolve => setTimeout(resolve, delay))
+      }
+    }
+  }
+
+  // Remove `<name>.<pid>.<hex>.tmp` leftovers from earlier runs that sat next
+  // to this target (the #159 symptom), so a re-sync cleans a folder up instead
+  // of adding to the pile. Only other processes' pids are touched: a tmp with
+  // our own pid may belong to a concurrent worker that has not renamed yet.
+  private static async sweepStaleTmpSiblings(targetPath: string): Promise<void> {
+    const dir = path.dirname(targetPath)
+    const base = path.basename(targetPath)
+    const stale = new RegExp(`^${base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\.(\\d+)\\.[0-9a-f]{8}\\.tmp$`)
+    let entries: string[]
+    try {
+      entries = await fs.promises.readdir(dir)
+    } catch {
+      return
+    }
+    for (const entry of entries) {
+      const match = stale.exec(entry)
+      if (!match || Number(match[1]) === process.pid) continue
+      try {
+        await fs.promises.unlink(path.join(dir, entry))
+        console.log(`[Downloader] Removed stale staging file: ${path.join(dir, entry)}`)
+      } catch { /* best effort */ }
     }
   }
 
@@ -4179,7 +4277,7 @@ export class Downloader extends EventEmitter {
       const buffer = await this.downloadBuffer(artworkUrl)
 
       if (buffer.length > 0) {
-        this.writeFileAtomic(artworkPath, buffer)
+        await this.writeFileAtomic(artworkPath, buffer)
         console.log(`[Downloader] Saved artwork: ${artworkPath} (${buffer.length} bytes)`)
       } else {
         console.error('[Downloader] Downloaded artwork is empty')
@@ -4248,7 +4346,7 @@ export class Downloader extends EventEmitter {
       const buffer = await this.downloadBuffer(url)
 
       if (buffer.length > 0) {
-        this.writeFileAtomic(artworkPath, buffer)
+        await this.writeFileAtomic(artworkPath, buffer)
         console.log(`[Downloader] Saved playlist cover: ${artworkPath} (${buffer.length} bytes)`)
       }
     } catch (error) {
@@ -4311,7 +4409,7 @@ export class Downloader extends EventEmitter {
       const buffer = await this.downloadBuffer(artworkUrl)
 
       if (buffer.length > 0) {
-        this.writeFileAtomic(artistImagePath, buffer)
+        await this.writeFileAtomic(artistImagePath, buffer)
         console.log(`[Downloader] Saved artist image: ${artistImagePath} (${buffer.length} bytes)`)
       } else {
         console.error('[Downloader] Downloaded artist image is empty')

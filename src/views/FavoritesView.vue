@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useFavoritesStore } from '../stores/favoritesStore'
 import { useAuthStore } from '../stores/authStore'
@@ -74,6 +74,27 @@ const tabs = computed(() => [
   { id: 'artists', label: t('favorites.artists'), count: () => favoritesStore.favoriteArtists.length, loading: () => favoritesStore.importingSections.artist },
   { id: 'playlists', label: t('favorites.playlists'), count: () => favoritesStore.favoritePlaylists.length, loading: () => favoritesStore.importingSections.playlist }
 ])
+
+// #149: a 7,000-track library rendered every card at once, which held the
+// page black for several seconds on every open. Render the sorted list in
+// windows of TRACK_WINDOW and grow it as the sentinel scrolls into view. The
+// full sortedTracks stays the source for search, sort and Download All.
+const TRACK_WINDOW = 150
+const trackLimit = ref(TRACK_WINDOW)
+const trackSentinel = ref<HTMLElement | null>(null)
+const visibleTracks = computed(() => sortedTracks.value.slice(0, trackLimit.value))
+let trackObserver: IntersectionObserver | null = null
+watch(trackSentinel, (el) => {
+  trackObserver?.disconnect()
+  trackObserver = null
+  if (!el) return
+  trackObserver = new IntersectionObserver((entries) => {
+    if (entries.some(e => e.isIntersecting)) trackLimit.value += TRACK_WINDOW
+  }, { rootMargin: '600px 0px' })
+  trackObserver.observe(el)
+})
+watch(() => [activeTab.value, sortOrder.value], () => { trackLimit.value = TRACK_WINDOW })
+onBeforeUnmount(() => trackObserver?.disconnect())
 
 onMounted(async () => {
   if (window.electronAPI) {
@@ -634,10 +655,13 @@ async function importFromDeezer() {
     <div v-if="activeTab === 'tracks'">
       <div v-if="sortedTracks.length > 0" class="space-y-1">
         <TrackCard
-          v-for="track in sortedTracks"
+          v-for="track in visibleTracks"
           :key="track.id"
           :track="track"
         />
+        <div v-if="visibleTracks.length < sortedTracks.length" ref="trackSentinel" class="py-3 text-center text-xs text-foreground-muted">
+          {{ t('favorites.showingCount', { shown: visibleTracks.length, total: sortedTracks.length }) }}
+        </div>
       </div>
       <EmptyState
         v-else

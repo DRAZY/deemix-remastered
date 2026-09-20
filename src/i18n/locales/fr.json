@@ -130,7 +130,9 @@
     "downgraded": "Débit inférieur",
     "downgradedTip": "Vous avez demandé {requested}, mais Deezer ne proposait que {actual} pour ce titre ; il a donc été téléchargé au débit inférieur. Il s’agit d’une limite du catalogue, pas d’un réencodage.",
     "substituted": "Version alternative",
-    "substitutedTip": "Le titre exact n’était pas disponible (généralement en raison d’une restriction régionale ou de droits). Une version ayant le même ISRC provenant d’une autre sortie a donc été téléchargée. L’audio est une copie exacte de cette autre sortie, mais le master peut être différent et le rendu sonore légèrement varier.",
+    "substitutedTip": "Le titre exact n’était pas disponible (généralement en raison d’une restriction de droits ou de région). Une version alternative provenant d’une autre sortie a donc été téléchargée. C’est Deezer qui choisit cette version, et ce n’est pas toujours le même enregistrement : il peut s’agir d’un master différent, dont le son peut différer du titre choisi. L’audio est une copie exacte de cette autre sortie.",
+    "substitutedSameRecording": "Même enregistrement",
+    "substitutedDifferentRecording": "Enregistrement différent",
     "active": "Actifs",
     "completed": "Terminés",
     "failed": "Échoués",
@@ -230,6 +232,7 @@
     "artists": "Artistes favoris",
     "playlists": "Playlists favorites",
     "noFavorites": "Aucun favori pour le moment",
+    "showingCount": "{shown} sur {total} affichés",
     "noFavoritesHint": "Cliquez sur l’icône cœur d’un titre, album ou artiste pour l’enregistrer ici",
     "loginToSee": "Connectez-vous pour voir vos favoris Deezer",
     "syncPlaylist": "Synchroniser",
@@ -444,7 +447,8 @@
     "reindexFailed": "Échec de l’indexation — voir les journaux.",
     "bitrateFallback": "Repli sur un débit inférieur",
     "bitrateFallbackDesc": "Télécharger dans une qualité inférieure si la qualité préférée n’est pas disponible",
-    "isrcFallback": "Repli par ISRC",
+    "isrcFallback": "Repli sur une version alternative",
+    "isrcFallbackHelp": "Quand le titre exact ne peut pas être téléchargé (restriction de droits ou de région), une version alternative provenant d’une autre sortie est téléchargée. Elle peut être issue d’un master différent. Désactivez cette option pour obtenir le titre exact ou rien.",
     "createLogFiles": "Créer des fichiers journaux pour les erreurs",
     "createPlaylistFile": "Créer un fichier de playlist",
     "createAlbumPlaylistFile": "En créer également un pour chaque album",
@@ -832,6 +836,9 @@
     "openFolder": "Ouvrir le dossier de téléchargement",
     "clearFinished": "Effacer les terminés",
     "cancelAll": "Tout annuler",
+    "rackFolder": "DOSSIER",
+    "rackClear": "EFFACER",
+    "rackAbort": "ANNULER",
     "errorDetails": "Détails de l’erreur de téléchargement",
     "failedTracks": "Titres en échec",
     "downloadLocation": "Emplacement de téléchargement",
@@ -887,6 +894,7 @@
     "playlistsSkipped": "{count} playlist ignorée (vide ou indisponible) | {count} playlists ignorées (vides ou indisponibles)",
     "queuedForDownload": "{count} {type} en file de téléchargement",
     "favoritesSectionsFailed": "Impossible de charger {sections} depuis Deezer. Les autres sections ont été mises à jour.",
+    "favoritesSaveFailed": "Impossible d'enregistrer les favoris : {error}",
     "favoritesSynced": "Synchronisé avec les favoris Deezer : {summary}",
     "favoritesAlreadyImported": "Tous les favoris Deezer sont déjà importés",
     "favoritesStale": "{detail} dans Sync, plus dans vos favoris Deezer – voir la page Synchronisation.",
@@ -1058,6 +1066,8 @@
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz connecté",
-    "qobuzOfflineTip": "Qobuz non connecté — connectez-vous dans les Paramètres"
+    "qobuzOfflineTip": "Qobuz non connecté — connectez-vous dans les Paramètres",
+    "region": "RÉGION",
+    "quality": "QUALITÉ"
   }
 }

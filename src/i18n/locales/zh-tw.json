@@ -154,7 +154,9 @@
     "downgraded": "較低位元率",
     "downgradedTip": "您要求 {requested}，但 Deezer 對此曲目僅提供 {actual}，因此以較低位元率下載。這是目錄限制，並非重新編碼。",
     "substituted": "替代版本",
-    "substitutedTip": "原始曲目無法取得（通常是地區或版權限制），因此下載了來自另一發行版本中 ISRC 相符的版本。此音訊是該發行版本的完整複製，但可能來自不同的母帶，因此聽起來可能與您所選的版本略有差異。",
+    "substitutedTip": "原始曲目無法取得（通常是版權或地區限制），因此下載了來自另一發行版本的替代版本。替代版本由 Deezer 選擇，並不一定是同一錄音：可能來自不同的母帶，聽起來可能與您所選的版本不同。此音訊是該另一發行版本的完整複製。",
+    "substitutedSameRecording": "同一錄音",
+    "substitutedDifferentRecording": "不同錄音",
     "substitutedListTitle": "替代版本",
     "substitutedListTip": "點擊以查看哪些曲目來自替代發行版本",
     "clearHistory": "清除歷史記錄"
@@ -182,6 +184,7 @@
     "artists": "收藏的藝人",
     "playlists": "收藏的播放清單",
     "noFavorites": "尚無收藏",
+    "showingCount": "顯示 {shown} / {total}",
     "noFavoritesHint": "點擊歌曲、專輯或藝人上的愛心圖示以儲存至此",
     "loginToSee": "登入以查看您的 Deezer 收藏",
     "sortAdded": "新增日期",
@@ -363,7 +366,8 @@
     "reindexFailed": "索引失敗——請查看記錄。",
     "bitrateFallback": "位元率備援",
     "bitrateFallbackDesc": "如果偏好的位元率不可用則下載較低品質",
-    "isrcFallback": "ISRC 備援",
+    "isrcFallback": "替代版本備援",
+    "isrcFallbackHelp": "當原始曲目無法下載時（版權或地區限制），會改從另一發行版本下載其替代版本。替代版本可能來自不同的母帶。關閉此選項後，只下載原始曲目，否則不下載。",
     "createLogFiles": "為錯誤建立日誌檔案",
     "createPlaylistFile": "建立播放清單檔案",
     "clearQueueOnClose": "關閉時清除佇列",
@@ -758,6 +762,9 @@
     "openFolder": "開啟下載資料夾",
     "clearFinished": "清除已完成",
     "cancelAll": "全部取消",
+    "rackFolder": "資料夾",
+    "rackClear": "清除",
+    "rackAbort": "中止",
     "errorDetails": "下載錯誤詳情",
     "failedTracks": "失敗的曲目",
     "downloadLocation": "下載位置",
@@ -813,6 +820,7 @@
     "playlistsSkipped": "已略過 {count} 個播放清單（空白或無法使用） | 已略過 {count} 個播放清單（空白或無法使用）",
     "queuedForDownload": "已將 {count} 個{type}加入下載佇列",
     "favoritesSectionsFailed": "無法從 Deezer 載入 {sections}。其他部分已更新。",
+    "favoritesSaveFailed": "無法儲存收藏：{error}",
     "favoritesSynced": "已與 Deezer 最愛同步：{summary}",
     "favoritesAlreadyImported": "所有 Deezer 最愛均已匯入",
     "favoritesStale": "同步清單中的 {detail} 已不在您的 Deezer 最愛中，請在同步頁面查看。",
@@ -1012,7 +1020,9 @@
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz 已連接",
-    "qobuzOfflineTip": "Qobuz 未連接 — 請在設定中連接"
+    "qobuzOfflineTip": "Qobuz 未連接 — 請在設定中連接",
+    "region": "地區",
+    "quality": "音質"
   },
   "about": {
     "disclaimer": "本應用程式與 Deezer、Qobuz 或 Spotify 並無任何隸屬關係，未獲得其授權，也未獲得其認可。本應用程式僅供您使用自己的帳戶進行個人使用。請負責任地使用，並遵守您所在地關於音樂下載的法律，同時尊重版權以及各串流平台的服務條款。從 Qobuz 下載需要您本人有效的付費 Qobuz 訂閱。",

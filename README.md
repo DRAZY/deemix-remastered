@@ -57,7 +57,7 @@
 - **Duplicate Detection:** warns when an album is already on disk, with an optional ISRC skip that catches the same recording across releases
 - **Smooth at Any Scale:** the queue and history virtualize, so a 1,000-track rack scrolls like a 10-track one
 - **Live Throughput:** album and playlist rows show real combined speed, mirrored in the sidebar sparkline and title-bar meter
-- **Smart Fallbacks:** automatic bitrate and format fallback, plus three-tier resolution (FALLBACK, ISRC) when a version is unavailable
+- **Smart Fallbacks:** automatic bitrate and format fallback, plus alternate-version resolution (Deezer's fallback pointer, then ISRC) when the exact track is rights-locked, always badged, marked same or different recording, and switchable off for exact-or-nothing
 - **Natural Pacing:** optional random delays between downloads so a large batch does not hit Deezer as one burst (off by default)
 - **History & Stats:** a persistent log of the last 500 downloads, plus totals, top artists, format breakdown, and weekly activity
 - **Concurrent Downloads:** configurable from 2 to 50 at once (default 5)
@@ -115,6 +115,7 @@ Arabic, Chinese (Simplified & Traditional), Croatian, English, Filipino, French,
 - **Encrypted Credentials:** ARL tokens, Spotify secrets, and the Qobuz token stored via Electron safeStorage, never in settings, exports, or backups
 - **Recoverable Deletes:** "Delete Files" moves to the system Trash, and the download root itself can never be deleted
 - **Hardened I/O:** path-traversal and SSRF protection, URL validation, error sanitization, and sandboxed windows
+- **Fused Binary:** Electron's RunAsNode, NODE_OPTIONS and inspector fuses are off and only the integrity-checked `app.asar` is loaded, so the shipped binary cannot be repurposed as a Node interpreter
 
 ---
 

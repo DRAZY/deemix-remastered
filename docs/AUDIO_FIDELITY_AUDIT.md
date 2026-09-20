@@ -363,7 +363,7 @@ Confirmed 2026-07-31 by parsing both allowlists out of source:
 |---|---|---|
 | `quality` | yes | non-boolean validator |
 | `bitrateFallback` | yes | yes |
-| `isrcFallback` | yes | yes |
+| `isrcFallback` (labelled "Alternate version fallback" since 2.6.3; also gates Deezer's FALLBACK pointer) | yes | yes |
 | `overwriteFiles` | yes | non-boolean validator |
 | `skipDuplicateTracks` | yes | yes |
 | `tags` (carries `replayGain`) | yes | non-boolean validator |

@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import type { Track, Album, Artist, Playlist } from '../types'
 import { useToastStore } from './toastStore'
 import i18n from '../i18n'
+import { readFavorites, writeFavorites, migrateLegacyFavorites } from '../utils/favoritesStorage'
 
 interface FavoriteItem {
   id: string
@@ -30,19 +31,34 @@ export const useFavoritesStore = defineStore('favorites', () => {
     favorites.value.filter(f => f.type === 'playlist').map(f => f.data as Playlist)
   )
 
-  function loadFavorites() {
-    const saved = localStorage.getItem('favorites')
-    if (saved) {
-      try {
-        favorites.value = JSON.parse(saved)
-      } catch (e) {
-        console.error('Failed to load favorites:', e)
+  // Favourites persist in IndexedDB (#149: localStorage's 5 MB cap rejected
+  // large libraries). The first load after upgrade migrates the legacy key.
+  async function loadFavorites(): Promise<void> {
+    try {
+      let stored = await readFavorites<FavoriteItem>()
+      if (stored === null) {
+        const migrated = await migrateLegacyFavorites()
+        if (migrated !== null) {
+          console.log(`[FavoritesStore] Migrated ${migrated} favourites from localStorage to IndexedDB`)
+          stored = await readFavorites<FavoriteItem>()
+        }
       }
+      favorites.value = stored ?? []
+    } catch (e) {
+      console.error('Failed to load favorites:', e)
     }
   }
 
-  function saveFavorites() {
-    localStorage.setItem('favorites', JSON.stringify(favorites.value))
+  // Rejects on failure after telling the user; callers that cannot act on the
+  // failure swallow the rejection, callers that can (import) roll back.
+  async function saveFavorites(): Promise<void> {
+    try {
+      await writeFavorites(favorites.value)
+    } catch (e: any) {
+      console.error('[FavoritesStore] Save failed:', e?.message ?? e)
+      useToastStore().error(i18n.global.t('notifications.favoritesSaveFailed', { error: e?.message ?? String(e) }))
+      throw e
+    }
   }
 
   function addFavorite(item: Track | Album | Artist | Playlist, type: FavoriteItem['type']) {
@@ -54,7 +70,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
         data: item,
         addedAt: new Date().toISOString()
       })
-      saveFavorites()
+      saveFavorites().catch(() => {})
     }
   }
 
@@ -62,7 +78,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
     const index = favorites.value.findIndex(f => f.id === id)
     if (index !== -1) {
       favorites.value.splice(index, 1)
-      saveFavorites()
+      saveFavorites().catch(() => {})
     }
   }
 
@@ -121,9 +137,14 @@ export const useFavoritesStore = defineStore('favorites', () => {
       track: null, album: null, artist: null, playlist: null
     }
 
+    let rolledBack = false
     const importSection = async (type: FavoriteItem['type']): Promise<void> => {
       const section = sectionOf[type]
       importingSections.value[type] = true
+      // Snapshot this section so a failed save can put it back exactly, and
+      // tally per section so the totals only count what actually persisted.
+      const previous = favorites.value.filter(f => f.type === type)
+      let sectionImported = 0, sectionSkipped = 0, sectionPruned = 0
       try {
         const response = await fetch(`http://127.0.0.1:${serverPort}/api/user/favorites?type=${section}`)
         if (!response.ok) {
@@ -144,10 +165,10 @@ export const useFavoritesStore = defineStore('favorites', () => {
               data: item,
               addedAt: new Date().toISOString()
             })
-            imported++
+            sectionImported++
             changed = true
           } else {
-            skipped++
+            sectionSkipped++
           }
         }
 
@@ -155,14 +176,19 @@ export const useFavoritesStore = defineStore('favorites', () => {
         // longer in the Deezer response.
         const before = favorites.value.length
         favorites.value = favorites.value.filter(f => f.type !== type || ids.has(String((f.data as any).id)))
-        const prunedHere = before - favorites.value.length
-        pruned += prunedHere
-        if (prunedHere > 0) changed = true
+        sectionPruned = before - favorites.value.length
+        if (sectionPruned > 0) changed = true
 
-        if (changed) saveFavorites()
+        if (changed) await saveFavorites()
+        imported += sectionImported
+        skipped += sectionSkipped
+        pruned += sectionPruned
       } catch (e: any) {
         console.error(`[FavoritesStore] Import of ${section} failed:`, e?.message ?? e)
         failed.push(type)
+        deezerIds[type] = null
+        favorites.value = [...favorites.value.filter(f => f.type !== type), ...previous]
+        rolledBack = true
       } finally {
         importingSections.value[type] = false
       }
@@ -170,6 +196,10 @@ export const useFavoritesStore = defineStore('favorites', () => {
 
     try {
       await Promise.all((['track', 'album', 'artist', 'playlist'] as FavoriteItem['type'][]).map(importSection))
+
+      // A concurrent section may have persisted the array while a failed one
+      // was still in it; write the rolled-back state so storage matches memory.
+      if (rolledBack) await saveFavorites().catch(() => {})
 
       if (failed.length === 4) {
         throw new Error('Failed to import Deezer favorites')

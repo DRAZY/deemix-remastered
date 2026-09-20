@@ -384,6 +384,8 @@ export const useSettingsStore = defineStore('settings', () => {
       if (settingsFileExists) migrationApplied = true
     }
 
+    // (Since 2.6.3 this toggle is labelled "Alternate version fallback" and also
+    // gates Deezer's FALLBACK pointer, not only the ISRC lookups. Key unchanged.)
     // One-time migration: isrcFallback was an orphaned toggle — the ISRC
     // substitution it names ran unconditionally regardless of the setting (which
     // sat at false). Now that the toggle actually gates that behavior, set it to

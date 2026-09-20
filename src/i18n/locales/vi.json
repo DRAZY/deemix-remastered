@@ -154,7 +154,9 @@
     "downgraded": "Bitrate thấp hơn",
     "downgradedTip": "Bạn đã yêu cầu {requested} nhưng Deezer chỉ có {actual} cho bài hát này, nên nó được tải ở bitrate thấp hơn. Đây là giới hạn của danh mục, không phải do mã hóa lại.",
     "substituted": "Phiên bản thay thế",
-    "substitutedTip": "Bài hát chính xác không khả dụng (thường do hạn chế khu vực hoặc bản quyền), nên một phiên bản khớp ISRC từ bản phát hành khác đã được tải. Âm thanh là bản sao chính xác của bản phát hành đó nhưng có thể là bản master khác, nên có thể nghe hơi khác so với bản bạn đã chọn.",
+    "substitutedTip": "Bài hát chính xác không khả dụng (thường do hạn chế bản quyền hoặc khu vực), nên một phiên bản thay thế từ bản phát hành khác đã được tải. Deezer chọn phiên bản thay thế, và đó không phải lúc nào cũng là cùng một bản thu: có thể là bản master khác và nghe khác so với bản bạn đã chọn. Âm thanh là bản sao chính xác của bản phát hành khác đó.",
+    "substitutedSameRecording": "Cùng bản thu",
+    "substitutedDifferentRecording": "Bản thu khác",
     "substitutedListTitle": "Phiên bản thay thế",
     "substitutedListTip": "Nhấp để xem bài hát nào đến từ bản phát hành thay thế",
     "clearHistory": "Xóa lịch sử"
@@ -182,6 +184,7 @@
     "artists": "Nghệ sĩ yêu thích",
     "playlists": "Playlist yêu thích",
     "noFavorites": "Chưa có yêu thích nào",
+    "showingCount": "Đang hiển thị {shown} trên {total}",
     "noFavoritesHint": "Nhấp vào biểu tượng trái tim trên bài hát, album hoặc nghệ sĩ để lưu ở đây",
     "loginToSee": "Đăng nhập để xem yêu thích Deezer của bạn",
     "sortAdded": "Ngày thêm",
@@ -363,7 +366,8 @@
     "reindexFailed": "Lập chỉ mục thất bại — xem nhật ký.",
     "bitrateFallback": "Bitrate dự phòng",
     "bitrateFallbackDesc": "Tải chất lượng thấp hơn nếu ưu tiên không khả dụng",
-    "isrcFallback": "ISRC dự phòng",
+    "isrcFallback": "Phiên bản thay thế dự phòng",
+    "isrcFallbackHelp": "Khi không thể tải bài hát chính xác (hạn chế bản quyền hoặc khu vực), một phiên bản thay thế từ bản phát hành khác sẽ được tải. Phiên bản thay thế có thể là bản master khác. Tắt tùy chọn này để chỉ nhận bài hát chính xác hoặc không tải gì cả.",
     "createLogFiles": "Tạo tập tin log cho lỗi",
     "createPlaylistFile": "Tạo tập tin playlist",
     "clearQueueOnClose": "Xóa hàng đợi khi đóng",
@@ -758,6 +762,9 @@
     "openFolder": "Mở thư mục tải xuống",
     "clearFinished": "Xóa đã hoàn thành",
     "cancelAll": "Hủy tất cả",
+    "rackFolder": "THƯ MỤC",
+    "rackClear": "XÓA",
+    "rackAbort": "HỦY",
     "errorDetails": "Chi tiết lỗi tải xuống",
     "failedTracks": "Bài hát thất bại",
     "downloadLocation": "Vị trí tải xuống",
@@ -813,6 +820,7 @@
     "playlistsSkipped": "Đã bỏ qua {count} playlist (trống hoặc không khả dụng) | Đã bỏ qua {count} playlist (trống hoặc không khả dụng)",
     "queuedForDownload": "Đã thêm {count} {type} vào hàng đợi tải xuống",
     "favoritesSectionsFailed": "Không thể tải {sections} từ Deezer. Các mục khác đã được cập nhật.",
+    "favoritesSaveFailed": "Không thể lưu mục yêu thích: {error}",
     "favoritesSynced": "Đã đồng bộ với mục yêu thích trên Deezer: {summary}",
     "favoritesAlreadyImported": "Tất cả mục yêu thích trên Deezer đã được nhập",
     "favoritesStale": "{detail} trong Đồng bộ không còn trong mục yêu thích Deezer của bạn, kiểm tra trên trang Đồng bộ.",
@@ -1012,7 +1020,9 @@
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz đã kết nối",
-    "qobuzOfflineTip": "Qobuz chưa kết nối — kết nối trong Cài đặt"
+    "qobuzOfflineTip": "Qobuz chưa kết nối — kết nối trong Cài đặt",
+    "region": "KHU VỰC",
+    "quality": "CHẤT LƯỢNG"
   },
   "about": {
     "disclaimer": "Ứng dụng này không liên kết với, không được cấp phép bởi, và không được xác nhận bởi Deezer, Qobuz hoặc Spotify. Ứng dụng dành cho mục đích sử dụng cá nhân với tài khoản của riêng bạn. Vui lòng sử dụng một cách có trách nhiệm và tuân thủ luật pháp địa phương về việc tải nhạc, đồng thời tôn trọng bản quyền và điều khoản dịch vụ của từng nền tảng phát trực tuyến. Việc tải xuống từ Qobuz yêu cầu gói đăng ký Qobuz trả phí đang hoạt động của riêng bạn.",

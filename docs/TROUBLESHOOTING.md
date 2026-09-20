@@ -100,6 +100,9 @@ Update to v2.1.1+ — earlier builds could misread an app-level signing problem 
 **Downloads fail with "not available at the requested quality"**
 Not every track exists at every tier on every plan. With **Bitrate Fallback off**, tracks unavailable at your requested quality error by design instead of silently downgrading. Turn Bitrate Fallback on (Settings → Downloads) to accept the best available tier — such tracks get a "Lower bitrate" badge so nothing is silent.
 
+**An album came down with some tracks from a different release ("Alternate version" badge)**
+Labels sometimes lock individual tracks of a release on Deezer, most often on deluxe and anniversary editions, so those tracks cannot be streamed or downloaded by anyone. When that happens the app downloads the alternate version Deezer points to, or failing that a version matched by ISRC on another release. The alternate is not always the same recording. It can be a different master, and the badge's track list marks each one **Same recording** or **Different recording**. Nothing is circumvented here: the original is tried first, and the alternate is an official release that Deezer's own catalog points to for the locked track. From 2.6.3 an alternate inside an album download keeps that album's cover, release date, barcode and label, so the album looks like one release in your player, while the track title and ISRC stay those of the recording you received. Albums downloaded before 2.6.3 can show mixed cover art for this reason, and downloading them again with overwrite on fixes it. If you want the exact track or nothing, turn off **Alternate version fallback** (Settings → Downloads). Locked tracks then fail with a message saying so, and the fix for a coherent album is usually to download the standard edition instead.
+
 **A playlist only downloaded 50 tracks**
 Fixed in v2.1.1 — Qobuz pages track listings 50 at a time and earlier builds only fetched the first page. Re-run the playlist after updating; already-downloaded tracks are skipped.
 
@@ -164,7 +167,7 @@ This only affects Client IDs created recently. Credentials registered before Feb
 Spotify-to-Deezer matching uses ISRC codes (the standardized track identifier) first, then falls back to title+artist search. ISRC matching is exact; the search fallback is best-effort and can mismatch on covers, live versions, or remixes.
 
 **Fix:**
-- Enable **ISRC Fallback** in Settings (on by default in v1.5.0+) so converted tracks always include the ISRC for tagging.
+- Check the Link Analyzer's match list: a row matched by ISRC is the same recording, a row matched by search is a best guess.
 - For high-stakes playlists, review the Link Analyzer's match list before downloading and skip any tracks whose confidence score is low.
 
 ### "Failed to authenticate with Spotify"

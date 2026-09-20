@@ -910,7 +910,7 @@ async function reindexLibrary() {
             />
             <span class="text-sm">{{ t('settings.bitrateFallback') }}</span>
           </label>
-          <label class="flex items-center gap-3 cursor-pointer">
+          <label class="flex items-center gap-3 cursor-pointer" :title="t('settings.isrcFallbackHelp')">
             <input
               type="checkbox"
               v-model="settingsStore.settings.isrcFallback"

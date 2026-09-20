@@ -1351,7 +1351,8 @@ export const useDownloadStore = defineStore('downloads', () => {
         id: item.id,
         trackId: serverItem.trackId,
         title: serverItem.trackTitle || item.title,
-        artist: serverItem.trackArtist || item.artist
+        artist: serverItem.trackArtist || item.artist,
+        sameRecording: serverItem.substitutedSameRecording
       }]
       changed = true
     }
@@ -1423,7 +1424,8 @@ export const useDownloadStore = defineStore('downloads', () => {
             id: trackId,
             trackId: serverItem.trackId || trackId,
             title: serverItem.trackTitle || serverItem.title || 'Unknown Track',
-            artist: serverItem.trackArtist || serverItem.artist
+            artist: serverItem.trackArtist || serverItem.artist,
+            sameRecording: serverItem.substitutedSameRecording
           })
         }
 

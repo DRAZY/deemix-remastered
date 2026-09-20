@@ -245,10 +245,12 @@ async function openItemFolder(item: DownloadItem) {
             {{ liveCount }} LIVE · {{ storedCount }} STORED
           </span>
         </div>
-        <div class="flex items-center gap-1.5 px-3 pb-2">
-          <button class="rack-btn" @click="openDownloadFolder" :title="t('downloadPanel.openFolder')">FOLDER</button>
-          <button class="rack-btn" @click="clearFinished" :title="t('downloadPanel.clearFinished')">CLEAR</button>
-          <button class="rack-btn rack-btn-danger" @click="cancelAllDownloads" :title="t('downloadPanel.cancelAll')">ABORT</button>
+        <!-- flex-wrap: the three labels are translated (#148); if a locale ever
+             outgrows the 320px rack they wrap instead of clipping. -->
+        <div class="flex flex-wrap items-center gap-1.5 px-3 pb-2">
+          <button class="rack-btn" @click="openDownloadFolder" :title="t('downloadPanel.openFolder')">{{ t('downloadPanel.rackFolder') }}</button>
+          <button class="rack-btn" @click="clearFinished" :title="t('downloadPanel.clearFinished')">{{ t('downloadPanel.rackClear') }}</button>
+          <button class="rack-btn rack-btn-danger" @click="cancelAllDownloads" :title="t('downloadPanel.cancelAll')">{{ t('downloadPanel.rackAbort') }}</button>
         </div>
       </div>
 
