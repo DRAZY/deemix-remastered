@@ -107,7 +107,7 @@ export interface DownloadOptions {
   prefetchedCover?: Buffer      // pre-fetched cover art (e.g. Qobuz URL), used instead of the Deezer-hash CDN fetch
   quality: 'MP3_128' | 'MP3_320' | 'FLAC'
   bitrateFallback?: boolean  // Whether to fallback to lower bitrates if preferred unavailable
-  isrcFallback?: boolean     // Whether to resolve an unavailable track to an ISRC-matched alternate release (may be a different master)
+  isrcFallback?: boolean     // Whether an unavailable track may resolve to an alternate version: Deezer's FALLBACK pointer or an ISRC-matched release (either may be a different master). Off = the exact track or nothing.
   createFolders: boolean
   artistFolder: boolean
   albumFolder: boolean
@@ -216,6 +216,11 @@ export interface DownloadProgress {
   playlistFolder?: string  // Playlist root folder path - used for deletion of entire playlist
   actualFormat?: string  // Actual downloaded format (may differ from requested due to fallback)
   substituted?: boolean  // True when the exact track was unavailable and an ISRC/FALLBACK alternative (possibly a different master) was downloaded
+  // Only meaningful when substituted. true = the alternate carries the same ISRC
+  // as the requested track (same recording, other release); false = a different
+  // ISRC, i.e. a different recording or master; undefined = either side had no
+  // ISRC, so the app cannot say.
+  substitutedSameRecording?: boolean
   error?: string
   errorDetails?: DownloadErrorDetails  // Enhanced error information
   skippedAsDuplicate?: boolean  // Completed by being skipped as a library duplicate (by ISRC)
@@ -1346,12 +1351,18 @@ export class Downloader extends EventEmitter {
         // ISRC/FALLBACK-matched alternative from another release. Audio is bit-exact
         // to that source but may be a different master than the requested track.
         progress.substituted = true
+        const requestedIsrc = String(trackInfo.ISRC || '').trim().toUpperCase()
         // Preserve the original track/disc number — the resolved track may be from
         // a different album where it has a different position
         const originalTrackNumber = trackInfo.TRACK_NUMBER
         const originalDiskNumber = trackInfo.DISK_NUMBER
         const resolvedInfo = await deezerAuth.getTrackInfo(result.resolvedTrackId, { withCopyright: options.metadataSettings?.tags?.copyright === true })
         if (resolvedInfo) {
+          const resolvedIsrc = String(resolvedInfo.ISRC || '').trim().toUpperCase()
+          progress.substitutedSameRecording = (requestedIsrc && resolvedIsrc)
+            ? requestedIsrc === resolvedIsrc
+            : undefined
+          console.log(`[Downloader] Alternate recording check: requested ISRC ${requestedIsrc || '(none)'} vs ${resolvedIsrc || '(none)'} → ${progress.substitutedSameRecording === undefined ? 'unknown' : progress.substitutedSameRecording ? 'same recording' : 'DIFFERENT recording'}`)
           trackInfo = resolvedInfo
           // Restore original position so the file is numbered correctly on this
           // album. Restricted tracks sometimes come back from song.getData without

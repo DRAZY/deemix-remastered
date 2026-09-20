@@ -1895,9 +1895,20 @@ export class DeezerAuth extends EventEmitter {
     // Attempt 2: Check for FALLBACK track (alternative version that may be available)
     // Playlists often reference compilation/special edition track IDs that have restricted
     // rights. The FALLBACK field points to the original album version which is usually available.
+    //
+    // Gated on isrcFallback like attempts 3-4. Deezer's FALLBACK pointer is NOT
+    // limited to the same recording: on "Shout At The Devil (40th Anniversary)"
+    // it sends the rights-locked 2021 remasters (ISRC USDPK20…) to the 1999
+    // master on the standard album (ISRC USBY299…). A user who turned the
+    // alternate-version toggle off asked for the exact track or nothing, and
+    // until 2.6.3 this attempt ran regardless and quietly broke that promise.
     const trackInfo = await this.getTrackInfo(trackId)
     const fallbackId = trackInfo.FALLBACK?.SNG_ID
-    if (fallbackId && String(fallbackId) !== String(trackId)) {
+    const hasFallback = !!fallbackId && String(fallbackId) !== String(trackId)
+    if (hasFallback && !isrcFallback) {
+      console.log(`[DeezerAuth] Track ${trackId} has FALLBACK: ${fallbackId} — skipped, alternate versions are turned off`)
+    }
+    if (hasFallback && isrcFallback) {
       console.log(`[DeezerAuth] Track ${trackId} has FALLBACK: ${fallbackId} — trying alternative version`)
       result = await tryGetUrl(fallbackId)
       if (result) {
@@ -1949,6 +1960,19 @@ export class DeezerAuth extends EventEmitter {
           return { ...result, resolvedTrackId: publicId }
         }
       }
+    }
+
+    // Exact-only mode: say so, and say whether Deezer offered an alternate, so
+    // the failure reads as the user's own setting at work rather than a bug.
+    if (!isrcFallback) {
+      throw new Error(
+        'This exact track is not available on Deezer (rights or region restricted)' +
+        (hasFallback
+          ? ', and Deezer points to an alternate version on another release. '
+          : '. An alternate version may exist on another release. ') +
+        'Alternate versions are turned off, so nothing was downloaded. ' +
+        'Turn on "Alternate version fallback" in Settings > Downloads to allow it.'
+      )
     }
 
     throw new Error(

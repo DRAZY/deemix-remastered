@@ -112,6 +112,9 @@ export interface SubstitutedTrack {
   trackId?: string | number
   title: string
   artist?: string
+  // true = same ISRC as the requested track, false = different recording/master,
+  // undefined = unknown (older history entries, or a track with no ISRC).
+  sameRecording?: boolean
 }
 
 // One track within an album/playlist row, for the expandable per-track list.

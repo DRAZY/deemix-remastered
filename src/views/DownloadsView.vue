@@ -1326,6 +1326,11 @@ function copyAllErrorDetails() {
               class="px-2.5 py-2 bg-purple-500/5 border-l-2 border-purple-500"
             >
               <span class="text-foreground font-medium">{{ tr.artist ? `${tr.artist} - ${tr.title}` : tr.title }}</span>
+              <span
+                v-if="tr.sameRecording !== undefined"
+                class="ml-2 px-1.5 py-0.5 text-[9.5px] tracking-[0.06em] border"
+                :class="tr.sameRecording ? 'border-emerald-500/40 text-emerald-400' : 'border-amber-500/50 text-amber-400'"
+              >{{ tr.sameRecording ? t('downloads.substitutedSameRecording') : t('downloads.substitutedDifferentRecording') }}</span>
             </div>
           </div>
         </div>

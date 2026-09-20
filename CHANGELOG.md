@@ -13,11 +13,17 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 ### Security
 - The packaged app now ships with Electron's hardening fuses set on every platform: `ELECTRON_RUN_AS_NODE`, `NODE_OPTIONS` and `--inspect` are ignored, and the app only loads its own integrity-checked `app.asar`. The shipped binary can no longer be repurposed as a bare Node interpreter running under the app's identity.
 
+### Changed
+- The "ISRC fallback" setting is now "Alternate version fallback", with a hover explanation, because it covers every kind of substitution. Your saved choice carries over.
+- The alternate-version track list marks each track **Same recording** or **Different recording** by comparing the ISRC you asked for with the one you got, so you can see at a glance whether an album came down as a hybrid of masters. All five new and reworded strings ship in all 21 languages.
+
 ### Fixed
 - Favorites no longer vanish on restart for large libraries (#149). Favourites now persist in IndexedDB instead of localStorage, whose 5 MB cap silently rejected libraries past roughly 3,000 tracks; existing favourites migrate on first launch. Import only counts a section once it has actually been saved, a failed save rolls that section back, and the app says so instead of reporting success.
 - The Favorites tracks tab renders in windows of 150 and grows as you scroll, so a 7,000-track library opens instantly instead of holding the page black for several seconds (#149).
 - Synced lyrics (.lrc) come through again for newer tracks (#158, reported by @popoche). Deezer's legacy lyrics endpoint has started returning plain text only for part of the catalog while the Deezer app still shows timed lyrics. When that happens the app now asks Deezer's newer lyrics API for the timed lines, so the .lrc file, the SYLT tag and the FLAC synced comment all get them. Tracks Deezer has no lyrics licence for in your country still yield nothing, which is a Deezer gap no client can fill.
 - Playlist covers, album art and artist images no longer end up as stray `.tmp` files on Windows (#159, reported by @SchwanzusLongus). Since 2.5.8 every image was staged as `cover.jpg.<pid>.<hex>.tmp` and renamed into place, and on Windows that rename fails while Defender, Explorer's thumbnail pass or a cloud-sync client still holds the new file, leaving the `.tmp` behind and no `.jpg` at all. The rename now retries with backoff for about three seconds, falls back to writing the file directly if the lock never clears, and each successful write removes any leftover `.tmp` siblings from earlier runs, so the next sync cleans the folder up. The same helper writes MP3 tags, so under the same lock a track could land untagged with nothing but a log line to show for it.
+- Turning off alternate versions now really means the exact track or nothing. The toggle only stopped the ISRC lookups, while Deezer's own fallback pointer still ran and could quietly hand back a different master. With it off, a rights-locked track now fails with a message that says so and says whether Deezer offered an alternate. With it on, which is the default, nothing changes.
+- The "Alternate version" explanation no longer claims the substitute was ISRC-matched, which was untrue whenever Deezer's fallback pointer supplied it. Found on Mötley Crüe's *Shout At The Devil (40th Anniversary)*, where eight tracks are locked worldwide and Deezer substitutes the older master from the standard album.
 
 ## [2.6.2] - 2026-09-13
 
