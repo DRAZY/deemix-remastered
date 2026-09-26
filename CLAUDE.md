@@ -115,6 +115,14 @@ missed. Do not stop at layer one.
   nothing (#131, #134, #141). Re-run the allowlist sweep and prove the setting
   both ways through the real app before it ships.
 
+## Community replies
+
+- **Drafts sound like the maintainer, first time.** Any reply drafted for an
+  issue, discussion or user message follows the voice rule in
+  `LIFEOS/USER/CONFIG/OPERATIONAL_RULES.md` § Community replies: short, direct,
+  warm, contractions, owns mistakes plainly, no headers or lists, no em-dashes.
+  Draft it natural the first time so the maintainer never has to ask.
+
 ## Docs and disclaimers
 
 - **Disclaimer coverage is audited per integrated service** across README,
