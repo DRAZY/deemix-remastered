@@ -261,6 +261,7 @@ Password never crosses the IPC boundary. Only the resulting ARL cookie does, and
 - **State:** Pinia 4 (Composition API style stores)
 - **Routing:** Vue Router 5
 - **i18n:** vue-i18n, 21 languages, all complete to key parity since 2.6.2 and checked by `scripts/i18n-check.ts`
+- **Logging (2.6.4):** anything from outside the app that reaches a log line goes through `logSafe` in `electron/services/logSafe.ts`, one sanitiser for the whole main process; it escapes every control character, not only line breaks, so a remote string cannot forge a log entry or drive a terminal
 - **Styling:** Tailwind CSS 3 over a CSS-variable theme system — 9 color themes (Signal default) with per-theme light-mode variants; Archivo Black + IBM Plex Sans/Mono bundled via @fontsource
 - **Bundler:** Vite 8 with vite-plugin-electron
 - **Type safety:** TypeScript 5, `vue-tsc --noEmit` enforced via CI

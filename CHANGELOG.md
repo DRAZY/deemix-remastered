@@ -10,6 +10,12 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+## [2.6.4] - 2026-09-27
+
+### Summary
+
+- **A maintenance release. Download rows keep their title in a narrow window instead of collapsing behind the badges, log output can no longer be tampered with through terminal escape codes, and the build toolchain's dependency audit is clean again. No change to downloading, tagging or settings.**
+
 ### Fixed
 - Download rows no longer lose their title in a narrow window (reported by @alex5908 on Discussions #105). When the row ran out of room, the title was the only thing allowed to shrink, so it vanished while the badges spilled across the status text, which is why a playlist with failed tracks showed no name and an Alternate version badge drawn over the failure count. The title now keeps a minimum width, badges wrap onto a second line, the widest badge truncates before it can clip, and the status column gives up room before the title does. The playlist name and the completed-of-total count were always meant to be there; they are just visible again.
 
