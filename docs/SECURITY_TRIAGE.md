@@ -20,6 +20,24 @@ stop a non-image response body being saved as `cover.jpg`, but it is new behavio
 the most exercised path in the app, and the standing instruction for security work
 here is that remediation must not change what works. Worth its own tested change.
 
+### Build-toolchain audit (added 2026-09-27, `rc/2.6.4`)
+
+`bun audit` on the 2.6.4 candidate reported 27 findings (23 high, 3 moderate,
+1 low), every one in build-time tooling: electron-builder's chain (`fast-uri`,
+`@xmldom/xmldom`, `js-yaml`, `brace-expansion` at three majors) and the
+Tailwind/PostCSS chain (`postcss-selector-parser`, `nanoid`). None ship: the
+package only carries `dist/`, `dist-electron/`, `public/` and `package.json`,
+and the 2.6.3 asar contains none of these modules. GitHub's Dependabot showed
+nothing, presumably because it scopes to runtime dependencies.
+
+Fixed by re-resolving only those entries in `bun.lock` to the newest versions
+the parents already declare (all caret ranges, so no override change and no
+risk to electron-builder's declared-range collector). `package.json` untouched.
+Eleven lock lines changed; `bun install --frozen-lockfile` accepts it, `bun
+audit` is clean, typecheck and vite build pass, and `electron-builder --dir`
+packs. A full `bun update` was tried first and rejected: it moved 102 packages
+including Electron and Vue, far beyond a security fix.
+
 ### Standing posture (added 2026-09-20)
 
 - Anything from outside the app that reaches a log line goes through `logSafe`
