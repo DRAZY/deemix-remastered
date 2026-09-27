@@ -10,6 +10,13 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+### Fixed
+- Download rows no longer lose their title in a narrow window (reported by @alex5908 on Discussions #105). When the row ran out of room, the title was the only thing allowed to shrink, so it vanished while the badges spilled across the status text, which is why a playlist with failed tracks showed no name and an Alternate version badge drawn over the failure count. The title now keeps a minimum width, badges wrap onto a second line, the widest badge truncates before it can clip, and the status column gives up room before the title does. The playlist name and the completed-of-total count were always meant to be there; they are just visible again.
+
+### Security
+- The build toolchain's dependency audit is clean again: six packages used only while building installers (`fast-uri`, `@xmldom/xmldom`, `js-yaml`, `brace-expansion`, `postcss-selector-parser`, `nanoid`) were moved to their patched versions. None of them ship inside the app.
+- Log lines can no longer be tampered with through terminal escape codes. Text from outside the app (API errors, track and playlist names, links) was only having line breaks removed before it was logged, so an escape sequence could recolour, hide or rewrite lines for anyone reading the log in a terminal. One shared sanitiser now escapes every control character and replaces seven separate copies of the old one. Found while triaging the three code-scanning alerts raised by 2.6.3, two of which were false positives on the cover-writing code and are recorded in `docs/SECURITY_TRIAGE.md`.
+
 ## [2.6.3] - 2026-09-19
 
 ### Summary

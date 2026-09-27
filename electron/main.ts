@@ -7,9 +7,7 @@ import { playlistSync } from './services/playlistSync'
 import { artistSync } from './services/artistSync'
 import { spotifyAPI } from './services/spotifyAPI'
 import { qobuzAuth } from './services/qobuzAuth'
-
-/** Collapse newlines so remote-supplied text cannot forge extra log lines. */
-const logSafe = (v: unknown): string => String(v ?? '').replace(/[\r\n]+/g, ' ')
+import { logSafe } from './services/logSafe'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling
 // Squirrel startup is handled by electron-builder

@@ -17,9 +17,7 @@ import { scanFolder, retagFile, retagFileInFolder, type RetagFields } from './se
 import { libraryIndex } from './services/libraryIndex'
 import { buildAlbumContext } from './services/albumContext'
 import { fetchDeezerPublicJson, fetchDeezerPublicPaginated } from './services/deezerPublicApi'
-
-/** Collapse newlines so remote-supplied text cannot forge extra log lines. */
-const logSafe = (v: unknown): string => String(v ?? '').replace(/[\r\n]+/g, ' ')
+import { logSafe } from './services/logSafe'
 
 // File-based cache for discography (persists across app restarts)
 const DISCOGRAPHY_FILE_CACHE_TTL = 24 * 60 * 60 * 1000 // 24 hours

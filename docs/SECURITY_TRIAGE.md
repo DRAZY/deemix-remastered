@@ -4,6 +4,48 @@ Running record of every CodeQL alert in the repo's Security tab: what it was,
 what we did, and why. Future scans that re-flag a dismissed pattern should be
 checked against this log before any code churn.
 
+## 2026-09-20, three CodeQL alerts opened by the 2.6.3 push
+
+Dependabot, secret scanning and repository advisories were all clear. Code scanning
+raised three medium alerts, all on lines 2.6.3 touched.
+
+| # | Rule | Severity | Location | Disposition |
+|---|------|----------|----------|-------------|
+| 172 | js/log-injection | medium | `electron/services/deezerAuth.ts` `getLyrics` catch | **Hardened on `rc/2.6.4`, expected to close on merge.** The value already went through `logSafe`, so this was the same false positive as #140 to #168. It still exposed two real weaknesses. `logSafe` existed as seven copied one-liners, and it stripped CR and LF only, so terminal escape codes (ESC, `0x1b`) passed straight into the log, where they can recolour, hide or rewrite lines for anyone reading it in a terminal. There is now one `electron/services/logSafe.ts`. It escapes every C0 control through `JSON.stringify`, blanks DEL, the C1 range and U+2028/U+2029, and restores quotes and backslashes so Windows paths still read naturally. `JSON.stringify` is a sanitiser the query recognises (the neighbouring line that logs `JSON.stringify(response.error)` was never flagged), so this should also end the dismiss-on-every-release cycle for this rule. **Not yet confirmed by CodeQL**: that needs the branch analysed, on a PR or after merge. |
+| 173 | js/http-to-file-access | medium | `electron/services/downloader.ts` `writeFileAtomic`, staging write | **Dismissed (false positive).** Same helper as #108, which was dismissed on the same grounds. Writing downloaded bytes to disk is what a downloader does. 2.6.3 rewrote the helper for the Windows rename fix (#159), which moved the lines and reopened the finding. Re-verified rather than assumed: every caller builds its target from the user's own download folder plus a name that went through `sanitizeFilename`, which removes `..`, path separators and all control characters, or from the user's cover-name template. |
+| 174 | js/http-to-file-access | medium | `electron/services/downloader.ts` `writeFileAtomic`, direct-write fallback | **Dismissed (false positive).** The second write 2.6.3 added for when Windows keeps the rename locked. Same target path and same bytes as #173. |
+
+Considered and left out: checking image magic bytes before writing a cover. It would
+stop a non-image response body being saved as `cover.jpg`, but it is new behaviour on
+the most exercised path in the app, and the standing instruction for security work
+here is that remediation must not change what works. Worth its own tested change.
+
+### Build-toolchain audit (added 2026-09-27, `rc/2.6.4`)
+
+`bun audit` on the 2.6.4 candidate reported 27 findings (23 high, 3 moderate,
+1 low), every one in build-time tooling: electron-builder's chain (`fast-uri`,
+`@xmldom/xmldom`, `js-yaml`, `brace-expansion` at three majors) and the
+Tailwind/PostCSS chain (`postcss-selector-parser`, `nanoid`). None ship: the
+package only carries `dist/`, `dist-electron/`, `public/` and `package.json`,
+and the 2.6.3 asar contains none of these modules. GitHub's Dependabot showed
+nothing, presumably because it scopes to runtime dependencies.
+
+Fixed by re-resolving only those entries in `bun.lock` to the newest versions
+the parents already declare (all caret ranges, so no override change and no
+risk to electron-builder's declared-range collector). `package.json` untouched.
+Eleven lock lines changed; `bun install --frozen-lockfile` accepts it, `bun
+audit` is clean, typecheck and vite build pass, and `electron-builder --dir`
+packs. A full `bun update` was tried first and rejected: it moved 102 packages
+including Electron and Vue, far beyond a security fix.
+
+### Standing posture (added 2026-09-20)
+
+- Anything from outside the app that reaches a log line goes through `logSafe`
+  from `electron/services/logSafe.ts`. Do not re-declare a local copy.
+- A path component that came from a remote name goes through `sanitizeFilename`
+  before it reaches any write. That is the basis for every
+  js/http-to-file-access dismissal in this file, so it has to stay true.
+
 ## 2026-09-13, private advisory GHSA-3v8g-hjrg-cr33 (Electron RunAsNode fuse)
 
 | Report | Severity | Location | Disposition |

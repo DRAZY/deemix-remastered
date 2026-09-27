@@ -3,9 +3,7 @@ import https from 'https'
 import crypto from 'crypto'
 import { URL } from 'url'
 import dns from 'dns'
-
-/** Collapse newlines so remote-supplied text cannot forge extra log lines. */
-const logSafe = (v: unknown): string => String(v ?? '').replace(/[\r\n]+/g, ' ')
+import { logSafe } from './logSafe'
 
 // Configure DNS to use both IPv4 and IPv6 with IPv4 preferred
 // This helps with Electron's DNS resolution issues

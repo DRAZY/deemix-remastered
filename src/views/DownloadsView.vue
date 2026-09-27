@@ -703,10 +703,16 @@ function copyAllErrorDetails() {
             </span>
           </div>
 
-          <!-- Track/Album/Playlist info -->
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2">
-              <p class="text-[13px] font-semibold truncate" v-tooltip.overflow="item.title">{{ item.title }}</p>
+          <!-- Track/Album/Playlist info.
+               overflow-hidden + flex-wrap + a title floor (reported on
+               Discussions #105 after 2.6.3): every badge is flex-shrink-0 and
+               the title was the only shrinkable item, so in a narrow window it
+               collapsed to nothing and the badges spilled across the status
+               column. Now the title keeps at least 7rem, extra badges wrap
+               onto a second line, and nothing can draw outside this column. -->
+          <div class="flex-1 min-w-0 overflow-hidden">
+            <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <p class="text-[13px] font-semibold truncate min-w-[7rem] max-w-full" v-tooltip.overflow="item.title">{{ item.title }}</p>
               <!-- Source chip(s) — every row states its origin: Q for Qobuz, D for
                    Deezer. A mixed-source row (Link Analyzer "both") shows both. -->
               <span
@@ -749,12 +755,14 @@ function copyAllErrorDetails() {
               <button
                 v-if="item.substituted"
                 v-tooltip="item.substitutedTracks?.length ? t('downloads.substitutedListTip') : t('downloads.substitutedTip')"
-                class="flex-shrink-0 px-1.5 py-0.5 font-mono text-[10px] tracking-[0.08em] uppercase border bg-purple-500/15 text-purple-400 border-purple-500/40 flex items-center gap-1"
+                class="min-w-0 max-w-full px-1.5 py-0.5 font-mono text-[10px] tracking-[0.08em] uppercase border bg-purple-500/15 text-purple-400 border-purple-500/40 flex items-center gap-1"
                 :class="item.substitutedTracks?.length ? 'hover:bg-purple-500/30 cursor-pointer' : 'cursor-help'"
                 @click.stop="showSubstituted(item)"
               >
-                {{ t('downloads.substituted') }}
-                <span v-if="item.substitutedTracks?.length" class="font-mono">{{ item.substitutedTracks.length }}</span>
+                <!-- The widest badge, and the only one allowed to shrink: its label
+                     truncates before the row clips it, and the tooltip has the full text. -->
+                <span class="truncate">{{ t('downloads.substituted') }}</span>
+                <span v-if="item.substitutedTracks?.length" class="font-mono flex-shrink-0">{{ item.substitutedTracks.length }}</span>
               </button>
               <!-- Type badge in slim mode (inline) -->
               <span
@@ -769,8 +777,10 @@ function copyAllErrorDetails() {
             </p>
           </div>
 
-          <!-- Progress / Status -->
-          <div :class="isSlim ? 'w-44' : 'w-64'" class="text-right flex-shrink-0">
+          <!-- Progress / Status. Minimum width rather than fixed, and
+               shrinkable, so a narrow window squeezes this column before it
+               starves the title column of every pixel. -->
+          <div :class="isSlim ? 'min-w-[8rem] max-w-[11rem]' : 'min-w-[10rem] max-w-[16rem]'" class="text-right flex-shrink basis-auto">
             <div v-if="item.status === 'downloading' || item.status === 'pending'" class="space-y-1">
               <div class="flex items-center justify-end gap-2">
                 <!-- Download speed -->
