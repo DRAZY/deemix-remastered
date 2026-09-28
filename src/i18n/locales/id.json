@@ -142,7 +142,37 @@
     "speed": "Kecepatan",
     "substitutedListTitle": "Versi alternatif",
     "substitutedListTip": "Klik untuk melihat lagu mana yang berasal dari rilis alternatif",
-    "clearHistory": "Hapus riwayat"
+    "clearHistory": "Hapus riwayat",
+    "waitingCount": "{count} unduhan menunggu | {count} unduhan menunggu",
+    "formats": "Format",
+    "activeLabel": "aktif",
+    "doneLabel": "selesai",
+    "failedLabel": "gagal",
+    "failedCount": "{count} gagal",
+    "tracksCount": "Lagu ({count})",
+    "historyCount": "Riwayat Unduhan ({count})",
+    "interrupted": "Terputus, aplikasi ditutup sebelum unduhan ini selesai. Klik coba lagi untuk melanjutkan (lagu yang sudah diunduh akan dilewati).",
+    "tracksFailedOf": "{failed} dari {total} lagu gagal",
+    "requestFailed": "Permintaan unduhan gagal",
+    "albumRequestFailed": "Permintaan unduhan album gagal",
+    "qobuzAlbumRequestFailed": "Permintaan unduhan album Qobuz gagal",
+    "playlistRequestFailed": "Permintaan unduhan playlist gagal",
+    "batchRequestFailed": "Permintaan unduhan massal gagal",
+    "mixedBatchRequestFailed": "Permintaan unduhan massal campuran gagal",
+    "noDownloadId": "Server tidak mengembalikan ID unduhan",
+    "noDownloadIds": "Server tidak mengembalikan ID unduhan",
+    "qobuzAlbum": "Album Qobuz",
+    "errorCopy": {
+      "track": "Lagu: {value}",
+      "artist": "Artis: {value}",
+      "errorCode": "Kode Kesalahan: {value}",
+      "httpStatus": "Status HTTP: {value}",
+      "error": "Kesalahan: {value}",
+      "suggestion": "Saran: {value}",
+      "serverResponse": "Respons Server: {value}"
+    },
+    "showTracks": "Tampilkan lagu",
+    "hideTracks": "Sembunyikan lagu"
   },
   "charts": {
     "title": "Tangga Lagu",
@@ -158,7 +188,8 @@
     "topAlbumsIn": "{count} Album Teratas di {country}",
     "topArtistsIn": "{count} Artis Teratas di {country}",
     "topPlaylistsIn": "{count} Playlist Teratas di {country}",
-    "noChartData": "Data tangga lagu tidak tersedia"
+    "noChartData": "Data tangga lagu tidak tersedia",
+    "worldwide": "Seluruh Dunia"
   },
   "favorites": {
     "title": "Favorit",
@@ -206,7 +237,10 @@
     "pinArtistTooltip": "Sematkan artis ini ke sinkronisasi",
     "unpinArtistTooltip": "Lepas sematan artis ini (tetap ada di favorit)",
     "unpin": "Lepas Sematan",
-    "artistSyncRemoved": "\"{name}\" dilepas dari sinkronisasi"
+    "artistSyncRemoved": "\"{name}\" dilepas dari sinkronisasi",
+    "startDownloadsFailed": "Gagal memulai unduhan",
+    "importDeezerFailed": "Gagal mengimpor favorit Deezer",
+    "downloadAllOf": "Unduh semua {type}"
   },
   "analyzer": {
     "title": "Penganalisis Tautan",
@@ -263,7 +297,16 @@
       "invalidUrl": "Silakan masukkan URL Deezer yang valid",
       "unsupported": "Tipe tautan ini tidak didukung",
       "notFound": "Konten tidak ditemukan di Deezer",
-      "networkError": "Gagal menganalisis. Silakan coba lagi."
+      "networkError": "Gagal menganalisis. Silakan coba lagi.",
+      "enterLink": "Silakan masukkan tautan Deezer, Spotify, atau Qobuz",
+      "invalidLink": "Silakan masukkan tautan Deezer, Spotify, atau Qobuz yang valid",
+      "serverConnect": "Gagal terhubung ke server (port {port}). {message}",
+      "serverHttp": "server mengembalikan HTTP {status}",
+      "analyzeFailed": "Gagal menganalisis tautan",
+      "qobuzAnalyzeFailed": "Gagal menganalisis tautan Qobuz",
+      "spotifyAnalyzeFailed": "Gagal menganalisis tautan Spotify",
+      "spotifyConvertFailed": "Gagal mengonversi konten Spotify",
+      "conversionFailed": "Konversi gagal: {message}"
     },
     "loginRequired": "Diperlukan masuk untuk mengunduh",
     "convertTo": "Konversi ke",
@@ -287,7 +330,15 @@
     "batchAnalyzed": "{done}/{total} dianalisis",
     "batchFailed": "{count} gagal",
     "queuing": "Memasukkan ke antrean...",
-    "downloadAllReady": "Unduh semua yang siap ({count})"
+    "downloadAllReady": "Unduh semua yang siap ({count})",
+    "clear": "Bersihkan",
+    "downloadTracks": "Unduh {count} lagu",
+    "onBoth": "di keduanya",
+    "unavailable": "tidak tersedia",
+    "matched": "Cocok ({count})",
+    "unmatched": "Tidak cocok ({count})",
+    "supported": "Didukung: lagu, album, artis, dan playlist",
+    "spotifyPlaylist": "Playlist Spotify"
   },
   "settings": {
     "title": "Pengaturan",
@@ -540,7 +591,22 @@
       "duplicated": "Profil diduplikasi",
       "exported": "Profil diekspor",
       "imported": "Profil \"{name}\" diimpor",
-      "importFailed": "Gagal mengimpor profil — format tidak valid"
+      "importFailed": "Gagal mengimpor profil — format tidak valid",
+      "importedProfile": "Profil Impor",
+      "builtin": {
+        "audiophile": {
+          "name": "Audiofil",
+          "description": "FLAC lossless, semua tag metadata, artwork resolusi tinggi, lirik tersinkron"
+        },
+        "quick": {
+          "name": "Unduh Cepat",
+          "description": "MP3 128kbps, tag minimal, artwork kecil, unduhan tercepat"
+        },
+        "balanced": {
+          "name": "Seimbang",
+          "description": "MP3 320kbps, metadata standar, artwork berkualitas baik"
+        }
+      }
     },
     "noResults": "Tidak ada pengaturan yang cocok ditemukan",
     "clearSearch": "Hapus pencarian",
@@ -599,8 +665,22 @@
       "selectAll": "Pilih semua",
       "selectNone": "Pilih tidak ada",
       "expandProfiles": "Tampilkan daftar profil",
-      "subsetCount": "{n} dari {total}"
-    }
+      "subsetCount": "{n} dari {total}",
+      "errors": {
+        "notJson": "Berkas bukan JSON yang valid.",
+        "notBackup": "Berkas bukan cadangan yang dikenali.",
+        "notBackupOrConfig": "Berkas bukan cadangan atau ekspor konfigurasi yang dikenali.",
+        "settingsFormat": "Format pengaturan tidak dikenali",
+        "settingsRestoreFailed": "Gagal memulihkan pengaturan",
+        "profilesRestoreFailed": "Gagal memulihkan profil",
+        "playlistSyncRestoreFailed": "Gagal memulihkan sinkronisasi playlist",
+        "artistSyncRestoreFailed": "Gagal memulihkan sinkronisasi artis",
+        "favouritesRestoreFailed": "Gagal memulihkan favorit",
+        "credentialsRestoreFailed": "Gagal memulihkan kredensial"
+      }
+    },
+    "templateVariables": "Variabel: {vars}",
+    "exampleArtistName": "Nama artis"
   },
   "login": {
     "title": "Masuk ke Deezer",
@@ -639,7 +719,19 @@
     "openingBrowser": "Membuka login Deezer...",
     "openInExternalBrowser": "Buka di browser eksternal saja",
     "browserLoginHelp": "Cara kerjanya",
-    "browserLoginHelpText": "Jendela login Deezer akan terbuka. Masuk dengan akun Anda, dan sesi Anda akan otomatis ditangkap setelah selesai."
+    "browserLoginHelpText": "Jendela login Deezer akan terbuka. Masuk dengan akun Anda, dan sesi Anda akan otomatis ditangkap setelah selesai.",
+    "loginFailed": "Gagal masuk",
+    "loginFailedAfterCaptcha": "Gagal masuk setelah CAPTCHA",
+    "invalidServerResponse": "Server mengembalikan respons yang tidak valid. Pastikan aplikasi berjalan dengan benar.",
+    "connectionTimeout": "Waktu koneksi habis. Silakan periksa koneksi internet Anda.",
+    "emailPasswordRequired": "Email dan kata sandi wajib diisi",
+    "browserLoginUnavailable": "Masuk lewat browser tidak tersedia",
+    "browserLoginWindowClosed": "Jendela masuk ditutup",
+    "browserLoginFailed": "Gagal masuk lewat browser",
+    "loggedInAs": "Masuk sebagai {name}",
+    "enterArl": "Silakan masukkan token ARL",
+    "authFailed": "Autentikasi gagal",
+    "serverConnectFailed": "Gagal terhubung ke server"
   },
   "common": {
     "download": "Unduh",
@@ -681,7 +773,26 @@
     "favorited": "Difavoritkan",
     "fans": "penggemar",
     "by": "oleh",
-    "new": "BARU"
+    "new": "BARU",
+    "confirm": "Konfirmasi",
+    "item": "Item",
+    "user": "Pengguna",
+    "unknownTrack": "Lagu Tidak Dikenal",
+    "unknownCreator": "Pembuat Tidak Dikenal",
+    "private": "Pribadi",
+    "source": "Sumber",
+    "default": "Bawaan",
+    "never": "Tidak pernah",
+    "justNow": "Baru saja",
+    "durationHoursMinutes": "{hours} jam {mins} mnt",
+    "copyLabel": "Salin {label}",
+    "copySuffix": "{name} (Salinan)",
+    "restoredSuffix": "{name} (Dipulihkan)",
+    "requestFailed": "Permintaan gagal",
+    "serverReturned": "Server mengembalikan {status}",
+    "goBackEsc": "Kembali (Esc)",
+    "cover": "Sampul",
+    "durationMinutes": "{mins} mnt"
   },
   "errors": {
     "generic": "Terjadi kesalahan",
@@ -844,7 +955,11 @@
     "filterEPs": "EP",
     "filterCompilations": "Kompilasi",
     "filterFeatures": "Rilis featuring",
-    "editMinReleaseDate": "Hanya unduh rilis setelah"
+    "editMinReleaseDate": "Hanya unduh rilis setelah",
+    "resolvingTracks": "Menentukan lagu...",
+    "downloadingProgress": "Mengunduh {current}/{total}",
+    "checkingDiscography": "Memeriksa diskografi...",
+    "albumProgress": "Album {current}/{total}"
   },
   "userPlaylists": {
     "creator": "Pembuat",
@@ -877,7 +992,20 @@
     "sortDefault": "URUTAN FEED",
     "sortName": "A–Z",
     "sortTracks": "TRACK TERBANYAK",
-    "connectInSettings": "Hubungkan di Pengaturan"
+    "connectInSettings": "Hubungkan di Pengaturan",
+    "notConnected": "Qobuz tidak terhubung",
+    "connectToBrowseGenres": "Hubungkan akun Qobuz Anda di Pengaturan untuk menjelajahi genre.",
+    "connectFirst": "Hubungkan akun Qobuz Anda di Pengaturan terlebih dahulu.",
+    "searchFailed": "Pencarian Qobuz gagal",
+    "albumLoadFailed": "Gagal memuat album Qobuz",
+    "playlistLoadFailed": "Gagal memuat playlist Qobuz",
+    "artistLoadFailed": "Gagal memuat artis Qobuz",
+    "sessionExpired": "Sesi Qobuz berakhir, sambungkan kembali akun Qobuz Anda di Pengaturan",
+    "notAvailableInBrowser": "Tidak tersedia di browser",
+    "tokenRequired": "Token diperlukan",
+    "tokenRejected": "Qobuz menolak token tersebut",
+    "tokenLoginFailed": "Gagal masuk dengan token",
+    "connectAccountInSettings": "Hubungkan akun Qobuz Anda di Pengaturan"
   },
   "retag": {
     "viaQobuzTip": "Tag bersumber dari Qobuz — Deezer tidak memiliki kecocokan untuk ISRC ini",
@@ -943,7 +1071,8 @@
     "credits": "Kredit & Lisensi",
     "builtBy": "Dibuat dengan penuh perhatian oleh Team MAXIMUS.",
     "inspiredBy": "Terinspirasi dari proyek deemix asli. Didukung oleh Deezer API.",
-    "license": "Dilisensikan di bawah GNU General Public License v3.0"
+    "license": "Dilisensikan di bawah GNU General Public License v3.0",
+    "earlierReleases": "Rilis sebelumnya"
   },
   "accessibility": {
     "windowControls": "Kontrol jendela",
@@ -989,7 +1118,14 @@
     "showing": "Menampilkan {count} dari {total} rilis",
     "downloadFiltered": "Unduh {count} {type}",
     "noReleases": "Tidak ada {type} ditemukan",
-    "loadingDetailsShort": "(memuat detail...)"
+    "loadingDetailsShort": "(memuat detail...)",
+    "type": {
+      "album": "Album",
+      "ep": "EP",
+      "single": "Singel",
+      "compilation": "Kompilasi",
+      "featured": "Tampil Bersama"
+    }
   },
   "newReleases": {
     "title": "Rilis Baru",
@@ -1069,5 +1205,23 @@
     "openFolderBtn": "Buka folder",
     "remove": "Hapus",
     "deleteFiles": "Hapus Berkas"
+  },
+  "app": {
+    "loadingSettings": "Memuat pengaturan...",
+    "connectingDeezer": "Menghubungkan ke Deezer...",
+    "authenticating": "Mengautentikasi...",
+    "loadingFavorites": "Memuat favorit...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "Fokus ke pencarian",
+    "focusSearchAlt": "Fokus ke pencarian (alternatif)",
+    "goToDownloads": "Buka unduhan",
+    "openSettings": "Buka pengaturan",
+    "goToHome": "Buka beranda",
+    "showShortcuts": "Tampilkan pintasan keyboard",
+    "closeModals": "Tutup jendela dialog",
+    "closeModalsOrBack": "Tutup jendela dialog / Kembali",
+    "pressToClose": "Tekan {key} untuk menutup"
   }
 }

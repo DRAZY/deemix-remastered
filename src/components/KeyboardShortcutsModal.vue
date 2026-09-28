@@ -41,19 +41,20 @@ onUnmounted(() => {
 const modKey = computed(() => isMac ? '⌘' : 'Ctrl')
 
 const shortcuts = [
-  { keys: ['⌘/Ctrl', 'K'], description: 'Focus search' },
-  { keys: ['⌘/Ctrl', 'F'], description: 'Focus search (alt)' },
-  { keys: ['⌘/Ctrl', 'D'], description: 'Go to downloads' },
-  { keys: ['⌘/Ctrl', ','], description: 'Open settings' },
-  { keys: ['⌘/Ctrl', 'H'], description: 'Go to home' },
-  { keys: ['⌘/Ctrl', '?'], description: 'Show keyboard shortcuts' },
-  { keys: ['Esc'], description: 'Close modals / Go back' },
+  { keys: ['⌘/Ctrl', 'K'], descriptionKey: 'shortcuts.focusSearch' },
+  { keys: ['⌘/Ctrl', 'F'], descriptionKey: 'shortcuts.focusSearchAlt' },
+  { keys: ['⌘/Ctrl', 'D'], descriptionKey: 'shortcuts.goToDownloads' },
+  { keys: ['⌘/Ctrl', ','], descriptionKey: 'shortcuts.openSettings' },
+  { keys: ['⌘/Ctrl', 'H'], descriptionKey: 'shortcuts.goToHome' },
+  { keys: ['⌘/Ctrl', '?'], descriptionKey: 'shortcuts.showShortcuts' },
+  { keys: ['Esc'], descriptionKey: 'shortcuts.closeModalsOrBack' },
 ]
 
 // Replace ⌘/Ctrl with the appropriate key for the platform
 const displayShortcuts = computed(() => {
   return shortcuts.map(s => ({
     ...s,
+    description: t(s.descriptionKey),
     keys: s.keys.map(k => k === '⌘/Ctrl' ? modKey.value : k)
   }))
 })
@@ -87,7 +88,7 @@ const displayShortcuts = computed(() => {
               <button
                 @click="emit('close')"
                 class="p-1 text-foreground-muted hover:text-foreground transition-colors hover:bg-background-tertiary"
-                aria-label="Close"
+                :aria-label="t('common.close')"
               >
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -119,9 +120,9 @@ const displayShortcuts = computed(() => {
 
             <!-- Footer -->
             <div class="px-6 py-4 bg-background-tertiary border-t border-white/[0.06]">
-              <p class="text-xs text-foreground-muted text-center">
-                Press <kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-background-main border border-white/[0.15]">Esc</kbd> to close
-              </p>
+              <i18n-t keypath="shortcuts.pressToClose" tag="p" class="text-xs text-foreground-muted text-center">
+                <template #key><kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-background-main border border-white/[0.15]">Esc</kbd></template>
+              </i18n-t>
             </div>
           </div>
         </Transition>

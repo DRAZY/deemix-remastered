@@ -87,7 +87,7 @@ async function handleLogin() {
 
 async function handleBrowserLogin() {
   if (!window.electronAPI?.deezerLogin) {
-    showNotification('Browser login not available', 'error')
+    showNotification(t('login.browserLoginUnavailable'), 'error')
     return
   }
 
@@ -116,7 +116,7 @@ async function handleBrowserLogin() {
       }
     }
   } catch (error: any) {
-    showNotification(error.message || 'Browser login failed', 'error')
+    showNotification(error.message || t('login.browserLoginFailed'), 'error')
   } finally {
     isBrowserLoginLoading.value = false
   }

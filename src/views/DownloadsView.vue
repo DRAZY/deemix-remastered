@@ -50,7 +50,7 @@ const downloadStats = computed(() => {
   // Top artists (from completed downloads)
   const artistCounts = new Map<string, number>()
   for (const entry of completed) {
-    const artist = entry.artist || 'Unknown'
+    const artist = entry.artist || t('common.unknown')
     artistCounts.set(artist, (artistCounts.get(artist) || 0) + 1)
   }
   const topArtists = [...artistCounts.entries()]
@@ -60,7 +60,7 @@ const downloadStats = computed(() => {
   // Format breakdown (normalize to uppercase so FLAC/flac count together)
   const formatCounts = new Map<string, number>()
   for (const entry of completed) {
-    const raw = entry.actualFormat || entry.quality || 'Unknown'
+    const raw = entry.actualFormat || entry.quality || t('common.unknown')
     const fmt = raw.toUpperCase()
     formatCounts.set(fmt, (formatCounts.get(fmt) || 0) + 1)
   }
@@ -172,8 +172,8 @@ function showErrorDetails(item: DownloadItem) {
   const details = item.errorDetails
   errorDetails.value = {
     title: item.title,
-    artist: item.artist || 'Unknown Artist',
-    error: details?.message || item.error || 'Unknown error',
+    artist: item.artist || t('common.unknownArtist'),
+    error: details?.message || item.error || t('common.unknownError'),
     trackId: item.track?.id?.toString() || details?.trackId?.toString(),
     errorCode: details?.code,
     httpStatus: details?.httpStatus,
@@ -188,8 +188,8 @@ function showFailedTrackError(failed: { title: string; artist?: string; error?: 
   const details = failed.errorDetails
   errorDetails.value = {
     title: failed.title,
-    artist: failed.artist || 'Unknown Artist',
-    error: details?.message || failed.error || 'Unknown error',
+    artist: failed.artist || t('common.unknownArtist'),
+    error: details?.message || failed.error || t('common.unknownError'),
     trackId: failed.id || details?.trackId?.toString(),
     source,
     errorCode: details?.code,
@@ -462,14 +462,14 @@ const contextMenuItems = computed(() => menuMode.value === 'row'
 function copyAllErrorDetails() {
   if (!errorDetails.value) return
   const details = [
-    `Track: ${errorDetails.value.title}`,
-    `Artist: ${errorDetails.value.artist}`,
+    t('downloads.errorCopy.track', { value: errorDetails.value.title }),
+    t('downloads.errorCopy.artist', { value: errorDetails.value.artist }),
     errorDetails.value.trackId ? `ID: ${errorDetails.value.trackId}` : '',
-    errorDetails.value.errorCode ? `Error Code: ${errorDetails.value.errorCode}` : '',
-    errorDetails.value.httpStatus ? `HTTP Status: ${errorDetails.value.httpStatus}` : '',
-    `Error: ${errorDetails.value.error}`,
-    errorDetails.value.suggestion ? `Suggestion: ${errorDetails.value.suggestion}` : '',
-    errorDetails.value.serverResponse ? `Server Response: ${errorDetails.value.serverResponse}` : ''
+    errorDetails.value.errorCode ? t('downloads.errorCopy.errorCode', { value: errorDetails.value.errorCode }) : '',
+    errorDetails.value.httpStatus ? t('downloads.errorCopy.httpStatus', { value: errorDetails.value.httpStatus }) : '',
+    t('downloads.errorCopy.error', { value: errorDetails.value.error }),
+    errorDetails.value.suggestion ? t('downloads.errorCopy.suggestion', { value: errorDetails.value.suggestion }) : '',
+    errorDetails.value.serverResponse ? t('downloads.errorCopy.serverResponse', { value: errorDetails.value.serverResponse }) : ''
   ].filter(Boolean).join('\n')
   copyToClipboard(details, t('contextMenu.error'))
 }
@@ -525,7 +525,7 @@ function copyAllErrorDetails() {
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <span class="text-yellow-400 font-medium">{{ t('downloads.status.paused') }}</span>
-        <span class="text-foreground-muted text-sm">{{ downloadStore.activeDownloads.length }} downloads waiting</span>
+        <span class="text-foreground-muted text-sm">{{ t('downloads.waitingCount', { count: downloadStore.activeDownloads.length }, downloadStore.activeDownloads.length) }}</span>
       </div>
       <button
         @click="downloadStore.resumeQueue()"
@@ -573,7 +573,7 @@ function copyAllErrorDetails() {
       <div v-if="showStats" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
         <div class="card p-4 text-center">
           <div class="text-2xl font-bold text-primary-400">{{ downloadStats.totalDownloads }}</div>
-          <div class="text-xs text-foreground-muted mt-1">Downloads</div>
+          <div class="text-xs text-foreground-muted mt-1">{{ t('downloads.title') }}</div>
         </div>
         <div class="card p-4 text-center">
           <div class="text-2xl font-bold text-green-400">{{ downloadStats.totalTracks }}</div>
@@ -585,7 +585,7 @@ function copyAllErrorDetails() {
         </div>
         <div class="card p-4 text-center">
           <div class="text-2xl font-bold text-red-400">{{ downloadStats.failedCount }}</div>
-          <div class="text-xs text-foreground-muted mt-1">Failed</div>
+          <div class="text-xs text-foreground-muted mt-1">{{ t('downloads.failed') }}</div>
         </div>
       </div>
 
@@ -603,7 +603,7 @@ function copyAllErrorDetails() {
           </div>
         </div>
         <div class="card p-4">
-          <h4 class="font-mono text-[9.5px] text-foreground-muted mb-3 uppercase tracking-[0.2em]">Formats</h4>
+          <h4 class="font-mono text-[9.5px] text-foreground-muted mb-3 uppercase tracking-[0.2em]">{{ t('downloads.formats') }}</h4>
           <div class="space-y-2">
             <div v-for="([format, count]) in downloadStats.formats" :key="format" class="flex items-center justify-between">
               <span class="text-sm">{{ format }}</span>
@@ -619,10 +619,10 @@ function copyAllErrorDetails() {
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        Paused
+        {{ t('downloads.status.paused') }}
       </span>
       <span class="text-foreground-muted">
-        <span class="text-primary-400 font-medium">{{ downloadStore.activeDownloads.length }}</span> active
+        <span class="text-primary-400 font-medium">{{ downloadStore.activeDownloads.length }}</span> {{ t('downloads.activeLabel') }}
       </span>
       <span v-if="downloadStore.totalDownloadSpeed > 0" class="text-primary-300 flex items-center gap-1">
         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -631,10 +631,10 @@ function copyAllErrorDetails() {
         {{ formatSpeed(downloadStore.totalDownloadSpeed) }}
       </span>
       <span class="text-foreground-muted">
-        <span class="text-green-400 font-medium">{{ downloadStore.completedDownloads.length }}</span> done
+        <span class="text-green-400 font-medium">{{ downloadStore.completedDownloads.length }}</span> {{ t('downloads.doneLabel') }}
       </span>
       <span v-if="downloadStore.failedDownloads.length > 0" class="text-foreground-muted">
-        <span class="text-red-400 font-medium">{{ downloadStore.failedDownloads.length }}</span> failed
+        <span class="text-red-400 font-medium">{{ downloadStore.failedDownloads.length }}</span> {{ t('downloads.failedLabel') }}
       </span>
     </div>
 
@@ -837,7 +837,7 @@ function copyAllErrorDetails() {
               @click="toggleTrackList(item.id)"
               class="hover:bg-white/10 transition-colors text-foreground-muted"
               :class="[isSlim ? 'p-1' : 'p-2', expandedTrackLists.has(item.id) ? 'text-foreground' : '']"
-              v-tooltip="expandedTrackLists.has(item.id) ? 'Hide tracks' : 'Show tracks'"
+              v-tooltip="expandedTrackLists.has(item.id) ? t('downloads.hideTracks') : t('downloads.showTracks')"
             >
               <svg :class="isSlim ? 'w-4 h-4' : 'w-5 h-5'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -894,7 +894,7 @@ function copyAllErrorDetails() {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              <span v-if="!isSlim">{{ item.failedTracks.length }} failed</span>
+              <span v-if="!isSlim">{{ t('downloads.failedCount', { count: item.failedTracks.length }) }}</span>
             </button>
             <!-- Download Next button for pending items -->
             <button
@@ -973,7 +973,7 @@ function copyAllErrorDetails() {
           class="mt-4 pt-4 border-t border-white/[0.08]"
         >
           <p class="font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted mb-2">
-            Tracks ({{ item.tracks.length }})
+            {{ t('downloads.tracksCount', { count: item.tracks.length }) }}
           </p>
           <div class="space-y-1 max-h-64 overflow-y-auto">
             <div
@@ -1227,7 +1227,7 @@ function copyAllErrorDetails() {
           <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-90': showHistory }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
-          Download History ({{ downloadStore.downloadHistory.length }})
+          {{ t('downloads.historyCount', { count: downloadStore.downloadHistory.length }) }}
         </button>
         <button
           v-if="showHistory && downloadStore.downloadHistory.length > 0"
@@ -1271,9 +1271,9 @@ function copyAllErrorDetails() {
               >D</span>
             </p>
             <p class="text-xs text-foreground-muted truncate">
-              {{ entry.artist || 'Unknown Artist' }}
+              {{ entry.artist || t('common.unknownArtist') }}
               <span v-if="entry.actualFormat"> · {{ entry.actualFormat }}</span>
-              <span v-if="entry.type !== 'track'"> · {{ entry.totalTracks }} tracks<span v-if="entry.failedTracks"> ({{ entry.failedTracks }} failed)</span></span>
+              <span v-if="entry.type !== 'track'"> · {{ entry.totalTracks }} {{ t('common.tracks') }}<span v-if="entry.failedTracks"> {{ t('notifications.queuedFromLinksFailed', { failed: entry.failedTracks }) }}</span></span>
               <span
                 v-if="entry.skippedAsDuplicate"
                 v-tooltip="t('downloads.inLibraryTip')"

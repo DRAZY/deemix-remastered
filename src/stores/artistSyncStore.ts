@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import i18n from '../i18n'
 
 export type SyncSchedule = 'launch' | '1h' | '6h' | '12h' | '24h' | 'manual'
 export type FirstSyncMode = 'subscribe-forward' | 'download-backlog' | 'date-threshold'
@@ -137,7 +138,7 @@ export const useArtistSyncStore = defineStore('artistSync', () => {
       })
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}))
-        return { success: false, error: errData.error || `Server returned ${response.status}` }
+        return { success: false, error: errData.error || i18n.global.t('common.serverReturned', { status: response.status }) }
       }
       const data = await response.json()
       if (data.success) {
@@ -181,8 +182,8 @@ export const useArtistSyncStore = defineStore('artistSync', () => {
           success: false,
           added: 0,
           failed: configs.length,
-          results: configs.map(() => ({ ok: false, error: errData.error || `Server returned ${response.status}` })),
-          error: errData.error || `Server returned ${response.status}`
+          results: configs.map(() => ({ ok: false, error: errData.error || i18n.global.t('common.serverReturned', { status: response.status }) })),
+          error: errData.error || i18n.global.t('common.serverReturned', { status: response.status })
         }
       }
       const data = await response.json()

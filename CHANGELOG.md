@@ -10,6 +10,18 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+### Summary
+
+- **The rest of the interface is translated. About 200 strings that were typed straight into the code, from the startup messages and login errors to the keyboard shortcut list, the Link Analyzer and the built-in profile names, now go through the translation system in all 21 languages, and the check that guards this was rewritten so the same patterns cannot slip past it again. No change to downloading, tagging or settings.**
+
+### Fixed
+- The interface no longer falls back to English in places the 2.6.2 and 2.6.3 sweeps missed (reported by @GravuTrad on #160, with a full list). Startup messages, login and session errors, the keyboard shortcut list, the download bar's Pause/Resume/Cancel, the Downloads page stat chips and error details, the Link Analyzer's buttons, panels and messages, the Sync page's "just now" times, the About page's release grouping, the built-in profile names and descriptions, backup and restore errors, and the Qobuz connection messages are all translated now. Several already had a key in every language that simply was never used.
+- Country names in the Link Analyzer's availability panel follow the app language. The 159-entry English table is gone; names come from the browser's own region-name data, so every language gets them without a translation pass.
+- Relative times on the Sync page ("5m ago", "3h ago") are formatted by the browser for the current language instead of an English template.
+
+### Changed
+- `scripts/i18n-check.ts` now reads string literals in scripts, bound attributes (`:title="x ? 'Resume' : 'Pause'"`), `{{ }}` expressions, text mixed with interpolation and single-word labels, on top of the template text and toast calls it read before. Internal error messages, comparison operands, enum values, key names and console output are recognised and skipped, and a line can carry `// i18n-exempt` when a string is deliberately not copy. On the 2.6.4 source it reports over 370 findings; on this release, none.
+
 ## [2.6.4] - 2026-09-27
 
 ### Summary

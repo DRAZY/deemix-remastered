@@ -116,14 +116,15 @@ function formatDate(dateStr?: string): string {
 // Get album type label
 function getTypeLabel(recordType?: string): string {
   const types: Record<string, string> = {
-    'album': 'Album',
-    'ep': 'EP',
-    'single': 'Single',
-    'compile': 'Compilation',
-    'compilation': 'Compilation',
-    'featured': 'Featured'
+    'album': 'artistView.type.album',
+    'ep': 'artistView.type.ep',
+    'single': 'artistView.type.single',
+    'compile': 'artistView.type.compilation',
+    'compilation': 'artistView.type.compilation',
+    'featured': 'artistView.type.featured'
   }
-  return types[recordType || ''] || recordType || 'Album'
+  const key = types[recordType || '']
+  return key ? t(key) : recordType || t('artistView.type.album')
 }
 
 // Helper to sort and inject artist info into albums
@@ -645,7 +646,7 @@ const contextMenuItems = computed(() => {
             v-model="discographySort"
             class="text-sm bg-background-secondary text-foreground rounded-lg px-3 py-1.5 border border-zinc-700 focus:border-primary-500 outline-none"
           >
-            <option value="default">Default</option>
+            <option value="default">{{ t('common.default') }}</option>
             <option value="name-asc">{{ t('common.sortNameAsc') }}</option>
             <option value="name-desc">{{ t('common.sortNameDesc') }}</option>
             <option value="date-newest">{{ t('artistView.sortNewest') }}</option>
@@ -740,7 +741,7 @@ const contextMenuItems = computed(() => {
         <!-- Album Count and Actions -->
         <div class="mt-4 flex items-center justify-between">
           <p class="text-sm text-foreground-muted">
-            Showing {{ filteredAlbums.length }} of {{ albums.length }} releases
+            {{ t('artistView.showing', { count: filteredAlbums.length, total: albums.length }) }}
             <span v-if="isLoadingDetails" class="text-primary-400">
               {{ t('artistView.loadingDetailsShort') }}
             </span>

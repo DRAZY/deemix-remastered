@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, watch, computed } from 'vue'
-import { setLocale } from '../i18n'
+import i18n, { setLocale } from '../i18n'
 import { useToastStore } from './toastStore'
 
 export type ColorTheme = 'signal' | 'violet' | 'spotify' | 'rose' | 'ocean' | 'sunset' | 'mint' | 'dracula' | 'nord'
@@ -717,7 +717,7 @@ export const useSettingsStore = defineStore('settings', () => {
     window.electronAPI.onQobuzAuthExpired((data) => {
       console.warn('[Settings] Qobuz session expired:', data?.reason)
       qobuzSessionExpired.value = true
-      useToastStore().warning(data?.reason || 'Qobuz session expired — reconnect your Qobuz account in Settings')
+      useToastStore().warning(data?.reason || i18n.global.t('qobuz.sessionExpired'))
     })
   }
 
@@ -727,10 +727,10 @@ export const useSettingsStore = defineStore('settings', () => {
    * true on success. See qobuzAuth.ts for why token auth is required.
    */
   async function connectQobuz(): Promise<{ success: boolean; error?: string }> {
-    if (!window.electronAPI?.qobuzLogin) return { success: false, error: 'Not available in browser' }
+    if (!window.electronAPI?.qobuzLogin) return { success: false, error: i18n.global.t('qobuz.notAvailableInBrowser') }
     const res = await window.electronAPI.qobuzLogin.openLoginWindow()
     if (!res.success || !res.userId || !res.token) {
-      return { success: false, error: res.error || 'Login was not completed' }
+      return { success: false, error: res.error || i18n.global.t('settings.qobuz.loginNotCompleted') }
     }
     settings.value.qobuzUserId = res.userId
     settings.value.qobuzToken = res.token
@@ -768,7 +768,7 @@ export const useSettingsStore = defineStore('settings', () => {
     advanced?: { appId?: string; appSecret?: string; userId?: string }
   ): Promise<{ success: boolean; error?: string }> {
     const trimmed = token.trim()
-    if (!trimmed) return { success: false, error: 'Token required' }
+    if (!trimmed) return { success: false, error: i18n.global.t('qobuz.tokenRequired') }
     const appId = (advanced?.appId || '').trim()
     const appSecret = (advanced?.appSecret || '').trim()
     const advUserId = (advanced?.userId || '').trim()
@@ -781,7 +781,7 @@ export const useSettingsStore = defineStore('settings', () => {
       })
       const d = await r.json().catch(() => ({}))
       if (!r.ok || !d.success || !d.userId) {
-        return { success: false, error: d.error || 'Qobuz rejected the token' }
+        return { success: false, error: d.error || i18n.global.t('qobuz.tokenRejected') }
       }
       settings.value.qobuzUserId = String(d.userId)
       settings.value.qobuzToken = trimmed
@@ -800,7 +800,7 @@ export const useSettingsStore = defineStore('settings', () => {
       qobuzSessionExpired.value = false
       return { success: true }
     } catch (e: any) {
-      return { success: false, error: e?.message || 'Token login failed' }
+      return { success: false, error: e?.message || i18n.global.t('qobuz.tokenLoginFailed') }
     }
   }
 

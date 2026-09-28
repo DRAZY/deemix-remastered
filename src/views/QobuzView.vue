@@ -221,7 +221,7 @@ const sections = [
         @click="setGenre(0)"
         class="flex-shrink-0 font-mono text-[10px] tracking-[0.12em] uppercase px-2.5 py-1 border transition-colors"
         :class="activeGenre === 0 ? 'border-qobuz-500/60 text-qobuz-400 bg-qobuz-500/10' : 'border-white/[0.1] text-foreground-muted hover:text-foreground'"
-      >All</button>
+      >{{ t('search.all') }}</button>
       <button
         v-for="g in genres"
         :key="g.id"
@@ -281,7 +281,7 @@ const sections = [
               @click="loadMoreRow(s.key)"
               :disabled="loadingMore[s.key]"
               class="font-mono text-[10px] tracking-[0.16em] uppercase px-4 py-1.5 border border-qobuz-500/50 text-qobuz-400 hover:bg-qobuz-500 hover:text-background-main transition-colors disabled:opacity-50"
-            >{{ loadingMore[s.key] ? 'LOADING…' : `MORE (${s.data.value.length}/${totals[s.key]})` }}</button>
+            >{{ loadingMore[s.key] ? t('common.loading') : `${t('qobuz.more')} (${s.data.value.length}/${totals[s.key]})` }}</button>
           </div>
         </template>
       </section>
@@ -310,7 +310,7 @@ const sections = [
             @click="loadMoreRow('playlists')"
             :disabled="loadingMore['playlists']"
             class="font-mono text-[10px] tracking-[0.16em] uppercase px-4 py-1.5 border border-qobuz-500/50 text-qobuz-400 hover:bg-qobuz-500 hover:text-background-main transition-colors disabled:opacity-50"
-          >{{ loadingMore['playlists'] ? 'LOADING…' : `MORE (${playlists.length}/${totals['playlists']})` }}</button>
+          >{{ loadingMore['playlists'] ? t('common.loading') : `${t('qobuz.more')} (${playlists.length}/${totals['playlists']})` }}</button>
         </div>
       </section>
     </template>

@@ -142,7 +142,37 @@
     "speed": "Bilis",
     "substitutedListTitle": "Mga alternatibong bersyon",
     "substitutedListTip": "I-click para makita kung aling mga track ang galing sa alternatibong release",
-    "clearHistory": "I-clear ang history"
+    "clearHistory": "I-clear ang history",
+    "waitingCount": "{count} download ang naghihintay | {count} na download ang naghihintay",
+    "formats": "Mga Format",
+    "activeLabel": "aktibo",
+    "doneLabel": "tapos",
+    "failedLabel": "nabigo",
+    "failedCount": "{count} ang nabigo",
+    "tracksCount": "Mga Track ({count})",
+    "historyCount": "History ng Download ({count})",
+    "interrupted": "Naantala, nagsara ang app bago ito natapos. I-click ang Subukang Muli para ituloy (nilalaktawan ang mga track na na-download na).",
+    "tracksFailedOf": "{failed} sa {total} na track ang nabigo",
+    "requestFailed": "Nabigo ang download request",
+    "albumRequestFailed": "Nabigo ang download request ng album",
+    "qobuzAlbumRequestFailed": "Nabigo ang download request ng Qobuz album",
+    "playlistRequestFailed": "Nabigo ang download request ng playlist",
+    "batchRequestFailed": "Nabigo ang batch download request",
+    "mixedBatchRequestFailed": "Nabigo ang mixed batch download request",
+    "noDownloadId": "Walang ibinalik na download ID ang server",
+    "noDownloadIds": "Walang ibinalik na mga download ID ang server",
+    "qobuzAlbum": "Qobuz Album",
+    "errorCopy": {
+      "track": "Track: {value}",
+      "artist": "Artist: {value}",
+      "errorCode": "Error Code: {value}",
+      "httpStatus": "HTTP Status: {value}",
+      "error": "Error: {value}",
+      "suggestion": "Mungkahi: {value}",
+      "serverResponse": "Sagot ng Server: {value}"
+    },
+    "showTracks": "Ipakita ang mga track",
+    "hideTracks": "Itago ang mga track"
   },
   "charts": {
     "title": "Mga Chart",
@@ -158,7 +188,8 @@
     "topAlbumsIn": "Top {count} na Album sa {country}",
     "topArtistsIn": "Top {count} na Artist sa {country}",
     "topPlaylistsIn": "Top {count} na Playlist sa {country}",
-    "noChartData": "Walang available na chart data"
+    "noChartData": "Walang available na chart data",
+    "worldwide": "Buong Mundo"
   },
   "favorites": {
     "title": "Mga Paborito",
@@ -206,7 +237,10 @@
     "pinArtistTooltip": "I-pin ang artist na ito sa sync",
     "unpinArtistTooltip": "Alisin sa pin ang artist na ito (mananatili sa paborito)",
     "unpin": "Alisin sa Pin",
-    "artistSyncRemoved": "Inalis sa pin ang \"{name}\" mula sa sync"
+    "artistSyncRemoved": "Inalis sa pin ang \"{name}\" mula sa sync",
+    "startDownloadsFailed": "Hindi masimulan ang mga download",
+    "importDeezerFailed": "Nabigong i-import ang mga paborito mula sa Deezer",
+    "downloadAllOf": "I-download lahat ng {type}"
   },
   "analyzer": {
     "title": "Link Analyzer",
@@ -263,7 +297,16 @@
       "invalidUrl": "Mangyaring maglagay ng valid na Deezer URL",
       "unsupported": "Hindi sinusuportahan ang ganitong uri ng link",
       "notFound": "Hindi nahanap ang content sa Deezer",
-      "networkError": "Nabigo ang pagsuri. Pakisubukang muli."
+      "networkError": "Nabigo ang pagsuri. Pakisubukang muli.",
+      "enterLink": "Mangyaring maglagay ng Deezer, Spotify, o Qobuz link",
+      "invalidLink": "Mangyaring maglagay ng valid na Deezer, Spotify, o Qobuz link",
+      "serverConnect": "Hindi makakonekta sa server (port {port}). {message}",
+      "serverHttp": "nagbalik ang server ng HTTP {status}",
+      "analyzeFailed": "Nabigong i-analyze ang link",
+      "qobuzAnalyzeFailed": "Nabigong i-analyze ang Qobuz link",
+      "spotifyAnalyzeFailed": "Nabigong i-analyze ang Spotify link",
+      "spotifyConvertFailed": "Nabigong i-convert ang Spotify content",
+      "conversionFailed": "Nabigo ang conversion: {message}"
     },
     "loginRequired": "Kailangang mag-login para mag-download",
     "convertTo": "I-convert sa",
@@ -287,7 +330,15 @@
     "batchAnalyzed": "{done}/{total} na-analyze",
     "batchFailed": "{count} nabigo",
     "queuing": "Inequeue...",
-    "downloadAllReady": "I-download ang lahat ng handa na ({count})"
+    "downloadAllReady": "I-download ang lahat ng handa na ({count})",
+    "clear": "I-clear",
+    "downloadTracks": "I-download ang {count} track",
+    "onBoth": "nasa pareho",
+    "unavailable": "hindi available",
+    "matched": "Tugma ({count})",
+    "unmatched": "Hindi tugma ({count})",
+    "supported": "Suportado: mga track, album, artist, at playlist",
+    "spotifyPlaylist": "Spotify Playlist"
   },
   "settings": {
     "title": "Mga Setting",
@@ -540,7 +591,22 @@
       "duplicated": "Na-duplicate ang profile",
       "exported": "Na-export ang profile",
       "imported": "Na-import ang profile na \"{name}\"",
-      "importFailed": "Nabigong i-import ang profile — invalid na format"
+      "importFailed": "Nabigong i-import ang profile — invalid na format",
+      "importedProfile": "Na-import na Profile",
+      "builtin": {
+        "audiophile": {
+          "name": "Audiophile",
+          "description": "FLAC lossless, lahat ng metadata tag, high-res na artwork, synced lyrics"
+        },
+        "quick": {
+          "name": "Mabilis na Download",
+          "description": "MP3 128kbps, kaunting tag, maliit na artwork, pinakamabilis na download"
+        },
+        "balanced": {
+          "name": "Balanse",
+          "description": "MP3 320kbps, karaniwang metadata, magandang kalidad ng artwork"
+        }
+      }
     },
     "noResults": "Walang nahanap na tugmang setting",
     "clearSearch": "I-clear ang paghahanap",
@@ -599,8 +665,22 @@
       "selectAll": "Piliin lahat",
       "selectNone": "Walang piliin",
       "expandProfiles": "Ipakita ang listahan ng profile",
-      "subsetCount": "{n} sa {total}"
-    }
+      "subsetCount": "{n} sa {total}",
+      "errors": {
+        "notJson": "Hindi valid na JSON ang file.",
+        "notBackup": "Hindi kilalang backup ang file.",
+        "notBackupOrConfig": "Hindi kilalang backup o configuration export ang file.",
+        "settingsFormat": "Hindi kilala ang format ng mga setting",
+        "settingsRestoreFailed": "Nabigo ang pag-restore ng mga setting",
+        "profilesRestoreFailed": "Nabigo ang pag-restore ng mga profile",
+        "playlistSyncRestoreFailed": "Nabigo ang pag-restore ng playlist sync",
+        "artistSyncRestoreFailed": "Nabigo ang pag-restore ng artist sync",
+        "favouritesRestoreFailed": "Nabigo ang pag-restore ng mga paborito",
+        "credentialsRestoreFailed": "Nabigo ang pag-restore ng mga kredensyal"
+      }
+    },
+    "templateVariables": "Mga variable: {vars}",
+    "exampleArtistName": "Pangalan ng artist"
   },
   "login": {
     "title": "Mag-login sa Deezer",
@@ -639,7 +719,19 @@
     "openingBrowser": "Binubuksan ang Deezer login...",
     "openInExternalBrowser": "Buksan na lang sa external browser",
     "browserLoginHelp": "Paano ito gumagana",
-    "browserLoginHelpText": "May bubukas na window ng Deezer login. Mag-login gamit ang account mo, at awtomatikong makukuha ang session mo pagkatapos."
+    "browserLoginHelpText": "May bubukas na window ng Deezer login. Mag-login gamit ang account mo, at awtomatikong makukuha ang session mo pagkatapos.",
+    "loginFailed": "Nabigo ang pag-login",
+    "loginFailedAfterCaptcha": "Nabigo ang pag-login pagkatapos ng CAPTCHA",
+    "invalidServerResponse": "Invalid na sagot ang ibinalik ng server. Siguraduhing tumatakbo nang maayos ang app.",
+    "connectionTimeout": "Nag-time out ang koneksyon. Pakisuri ang iyong internet connection.",
+    "emailPasswordRequired": "Kailangan ang email at password",
+    "browserLoginUnavailable": "Hindi available ang browser login",
+    "browserLoginWindowClosed": "Naisara ang login window",
+    "browserLoginFailed": "Nabigo ang browser login",
+    "loggedInAs": "Naka-login bilang {name}",
+    "enterArl": "Mangyaring maglagay ng ARL token",
+    "authFailed": "Nabigo ang authentication",
+    "serverConnectFailed": "Hindi makakonekta sa server"
   },
   "common": {
     "download": "I-download",
@@ -681,7 +773,26 @@
     "sortNameDesc": "Pangalan Z-A",
     "pasteFromClipboard": "I-paste mula sa clipboard",
     "paste": "I-paste",
-    "copy": "Kopyahin"
+    "copy": "Kopyahin",
+    "confirm": "Kumpirmahin",
+    "item": "Item",
+    "user": "User",
+    "unknownTrack": "Hindi Kilalang Kanta",
+    "unknownCreator": "Hindi Kilalang Gumawa",
+    "private": "Pribado",
+    "source": "Pinagmulan",
+    "default": "Default",
+    "never": "Hindi kailanman",
+    "justNow": "Ngayon lang",
+    "durationHoursMinutes": "{hours} oras {mins} min",
+    "copyLabel": "Kopyahin ang {label}",
+    "copySuffix": "{name} (Kopya)",
+    "restoredSuffix": "{name} (Na-restore)",
+    "requestFailed": "Nabigo ang request",
+    "serverReturned": "Nagbalik ang server ng {status}",
+    "goBackEsc": "Bumalik (Esc)",
+    "cover": "Cover",
+    "durationMinutes": "{mins} min"
   },
   "trackCard": {
     "stop": "Ihinto",
@@ -728,7 +839,14 @@
     "featuredAppearances": "featured na paglabas",
     "latestRelease": "Pinakabagong Release",
     "viewAlbum": "Tingnan ang Album",
-    "compilations": "Mga Compilation"
+    "compilations": "Mga Compilation",
+    "type": {
+      "album": "Album",
+      "ep": "EP",
+      "single": "Single",
+      "compilation": "Compilation",
+      "featured": "Featured"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "I-download ang playlist",
@@ -918,7 +1036,11 @@
     "filterEPs": "Mga EP",
     "filterCompilations": "Mga Compilation",
     "filterFeatures": "Mga featured na release",
-    "editMinReleaseDate": "I-download lang ang mga release pagkatapos ng"
+    "editMinReleaseDate": "I-download lang ang mga release pagkatapos ng",
+    "resolvingTracks": "Tinutukoy ang mga track...",
+    "downloadingProgress": "Dina-download {current}/{total}",
+    "checkingDiscography": "Sinusuri ang discography...",
+    "albumProgress": "Album {current}/{total}"
   },
   "userPlaylists": {
     "creator": "Creator",
@@ -951,7 +1073,20 @@
     "sortDefault": "AYOS NG FEED",
     "sortName": "A–Z",
     "sortTracks": "PINAKAMARAMING TRACK",
-    "connectInSettings": "Kumonekta sa Mga Setting"
+    "connectInSettings": "Kumonekta sa Mga Setting",
+    "notConnected": "Hindi nakakonekta ang Qobuz",
+    "connectToBrowseGenres": "Ikonekta ang iyong Qobuz account sa Mga Setting para makapag-browse ng mga genre.",
+    "connectFirst": "Ikonekta muna ang iyong Qobuz account sa Mga Setting.",
+    "searchFailed": "Nabigo ang paghahanap sa Qobuz",
+    "albumLoadFailed": "Nabigong i-load ang Qobuz album",
+    "playlistLoadFailed": "Nabigong i-load ang Qobuz playlist",
+    "artistLoadFailed": "Nabigong i-load ang Qobuz artist",
+    "sessionExpired": "Nag-expire ang Qobuz session, ikonekta ulit ang iyong Qobuz account sa Mga Setting",
+    "notAvailableInBrowser": "Hindi available sa browser",
+    "tokenRequired": "Kailangan ang token",
+    "tokenRejected": "Tinanggihan ng Qobuz ang token",
+    "tokenLoginFailed": "Nabigo ang pag-login gamit ang token",
+    "connectAccountInSettings": "Ikonekta ang iyong Qobuz account sa Mga Setting"
   },
   "retag": {
     "viaQobuzTip": "Nagmula sa Qobuz ang mga tag — walang tugma ang Deezer para sa ISRC na ito",
@@ -1017,7 +1152,8 @@
     "credits": "Credits at Lisensya",
     "builtBy": "Ginawa nang maalaga ng Team MAXIMUS.",
     "inspiredBy": "Inspirasyon mula sa orihinal na deemix project. Pinapagana ng Deezer API.",
-    "license": "Nasa ilalim ng lisensya ng GNU General Public License v3.0"
+    "license": "Nasa ilalim ng lisensya ng GNU General Public License v3.0",
+    "earlierReleases": "Mga naunang release"
   },
   "accessibility": {
     "windowControls": "Mga kontrol ng window",
@@ -1069,5 +1205,23 @@
     "pasteLink": "I-paste ang Link",
     "pasteToken": "I-paste ang Token",
     "pasted": "Na-paste"
+  },
+  "app": {
+    "loadingSettings": "Nilo-load ang mga setting...",
+    "connectingDeezer": "Kumokonekta sa Deezer...",
+    "authenticating": "Vine-verify ang account...",
+    "loadingFavorites": "Nilo-load ang mga paborito...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "Pumunta sa search",
+    "focusSearchAlt": "Pumunta sa search (alt)",
+    "goToDownloads": "Pumunta sa Mga Download",
+    "openSettings": "Buksan ang Mga Setting",
+    "goToHome": "Pumunta sa Home",
+    "showShortcuts": "Ipakita ang mga keyboard shortcut",
+    "closeModals": "Isara ang mga window",
+    "closeModalsOrBack": "Isara ang mga window / Bumalik",
+    "pressToClose": "Pindutin ang {key} para isara"
   }
 }

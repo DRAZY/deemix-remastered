@@ -142,7 +142,37 @@
     "speed": "Velocidade",
     "substitutedListTitle": "Versões alternativas",
     "substitutedListTip": "Clique para ver que faixas vieram de um lançamento alternativo",
-    "clearHistory": "Limpar histórico"
+    "clearHistory": "Limpar histórico",
+    "waitingCount": "{count} transferência em espera | {count} transferências em espera",
+    "formats": "Formatos",
+    "activeLabel": "ativas",
+    "doneLabel": "concluídas",
+    "failedLabel": "falhadas",
+    "failedCount": "{count} falhadas",
+    "tracksCount": "Faixas ({count})",
+    "historyCount": "Histórico de transferências ({count})",
+    "interrupted": "Interrompida, a aplicação fechou antes de terminar. Clique em Tentar novamente para retomar (as faixas já transferidas são ignoradas).",
+    "tracksFailedOf": "{failed} de {total} faixas falharam",
+    "requestFailed": "O pedido de transferência falhou",
+    "albumRequestFailed": "O pedido de transferência do álbum falhou",
+    "qobuzAlbumRequestFailed": "O pedido de transferência do álbum Qobuz falhou",
+    "playlistRequestFailed": "O pedido de transferência da playlist falhou",
+    "batchRequestFailed": "O pedido de transferência em lote falhou",
+    "mixedBatchRequestFailed": "O pedido de transferência em lote misto falhou",
+    "noDownloadId": "O servidor não devolveu um ID de transferência",
+    "noDownloadIds": "O servidor não devolveu IDs de transferência",
+    "qobuzAlbum": "Álbum Qobuz",
+    "errorCopy": {
+      "track": "Faixa: {value}",
+      "artist": "Artista: {value}",
+      "errorCode": "Código de erro: {value}",
+      "httpStatus": "Estado HTTP: {value}",
+      "error": "Erro: {value}",
+      "suggestion": "Sugestão: {value}",
+      "serverResponse": "Resposta do servidor: {value}"
+    },
+    "showTracks": "Mostrar faixas",
+    "hideTracks": "Ocultar faixas"
   },
   "charts": {
     "title": "Rankings",
@@ -158,7 +188,8 @@
     "topAlbumsIn": "Top {count} Álbuns em {country}",
     "topArtistsIn": "Top {count} Artistas em {country}",
     "topPlaylistsIn": "Top {count} Playlists em {country}",
-    "noChartData": "Sem dados de ranking disponíveis"
+    "noChartData": "Sem dados de ranking disponíveis",
+    "worldwide": "Mundial"
   },
   "favorites": {
     "title": "Favoritos",
@@ -206,7 +237,10 @@
     "pinArtistTooltip": "Fixar este artista para sincronizar",
     "unpinArtistTooltip": "Desafixar este artista (mantém-se nos favoritos)",
     "unpin": "Desafixar",
-    "artistSyncRemoved": "\"{name}\" desafixado da sincronização"
+    "artistSyncRemoved": "\"{name}\" desafixado da sincronização",
+    "startDownloadsFailed": "Falha ao iniciar as transferências",
+    "importDeezerFailed": "Falha ao importar os favoritos do Deezer",
+    "downloadAllOf": "Transferir tudo: {type}"
   },
   "analyzer": {
     "title": "Analisador de links",
@@ -263,7 +297,16 @@
       "invalidUrl": "Por favor introduza um URL do Deezer válido",
       "unsupported": "Este tipo de link não é suportado",
       "notFound": "Conteúdo não encontrado no Deezer",
-      "networkError": "Falha ao analisar. Tente novamente."
+      "networkError": "Falha ao analisar. Tente novamente.",
+      "enterLink": "Introduza um link do Deezer, Spotify ou Qobuz",
+      "invalidLink": "Introduza um link válido do Deezer, Spotify ou Qobuz",
+      "serverConnect": "Falha ao ligar ao servidor (porta {port}). {message}",
+      "serverHttp": "o servidor devolveu HTTP {status}",
+      "analyzeFailed": "Falha ao analisar o link",
+      "qobuzAnalyzeFailed": "Falha ao analisar o link do Qobuz",
+      "spotifyAnalyzeFailed": "Falha ao analisar o link do Spotify",
+      "spotifyConvertFailed": "Falha ao converter o conteúdo do Spotify",
+      "conversionFailed": "A conversão falhou: {message}"
     },
     "loginRequired": "Início de sessão necessário para transferir",
     "convertTo": "Converter para",
@@ -287,7 +330,15 @@
     "batchAnalyzed": "{done}/{total} analisados",
     "batchFailed": "{count} falhados",
     "queuing": "A adicionar à fila...",
-    "downloadAllReady": "Transferir tudo o que está pronto ({count})"
+    "downloadAllReady": "Transferir tudo o que está pronto ({count})",
+    "clear": "Limpar",
+    "downloadTracks": "Transferir {count} faixas",
+    "onBoth": "em ambos",
+    "unavailable": "indisponível",
+    "matched": "Correspondidas ({count})",
+    "unmatched": "Sem correspondência ({count})",
+    "supported": "Suportados: faixas, álbuns, artistas e playlists",
+    "spotifyPlaylist": "Playlist do Spotify"
   },
   "settings": {
     "title": "Definições",
@@ -540,7 +591,22 @@
       "duplicated": "Perfil duplicado",
       "exported": "Perfil exportado",
       "imported": "Perfil \"{name}\" importado",
-      "importFailed": "Falha ao importar perfil — formato inválido"
+      "importFailed": "Falha ao importar perfil — formato inválido",
+      "importedProfile": "Perfil importado",
+      "builtin": {
+        "audiophile": {
+          "name": "Audiófilo",
+          "description": "FLAC sem perdas, todas as etiquetas de metadados, capas em alta resolução, letras sincronizadas"
+        },
+        "quick": {
+          "name": "Transferência rápida",
+          "description": "MP3 128kbps, etiquetas mínimas, capas pequenas, transferências mais rápidas"
+        },
+        "balanced": {
+          "name": "Equilibrado",
+          "description": "MP3 320kbps, metadados padrão, capas de boa qualidade"
+        }
+      }
     },
     "noResults": "Nenhuma definição correspondente encontrada",
     "clearSearch": "Limpar pesquisa",
@@ -599,8 +665,22 @@
       "selectAll": "Selecionar tudo",
       "selectNone": "Não selecionar nenhum",
       "expandProfiles": "Mostrar lista de perfis",
-      "subsetCount": "{n} de {total}"
-    }
+      "subsetCount": "{n} de {total}",
+      "errors": {
+        "notJson": "O ficheiro não é um JSON válido.",
+        "notBackup": "O ficheiro não é uma cópia de segurança reconhecida.",
+        "notBackupOrConfig": "O ficheiro não é uma cópia de segurança nem uma exportação de configuração reconhecida.",
+        "settingsFormat": "Formato de definições não reconhecido",
+        "settingsRestoreFailed": "Falha ao restaurar as definições",
+        "profilesRestoreFailed": "Falha ao restaurar os perfis",
+        "playlistSyncRestoreFailed": "Falha ao restaurar a sincronização de playlists",
+        "artistSyncRestoreFailed": "Falha ao restaurar a sincronização de artistas",
+        "favouritesRestoreFailed": "Falha ao restaurar os favoritos",
+        "credentialsRestoreFailed": "Falha ao restaurar as credenciais"
+      }
+    },
+    "templateVariables": "Variáveis: {vars}",
+    "exampleArtistName": "Nome do artista"
   },
   "login": {
     "title": "Iniciar sessão no Deezer",
@@ -639,7 +719,19 @@
     "openingBrowser": "A abrir o início de sessão do Deezer...",
     "openInExternalBrowser": "Abrir num navegador externo",
     "browserLoginHelp": "Como funciona",
-    "browserLoginHelpText": "Vai abrir-se uma janela de início de sessão do Deezer. Inicie sessão com a sua conta e a sua sessão será captada automaticamente quando terminar."
+    "browserLoginHelpText": "Vai abrir-se uma janela de início de sessão do Deezer. Inicie sessão com a sua conta e a sua sessão será captada automaticamente quando terminar.",
+    "loginFailed": "Falha ao iniciar sessão",
+    "loginFailedAfterCaptcha": "Falha ao iniciar sessão após o CAPTCHA",
+    "invalidServerResponse": "O servidor devolveu uma resposta inválida. Verifique se a aplicação está a funcionar corretamente.",
+    "connectionTimeout": "A ligação expirou. Verifique a sua ligação à Internet.",
+    "emailPasswordRequired": "O email e a palavra-passe são obrigatórios",
+    "browserLoginUnavailable": "Início de sessão pelo navegador indisponível",
+    "browserLoginWindowClosed": "A janela de início de sessão foi fechada",
+    "browserLoginFailed": "Falha no início de sessão pelo navegador",
+    "loggedInAs": "Sessão iniciada como {name}",
+    "enterArl": "Introduza um token ARL",
+    "authFailed": "Falha na autenticação",
+    "serverConnectFailed": "Falha ao ligar ao servidor"
   },
   "common": {
     "download": "Transferir",
@@ -681,7 +773,26 @@
     "sortNameDesc": "Nome Z-A",
     "pasteFromClipboard": "Colar da área de transferência",
     "paste": "Colar",
-    "copy": "Copiar"
+    "copy": "Copiar",
+    "confirm": "Confirmar",
+    "item": "Item",
+    "user": "Utilizador",
+    "unknownTrack": "Faixa desconhecida",
+    "unknownCreator": "Criador desconhecido",
+    "private": "Privada",
+    "source": "Fonte",
+    "default": "Predefinição",
+    "never": "Nunca",
+    "justNow": "Agora mesmo",
+    "durationHoursMinutes": "{hours} h {mins} min",
+    "copyLabel": "Copiar {label}",
+    "copySuffix": "{name} (Cópia)",
+    "restoredSuffix": "{name} (Restaurado)",
+    "requestFailed": "O pedido falhou",
+    "serverReturned": "O servidor devolveu {status}",
+    "goBackEsc": "Voltar (Esc)",
+    "cover": "Capa",
+    "durationMinutes": "{mins} min"
   },
   "trackCard": {
     "stop": "Parar",
@@ -728,7 +839,14 @@
     "featuredAppearances": "participações",
     "latestRelease": "Último Lançamento",
     "viewAlbum": "Ver Álbum",
-    "compilations": "Coletâneas"
+    "compilations": "Coletâneas",
+    "type": {
+      "album": "Álbum",
+      "ep": "EP",
+      "single": "Single",
+      "compilation": "Compilação",
+      "featured": "Participação"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "Transferir playlist",
@@ -918,7 +1036,11 @@
     "filterEPs": "EPs",
     "filterCompilations": "Coletâneas",
     "filterFeatures": "Lançamentos com participação",
-    "editMinReleaseDate": "Só transferir lançamentos depois de"
+    "editMinReleaseDate": "Só transferir lançamentos depois de",
+    "resolvingTracks": "A resolver faixas...",
+    "downloadingProgress": "A transferir {current}/{total}",
+    "checkingDiscography": "A verificar discografia...",
+    "albumProgress": "Álbum {current}/{total}"
   },
   "userPlaylists": {
     "creator": "Criador",
@@ -951,7 +1073,20 @@
     "sortDefault": "ORDEM DO FEED",
     "sortName": "A–Z",
     "sortTracks": "MAIS FAIXAS",
-    "connectInSettings": "Ligar em Definições"
+    "connectInSettings": "Ligar em Definições",
+    "notConnected": "Qobuz não ligado",
+    "connectToBrowseGenres": "Ligue a sua conta Qobuz nas Definições para explorar géneros.",
+    "connectFirst": "Ligue primeiro a sua conta Qobuz nas Definições.",
+    "searchFailed": "A pesquisa no Qobuz falhou",
+    "albumLoadFailed": "Falha ao carregar o álbum do Qobuz",
+    "playlistLoadFailed": "Falha ao carregar a playlist do Qobuz",
+    "artistLoadFailed": "Falha ao carregar o artista do Qobuz",
+    "sessionExpired": "A sessão do Qobuz expirou, volte a ligar a sua conta Qobuz nas Definições",
+    "notAvailableInBrowser": "Não disponível no navegador",
+    "tokenRequired": "Token obrigatório",
+    "tokenRejected": "O Qobuz rejeitou o token",
+    "tokenLoginFailed": "Falha no início de sessão com token",
+    "connectAccountInSettings": "Ligue a sua conta Qobuz nas Definições"
   },
   "retag": {
     "viaQobuzTip": "Tags obtidas do Qobuz — o Deezer não encontrou correspondência para este ISRC",
@@ -1017,7 +1152,8 @@
     "credits": "Créditos e Licença",
     "builtBy": "Construído com cuidado pela Team MAXIMUS.",
     "inspiredBy": "Inspirado pelo projeto original deemix. Alimentado pela API do Deezer.",
-    "license": "Licenciado sob a GNU General Public License v3.0"
+    "license": "Licenciado sob a GNU General Public License v3.0",
+    "earlierReleases": "Versões anteriores"
   },
   "accessibility": {
     "windowControls": "Controlos da janela",
@@ -1069,5 +1205,23 @@
     "pasteLink": "Colar Link",
     "pasteToken": "Colar Token",
     "pasted": "Colado"
+  },
+  "app": {
+    "loadingSettings": "A carregar definições...",
+    "connectingDeezer": "A ligar ao Deezer...",
+    "authenticating": "A autenticar...",
+    "loadingFavorites": "A carregar favoritos...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "Focar a pesquisa",
+    "focusSearchAlt": "Focar a pesquisa (alt.)",
+    "goToDownloads": "Ir para transferências",
+    "openSettings": "Abrir definições",
+    "goToHome": "Ir para o início",
+    "showShortcuts": "Mostrar atalhos de teclado",
+    "closeModals": "Fechar janelas",
+    "closeModalsOrBack": "Fechar janelas / Voltar",
+    "pressToClose": "Prima {key} para fechar"
   }
 }

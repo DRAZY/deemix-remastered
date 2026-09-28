@@ -41,7 +41,7 @@ const totalDuration = computed(() => {
   const total = tracks.value.reduce((sum, t) => sum + (t.duration || 0), 0)
   const hours = Math.floor(total / 3600)
   const mins = Math.floor((total % 3600) / 60)
-  return hours > 0 ? `${hours} hr ${mins} min` : `${mins} min`
+  return hours > 0 ? t('common.durationHoursMinutes', { hours, mins }) : t('common.durationMinutes', { mins })
 })
 
 const loadingPercentage = computed(() => {

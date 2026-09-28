@@ -159,7 +159,37 @@
     "substitutedDifferentRecording": "Bản thu khác",
     "substitutedListTitle": "Phiên bản thay thế",
     "substitutedListTip": "Nhấp để xem bài hát nào đến từ bản phát hành thay thế",
-    "clearHistory": "Xóa lịch sử"
+    "clearHistory": "Xóa lịch sử",
+    "waitingCount": "{count} lượt tải đang chờ | {count} lượt tải đang chờ",
+    "formats": "Định dạng",
+    "activeLabel": "đang tải",
+    "doneLabel": "xong",
+    "failedLabel": "thất bại",
+    "failedCount": "{count} thất bại",
+    "tracksCount": "Bài hát ({count})",
+    "historyCount": "Lịch sử tải xuống ({count})",
+    "interrupted": "Bị gián đoạn, ứng dụng đã đóng trước khi hoàn tất. Nhấp thử lại để tiếp tục (các bài đã tải sẽ được bỏ qua).",
+    "tracksFailedOf": "{failed} trên {total} bài hát thất bại",
+    "requestFailed": "Yêu cầu tải xuống thất bại",
+    "albumRequestFailed": "Yêu cầu tải album thất bại",
+    "qobuzAlbumRequestFailed": "Yêu cầu tải album Qobuz thất bại",
+    "playlistRequestFailed": "Yêu cầu tải playlist thất bại",
+    "batchRequestFailed": "Yêu cầu tải hàng loạt thất bại",
+    "mixedBatchRequestFailed": "Yêu cầu tải hàng loạt hỗn hợp thất bại",
+    "noDownloadId": "Máy chủ không trả về ID tải xuống",
+    "noDownloadIds": "Máy chủ không trả về các ID tải xuống",
+    "qobuzAlbum": "Album Qobuz",
+    "errorCopy": {
+      "track": "Bài hát: {value}",
+      "artist": "Nghệ sĩ: {value}",
+      "errorCode": "Mã lỗi: {value}",
+      "httpStatus": "Trạng thái HTTP: {value}",
+      "error": "Lỗi: {value}",
+      "suggestion": "Gợi ý: {value}",
+      "serverResponse": "Phản hồi máy chủ: {value}"
+    },
+    "showTracks": "Hiện các bài hát",
+    "hideTracks": "Ẩn các bài hát"
   },
   "charts": {
     "title": "Bảng xếp hạng",
@@ -175,7 +205,8 @@
     "topAlbumsIn": "Top {count} album tại {country}",
     "topArtistsIn": "Top {count} nghệ sĩ tại {country}",
     "topPlaylistsIn": "Top {count} playlist tại {country}",
-    "noChartData": "Không có dữ liệu bảng xếp hạng"
+    "noChartData": "Không có dữ liệu bảng xếp hạng",
+    "worldwide": "Toàn cầu"
   },
   "favorites": {
     "title": "Yêu thích",
@@ -223,7 +254,10 @@
     "pinArtistTooltip": "Ghim nghệ sĩ này để đồng bộ",
     "unpinArtistTooltip": "Bỏ ghim nghệ sĩ này (vẫn giữ trong yêu thích)",
     "unpin": "Bỏ ghim",
-    "artistSyncRemoved": "Đã bỏ ghim \"{name}\" khỏi đồng bộ"
+    "artistSyncRemoved": "Đã bỏ ghim \"{name}\" khỏi đồng bộ",
+    "startDownloadsFailed": "Không thể bắt đầu tải xuống",
+    "importDeezerFailed": "Không thể nhập yêu thích Deezer",
+    "downloadAllOf": "Tải tất cả {type}"
   },
   "analyzer": {
     "title": "Phân tích link",
@@ -280,7 +314,16 @@
       "invalidUrl": "Vui lòng nhập URL Deezer hợp lệ",
       "unsupported": "Loại link này không được hỗ trợ",
       "notFound": "Không tìm thấy nội dung trên Deezer",
-      "networkError": "Phân tích link thất bại. Vui lòng thử lại."
+      "networkError": "Phân tích link thất bại. Vui lòng thử lại.",
+      "enterLink": "Vui lòng nhập link Deezer, Spotify hoặc Qobuz",
+      "invalidLink": "Vui lòng nhập link Deezer, Spotify hoặc Qobuz hợp lệ",
+      "serverConnect": "Không thể kết nối đến máy chủ (cổng {port}). {message}",
+      "serverHttp": "máy chủ trả về HTTP {status}",
+      "analyzeFailed": "Không thể phân tích link",
+      "qobuzAnalyzeFailed": "Không thể phân tích link Qobuz",
+      "spotifyAnalyzeFailed": "Không thể phân tích link Spotify",
+      "spotifyConvertFailed": "Không thể chuyển đổi nội dung Spotify",
+      "conversionFailed": "Chuyển đổi thất bại: {message}"
     },
     "loginRequired": "Cần đăng nhập để tải xuống",
     "convertTo": "Chuyển đổi sang",
@@ -304,7 +347,15 @@
     "batchAnalyzed": "Đã phân tích {done}/{total}",
     "batchFailed": "{count} thất bại",
     "queuing": "Đang xếp hàng đợi...",
-    "downloadAllReady": "Tải xuống tất cả mục đã sẵn sàng ({count})"
+    "downloadAllReady": "Tải xuống tất cả mục đã sẵn sàng ({count})",
+    "clear": "Xóa",
+    "downloadTracks": "Tải {count} bài hát",
+    "onBoth": "trên cả hai",
+    "unavailable": "không khả dụng",
+    "matched": "Đã khớp ({count})",
+    "unmatched": "Chưa khớp ({count})",
+    "supported": "Hỗ trợ: bài hát, album, nghệ sĩ và playlist",
+    "spotifyPlaylist": "Playlist Spotify"
   },
   "settings": {
     "title": "Cài đặt",
@@ -563,7 +614,22 @@
       "duplicated": "Đã nhân bản hồ sơ",
       "exported": "Đã xuất hồ sơ",
       "imported": "Đã nhập hồ sơ \"{name}\"",
-      "importFailed": "Nhập hồ sơ thất bại — định dạng không hợp lệ"
+      "importFailed": "Nhập hồ sơ thất bại — định dạng không hợp lệ",
+      "importedProfile": "Hồ sơ đã nhập",
+      "builtin": {
+        "audiophile": {
+          "name": "Audiophile",
+          "description": "FLAC lossless, đầy đủ thẻ metadata, ảnh bìa độ phân giải cao, lời bài hát đồng bộ"
+        },
+        "quick": {
+          "name": "Tải nhanh",
+          "description": "MP3 128kbps, thẻ tối thiểu, ảnh bìa nhỏ, tải nhanh nhất"
+        },
+        "balanced": {
+          "name": "Cân bằng",
+          "description": "MP3 320kbps, metadata tiêu chuẩn, ảnh bìa chất lượng tốt"
+        }
+      }
     },
     "downloadPacing": "Giãn cách tải xuống tự nhiên",
     "downloadPacingHelp": "Thêm các độ trễ ngẫu nhiên nhỏ giữa các lượt tải để một loạt tải lớn không dồn dập gửi đến Deezer cùng lúc, giảm khả năng tài khoản của bạn bị gắn cờ vì hoạt động bất thường. Tắt giữ tốc độ tối đa; Cân bằng giãn cách tải ở mức vừa phải; Thận trọng là chậm nhất và an toàn nhất. Để có kiểu tải tự nhiên nhất, kết hợp Thận trọng với 1 lượt tải đồng thời.",
@@ -616,8 +682,22 @@
       "selectAll": "Chọn tất cả",
       "selectNone": "Bỏ chọn tất cả",
       "expandProfiles": "Hiện danh sách hồ sơ",
-      "subsetCount": "{n} trong {total}"
-    }
+      "subsetCount": "{n} trong {total}",
+      "errors": {
+        "notJson": "Tập tin không phải JSON hợp lệ.",
+        "notBackup": "Tập tin không phải bản sao lưu được nhận dạng.",
+        "notBackupOrConfig": "Tập tin không phải bản sao lưu hoặc bản xuất cấu hình được nhận dạng.",
+        "settingsFormat": "Định dạng cài đặt không được nhận dạng",
+        "settingsRestoreFailed": "Khôi phục cài đặt thất bại",
+        "profilesRestoreFailed": "Khôi phục hồ sơ thất bại",
+        "playlistSyncRestoreFailed": "Khôi phục đồng bộ playlist thất bại",
+        "artistSyncRestoreFailed": "Khôi phục đồng bộ nghệ sĩ thất bại",
+        "favouritesRestoreFailed": "Khôi phục yêu thích thất bại",
+        "credentialsRestoreFailed": "Khôi phục thông tin đăng nhập thất bại"
+      }
+    },
+    "templateVariables": "Biến: {vars}",
+    "exampleArtistName": "Tên nghệ sĩ"
   },
   "login": {
     "title": "Đăng nhập Deezer",
@@ -656,7 +736,19 @@
     "emailPasswordHelp": "Sử dụng thông tin tài khoản Deezer của bạn. Đây là phương pháp được khuyến nghị vì đơn giản hơn và tự động quản lý phiên đăng nhập.",
     "whatIsArl": "Token ARL là gì?",
     "arlExplainer": "Token ARL (Authentication Request Login) là một cookie từ tài khoản Deezer của bạn cho phép tải nhạc. Nó được lưu trong trình duyệt khi bạn đăng nhập vào Deezer.",
-    "passwordPlaceholder": "Mật khẩu Deezer của bạn"
+    "passwordPlaceholder": "Mật khẩu Deezer của bạn",
+    "loginFailed": "Đăng nhập thất bại",
+    "loginFailedAfterCaptcha": "Đăng nhập thất bại sau CAPTCHA",
+    "invalidServerResponse": "Máy chủ trả về phản hồi không hợp lệ. Hãy đảm bảo ứng dụng đang chạy bình thường.",
+    "connectionTimeout": "Hết thời gian kết nối. Vui lòng kiểm tra kết nối internet của bạn.",
+    "emailPasswordRequired": "Cần nhập email và mật khẩu",
+    "browserLoginUnavailable": "Không thể đăng nhập qua trình duyệt",
+    "browserLoginWindowClosed": "Cửa sổ đăng nhập đã đóng",
+    "browserLoginFailed": "Đăng nhập qua trình duyệt thất bại",
+    "loggedInAs": "Đã đăng nhập với tên {name}",
+    "enterArl": "Vui lòng nhập ARL token",
+    "authFailed": "Xác thực thất bại",
+    "serverConnectFailed": "Không thể kết nối đến máy chủ"
   },
   "common": {
     "download": "Tải xuống",
@@ -698,7 +790,26 @@
     "sortNameDesc": "Tên Z-A",
     "pasteFromClipboard": "Dán từ clipboard",
     "paste": "Dán",
-    "copy": "Sao chép"
+    "copy": "Sao chép",
+    "confirm": "Xác nhận",
+    "item": "Mục",
+    "user": "Người dùng",
+    "unknownTrack": "Bài hát không xác định",
+    "unknownCreator": "Người tạo không xác định",
+    "private": "Riêng tư",
+    "source": "Nguồn",
+    "default": "Mặc định",
+    "never": "Không bao giờ",
+    "justNow": "Vừa xong",
+    "durationHoursMinutes": "{hours} giờ {mins} phút",
+    "copyLabel": "Sao chép {label}",
+    "copySuffix": "{name} (Bản sao)",
+    "restoredSuffix": "{name} (Đã khôi phục)",
+    "requestFailed": "Yêu cầu thất bại",
+    "serverReturned": "Máy chủ trả về {status}",
+    "goBackEsc": "Quay lại (Esc)",
+    "cover": "Ảnh bìa",
+    "durationMinutes": "{mins} phút"
   },
   "trackCard": {
     "stop": "Dừng",
@@ -745,7 +856,14 @@
     "sortNewest": "Mới nhất trước",
     "sortOldest": "Cũ nhất trước",
     "releases": "bản phát hành",
-    "featuredAppearances": "lượt góp mặt"
+    "featuredAppearances": "lượt góp mặt",
+    "type": {
+      "album": "Album",
+      "ep": "EP",
+      "single": "Single",
+      "compilation": "Compilation",
+      "featured": "Góp mặt"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "Tải playlist",
@@ -939,7 +1057,11 @@
     "filterEPs": "EP",
     "filterCompilations": "Compilation",
     "filterFeatures": "Bản phát hành có góp mặt",
-    "editMinReleaseDate": "Chỉ tải bản phát hành sau"
+    "editMinReleaseDate": "Chỉ tải bản phát hành sau",
+    "resolvingTracks": "Đang xác định bài hát...",
+    "downloadingProgress": "Đang tải {current}/{total}",
+    "checkingDiscography": "Đang kiểm tra danh sách album...",
+    "albumProgress": "Album {current}/{total}"
   },
   "userPlaylists": {
     "creator": "Người tạo",
@@ -1016,7 +1138,20 @@
     "sortDefault": "Thứ tự bảng tin",
     "sortName": "A–Z",
     "sortTracks": "Nhiều bản nhạc nhất",
-    "connectInSettings": "Kết nối trong Cài đặt"
+    "connectInSettings": "Kết nối trong Cài đặt",
+    "notConnected": "Chưa kết nối Qobuz",
+    "connectToBrowseGenres": "Kết nối tài khoản Qobuz trong Cài đặt để duyệt thể loại.",
+    "connectFirst": "Hãy kết nối tài khoản Qobuz trong Cài đặt trước.",
+    "searchFailed": "Tìm kiếm Qobuz thất bại",
+    "albumLoadFailed": "Không thể tải album Qobuz",
+    "playlistLoadFailed": "Không thể tải playlist Qobuz",
+    "artistLoadFailed": "Không thể tải nghệ sĩ Qobuz",
+    "sessionExpired": "Phiên Qobuz đã hết hạn, hãy kết nối lại tài khoản Qobuz trong Cài đặt",
+    "notAvailableInBrowser": "Không khả dụng trên trình duyệt",
+    "tokenRequired": "Cần token",
+    "tokenRejected": "Qobuz đã từ chối token",
+    "tokenLoginFailed": "Đăng nhập bằng token thất bại",
+    "connectAccountInSettings": "Kết nối tài khoản Qobuz trong Cài đặt"
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz đã kết nối",
@@ -1038,7 +1173,8 @@
     "credits": "Ghi công & Giấy phép",
     "builtBy": "Được xây dựng tận tâm bởi Team MAXIMUS.",
     "inspiredBy": "Lấy cảm hứng từ dự án deemix gốc. Vận hành bởi Deezer API.",
-    "license": "Được cấp phép theo GNU General Public License v3.0"
+    "license": "Được cấp phép theo GNU General Public License v3.0",
+    "earlierReleases": "Các phiên bản trước"
   },
   "newReleases": {
     "title": "Phát hành mới",
@@ -1069,5 +1205,23 @@
     "pasteLink": "Dán liên kết",
     "pasteToken": "Dán token",
     "pasted": "Đã dán"
+  },
+  "app": {
+    "loadingSettings": "Đang tải cài đặt...",
+    "connectingDeezer": "Đang kết nối Deezer...",
+    "authenticating": "Đang xác thực...",
+    "loadingFavorites": "Đang tải yêu thích...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "Chuyển đến ô tìm kiếm",
+    "focusSearchAlt": "Chuyển đến ô tìm kiếm (phím thay thế)",
+    "goToDownloads": "Đi đến Tải xuống",
+    "openSettings": "Mở cài đặt",
+    "goToHome": "Về trang chủ",
+    "showShortcuts": "Hiện phím tắt",
+    "closeModals": "Đóng hộp thoại",
+    "closeModalsOrBack": "Đóng hộp thoại / Quay lại",
+    "pressToClose": "Nhấn {key} để đóng"
   }
 }

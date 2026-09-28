@@ -503,7 +503,7 @@ async function downloadAllFavorites() {
       toastStore.success(t('notifications.queuedForDownload', { count: queued, type: t('common.' + activeTab.value) }))
     }
   } catch (e: any) {
-    toastStore.error(e.message || 'Failed to start downloads')
+    toastStore.error(e.message || t('favorites.startDownloadsFailed'))
   } finally {
     isDownloading.value = false
   }
@@ -537,7 +537,7 @@ async function importFromDeezer() {
       toastStore.info(t('notifications.favoritesStale', { detail: detail.join(' + ') }))
     }
   } catch (e: any) {
-    toastStore.error(e.message || 'Failed to import Deezer favorites')
+    toastStore.error(e.message || t('favorites.importDeezerFailed'))
   }
 }
 </script>
@@ -560,7 +560,7 @@ async function importFromDeezer() {
           <svg v-else class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
-          {{ isDownloading ? 'Downloading...' : `Download All ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}` }}
+          {{ isDownloading ? t('downloads.status.downloading') : t('favorites.downloadAllOf', { type: t('common.' + activeTab) }) }}
         </button>
         <button
           v-if="activeTab === 'playlists' && favoritesStore.favoritePlaylists.length > 0"

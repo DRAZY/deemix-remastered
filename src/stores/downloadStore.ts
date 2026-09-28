@@ -377,7 +377,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         for (const d of downloads.value) {
           if ((d.status === 'downloading' || d.status === 'pending') && !d.refresh) {
             d.status = 'error'
-            d.error = 'Interrupted — the app closed before this finished. Click retry to resume (already-downloaded tracks are skipped).'
+            d.error = i18n.global.t('downloads.interrupted')
             d.speed = 0
             interrupted++
             interruptedIds.push(d.id)
@@ -622,7 +622,7 @@ export const useDownloadStore = defineStore('downloads', () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        const errorMsg = errorData.error || 'Download request failed'
+        const errorMsg = errorData.error || i18n.global.t('downloads.requestFailed')
 
         // Handle session expiration - trigger auth store to handle re-login
         if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
@@ -735,7 +735,7 @@ export const useDownloadStore = defineStore('downloads', () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        const errorMsg = errorData.error || 'Album download request failed'
+        const errorMsg = errorData.error || i18n.global.t('downloads.albumRequestFailed')
 
         // Handle session expiration - trigger auth store to handle re-login
         if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
@@ -815,8 +815,8 @@ export const useDownloadStore = defineStore('downloads', () => {
         source: 'qobuz', qobuzId: qobuz.id, qobuzType: qobuz.type, qobuzData: d,
       } as any,
       source: 'qobuz',
-      title: d.title || 'Qobuz Album',
-      artist: d.artist?.name || (qobuz.type === 'playlist' ? (d.owner?.name || 'Playlist') : 'Unknown Artist'),
+      title: d.title || i18n.global.t('downloads.qobuzAlbum'),
+      artist: d.artist?.name || (qobuz.type === 'playlist' ? (d.owner?.name || i18n.global.t('analyzer.types.playlist')) : i18n.global.t('common.unknownArtist')),
       cover: d.image?.large || d.image?.small || d.images?.[0] || (d as any).cover_medium || (d as any).cover_big || (d as any).images300?.[0] || '',
       progress: 0,
       status: 'pending',
@@ -936,7 +936,7 @@ export const useDownloadStore = defineStore('downloads', () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        const errorMsg = errorData.error || 'Playlist download request failed'
+        const errorMsg = errorData.error || i18n.global.t('downloads.playlistRequestFailed')
 
         // Handle session expiration - trigger auth store to handle re-login
         if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
@@ -1039,7 +1039,7 @@ export const useDownloadStore = defineStore('downloads', () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        const errorMsg = errorData.error || 'Batch download request failed'
+        const errorMsg = errorData.error || i18n.global.t('downloads.batchRequestFailed')
 
         if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
           toastStore.error(i18n.global.t('notifications.sessionExpiredDownload'))
@@ -1128,7 +1128,7 @@ export const useDownloadStore = defineStore('downloads', () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        const errorMsg = errorData.error || 'Mixed batch download request failed'
+        const errorMsg = errorData.error || i18n.global.t('downloads.mixedBatchRequestFailed')
         if (response.status === 401 || errorMsg.toLowerCase().includes('session expired')) {
           toastStore.error(i18n.global.t('notifications.sessionExpiredDownload'))
           throw new Error('Session expired: Please log in again')
@@ -1292,10 +1292,10 @@ export const useDownloadStore = defineStore('downloads', () => {
       if (previousStatus !== 'completed' && previousStatus !== 'error') {
         const toastStore = useToastStore()
         if (serverItem.status === 'completed') {
-          toastStore.success(item.refresh ? `Refreshed tags for "${item.title}"` : `Downloaded "${item.title}"`)
+          toastStore.success(item.refresh ? i18n.global.t('notifications.tagsRefreshed', { title: item.title }) : i18n.global.t('notifications.downloaded', { title: item.title }))
           recordHistory(item)
         } else if (serverItem.status === 'error') {
-          toastStore.error(item.refresh ? `Tag refresh failed: "${item.title}"` : `Download failed: "${item.title}"`)
+          toastStore.error(item.refresh ? i18n.global.t('notifications.tagRefreshFailed', { title: item.title }) : i18n.global.t('notifications.downloadFailedTitle', { title: item.title }))
           recordHistory(item)
         }
       }
@@ -1423,7 +1423,7 @@ export const useDownloadStore = defineStore('downloads', () => {
           substitutedTracks.push({
             id: trackId,
             trackId: serverItem.trackId || trackId,
-            title: serverItem.trackTitle || serverItem.title || 'Unknown Track',
+            title: serverItem.trackTitle || serverItem.title || i18n.global.t('common.unknownTrack'),
             artist: serverItem.trackArtist || serverItem.artist,
             sameRecording: serverItem.substitutedSameRecording
           })
@@ -1450,10 +1450,10 @@ export const useDownloadStore = defineStore('downloads', () => {
           failedTracks.push({
             id: trackId,
             trackId: serverItem.trackId || trackId,
-            title: serverItem.trackTitle || serverItem.title || 'Unknown Track',
+            title: serverItem.trackTitle || serverItem.title || i18n.global.t('common.unknownTrack'),
             artist: serverItem.trackArtist || serverItem.artist,
             albumTitle: serverItem.albumTitle,
-            error: serverItem.error || 'Download failed',
+            error: serverItem.error || i18n.global.t('downloads.downloadFailed'),
             errorDetails: serverItem.errorDetails
           })
         }
@@ -1462,7 +1462,7 @@ export const useDownloadStore = defineStore('downloads', () => {
         // own source so mixed-source rows show each track's real D/Q origin.
         trackList.push({
           id: trackId,
-          title: serverItem.trackTitle || serverItem.title || 'Unknown Track',
+          title: serverItem.trackTitle || serverItem.title || i18n.global.t('common.unknownTrack'),
           artist: serverItem.trackArtist || serverItem.artist,
           status: serverItem.status,
           source: serverItem.source
@@ -1550,7 +1550,7 @@ export const useDownloadStore = defineStore('downloads', () => {
       if (item.status !== newStatus) {
         item.status = newStatus
         if (errorCount > 0) {
-          item.error = `${errorCount} of ${trackIds.length} tracks failed`
+          item.error = i18n.global.t('downloads.tracksFailedOf', { failed: errorCount, total: trackIds.length })
         }
         changed = true
 

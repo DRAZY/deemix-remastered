@@ -142,7 +142,37 @@
     "speed": "速度",
     "substitutedListTitle": "替代版本",
     "substitutedListTip": "点击查看哪些曲目来自替代版本",
-    "clearHistory": "清除历史记录"
+    "clearHistory": "清除历史记录",
+    "waitingCount": "{count} 个下载等待中 | {count} 个下载等待中",
+    "formats": "格式",
+    "activeLabel": "进行中",
+    "doneLabel": "已完成",
+    "failedLabel": "失败",
+    "failedCount": "{count} 个失败",
+    "tracksCount": "曲目（{count}）",
+    "historyCount": "下载历史（{count}）",
+    "interrupted": "已中断，应用在下载完成前关闭。点击重试即可继续（已下载的曲目会被跳过）。",
+    "tracksFailedOf": "{total} 首曲目中有 {failed} 首失败",
+    "requestFailed": "下载请求失败",
+    "albumRequestFailed": "专辑下载请求失败",
+    "qobuzAlbumRequestFailed": "Qobuz 专辑下载请求失败",
+    "playlistRequestFailed": "播放列表下载请求失败",
+    "batchRequestFailed": "批量下载请求失败",
+    "mixedBatchRequestFailed": "混合批量下载请求失败",
+    "noDownloadId": "服务器未返回下载 ID",
+    "noDownloadIds": "服务器未返回下载 ID 列表",
+    "qobuzAlbum": "Qobuz 专辑",
+    "errorCopy": {
+      "track": "曲目：{value}",
+      "artist": "艺人：{value}",
+      "errorCode": "错误代码：{value}",
+      "httpStatus": "HTTP 状态：{value}",
+      "error": "错误：{value}",
+      "suggestion": "建议：{value}",
+      "serverResponse": "服务器响应：{value}"
+    },
+    "showTracks": "显示曲目",
+    "hideTracks": "隐藏曲目"
   },
   "charts": {
     "title": "排行榜",
@@ -158,7 +188,8 @@
     "topAlbumsIn": "{country} Top {count} 专辑",
     "topArtistsIn": "{country} Top {count} 艺人",
     "topPlaylistsIn": "{country} Top {count} 播放列表",
-    "noChartData": "暂无排行榜数据"
+    "noChartData": "暂无排行榜数据",
+    "worldwide": "全球"
   },
   "favorites": {
     "title": "收藏",
@@ -206,7 +237,10 @@
     "pinArtistTooltip": "固定此艺人以同步",
     "unpinArtistTooltip": "取消固定此艺人（仍保留在收藏中）",
     "unpin": "取消固定",
-    "artistSyncRemoved": "已将 \"{name}\" 从同步中取消固定"
+    "artistSyncRemoved": "已将 \"{name}\" 从同步中取消固定",
+    "startDownloadsFailed": "无法开始下载",
+    "importDeezerFailed": "导入 Deezer 收藏失败",
+    "downloadAllOf": "下载全部{type}"
   },
   "analyzer": {
     "title": "链接分析器",
@@ -263,7 +297,16 @@
       "invalidUrl": "请输入有效的 Deezer 链接",
       "unsupported": "不支持此链接类型",
       "notFound": "在 Deezer 上未找到内容",
-      "networkError": "分析失败，请重试"
+      "networkError": "分析失败，请重试",
+      "enterLink": "请输入 Deezer、Spotify 或 Qobuz 链接",
+      "invalidLink": "请输入有效的 Deezer、Spotify 或 Qobuz 链接",
+      "serverConnect": "无法连接到服务器（端口 {port}）。{message}",
+      "serverHttp": "服务器返回 HTTP {status}",
+      "analyzeFailed": "链接分析失败",
+      "qobuzAnalyzeFailed": "Qobuz 链接分析失败",
+      "spotifyAnalyzeFailed": "Spotify 链接分析失败",
+      "spotifyConvertFailed": "Spotify 内容转换失败",
+      "conversionFailed": "转换失败：{message}"
     },
     "loginRequired": "需要登录才能下载",
     "convertTo": "转换为",
@@ -287,7 +330,15 @@
     "batchAnalyzed": "已分析 {done}/{total}",
     "batchFailed": "{count} 个失败",
     "queuing": "正在加入队列...",
-    "downloadAllReady": "下载全部就绪项目（{count}）"
+    "downloadAllReady": "下载全部就绪项目（{count}）",
+    "clear": "清除",
+    "downloadTracks": "下载 {count} 首曲目",
+    "onBoth": "两者均有",
+    "unavailable": "不可用",
+    "matched": "已匹配（{count}）",
+    "unmatched": "未匹配（{count}）",
+    "supported": "支持：曲目、专辑、艺人和播放列表",
+    "spotifyPlaylist": "Spotify 播放列表"
   },
   "settings": {
     "title": "设置",
@@ -540,7 +591,22 @@
       "duplicated": "配置文件已复制",
       "exported": "配置文件已导出",
       "imported": "配置文件 \"{name}\" 已导入",
-      "importFailed": "导入配置文件失败 — 格式无效"
+      "importFailed": "导入配置文件失败 — 格式无效",
+      "importedProfile": "导入的配置文件",
+      "builtin": {
+        "audiophile": {
+          "name": "发烧友",
+          "description": "FLAC 无损，全部元数据标签，高分辨率封面，同步歌词"
+        },
+        "quick": {
+          "name": "快速下载",
+          "description": "MP3 128kbps，精简标签，小尺寸封面，下载速度最快"
+        },
+        "balanced": {
+          "name": "均衡",
+          "description": "MP3 320kbps，标准元数据，高质量封面"
+        }
+      }
     },
     "noResults": "未找到匹配的设置",
     "clearSearch": "清除搜索",
@@ -599,8 +665,22 @@
       "selectAll": "全选",
       "selectNone": "全不选",
       "expandProfiles": "显示配置文件列表",
-      "subsetCount": "{n} / {total}"
-    }
+      "subsetCount": "{n} / {total}",
+      "errors": {
+        "notJson": "文件不是有效的 JSON。",
+        "notBackup": "无法识别该文件为备份。",
+        "notBackupOrConfig": "无法识别该文件为备份或配置导出文件。",
+        "settingsFormat": "无法识别设置格式",
+        "settingsRestoreFailed": "设置恢复失败",
+        "profilesRestoreFailed": "配置文件恢复失败",
+        "playlistSyncRestoreFailed": "播放列表同步恢复失败",
+        "artistSyncRestoreFailed": "艺人同步恢复失败",
+        "favouritesRestoreFailed": "收藏恢复失败",
+        "credentialsRestoreFailed": "登录凭据恢复失败"
+      }
+    },
+    "templateVariables": "变量：{vars}",
+    "exampleArtistName": "艺人名称"
   },
   "login": {
     "title": "登录 Deezer",
@@ -639,7 +719,19 @@
     "openingBrowser": "正在打开 Deezer 登录...",
     "openInExternalBrowser": "改为在外部浏览器中打开",
     "browserLoginHelp": "工作原理",
-    "browserLoginHelpText": "系统将打开 Deezer 登录窗口。使用您的账号登录，完成后系统会自动捕获您的会话。"
+    "browserLoginHelpText": "系统将打开 Deezer 登录窗口。使用您的账号登录，完成后系统会自动捕获您的会话。",
+    "loginFailed": "登录失败",
+    "loginFailedAfterCaptcha": "完成 CAPTCHA 后登录失败",
+    "invalidServerResponse": "服务器返回了无效响应。请确认应用正常运行。",
+    "connectionTimeout": "连接超时。请检查您的网络连接。",
+    "emailPasswordRequired": "请输入邮箱和密码",
+    "browserLoginUnavailable": "浏览器登录不可用",
+    "browserLoginWindowClosed": "登录窗口已关闭",
+    "browserLoginFailed": "浏览器登录失败",
+    "loggedInAs": "已登录为 {name}",
+    "enterArl": "请输入 ARL 令牌",
+    "authFailed": "身份验证失败",
+    "serverConnectFailed": "无法连接到服务器"
   },
   "common": {
     "download": "下载",
@@ -681,7 +773,26 @@
     "sortNameDesc": "名称 Z-A",
     "pasteFromClipboard": "从剪贴板粘贴",
     "paste": "粘贴",
-    "copy": "复制"
+    "copy": "复制",
+    "confirm": "确认",
+    "item": "项目",
+    "user": "用户",
+    "unknownTrack": "未知曲目",
+    "unknownCreator": "未知创建者",
+    "private": "私密",
+    "source": "来源",
+    "default": "默认",
+    "never": "从不",
+    "justNow": "刚刚",
+    "durationHoursMinutes": "{hours} 小时 {mins} 分钟",
+    "copyLabel": "复制{label}",
+    "copySuffix": "{name}（副本）",
+    "restoredSuffix": "{name}（已恢复）",
+    "requestFailed": "请求失败",
+    "serverReturned": "服务器返回 {status}",
+    "goBackEsc": "返回（Esc）",
+    "cover": "封面",
+    "durationMinutes": "{mins} 分钟"
   },
   "trackCard": {
     "stop": "停止",
@@ -728,7 +839,14 @@
     "featuredAppearances": "客串作品",
     "latestRelease": "最新发行",
     "viewAlbum": "查看专辑",
-    "compilations": "合辑"
+    "compilations": "合辑",
+    "type": {
+      "album": "专辑",
+      "ep": "EP",
+      "single": "单曲",
+      "compilation": "合辑",
+      "featured": "合作"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "下载播放列表",
@@ -918,7 +1036,11 @@
     "filterEPs": "EP",
     "filterCompilations": "合辑",
     "filterFeatures": "合作发行",
-    "editMinReleaseDate": "仅下载此日期之后的发行"
+    "editMinReleaseDate": "仅下载此日期之后的发行",
+    "resolvingTracks": "正在解析曲目...",
+    "downloadingProgress": "正在下载 {current}/{total}",
+    "checkingDiscography": "正在检查唱片目录...",
+    "albumProgress": "专辑 {current}/{total}"
   },
   "userPlaylists": {
     "creator": "创建者",
@@ -995,7 +1117,20 @@
     "sortDefault": "源顺序",
     "sortName": "按名称",
     "sortTracks": "曲目最多",
-    "connectInSettings": "在设置中连接"
+    "connectInSettings": "在设置中连接",
+    "notConnected": "未连接 Qobuz",
+    "connectToBrowseGenres": "请在设置中连接您的 Qobuz 账户以浏览流派。",
+    "connectFirst": "请先在设置中连接您的 Qobuz 账户。",
+    "searchFailed": "Qobuz 搜索失败",
+    "albumLoadFailed": "Qobuz 专辑加载失败",
+    "playlistLoadFailed": "Qobuz 播放列表加载失败",
+    "artistLoadFailed": "Qobuz 艺人加载失败",
+    "sessionExpired": "Qobuz 会话已过期，请在设置中重新连接您的 Qobuz 账户",
+    "notAvailableInBrowser": "在浏览器中不可用",
+    "tokenRequired": "需要令牌",
+    "tokenRejected": "Qobuz 拒绝了该令牌",
+    "tokenLoginFailed": "令牌登录失败",
+    "connectAccountInSettings": "请在设置中连接您的 Qobuz 账户"
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz 已连接",
@@ -1017,7 +1152,8 @@
     "credits": "鸣谢与许可证",
     "builtBy": "由 Team MAXIMUS 用心打造。",
     "inspiredBy": "灵感源自原始 deemix 项目，由 Deezer API 提供支持。",
-    "license": "基于 GNU 通用公共许可证 v3.0 授权"
+    "license": "基于 GNU 通用公共许可证 v3.0 授权",
+    "earlierReleases": "更早的版本"
   },
   "accessibility": {
     "windowControls": "窗口控件",
@@ -1069,5 +1205,23 @@
     "pasteLink": "粘贴链接",
     "pasteToken": "粘贴令牌",
     "pasted": "已粘贴"
+  },
+  "app": {
+    "loadingSettings": "正在加载设置...",
+    "connectingDeezer": "正在连接 Deezer...",
+    "authenticating": "正在验证身份...",
+    "loadingFavorites": "正在加载收藏...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "聚焦搜索框",
+    "focusSearchAlt": "聚焦搜索框（备用）",
+    "goToDownloads": "前往下载",
+    "openSettings": "打开设置",
+    "goToHome": "返回首页",
+    "showShortcuts": "显示键盘快捷键",
+    "closeModals": "关闭弹窗",
+    "closeModalsOrBack": "关闭弹窗 / 返回",
+    "pressToClose": "按 {key} 关闭"
   }
 }

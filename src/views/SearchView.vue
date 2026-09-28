@@ -395,7 +395,7 @@ async function performSearch() {
     } catch (e: any) {
       if (seq === searchSeq) {
         hasError.value = true
-        toastStore.error(e.message || 'Qobuz search failed')
+        toastStore.error(e.message || t('qobuz.searchFailed'))
       }
     } finally {
       if (seq === searchSeq) isLoading.value = false
@@ -778,7 +778,7 @@ const contextMenuItems = computed(() => {
             </div>
             <!-- Source selector: search Deezer or Qobuz's catalog -->
             <div class="mt-2 flex items-center gap-2">
-              <span class="font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted">Source</span>
+              <span class="font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted">{{ t('common.source') }}</span>
               <button
                 type="button"
                 @click="setSearchSource('deezer')"
@@ -789,7 +789,7 @@ const contextMenuItems = computed(() => {
                 type="button"
                 @click="qobuzConnected ? setSearchSource('qobuz') : null"
                 :disabled="!qobuzConnected"
-                :title="qobuzConnected ? '' : 'Connect your Qobuz account in Settings'"
+                :title="qobuzConnected ? '' : t('qobuz.connectAccountInSettings')"
                 class="font-mono text-[10px] tracking-[0.12em] uppercase px-2.5 py-1 border transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 :class="searchSource === 'qobuz' ? 'border-qobuz-500/60 text-qobuz-400 bg-qobuz-500/10' : 'border-white/[0.1] text-foreground-muted hover:text-foreground'"
               >Qobuz <span class="text-[8px] align-top">HI-RES</span></button>

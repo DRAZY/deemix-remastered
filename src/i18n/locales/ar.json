@@ -142,7 +142,37 @@
     "speed": "السرعة",
     "substitutedListTitle": "نسخ بديلة",
     "substitutedListTip": "انقر لمعرفة أي المقاطع جاءت من إصدار بديل",
-    "clearHistory": "مسح السجل"
+    "clearHistory": "مسح السجل",
+    "waitingCount": "{count} تنزيل في الانتظار | {count} تنزيلات في الانتظار",
+    "formats": "الصيغ",
+    "activeLabel": "نشط",
+    "doneLabel": "مكتمل",
+    "failedLabel": "فاشل",
+    "failedCount": "فشل {count}",
+    "tracksCount": "المقاطع ({count})",
+    "historyCount": "سجل التنزيلات ({count})",
+    "interrupted": "توقف التنزيل، فقد أُغلق التطبيق قبل اكتماله. انقر على إعادة المحاولة للاستئناف (سيتم تخطي المقاطع التي تم تنزيلها بالفعل).",
+    "tracksFailedOf": "فشل {failed} من {total} مقاطع",
+    "requestFailed": "فشل طلب التنزيل",
+    "albumRequestFailed": "فشل طلب تنزيل الألبوم",
+    "qobuzAlbumRequestFailed": "فشل طلب تنزيل ألبوم Qobuz",
+    "playlistRequestFailed": "فشل طلب تنزيل قائمة التشغيل",
+    "batchRequestFailed": "فشل طلب التنزيل الجماعي",
+    "mixedBatchRequestFailed": "فشل طلب التنزيل الجماعي المختلط",
+    "noDownloadId": "لم يُرجع الخادم معرّف تنزيل",
+    "noDownloadIds": "لم يُرجع الخادم معرّفات تنزيل",
+    "qobuzAlbum": "ألبوم Qobuz",
+    "errorCopy": {
+      "track": "المقطع: {value}",
+      "artist": "الفنان: {value}",
+      "errorCode": "رمز الخطأ: {value}",
+      "httpStatus": "حالة HTTP: {value}",
+      "error": "الخطأ: {value}",
+      "suggestion": "اقتراح: {value}",
+      "serverResponse": "استجابة الخادم: {value}"
+    },
+    "showTracks": "إظهار المقاطع",
+    "hideTracks": "إخفاء المقاطع"
   },
   "charts": {
     "title": "الترتيب",
@@ -158,7 +188,8 @@
     "topAlbumsIn": "أفضل {count} ألبوم في {country}",
     "topArtistsIn": "أفضل {count} فنان في {country}",
     "topPlaylistsIn": "أفضل {count} قائمة تشغيل في {country}",
-    "noChartData": "لا توجد بيانات ترتيب متاحة"
+    "noChartData": "لا توجد بيانات ترتيب متاحة",
+    "worldwide": "عالمياً"
   },
   "favorites": {
     "title": "المفضلة",
@@ -206,7 +237,10 @@
     "pinArtistTooltip": "تثبيت هذا الفنان للمزامنة",
     "unpinArtistTooltip": "إلغاء تثبيت هذا الفنان (يبقى في المفضلة)",
     "unpin": "إلغاء التثبيت",
-    "artistSyncRemoved": "تم إلغاء تثبيت \"{name}\" من المزامنة"
+    "artistSyncRemoved": "تم إلغاء تثبيت \"{name}\" من المزامنة",
+    "startDownloadsFailed": "فشل بدء التنزيلات",
+    "importDeezerFailed": "فشل استيراد مفضلة Deezer",
+    "downloadAllOf": "تنزيل كل {type}"
   },
   "analyzer": {
     "title": "محلل الروابط",
@@ -263,7 +297,16 @@
       "invalidUrl": "يرجى إدخال رابط Deezer صالح",
       "unsupported": "هذا النوع من الروابط غير مدعوم",
       "notFound": "لم يتم العثور على المحتوى في Deezer",
-      "networkError": "فشل التحليل. يرجى المحاولة مرة أخرى."
+      "networkError": "فشل التحليل. يرجى المحاولة مرة أخرى.",
+      "enterLink": "يرجى إدخال رابط Deezer أو Spotify أو Qobuz",
+      "invalidLink": "يرجى إدخال رابط Deezer أو Spotify أو Qobuz صالح",
+      "serverConnect": "فشل الاتصال بالخادم (المنفذ {port}). {message}",
+      "serverHttp": "أعاد الخادم HTTP {status}",
+      "analyzeFailed": "فشل تحليل الرابط",
+      "qobuzAnalyzeFailed": "فشل تحليل رابط Qobuz",
+      "spotifyAnalyzeFailed": "فشل تحليل رابط Spotify",
+      "spotifyConvertFailed": "فشل تحويل محتوى Spotify",
+      "conversionFailed": "فشل التحويل: {message}"
     },
     "loginRequired": "يلزم تسجيل الدخول للتنزيل",
     "convertTo": "تحويل إلى",
@@ -287,7 +330,15 @@
     "batchAnalyzed": "تم تحليل {done}/{total}",
     "batchFailed": "فشل {count}",
     "queuing": "جارٍ الإضافة إلى قائمة الانتظار...",
-    "downloadAllReady": "تنزيل كل الجاهز ({count})"
+    "downloadAllReady": "تنزيل كل الجاهز ({count})",
+    "clear": "مسح",
+    "downloadTracks": "تنزيل {count} مقاطع",
+    "onBoth": "على كليهما",
+    "unavailable": "غير متاح",
+    "matched": "مطابقة ({count})",
+    "unmatched": "غير مطابقة ({count})",
+    "supported": "المدعوم: المقاطع والألبومات والفنانون وقوائم التشغيل",
+    "spotifyPlaylist": "قائمة تشغيل Spotify"
   },
   "settings": {
     "title": "الإعدادات",
@@ -540,7 +591,22 @@
       "duplicated": "تم تكرار الملف الشخصي",
       "exported": "تم تصدير الملف الشخصي",
       "imported": "تم استيراد الملف الشخصي \"{name}\"",
-      "importFailed": "فشل استيراد الملف الشخصي — صيغة غير صالحة"
+      "importFailed": "فشل استيراد الملف الشخصي — صيغة غير صالحة",
+      "importedProfile": "ملف شخصي مستورد",
+      "builtin": {
+        "audiophile": {
+          "name": "عشاق الصوت",
+          "description": "FLAC بلا فقدان، جميع وسوم البيانات الوصفية، غلاف عالي الدقة، كلمات متزامنة"
+        },
+        "quick": {
+          "name": "تنزيل سريع",
+          "description": "MP3 بدقة 128kbps، وسوم أساسية، غلاف صغير، أسرع التنزيلات"
+        },
+        "balanced": {
+          "name": "متوازن",
+          "description": "MP3 بدقة 320kbps، بيانات وصفية قياسية، غلاف بجودة جيدة"
+        }
+      }
     },
     "noResults": "لم يتم العثور على إعدادات مطابقة",
     "clearSearch": "مسح البحث",
@@ -599,8 +665,22 @@
       "selectAll": "تحديد الكل",
       "selectNone": "إلغاء تحديد الكل",
       "expandProfiles": "إظهار قائمة الملفات الشخصية",
-      "subsetCount": "{n} من {total}"
-    }
+      "subsetCount": "{n} من {total}",
+      "errors": {
+        "notJson": "الملف ليس JSON صالحاً.",
+        "notBackup": "الملف ليس نسخة احتياطية معروفة.",
+        "notBackupOrConfig": "الملف ليس نسخة احتياطية أو ملف تصدير إعدادات معروفاً.",
+        "settingsFormat": "صيغة الإعدادات غير معروفة",
+        "settingsRestoreFailed": "فشلت استعادة الإعدادات",
+        "profilesRestoreFailed": "فشلت استعادة الملفات الشخصية",
+        "playlistSyncRestoreFailed": "فشلت استعادة مزامنة قوائم التشغيل",
+        "artistSyncRestoreFailed": "فشلت استعادة مزامنة الفنانين",
+        "favouritesRestoreFailed": "فشلت استعادة المفضلة",
+        "credentialsRestoreFailed": "فشلت استعادة معلومات تسجيل الدخول"
+      }
+    },
+    "templateVariables": "المتغيرات: {vars}",
+    "exampleArtistName": "اسم الفنان"
   },
   "login": {
     "title": "تسجيل الدخول إلى Deezer",
@@ -639,7 +719,19 @@
     "openingBrowser": "جارٍ فتح تسجيل الدخول إلى Deezer...",
     "openInExternalBrowser": "فتح في متصفح خارجي بدلاً من ذلك",
     "browserLoginHelp": "كيف يعمل هذا",
-    "browserLoginHelpText": "ستُفتح نافذة تسجيل دخول إلى Deezer. سجّل الدخول بحسابك، وستُلتقط جلستك تلقائياً عند الانتهاء."
+    "browserLoginHelpText": "ستُفتح نافذة تسجيل دخول إلى Deezer. سجّل الدخول بحسابك، وستُلتقط جلستك تلقائياً عند الانتهاء.",
+    "loginFailed": "فشل تسجيل الدخول",
+    "loginFailedAfterCaptcha": "فشل تسجيل الدخول بعد CAPTCHA",
+    "invalidServerResponse": "أعاد الخادم استجابة غير صالحة. تأكد من أن التطبيق يعمل بشكل صحيح.",
+    "connectionTimeout": "انتهت مهلة الاتصال. يرجى التحقق من اتصالك بالإنترنت.",
+    "emailPasswordRequired": "البريد الإلكتروني وكلمة المرور مطلوبان",
+    "browserLoginUnavailable": "تسجيل الدخول عبر المتصفح غير متاح",
+    "browserLoginWindowClosed": "تم إغلاق نافذة تسجيل الدخول",
+    "browserLoginFailed": "فشل تسجيل الدخول عبر المتصفح",
+    "loggedInAs": "تم تسجيل الدخول باسم {name}",
+    "enterArl": "يرجى إدخال رمز ARL",
+    "authFailed": "فشل التحقق من الهوية",
+    "serverConnectFailed": "فشل الاتصال بالخادم"
   },
   "common": {
     "download": "تحميل",
@@ -681,7 +773,26 @@
     "sortNameDesc": "الاسم (تنازليًا)",
     "pasteFromClipboard": "لصق من الحافظة",
     "paste": "لصق",
-    "copy": "نسخ"
+    "copy": "نسخ",
+    "confirm": "تأكيد",
+    "item": "عنصر",
+    "user": "مستخدم",
+    "unknownTrack": "مقطع غير معروف",
+    "unknownCreator": "منشئ غير معروف",
+    "private": "خاص",
+    "source": "المصدر",
+    "default": "افتراضي",
+    "never": "أبداً",
+    "justNow": "الآن",
+    "durationHoursMinutes": "{hours} س {mins} د",
+    "copyLabel": "نسخ {label}",
+    "copySuffix": "{name} (نسخة)",
+    "restoredSuffix": "{name} (مستعاد)",
+    "requestFailed": "فشل الطلب",
+    "serverReturned": "أعاد الخادم {status}",
+    "goBackEsc": "رجوع (Esc)",
+    "cover": "الغلاف",
+    "durationMinutes": "{mins} د"
   },
   "trackCard": {
     "stop": "إيقاف",
@@ -728,7 +839,14 @@
     "featuredAppearances": "مشاركات",
     "latestRelease": "أحدث إصدار",
     "viewAlbum": "عرض الألبوم",
-    "compilations": "مجموعات"
+    "compilations": "مجموعات",
+    "type": {
+      "album": "ألبوم",
+      "ep": "EP",
+      "single": "أغنية منفردة",
+      "compilation": "مجموعة",
+      "featured": "مشاركة"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "تحميل قائمة التشغيل",
@@ -918,7 +1036,11 @@
     "filterEPs": "EPs",
     "filterCompilations": "المجموعات",
     "filterFeatures": "إصدارات المشاركات",
-    "editMinReleaseDate": "تنزيل الإصدارات بعد"
+    "editMinReleaseDate": "تنزيل الإصدارات بعد",
+    "resolvingTracks": "جارٍ تحديد المقاطع...",
+    "downloadingProgress": "جارٍ التنزيل {current}/{total}",
+    "checkingDiscography": "جارٍ فحص الديسكوغرافيا...",
+    "albumProgress": "الألبوم {current}/{total}"
   },
   "userPlaylists": {
     "creator": "المُنشئ",
@@ -951,7 +1073,20 @@
     "sortDefault": "ترتيب التغذية",
     "sortName": "أبجدي",
     "sortTracks": "الأكثر مقطوعات",
-    "connectInSettings": "الاتصال من الإعدادات"
+    "connectInSettings": "الاتصال من الإعدادات",
+    "notConnected": "Qobuz غير متصل",
+    "connectToBrowseGenres": "اربط حساب Qobuz في الإعدادات لتصفح الأنواع.",
+    "connectFirst": "اربط حساب Qobuz في الإعدادات أولاً.",
+    "searchFailed": "فشل البحث في Qobuz",
+    "albumLoadFailed": "فشل تحميل ألبوم Qobuz",
+    "playlistLoadFailed": "فشل تحميل قائمة تشغيل Qobuz",
+    "artistLoadFailed": "فشل تحميل فنان Qobuz",
+    "sessionExpired": "انتهت جلسة Qobuz، أعد ربط حساب Qobuz في الإعدادات",
+    "notAvailableInBrowser": "غير متاح في المتصفح",
+    "tokenRequired": "الرمز مطلوب",
+    "tokenRejected": "رفض Qobuz الرمز",
+    "tokenLoginFailed": "فشل تسجيل الدخول بالرمز",
+    "connectAccountInSettings": "اربط حساب Qobuz في الإعدادات"
   },
   "retag": {
     "viaQobuzTip": "المعلومات مصدرها Qobuz — لم يجد Deezer تطابقًا لرمز ISRC هذا",
@@ -1017,7 +1152,8 @@
     "credits": "الاعتمادات والترخيص",
     "builtBy": "صُنع بعناية من قبل فريق MAXIMUS.",
     "inspiredBy": "مستوحى من مشروع deemix الأصلي. مدعوم بواجهة برمجة تطبيقات Deezer.",
-    "license": "مرخَّص بموجب رخصة GNU العمومية العامة الإصدار 3.0"
+    "license": "مرخَّص بموجب رخصة GNU العمومية العامة الإصدار 3.0",
+    "earlierReleases": "الإصدارات السابقة"
   },
   "accessibility": {
     "windowControls": "أدوات التحكم في النافذة",
@@ -1069,5 +1205,23 @@
     "pasteLink": "لصق الرابط",
     "pasteToken": "لصق الرمز",
     "pasted": "تم اللصق"
+  },
+  "app": {
+    "loadingSettings": "جارٍ تحميل الإعدادات...",
+    "connectingDeezer": "جارٍ الاتصال بـ Deezer...",
+    "authenticating": "جارٍ التحقق من الهوية...",
+    "loadingFavorites": "جارٍ تحميل المفضلة...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "التركيز على البحث",
+    "focusSearchAlt": "التركيز على البحث (بديل)",
+    "goToDownloads": "الانتقال إلى التنزيلات",
+    "openSettings": "فتح الإعدادات",
+    "goToHome": "الانتقال إلى الرئيسية",
+    "showShortcuts": "عرض اختصارات لوحة المفاتيح",
+    "closeModals": "إغلاق النوافذ المنبثقة",
+    "closeModalsOrBack": "إغلاق النوافذ المنبثقة / الرجوع",
+    "pressToClose": "اضغط {key} للإغلاق"
   }
 }

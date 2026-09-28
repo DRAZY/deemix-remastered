@@ -75,7 +75,7 @@ async function downloadAlbum() {
           title: props.album.title,
           creator: props.album.artist
             ? { id: Number(props.album.artist.id) || 0, name: props.album.artist.name }
-            : { id: 0, name: 'Unknown' },
+            : { id: 0, name: t('common.unknownArtist') },
           picture_medium: props.album.cover_medium || '',
           picture_big: props.album.cover_big || '',
           nb_tracks: tracks.length

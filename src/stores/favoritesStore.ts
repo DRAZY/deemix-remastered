@@ -89,7 +89,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
   function toggleFavorite(item: Track | Album | Artist | Playlist, type: FavoriteItem['type']) {
     const toastStore = useToastStore()
     const id = `${type}_${item.id}`
-    const itemName = 'title' in item ? item.title : 'name' in item ? item.name : 'Item'
+    const itemName = 'title' in item ? item.title : 'name' in item ? item.name : i18n.global.t('common.item')
 
     if (isFavorite(item.id, type)) {
       removeFavorite(id)

@@ -22,6 +22,7 @@
 import { defineStore } from 'pinia'
 import { readFavorites, writeFavorites } from '../utils/favoritesStorage'
 import { ref } from 'vue'
+import i18n from '../i18n'
 import { useSettingsStore, type Settings } from './settingsStore'
 import { useProfileStore, type SettingsProfile } from './profileStore'
 import type { SyncedPlaylist } from './syncStore'
@@ -218,10 +219,10 @@ export const useBackupStore = defineStore('backup', () => {
     try {
       parsed = JSON.parse(text)
     } catch {
-      return { ok: false, error: 'File is not valid JSON.' }
+      return { ok: false, error: i18n.global.t('settings.backup.errors.notJson') }
     }
     if (!parsed || typeof parsed !== 'object') {
-      return { ok: false, error: 'File is not a recognised backup.' }
+      return { ok: false, error: i18n.global.t('settings.backup.errors.notBackup') }
     }
 
     // New format
@@ -264,7 +265,7 @@ export const useBackupStore = defineStore('backup', () => {
       return { ok: true, file, counts: countSegments(file) }
     }
 
-    return { ok: false, error: 'File is not a recognised backup or configuration export.' }
+    return { ok: false, error: i18n.global.t('settings.backup.errors.notBackupOrConfig') }
   }
 
   function countSegments(file: BackupFile): SegmentCounts {
@@ -313,10 +314,10 @@ export const useBackupStore = defineStore('backup', () => {
           delete incoming.qobuzUserId
           const ok = settingsStore.importSettings(JSON.stringify(incoming))
           result.settings = ok ? 'ok' : 'error'
-          if (!ok) result.errors.settings = 'Settings format not recognised'
+          if (!ok) result.errors.settings = i18n.global.t('settings.backup.errors.settingsFormat')
         } catch (e: any) {
           result.settings = 'error'
-          result.errors.settings = e?.message || 'Settings restore failed'
+          result.errors.settings = e?.message || i18n.global.t('settings.backup.errors.settingsRestoreFailed')
         }
       }
 
@@ -337,7 +338,7 @@ export const useBackupStore = defineStore('backup', () => {
           result.profiles = 'ok'
         } catch (e: any) {
           result.profiles = 'error'
-          result.errors.profiles = e?.message || 'Profiles restore failed'
+          result.errors.profiles = e?.message || i18n.global.t('settings.backup.errors.profilesRestoreFailed')
         }
       }
 
@@ -353,11 +354,11 @@ export const useBackupStore = defineStore('backup', () => {
           } else {
             result.syncedPlaylists = 'error'
             const err = await r.json().catch(() => ({}))
-            result.errors.syncedPlaylists = err.error || `Server returned ${r.status}`
+            result.errors.syncedPlaylists = err.error || i18n.global.t('common.serverReturned', { status: r.status })
           }
         } catch (e: any) {
           result.syncedPlaylists = 'error'
-          result.errors.syncedPlaylists = e?.message || 'Playlist sync restore failed'
+          result.errors.syncedPlaylists = e?.message || i18n.global.t('settings.backup.errors.playlistSyncRestoreFailed')
         }
       }
 
@@ -373,11 +374,11 @@ export const useBackupStore = defineStore('backup', () => {
           } else {
             result.syncedArtists = 'error'
             const err = await r.json().catch(() => ({}))
-            result.errors.syncedArtists = err.error || `Server returned ${r.status}`
+            result.errors.syncedArtists = err.error || i18n.global.t('common.serverReturned', { status: r.status })
           }
         } catch (e: any) {
           result.syncedArtists = 'error'
-          result.errors.syncedArtists = e?.message || 'Artist sync restore failed'
+          result.errors.syncedArtists = e?.message || i18n.global.t('settings.backup.errors.artistSyncRestoreFailed')
         }
       }
 
@@ -387,7 +388,7 @@ export const useBackupStore = defineStore('backup', () => {
           result.favourites = 'ok'
         } catch (e: any) {
           result.favourites = 'error'
-          result.errors.favourites = e?.message || 'Favourites restore failed'
+          result.errors.favourites = e?.message || i18n.global.t('settings.backup.errors.favouritesRestoreFailed')
         }
       }
 
@@ -403,7 +404,7 @@ export const useBackupStore = defineStore('backup', () => {
           result.credentials = 'ok'
         } catch (e: any) {
           result.credentials = 'error'
-          result.errors.credentials = e?.message || 'Credentials restore failed'
+          result.errors.credentials = e?.message || i18n.global.t('settings.backup.errors.credentialsRestoreFailed')
         }
       }
 

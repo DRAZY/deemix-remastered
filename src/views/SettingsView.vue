@@ -20,17 +20,18 @@ const profileStore = useProfileStore()
 const settingsSearch = ref('')
 
 // Define searchable content for each section
+// English search keywords matched against user input, not displayed copy.
 const sectionSearchTerms: Record<string, string[]> = {
-  profiles: ['profile', 'preset', 'audiophile', 'quick', 'balanced', 'flac', 'mp3', 'import', 'export', 'save profile'],
-  appearance: ['appearance', 'theme', 'color', 'signal', 'violet', 'spotify', 'rose', 'ocean', 'sunset', 'mint', 'dracula', 'nord', 'slim', 'sidebar', 'download tab', 'quality tag', 'search button'],
+  profiles: ['profile', 'preset', 'audiophile', 'quick', 'balanced', 'flac', 'mp3', 'import', 'export', 'save profile'], // i18n-exempt
+  appearance: ['appearance', 'theme', 'color', 'signal', 'violet', 'spotify', 'rose', 'ocean', 'sunset', 'mint', 'dracula', 'nord', 'slim', 'sidebar', 'download tab', 'quality tag', 'search button'], // i18n-exempt
   languages: ['language', 'languages', 'locale', 'translation'],
   downloads: ['download', 'path', 'location', 'folder', 'concurrent', 'pacing', 'speed', 'rate', 'delay', 'natural', 'bitrate', 'quality', 'mp3', 'flac', '128', '320', 'overwrite', 'fallback', 'isrc', 'log', 'cdn', 'lrc', 'lyrics', 'playlist', 'queue'],
   folders: ['folder', 'structure', 'template', 'artist', 'album', 'playlist', 'cd', 'singles'],
   templates: ['template', 'trackname', 'filename', 'format', 'variable', 'pattern'],
   metadata: ['metadata', 'artwork', 'embed', 'lyrics', 'save'],
   albumCovers: ['cover', 'artwork', 'image', 'jpeg', 'png', 'size', 'quality'],
-  tags: ['tags', 'id3', 'title', 'artist', 'album', 'genre', 'year', 'track number', 'disc', 'isrc', 'bpm', 'lyrics', 'composer', 'copyright'],
-  other: ['other', 'update', 'compilation', 'separator', 'null', 'id3v1', 'various artists', 'casing', 'date format', 'preview', 'volume'],
+  tags: ['tags', 'id3', 'title', 'artist', 'album', 'genre', 'year', 'track number', 'disc', 'isrc', 'bpm', 'lyrics', 'composer', 'copyright'], // i18n-exempt
+  other: ['other', 'update', 'compilation', 'separator', 'null', 'id3v1', 'various artists', 'casing', 'date format', 'preview', 'volume'], // i18n-exempt
   accounts: ['account', 'deezer', 'arl', 'login', 'token', 'authentication'],
   spotify: ['spotify', 'client', 'secret', 'import', 'playlist', 'username'],
   qobuz: ['qobuz', 'hi-res', 'hires', 'flac', 'lossless', 'token', 'login', 'account', 'connect'],
@@ -230,7 +231,7 @@ function checkAuthStatus() {
   // stayed logged out.
   if (authStore.isLoggedIn) {
     arlStatus.value = 'success'
-    arlMessage.value = `Logged in as ${authStore.user?.name || 'User'}`
+    arlMessage.value = t('login.loggedInAs', { name: authStore.user?.name || t('common.user') })
   }
 }
 
@@ -238,7 +239,7 @@ async function applyArl() {
   const arl = settingsStore.settings.arl?.trim()
   if (!arl) {
     arlStatus.value = 'error'
-    arlMessage.value = 'Please enter an ARL token'
+    arlMessage.value = t('login.enterArl')
     return
   }
 
@@ -258,14 +259,14 @@ async function applyArl() {
     const ok = await authStore.login(arl)
     if (ok) {
       arlStatus.value = 'success'
-      arlMessage.value = `Logged in as ${authStore.user?.name || 'User'}`
+      arlMessage.value = t('login.loggedInAs', { name: authStore.user?.name || t('common.user') })
     } else {
       arlStatus.value = 'error'
-      arlMessage.value = authStore.error || 'Authentication failed'
+      arlMessage.value = authStore.error || t('login.authFailed')
     }
   } catch (error: any) {
     arlStatus.value = 'error'
-    arlMessage.value = error.message || 'Failed to connect to server'
+    arlMessage.value = error.message || t('login.serverConnectFailed')
   } finally {
     arlLoading.value = false
   }
@@ -960,7 +961,7 @@ async function reindexLibrary() {
               placeholder="%playlist%"
               class="w-full px-3 py-2 bg-background-main/60 font-mono text-[13px] border border-white/[0.1] focus:border-primary-500/50 outline-none"
             />
-            <p class="text-xs text-foreground-muted mt-1">Variables: %playlist%, %date%, %year%</p>
+            <p class="text-xs text-foreground-muted mt-1">{{ t('settings.templateVariables', { vars: '%playlist%, %date%, %year%' }) }}</p>
             </div>
           </div>
         </div>
@@ -1021,7 +1022,7 @@ async function reindexLibrary() {
               placeholder="%playlist%"
               class="w-full px-3 py-2 bg-background-main/60 font-mono text-[13px] border border-white/[0.1] focus:border-primary-500/50 outline-none"
             />
-            <p class="text-xs text-foreground-muted mt-1">Variables: %playlist%, %owner%, %date%, %artist%, %year%</p>
+            <p class="text-xs text-foreground-muted mt-1">{{ t('settings.templateVariables', { vars: '%playlist%, %owner%, %date%, %artist%, %year%' }) }}</p>
           </div>
         </div>
 
@@ -1064,7 +1065,7 @@ async function reindexLibrary() {
               placeholder="%artist% - %album%"
               class="w-full px-3 py-2 bg-background-main/60 font-mono text-[13px] border border-white/[0.1] focus:border-primary-500/50 outline-none"
             />
-            <p class="text-xs text-foreground-muted mt-1">Variables: %artist%, %album%, %year%, %date%, %label%, %explicit%</p>
+            <p class="text-xs text-foreground-muted mt-1">{{ t('settings.templateVariables', { vars: '%artist%, %album%, %year%, %date%, %label%, %explicit%' }) }}</p>
           </div>
         </div>
       </div>
@@ -1125,7 +1126,7 @@ async function reindexLibrary() {
         <div class="p-3 bg-background-main/60 border border-white/[0.06]">
           <p class="font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted mb-1">{{ t('settings.examplePath') }}</p>
           <code class="text-sm text-primary-400">
-            ~/Music/Deemix/<span v-if="settingsStore.settings.createArtistFolder">{{ settingsStore.settings.artistFolderTemplate.replace('%artist%', 'Artist Name') }}/</span><span v-if="settingsStore.settings.createAlbumFolder">{{ settingsStore.settings.albumFolderTemplate.replace('%artist%', 'Artist').replace('%album%', 'Album').replace('%year%', '2024').replace('%label%', 'Label').replace('%explicit%', 'Explicit') }}/</span>01 - Track.mp3
+            ~/Music/Deemix/<span v-if="settingsStore.settings.createArtistFolder">{{ settingsStore.settings.artistFolderTemplate.replace('%artist%', t('settings.exampleArtistName')) }}/</span><span v-if="settingsStore.settings.createAlbumFolder">{{ settingsStore.settings.albumFolderTemplate.replace('%artist%', t('analyzer.fields.artist')).replace('%album%', t('analyzer.fields.album')).replace('%year%', '2024').replace('%label%', t('analyzer.fields.label')).replace('%explicit%', t('analyzer.fields.explicit')) }}/</span>01 - Track.mp3
           </code>
         </div>
       </div>
@@ -1408,7 +1409,7 @@ async function reindexLibrary() {
         <input
           v-model="settingsStore.settings.albumCovers.coverNameTemplate"
           type="text"
-          placeholder="cover"
+          :placeholder="'cover' /* i18n-exempt: default cover filename, not copy */"
           class="w-full px-3 py-2 bg-background-main/60 font-mono text-[13px] border border-white/[0.1] focus:border-primary-500/50 outline-none"
         />
       </div>

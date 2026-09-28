@@ -11,7 +11,7 @@ import ContextMenu from '../components/ContextMenu.vue'
 import { useContextMenu } from '../composables/useContextMenu'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const downloadStore = useDownloadStore()
@@ -296,7 +296,7 @@ const subtitle = computed(() => {
   if (!result.value?.data) return ''
   const data = result.value.data
   if (result.value.type === 'playlist') {
-    return result.value.creator || data.creator?.name || 'Unknown Creator'
+    return result.value.creator || data.creator?.name || t('common.unknownCreator')
   }
   return data.artist?.name || ''
 })
@@ -304,7 +304,7 @@ const subtitle = computed(() => {
 async function analyzeLink() {
   const raw = linkInput.value.trim()
   if (!raw) {
-    error.value = 'Please enter a Deezer, Spotify, or Qobuz link'
+    error.value = t('analyzer.errors.enterLink')
     return
   }
   const links = extractLinks(raw)
@@ -341,11 +341,11 @@ async function analyzeOne(url: string) {
     } else if (isDeezerUrl(url)) {
       await analyzeDeezerLink(url)
     } else {
-      error.value = 'Please enter a valid Deezer, Spotify, or Qobuz link'
+      error.value = t('analyzer.errors.invalidLink')
     }
   } catch (err: any) {
     console.error('[LinkAnalyzer] Error:', err)
-    error.value = `Failed to connect to server (port ${serverPort.value}). ${err.message || ''}`
+    error.value = t('analyzer.errors.serverConnect', { port: serverPort.value, message: err.message || '' })
   } finally {
     isAnalyzing.value = false
   }
@@ -360,8 +360,8 @@ async function analyzeQobuzLink(url: string) {
   const data = await resp.json()
   if (!resp.ok) {
     error.value = data.error === 'Qobuz not connected'
-      ? 'Connect your Qobuz account in Settings first.'
-      : data.error || 'Failed to analyze Qobuz link'
+      ? t('qobuz.connectFirst')
+      : data.error || t('analyzer.errors.qobuzAnalyzeFailed')
     return
   }
   qobuzResult.value = data
@@ -432,7 +432,7 @@ async function analyzeDeezerLink(url: string) {
   console.log('[LinkAnalyzer] Deezer Response:', response.status, data)
 
   if (!response.ok) {
-    error.value = data.error || 'Failed to analyze link'
+    error.value = data.error || t('analyzer.errors.analyzeFailed')
     return
   }
 
@@ -453,7 +453,7 @@ async function analyzeSpotifyLink(url: string) {
   console.log('[LinkAnalyzer] Spotify Response:', response.status, data)
 
   if (!response.ok) {
-    error.value = data.error || 'Failed to analyze Spotify link'
+    error.value = data.error || t('analyzer.errors.spotifyAnalyzeFailed')
     return
   }
 
@@ -501,14 +501,14 @@ async function convertSpotifyToDeezer() {
     const data = await response.json()
 
     if (!response.ok) {
-      error.value = data.error || 'Failed to convert Spotify content'
+      error.value = data.error || t('analyzer.errors.spotifyConvertFailed')
       return
     }
 
     conversionResult.value = data
   } catch (err: any) {
     console.error('[LinkAnalyzer] Conversion error:', err)
-    error.value = `Conversion failed: ${err.message || ''}`
+    error.value = t('analyzer.errors.conversionFailed', { message: err.message || '' })
   } finally {
     if (pollTimer) clearInterval(pollTimer)
     isConverting.value = false
@@ -521,7 +521,7 @@ async function downloadConvertedTracks() {
     return
   }
 
-  const sourcePlaylistName = spotifyResult.value?.data?.name || 'Spotify Playlist'
+  const sourcePlaylistName = spotifyResult.value?.data?.name || t('analyzer.spotifyPlaylist')
   const coverUrl = spotifyResult.value?.data?.images?.[0]?.url
     || spotifyResult.value?.data?.album?.images?.[0]?.url
     || ''
@@ -603,7 +603,7 @@ async function handleDownload() {
       await downloadStore.addDownload({
         id,
         title: data.title,
-        artist: data.artist || { id: 0, name: 'Unknown Artist' },
+        artist: data.artist || { id: 0, name: t('common.unknownArtist') },
         album: data.album,
         duration: data.duration || 0,
         cover: data.album?.cover_medium || ''
@@ -615,7 +615,7 @@ async function handleDownload() {
       const albumObj = {
         id,
         title: data.title,
-        artist: data.artist || { id: 0, name: 'Unknown Artist' },
+        artist: data.artist || { id: 0, name: t('common.unknownArtist') },
         cover_medium: data.cover_medium || '',
         cover_big: data.cover_big || '',
         cover_xl: data.cover_xl || '',
@@ -630,7 +630,7 @@ async function handleDownload() {
       const playlistObj = {
         id,
         title: data.title,
-        creator: data.creator || { id: 0, name: 'Unknown' },
+        creator: data.creator || { id: 0, name: t('common.unknown') },
         picture_medium: data.picture_medium || '',
         picture_big: data.picture_big || '',
         nb_tracks: data.nb_tracks || 0
@@ -668,171 +668,39 @@ function handlePaste(e: ClipboardEvent) {
   }
 }
 
-// Country code to name and flag mapping
-const countryData: Record<string, { name: string; flag: string }> = {
-  AD: { name: 'Andorra', flag: '🇦🇩' },
-  AE: { name: 'United Arab Emirates', flag: '🇦🇪' },
-  AF: { name: 'Afghanistan', flag: '🇦🇫' },
-  AG: { name: 'Antigua and Barbuda', flag: '🇦🇬' },
-  AL: { name: 'Albania', flag: '🇦🇱' },
-  AM: { name: 'Armenia', flag: '🇦🇲' },
-  AO: { name: 'Angola', flag: '🇦🇴' },
-  AR: { name: 'Argentina', flag: '🇦🇷' },
-  AT: { name: 'Austria', flag: '🇦🇹' },
-  AU: { name: 'Australia', flag: '🇦🇺' },
-  AZ: { name: 'Azerbaijan', flag: '🇦🇿' },
-  BA: { name: 'Bosnia and Herzegovina', flag: '🇧🇦' },
-  BB: { name: 'Barbados', flag: '🇧🇧' },
-  BD: { name: 'Bangladesh', flag: '🇧🇩' },
-  BE: { name: 'Belgium', flag: '🇧🇪' },
-  BF: { name: 'Burkina Faso', flag: '🇧🇫' },
-  BG: { name: 'Bulgaria', flag: '🇧🇬' },
-  BH: { name: 'Bahrain', flag: '🇧🇭' },
-  BJ: { name: 'Benin', flag: '🇧🇯' },
-  BN: { name: 'Brunei', flag: '🇧🇳' },
-  BO: { name: 'Bolivia', flag: '🇧🇴' },
-  BR: { name: 'Brazil', flag: '🇧🇷' },
-  BS: { name: 'Bahamas', flag: '🇧🇸' },
-  BW: { name: 'Botswana', flag: '🇧🇼' },
-  BY: { name: 'Belarus', flag: '🇧🇾' },
-  BZ: { name: 'Belize', flag: '🇧🇿' },
-  CA: { name: 'Canada', flag: '🇨🇦' },
-  CD: { name: 'DR Congo', flag: '🇨🇩' },
-  CH: { name: 'Switzerland', flag: '🇨🇭' },
-  CI: { name: 'Ivory Coast', flag: '🇨🇮' },
-  CL: { name: 'Chile', flag: '🇨🇱' },
-  CM: { name: 'Cameroon', flag: '🇨🇲' },
-  CN: { name: 'China', flag: '🇨🇳' },
-  CO: { name: 'Colombia', flag: '🇨🇴' },
-  CR: { name: 'Costa Rica', flag: '🇨🇷' },
-  CV: { name: 'Cape Verde', flag: '🇨🇻' },
-  CY: { name: 'Cyprus', flag: '🇨🇾' },
-  CZ: { name: 'Czechia', flag: '🇨🇿' },
-  DE: { name: 'Germany', flag: '🇩🇪' },
-  DJ: { name: 'Djibouti', flag: '🇩🇯' },
-  DK: { name: 'Denmark', flag: '🇩🇰' },
-  DM: { name: 'Dominica', flag: '🇩🇲' },
-  DO: { name: 'Dominican Republic', flag: '🇩🇴' },
-  DZ: { name: 'Algeria', flag: '🇩🇿' },
-  EC: { name: 'Ecuador', flag: '🇪🇨' },
-  EE: { name: 'Estonia', flag: '🇪🇪' },
-  EG: { name: 'Egypt', flag: '🇪🇬' },
-  ES: { name: 'Spain', flag: '🇪🇸' },
-  FI: { name: 'Finland', flag: '🇫🇮' },
-  FJ: { name: 'Fiji', flag: '🇫🇯' },
-  FR: { name: 'France', flag: '🇫🇷' },
-  GA: { name: 'Gabon', flag: '🇬🇦' },
-  GB: { name: 'United Kingdom', flag: '🇬🇧' },
-  GD: { name: 'Grenada', flag: '🇬🇩' },
-  GE: { name: 'Georgia', flag: '🇬🇪' },
-  GH: { name: 'Ghana', flag: '🇬🇭' },
-  GM: { name: 'Gambia', flag: '🇬🇲' },
-  GN: { name: 'Guinea', flag: '🇬🇳' },
-  GQ: { name: 'Equatorial Guinea', flag: '🇬🇶' },
-  GR: { name: 'Greece', flag: '🇬🇷' },
-  GT: { name: 'Guatemala', flag: '🇬🇹' },
-  GW: { name: 'Guinea-Bissau', flag: '🇬🇼' },
-  HK: { name: 'Hong Kong', flag: '🇭🇰' },
-  HN: { name: 'Honduras', flag: '🇭🇳' },
-  HR: { name: 'Croatia', flag: '🇭🇷' },
-  HT: { name: 'Haiti', flag: '🇭🇹' },
-  HU: { name: 'Hungary', flag: '🇭🇺' },
-  ID: { name: 'Indonesia', flag: '🇮🇩' },
-  IE: { name: 'Ireland', flag: '🇮🇪' },
-  IL: { name: 'Israel', flag: '🇮🇱' },
-  IN: { name: 'India', flag: '🇮🇳' },
-  IQ: { name: 'Iraq', flag: '🇮🇶' },
-  IS: { name: 'Iceland', flag: '🇮🇸' },
-  IT: { name: 'Italy', flag: '🇮🇹' },
-  JM: { name: 'Jamaica', flag: '🇯🇲' },
-  JO: { name: 'Jordan', flag: '🇯🇴' },
-  JP: { name: 'Japan', flag: '🇯🇵' },
-  KE: { name: 'Kenya', flag: '🇰🇪' },
-  KG: { name: 'Kyrgyzstan', flag: '🇰🇬' },
-  KH: { name: 'Cambodia', flag: '🇰🇭' },
-  KM: { name: 'Comoros', flag: '🇰🇲' },
-  KR: { name: 'South Korea', flag: '🇰🇷' },
-  KW: { name: 'Kuwait', flag: '🇰🇼' },
-  KZ: { name: 'Kazakhstan', flag: '🇰🇿' },
-  LA: { name: 'Laos', flag: '🇱🇦' },
-  LB: { name: 'Lebanon', flag: '🇱🇧' },
-  LC: { name: 'Saint Lucia', flag: '🇱🇨' },
-  LK: { name: 'Sri Lanka', flag: '🇱🇰' },
-  LR: { name: 'Liberia', flag: '🇱🇷' },
-  LT: { name: 'Lithuania', flag: '🇱🇹' },
-  LU: { name: 'Luxembourg', flag: '🇱🇺' },
-  LV: { name: 'Latvia', flag: '🇱🇻' },
-  LY: { name: 'Libya', flag: '🇱🇾' },
-  MA: { name: 'Morocco', flag: '🇲🇦' },
-  MC: { name: 'Monaco', flag: '🇲🇨' },
-  MD: { name: 'Moldova', flag: '🇲🇩' },
-  ME: { name: 'Montenegro', flag: '🇲🇪' },
-  MG: { name: 'Madagascar', flag: '🇲🇬' },
-  MK: { name: 'North Macedonia', flag: '🇲🇰' },
-  ML: { name: 'Mali', flag: '🇲🇱' },
-  MN: { name: 'Mongolia', flag: '🇲🇳' },
-  MR: { name: 'Mauritania', flag: '🇲🇷' },
-  MT: { name: 'Malta', flag: '🇲🇹' },
-  MU: { name: 'Mauritius', flag: '🇲🇺' },
-  MW: { name: 'Malawi', flag: '🇲🇼' },
-  MX: { name: 'Mexico', flag: '🇲🇽' },
-  MY: { name: 'Malaysia', flag: '🇲🇾' },
-  MZ: { name: 'Mozambique', flag: '🇲🇿' },
-  NA: { name: 'Namibia', flag: '🇳🇦' },
-  NE: { name: 'Niger', flag: '🇳🇪' },
-  NG: { name: 'Nigeria', flag: '🇳🇬' },
-  NI: { name: 'Nicaragua', flag: '🇳🇮' },
-  NL: { name: 'Netherlands', flag: '🇳🇱' },
-  NO: { name: 'Norway', flag: '🇳🇴' },
-  NP: { name: 'Nepal', flag: '🇳🇵' },
-  NZ: { name: 'New Zealand', flag: '🇳🇿' },
-  OM: { name: 'Oman', flag: '🇴🇲' },
-  PA: { name: 'Panama', flag: '🇵🇦' },
-  PE: { name: 'Peru', flag: '🇵🇪' },
-  PG: { name: 'Papua New Guinea', flag: '🇵🇬' },
-  PH: { name: 'Philippines', flag: '🇵🇭' },
-  PK: { name: 'Pakistan', flag: '🇵🇰' },
-  PL: { name: 'Poland', flag: '🇵🇱' },
-  PS: { name: 'Palestine', flag: '🇵🇸' },
-  PT: { name: 'Portugal', flag: '🇵🇹' },
-  PY: { name: 'Paraguay', flag: '🇵🇾' },
-  QA: { name: 'Qatar', flag: '🇶🇦' },
-  RO: { name: 'Romania', flag: '🇷🇴' },
-  RS: { name: 'Serbia', flag: '🇷🇸' },
-  RU: { name: 'Russia', flag: '🇷🇺' },
-  RW: { name: 'Rwanda', flag: '🇷🇼' },
-  SA: { name: 'Saudi Arabia', flag: '🇸🇦' },
-  SC: { name: 'Seychelles', flag: '🇸🇨' },
-  SE: { name: 'Sweden', flag: '🇸🇪' },
-  SG: { name: 'Singapore', flag: '🇸🇬' },
-  SI: { name: 'Slovenia', flag: '🇸🇮' },
-  SK: { name: 'Slovakia', flag: '🇸🇰' },
-  SL: { name: 'Sierra Leone', flag: '🇸🇱' },
-  SN: { name: 'Senegal', flag: '🇸🇳' },
-  SV: { name: 'El Salvador', flag: '🇸🇻' },
-  TD: { name: 'Chad', flag: '🇹🇩' },
-  TG: { name: 'Togo', flag: '🇹🇬' },
-  TH: { name: 'Thailand', flag: '🇹🇭' },
-  TJ: { name: 'Tajikistan', flag: '🇹🇯' },
-  TN: { name: 'Tunisia', flag: '🇹🇳' },
-  TR: { name: 'Turkey', flag: '🇹🇷' },
-  TT: { name: 'Trinidad and Tobago', flag: '🇹🇹' },
-  TW: { name: 'Taiwan', flag: '🇹🇼' },
-  TZ: { name: 'Tanzania', flag: '🇹🇿' },
-  UA: { name: 'Ukraine', flag: '🇺🇦' },
-  UG: { name: 'Uganda', flag: '🇺🇬' },
-  US: { name: 'United States', flag: '🇺🇸' },
-  UY: { name: 'Uruguay', flag: '🇺🇾' },
-  UZ: { name: 'Uzbekistan', flag: '🇺🇿' },
-  VE: { name: 'Venezuela', flag: '🇻🇪' },
-  VN: { name: 'Vietnam', flag: '🇻🇳' },
-  ZA: { name: 'South Africa', flag: '🇿🇦' },
-  ZM: { name: 'Zambia', flag: '🇿🇲' },
-  ZW: { name: 'Zimbabwe', flag: '🇿🇼' }
-}
+// Deezer availability country codes. Names come from Intl.DisplayNames in the
+// active locale, flags from the regional-indicator code points.
+const countryCodes = new Set([
+  'AD', 'AE', 'AF', 'AG', 'AL', 'AM', 'AO', 'AR', 'AT', 'AU', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF',
+  'BG', 'BH', 'BJ', 'BN', 'BO', 'BR', 'BS', 'BW', 'BY', 'BZ', 'CA', 'CD', 'CH', 'CI', 'CL', 'CM',
+  'CN', 'CO', 'CR', 'CV', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'ES',
+  'FI', 'FJ', 'FR', 'GA', 'GB', 'GD', 'GE', 'GH', 'GM', 'GN', 'GQ', 'GR', 'GT', 'GW', 'HK', 'HN',
+  'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IN', 'IQ', 'IS', 'IT', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH',
+  'KM', 'KR', 'KW', 'KZ', 'LA', 'LB', 'LC', 'LK', 'LR', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD',
+  'ME', 'MG', 'MK', 'ML', 'MN', 'MR', 'MT', 'MU', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NE', 'NG', 'NI',
+  'NL', 'NO', 'NP', 'NZ', 'OM', 'PA', 'PE', 'PG', 'PH', 'PK', 'PL', 'PS', 'PT', 'PY', 'QA', 'RO',
+  'RS', 'RU', 'RW', 'SA', 'SC', 'SE', 'SG', 'SI', 'SK', 'SL', 'SN', 'SV', 'TD', 'TG', 'TH', 'TJ',
+  'TN', 'TR', 'TT', 'TW', 'TZ', 'UA', 'UG', 'US', 'UY', 'UZ', 'VE', 'VN', 'ZA', 'ZM', 'ZW'
+])
+
+const regionNames = computed(() => {
+  try {
+    return new Intl.DisplayNames([locale.value], { type: 'region' })
+  } catch {
+    return null
+  }
+})
 
 function getCountryInfo(code: string): { name: string; flag: string } {
-  return countryData[code] || { name: code, flag: '🏳️' }
+  if (!countryCodes.has(code)) return { name: code, flag: '🏳️' }
+  let name = code
+  try {
+    name = regionNames.value?.of(code) || code
+  } catch {
+    // Unknown region code: fall back to the code itself
+  }
+  const flag = String.fromCodePoint(...code.toUpperCase().split('').map(c => 0x1f1e6 + c.charCodeAt(0) - 65))
+  return { name, flag }
 }
 
 // Metadata rows based on content type - paired for 2-column layout
@@ -976,14 +844,14 @@ const contextMenuItems = computed(() => {
       {
         label: t('common.copy'),
         icon: 'copy',
-        action: () => copyToClipboard(linkInput.value, 'Link'),
+        action: () => copyToClipboard(linkInput.value, t('contextMenu.link')),
         disabled: !linkInput.value
       }
     ]
   }
   return [
     {
-      label: `Copy ${contextMenuLabel.value}`,
+      label: t('common.copyLabel', { label: contextMenuLabel.value }),
       icon: 'copy',
       action: () => copyToClipboard(contextMenuValue.value, contextMenuLabel.value)
     }
@@ -1036,7 +904,7 @@ async function pasteLink() {
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
-            <span class="hidden sm:inline">Paste</span>
+            <span class="hidden sm:inline">{{ t('common.paste') }}</span>
           </button>
           <button
             type="submit"
@@ -1089,7 +957,7 @@ async function pasteLink() {
           class="px-3 py-1.5 font-mono text-[10.5px] uppercase tracking-[0.1em] border border-white/[0.1] text-foreground-muted hover:text-foreground disabled:opacity-50 transition-colors"
           @click="clearBatch"
         >
-          Clear
+          {{ t('analyzer.clear') }}
         </button>
       </div>
       <div class="max-h-72 overflow-y-auto divide-y divide-white/[0.06]">
@@ -1117,7 +985,7 @@ async function pasteLink() {
             class="flex-shrink-0 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.08em] border border-primary-500/40 text-primary-500 hover:bg-primary-500/10 disabled:opacity-50 transition-colors"
             @click.stop="downloadBatchRow(i)"
           >
-            Download
+            {{ t('analyzer.download') }}
           </button>
         </div>
       </div>
@@ -1173,13 +1041,13 @@ async function pasteLink() {
               :class="(!authStore.isLoggedIn || (result.type === 'track' && !result.available))
                 ? 'border border-white/[0.08] text-foreground-muted/50 cursor-not-allowed'
                 : 'btn-primary'"
-              :title="!authStore.isLoggedIn ? 'Login required to download' : (result.type === 'track' && !result.available) ? 'Track not available for download' : ''"
+              :title="!authStore.isLoggedIn ? t('analyzer.loginRequired') : (result.type === 'track' && !result.available) ? t('analyzer.notAvailable') : ''"
             >
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              Download
+              {{ t('analyzer.download') }}
             </button>
             <!-- View Details: For tracks, go to album; for others go to their detail page -->
             <button
@@ -1210,7 +1078,7 @@ async function pasteLink() {
       <!-- Metadata Table - 2 Column Layout -->
       <div class="border-t border-white/[0.08] pt-6">
         <div class="flex items-center gap-3 mb-4">
-          <h3 class="font-display text-[14px] uppercase tracking-[0.06em]">Metadata</h3>
+          <h3 class="font-display text-[14px] uppercase tracking-[0.06em]">{{ t('analyzer.metadata') }}</h3>
           <div class="flex-1 h-px bg-white/[0.06]"></div>
         </div>
         <table class="w-full">
@@ -1242,7 +1110,7 @@ async function pasteLink() {
       <!-- Availability Status (for tracks) -->
       <div v-if="result.type === 'track'" class="border-t border-white/[0.08] pt-6 mt-6">
         <div class="flex items-center gap-3 mb-4">
-          <h3 class="font-display text-[14px] uppercase tracking-[0.06em]">Availability</h3>
+          <h3 class="font-display text-[14px] uppercase tracking-[0.06em]">{{ t('analyzer.availability') }}</h3>
           <div class="flex-1 h-px bg-white/[0.06]"></div>
         </div>
         <div class="flex gap-6">
@@ -1284,7 +1152,7 @@ async function pasteLink() {
       <!-- Countries (for tracks, when authenticated) -->
       <div v-if="result.type === 'track' && result.countries && result.countries.length > 0" class="border-t border-white/[0.08] pt-6 mt-6">
         <div class="flex items-center gap-3 mb-4">
-          <h3 class="font-display text-[14px] uppercase tracking-[0.06em]">Countries</h3>
+          <h3 class="font-display text-[14px] uppercase tracking-[0.06em]">{{ t('analyzer.countries') }}</h3>
           <div class="flex-1 h-px bg-white/[0.06]"></div>
         </div>
         <div class="space-y-1 max-h-64 overflow-y-auto">
@@ -1301,7 +1169,7 @@ async function pasteLink() {
       <!-- Login notice for countries -->
       <div v-else-if="result.type === 'track' && !authStore.isLoggedIn" class="border-t border-white/[0.08] pt-6 mt-6">
         <div class="flex items-center gap-3 mb-2">
-          <h3 class="font-display text-[14px] uppercase tracking-[0.06em] text-foreground-muted">Countries</h3>
+          <h3 class="font-display text-[14px] uppercase tracking-[0.06em] text-foreground-muted">{{ t('analyzer.countries') }}</h3>
           <div class="flex-1 h-px bg-white/[0.06]"></div>
         </div>
         <p class="text-sm text-foreground-muted">{{ t('analyzer.loginForCountries') }}</p>
@@ -1315,7 +1183,7 @@ async function pasteLink() {
           v-if="qobuzResult.data?.image?.large || qobuzResult.data?.album?.image?.large"
           :src="qobuzResult.data?.image?.large || qobuzResult.data?.album?.image?.large"
           class="w-24 h-24 object-cover border border-white/[0.08]"
-          alt="cover"
+          :alt="t('common.cover')"
         />
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-2 mb-1">
@@ -1330,15 +1198,15 @@ async function pasteLink() {
           <p class="text-foreground-muted truncate">
             {{ qobuzResult.data?.performer?.name || qobuzResult.data?.artist?.name }}
           </p>
-          <p v-if="qobuzResult.data?.tracks?.total" class="text-sm text-foreground-muted mt-1">{{ qobuzResult.data.tracks.total }} tracks</p>
+          <p v-if="qobuzResult.data?.tracks?.total" class="text-sm text-foreground-muted mt-1">{{ qobuzResult.data.tracks.total }} {{ t('common.tracks') }}</p>
         </div>
         <button
           @click="downloadQobuz"
           :disabled="qobuzDownloading"
           class="btn btn-primary font-mono text-[11px] uppercase tracking-[0.12em] disabled:opacity-50 flex-shrink-0"
         >
-          <span v-if="qobuzDownloading">Queuing…</span>
-          <span v-else>Download ↓</span>
+          <span v-if="qobuzDownloading">{{ t('analyzer.queuing') }}</span>
+          <span v-else>{{ t('analyzer.download') + ' ↓' }}</span>
         </button>
       </div>
     </div>
@@ -1372,8 +1240,8 @@ async function pasteLink() {
                 </svg>
                 SPOTIFY {{ spotifyResult.type?.toUpperCase() }}
               </span>
-              <span v-if="spotifyResult.type === 'playlist' && spotifyResult.data?.public === true" class="px-1.5 py-0.5 bg-green-500/10 text-green-400 border border-green-500/30 font-mono text-[10px] tracking-[0.08em] font-semibold uppercase">Public</span>
-              <span v-if="spotifyResult.type === 'playlist' && spotifyResult.data?.public === false" class="px-1.5 py-0.5 bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 font-mono text-[10px] tracking-[0.08em] font-semibold uppercase">Private</span>
+              <span v-if="spotifyResult.type === 'playlist' && spotifyResult.data?.public === true" class="px-1.5 py-0.5 bg-green-500/10 text-green-400 border border-green-500/30 font-mono text-[10px] tracking-[0.08em] font-semibold uppercase">{{ t('analyzer.fields.public') }}</span>
+              <span v-if="spotifyResult.type === 'playlist' && spotifyResult.data?.public === false" class="px-1.5 py-0.5 bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 font-mono text-[10px] tracking-[0.08em] font-semibold uppercase">{{ t('common.private') }}</span>
               <h2 class="text-2xl font-bold truncate">{{ spotifyResult.data?.name }}</h2>
               <p v-if="spotifyResult.data?.artists?.[0]?.name || spotifyResult.data?.owner?.display_name" class="text-lg text-foreground-muted truncate">
                 {{ spotifyResult.data?.artists?.[0]?.name || spotifyResult.data?.owner?.display_name }}
@@ -1383,7 +1251,7 @@ async function pasteLink() {
 
           <!-- Track count info -->
           <p v-if="spotifyResult.trackCount" class="text-foreground-muted mt-2">
-            {{ spotifyResult.trackCount }} tracks
+            {{ spotifyResult.trackCount }} {{ t('common.tracks') }}
           </p>
 
           <!-- Target service picker (2.4): resolve the Spotify link against
@@ -1442,7 +1310,7 @@ async function pasteLink() {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              Download {{ bothCounts.total }} tracks<span class="opacity-60 normal-case">&nbsp;· {{ bothCounts.qobuz }} Qobuz, {{ bothCounts.deezer }} Deezer</span>
+              {{ t('analyzer.downloadTracks', { count: bothCounts.total }) }}<span class="opacity-60 normal-case">&nbsp;· {{ bothCounts.qobuz }} Qobuz, {{ bothCounts.deezer }} Deezer</span>
             </button>
             <button
               v-else-if="conversionResult?.matched?.length"
@@ -1454,7 +1322,7 @@ async function pasteLink() {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              Download {{ conversionResult.matched.length }} Tracks
+              {{ t('analyzer.downloadTracks', { count: conversionResult.matched.length }) }}
             </button>
             <p v-if="conversionResult && !conversionResult.matched?.length" class="text-sm text-yellow-400">
               <template v-if="conversionResult.service === 'both'">{{ t('analyzer.noneFoundBoth') }}</template>
@@ -1497,10 +1365,10 @@ async function pasteLink() {
         <div v-if="conversionResult.service === 'both' && conversionResult.matched?.length" class="space-y-3 mb-4">
           <!-- summary tally -->
           <div class="flex flex-wrap items-center gap-x-4 gap-y-1 p-2.5 bg-background-main border border-white/[0.06] text-[11px] text-foreground-muted">
-            <span><span class="inline-block w-2 h-2 rounded-sm bg-green-400 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.both || 0 }}</b> on both</span>
+            <span><span class="inline-block w-2 h-2 rounded-sm bg-green-400 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.both || 0 }}</b> {{ t('analyzer.onBoth') }}</span>
             <span><span class="inline-block w-2 h-2 rounded-sm bg-qobuz-500 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.qobuzOnly || 0 }}</b> {{ t('analyzer.qobuzOnly') }}</span>
             <span><span class="inline-block w-2 h-2 rounded-sm bg-deezer-500 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.deezerOnly || 0 }}</b> {{ t('analyzer.deezerOnly') }}</span>
-            <span><span class="inline-block w-2 h-2 rounded-sm bg-white/20 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.neither || 0 }}</b> unavailable</span>
+            <span><span class="inline-block w-2 h-2 rounded-sm bg-white/20 mr-1.5 align-middle"></span><b class="text-foreground">{{ conversionResult.summary?.neither || 0 }}</b> {{ t('analyzer.unavailable') }}</span>
           </div>
 
           <!-- preference control -->
@@ -1517,7 +1385,7 @@ async function pasteLink() {
 
           <!-- matrix header -->
           <div class="grid grid-cols-[1fr_74px_74px] gap-2 px-2.5 font-mono text-[9px] tracking-[0.16em] uppercase text-foreground-muted">
-            <span>Track</span><span class="text-center">Deezer</span><span class="text-center">Qobuz</span>
+            <span>{{ t('analyzer.types.track') }}</span><span class="text-center">Deezer</span><span class="text-center">Qobuz</span>
           </div>
 
           <!-- matrix rows -->
@@ -1559,7 +1427,7 @@ async function pasteLink() {
 
         <!-- Matched Tracks (single-service) -->
         <div v-else-if="conversionResult.matched?.length" class="space-y-2 mb-4">
-          <p class="font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted">Matched ({{ conversionResult.matched.length }})</p>
+          <p class="font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted">{{ t('analyzer.matched', { count: conversionResult.matched.length }) }}</p>
           <div class="max-h-48 overflow-y-auto space-y-1">
             <div
               v-for="match in conversionResult.matched"
@@ -1577,7 +1445,7 @@ async function pasteLink() {
 
         <!-- Unmatched Tracks -->
         <div v-if="conversionResult.unmatched?.length" class="space-y-2">
-          <p class="font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted">Unmatched ({{ conversionResult.unmatched.length }})</p>
+          <p class="font-mono text-[9.5px] tracking-[0.2em] uppercase text-foreground-muted">{{ t('analyzer.unmatched', { count: conversionResult.unmatched.length }) }}</p>
           <div class="max-h-32 overflow-y-auto space-y-1">
             <div
               v-for="track in conversionResult.unmatched"
@@ -1602,7 +1470,7 @@ async function pasteLink() {
       </svg>
       <p class="text-foreground-muted text-lg mb-2">{{ t('analyzer.getStarted') }}</p>
       <p class="text-foreground-muted text-sm">
-        Supported: tracks, albums, artists, and playlists
+        {{ t('analyzer.supported') }}
       </p>
     </div>
 

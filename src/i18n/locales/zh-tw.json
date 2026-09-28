@@ -159,7 +159,37 @@
     "substitutedDifferentRecording": "不同錄音",
     "substitutedListTitle": "替代版本",
     "substitutedListTip": "點擊以查看哪些曲目來自替代發行版本",
-    "clearHistory": "清除歷史記錄"
+    "clearHistory": "清除歷史記錄",
+    "waitingCount": "{count} 個下載等待中 | {count} 個下載等待中",
+    "formats": "格式",
+    "activeLabel": "進行中",
+    "doneLabel": "已完成",
+    "failedLabel": "失敗",
+    "failedCount": "{count} 個失敗",
+    "tracksCount": "曲目（{count}）",
+    "historyCount": "下載紀錄（{count}）",
+    "interrupted": "已中斷，應用程式在完成前關閉。按一下重試以繼續（已下載的曲目會略過）。",
+    "tracksFailedOf": "{total} 首曲目中有 {failed} 首失敗",
+    "requestFailed": "下載請求失敗",
+    "albumRequestFailed": "專輯下載請求失敗",
+    "qobuzAlbumRequestFailed": "Qobuz 專輯下載請求失敗",
+    "playlistRequestFailed": "播放清單下載請求失敗",
+    "batchRequestFailed": "批次下載請求失敗",
+    "mixedBatchRequestFailed": "混合批次下載請求失敗",
+    "noDownloadId": "伺服器未回傳下載 ID",
+    "noDownloadIds": "伺服器未回傳下載 ID",
+    "qobuzAlbum": "Qobuz 專輯",
+    "errorCopy": {
+      "track": "曲目：{value}",
+      "artist": "藝人：{value}",
+      "errorCode": "錯誤代碼：{value}",
+      "httpStatus": "HTTP 狀態：{value}",
+      "error": "錯誤：{value}",
+      "suggestion": "建議：{value}",
+      "serverResponse": "伺服器回應：{value}"
+    },
+    "showTracks": "顯示曲目",
+    "hideTracks": "隱藏曲目"
   },
   "charts": {
     "title": "排行榜",
@@ -175,7 +205,8 @@
     "topAlbumsIn": "{country}熱門 {count} 張專輯",
     "topArtistsIn": "{country}熱門 {count} 位藝人",
     "topPlaylistsIn": "{country}熱門 {count} 個播放清單",
-    "noChartData": "無排行榜資料"
+    "noChartData": "無排行榜資料",
+    "worldwide": "全球"
   },
   "favorites": {
     "title": "收藏",
@@ -223,7 +254,10 @@
     "pinArtistTooltip": "釘選此藝人以同步",
     "unpinArtistTooltip": "取消釘選此藝人（仍保留在收藏中）",
     "unpin": "取消釘選",
-    "artistSyncRemoved": "已將「{name}」從同步取消釘選"
+    "artistSyncRemoved": "已將「{name}」從同步取消釘選",
+    "startDownloadsFailed": "無法開始下載",
+    "importDeezerFailed": "無法匯入 Deezer 收藏",
+    "downloadAllOf": "下載全部{type}"
   },
   "analyzer": {
     "title": "連結分析",
@@ -280,7 +314,16 @@
       "invalidUrl": "請輸入有效的 Deezer URL",
       "unsupported": "不支援此連結類型",
       "notFound": "在 Deezer 上找不到內容",
-      "networkError": "分析連結失敗。請重試。"
+      "networkError": "分析連結失敗。請重試。",
+      "enterLink": "請輸入 Deezer、Spotify 或 Qobuz 連結",
+      "invalidLink": "請輸入有效的 Deezer、Spotify 或 Qobuz 連結",
+      "serverConnect": "無法連線到伺服器（連接埠 {port}）。{message}",
+      "serverHttp": "伺服器回傳 HTTP {status}",
+      "analyzeFailed": "無法分析連結",
+      "qobuzAnalyzeFailed": "無法分析 Qobuz 連結",
+      "spotifyAnalyzeFailed": "無法分析 Spotify 連結",
+      "spotifyConvertFailed": "無法轉換 Spotify 內容",
+      "conversionFailed": "轉換失敗：{message}"
     },
     "loginRequired": "需要登入才能下載",
     "convertTo": "轉換為",
@@ -304,7 +347,15 @@
     "batchAnalyzed": "已分析 {done}/{total}",
     "batchFailed": "{count} 個失敗",
     "queuing": "正在加入佇列...",
-    "downloadAllReady": "下載全部就緒項目（{count}）"
+    "downloadAllReady": "下載全部就緒項目（{count}）",
+    "clear": "清除",
+    "downloadTracks": "下載 {count} 首曲目",
+    "onBoth": "兩者皆有",
+    "unavailable": "無法使用",
+    "matched": "相符（{count}）",
+    "unmatched": "不相符（{count}）",
+    "supported": "支援：曲目、專輯、藝人和播放清單",
+    "spotifyPlaylist": "Spotify 播放清單"
   },
   "settings": {
     "title": "設定",
@@ -563,7 +614,22 @@
       "duplicated": "設定檔已複製",
       "exported": "設定檔已匯出",
       "imported": "已匯入設定檔「{name}」",
-      "importFailed": "匯入設定檔失敗 — 格式無效"
+      "importFailed": "匯入設定檔失敗 — 格式無效",
+      "importedProfile": "匯入的設定檔",
+      "builtin": {
+        "audiophile": {
+          "name": "發燒友",
+          "description": "FLAC 無損、所有中繼資料標籤、高解析度封面、同步歌詞"
+        },
+        "quick": {
+          "name": "快速下載",
+          "description": "MP3 128kbps、精簡標籤、小尺寸封面、最快下載速度"
+        },
+        "balanced": {
+          "name": "平衡",
+          "description": "MP3 320kbps、標準中繼資料、優質封面"
+        }
+      }
     },
     "downloadPacing": "自然下載節奏",
     "downloadPacingHelp": "在下載之間加入小段隨機延遲，讓大量下載不會一次全部湧向 Deezer，降低帳戶被標記異常活動的風險。「關閉」維持全速；「均衡」以適中節奏間隔下載；「謹慎」最慢也最安全。若要達到最自然的模式，請將「謹慎」與 1 個同時下載數搭配使用。",
@@ -616,8 +682,22 @@
       "selectAll": "全選",
       "selectNone": "全不選",
       "expandProfiles": "顯示設定檔清單",
-      "subsetCount": "{total} 個中的 {n} 個"
-    }
+      "subsetCount": "{total} 個中的 {n} 個",
+      "errors": {
+        "notJson": "檔案不是有效的 JSON。",
+        "notBackup": "無法辨識此檔案為備份。",
+        "notBackupOrConfig": "無法辨識此檔案為備份或設定匯出檔。",
+        "settingsFormat": "無法辨識設定格式",
+        "settingsRestoreFailed": "設定還原失敗",
+        "profilesRestoreFailed": "設定檔還原失敗",
+        "playlistSyncRestoreFailed": "播放清單同步還原失敗",
+        "artistSyncRestoreFailed": "藝人同步還原失敗",
+        "favouritesRestoreFailed": "收藏還原失敗",
+        "credentialsRestoreFailed": "登入資訊還原失敗"
+      }
+    },
+    "templateVariables": "變數：{vars}",
+    "exampleArtistName": "藝人名稱"
   },
   "login": {
     "title": "登入 Deezer",
@@ -656,7 +736,19 @@
     "emailPasswordHelp": "使用您的 Deezer 帳戶憑證。這是建議的方式，較簡單且會自動處理工作階段管理。",
     "whatIsArl": "什麼是 ARL 權杖？",
     "arlExplainer": "ARL（Authentication Request Login）權杖是來自您 Deezer 帳戶、用於下載音樂的 Cookie。登入 Deezer 時會儲存在您的瀏覽器中。",
-    "passwordPlaceholder": "您的 Deezer 密碼"
+    "passwordPlaceholder": "您的 Deezer 密碼",
+    "loginFailed": "登入失敗",
+    "loginFailedAfterCaptcha": "完成 CAPTCHA 後登入失敗",
+    "invalidServerResponse": "伺服器回傳無效的回應。請確認應用程式正常執行。",
+    "connectionTimeout": "連線逾時。請檢查您的網路連線。",
+    "emailPasswordRequired": "需要輸入電子郵件和密碼",
+    "browserLoginUnavailable": "無法使用瀏覽器登入",
+    "browserLoginWindowClosed": "登入視窗已關閉",
+    "browserLoginFailed": "瀏覽器登入失敗",
+    "loggedInAs": "已登入為 {name}",
+    "enterArl": "請輸入 ARL 權杖",
+    "authFailed": "驗證失敗",
+    "serverConnectFailed": "無法連線到伺服器"
   },
   "common": {
     "download": "下載",
@@ -698,7 +790,26 @@
     "sortNameDesc": "名稱 Z-A",
     "pasteFromClipboard": "從剪貼簿貼上",
     "paste": "貼上",
-    "copy": "複製"
+    "copy": "複製",
+    "confirm": "確認",
+    "item": "項目",
+    "user": "使用者",
+    "unknownTrack": "未知曲目",
+    "unknownCreator": "未知建立者",
+    "private": "私人",
+    "source": "來源",
+    "default": "預設",
+    "never": "從不",
+    "justNow": "剛剛",
+    "durationHoursMinutes": "{hours} 小時 {mins} 分鐘",
+    "copyLabel": "複製{label}",
+    "copySuffix": "{name}（副本）",
+    "restoredSuffix": "{name}（已還原）",
+    "requestFailed": "請求失敗",
+    "serverReturned": "伺服器回傳 {status}",
+    "goBackEsc": "返回（Esc）",
+    "cover": "封面",
+    "durationMinutes": "{mins} 分鐘"
   },
   "trackCard": {
     "stop": "停止",
@@ -745,7 +856,14 @@
     "sortNewest": "最新優先",
     "sortOldest": "最舊優先",
     "releases": "發行作品",
-    "featuredAppearances": "客串作品"
+    "featuredAppearances": "客串作品",
+    "type": {
+      "album": "專輯",
+      "ep": "EP",
+      "single": "單曲",
+      "compilation": "合輯",
+      "featured": "參與演出"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "下載播放清單",
@@ -939,7 +1057,11 @@
     "filterEPs": "EP",
     "filterCompilations": "合輯",
     "filterFeatures": "客串發行",
-    "editMinReleaseDate": "僅下載此日期之後的發行"
+    "editMinReleaseDate": "僅下載此日期之後的發行",
+    "resolvingTracks": "正在解析曲目...",
+    "downloadingProgress": "正在下載 {current}/{total}",
+    "checkingDiscography": "正在檢查唱片目錄...",
+    "albumProgress": "專輯 {current}/{total}"
   },
   "userPlaylists": {
     "creator": "建立者",
@@ -1016,7 +1138,20 @@
     "sortDefault": "來源順序",
     "sortName": "依名稱",
     "sortTracks": "曲目最多",
-    "connectInSettings": "在設定中連線"
+    "connectInSettings": "在設定中連線",
+    "notConnected": "尚未連接 Qobuz",
+    "connectToBrowseGenres": "請在設定中連接您的 Qobuz 帳戶以瀏覽曲風。",
+    "connectFirst": "請先在設定中連接您的 Qobuz 帳戶。",
+    "searchFailed": "Qobuz 搜尋失敗",
+    "albumLoadFailed": "Qobuz 專輯載入失敗",
+    "playlistLoadFailed": "Qobuz 播放清單載入失敗",
+    "artistLoadFailed": "Qobuz 藝人載入失敗",
+    "sessionExpired": "Qobuz 工作階段已過期，請在設定中重新連接您的 Qobuz 帳戶",
+    "notAvailableInBrowser": "在瀏覽器中無法使用",
+    "tokenRequired": "需要權杖",
+    "tokenRejected": "Qobuz 拒絕了此權杖",
+    "tokenLoginFailed": "權杖登入失敗",
+    "connectAccountInSettings": "請在設定中連接您的 Qobuz 帳戶"
   },
   "titleBar": {
     "qobuzLinkedTip": "Qobuz 已連接",
@@ -1038,7 +1173,8 @@
     "credits": "製作團隊與授權",
     "builtBy": "由 Team MAXIMUS 用心打造。",
     "inspiredBy": "靈感來自原始的 deemix 專案，並由 Deezer API 提供技術支援。",
-    "license": "採用 GNU General Public License v3.0 授權"
+    "license": "採用 GNU General Public License v3.0 授權",
+    "earlierReleases": "較早的版本"
   },
   "newReleases": {
     "title": "新發行",
@@ -1069,5 +1205,23 @@
     "pasteLink": "貼上連結",
     "pasteToken": "貼上權杖",
     "pasted": "已貼上"
+  },
+  "app": {
+    "loadingSettings": "正在載入設定...",
+    "connectingDeezer": "正在連接 Deezer...",
+    "authenticating": "正在驗證...",
+    "loadingFavorites": "正在載入收藏...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "聚焦搜尋",
+    "focusSearchAlt": "聚焦搜尋（替代）",
+    "goToDownloads": "前往下載",
+    "openSettings": "開啟設定",
+    "goToHome": "前往首頁",
+    "showShortcuts": "顯示鍵盤快速鍵",
+    "closeModals": "關閉對話框",
+    "closeModalsOrBack": "關閉對話框／返回",
+    "pressToClose": "按 {key} 關閉"
   }
 }

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted, onUnmounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 
@@ -45,7 +47,7 @@ onUnmounted(() => {
     v-if="shouldShow"
     @click="goBack"
     class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all mb-2 group"
-    title="Go back (Esc)"
+    :title="t('common.goBackEsc')"
   >
     <svg
       class="w-5 h-5 transition-transform group-hover:-translate-x-1"
@@ -55,7 +57,7 @@ onUnmounted(() => {
     >
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
     </svg>
-    <span class="text-sm font-medium">Back</span>
+    <span class="text-sm font-medium">{{ t('common.back') }}</span>
     <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono bg-white/10 rounded text-foreground-muted ml-1">
       Esc
     </kbd>

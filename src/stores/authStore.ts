@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import i18n from '../i18n'
 import { useSettingsStore } from './settingsStore'
 
 export interface DeezerUser {
@@ -112,7 +113,7 @@ export const useAuthStore = defineStore('auth', () => {
     await settingsStore.setArl('')
 
     // Set a user-friendly error message
-    error.value = 'Your session has expired. Please log in again.'
+    error.value = i18n.global.t('login.sessionExpired')
   }
 
   /**
@@ -150,7 +151,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login(arl: string, silent = false): Promise<boolean> {
     if (!arl || arl.length < 100) {
-      error.value = 'Invalid ARL token format'
+      error.value = i18n.global.t('login.invalidArl')
       return false
     }
 
@@ -207,9 +208,9 @@ export const useAuthStore = defineStore('auth', () => {
       console.error('[AuthStore] Login error:', e)
       if (!silent) {
         if (e.name === 'AbortError') {
-          error.value = 'Connection timed out. Please check your internet connection.'
+          error.value = i18n.global.t('login.connectionTimeout')
         } else {
-          error.value = e.message || 'Login failed'
+          error.value = e.message || i18n.global.t('login.loginFailed')
         }
       }
       isAuthenticated.value = false
@@ -224,7 +225,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function loginWithEmail(email: string, password: string): Promise<boolean | 'captcha'> {
     if (!email || !password) {
-      error.value = 'Email and password are required'
+      error.value = i18n.global.t('login.emailPasswordRequired')
       return false
     }
 
@@ -281,7 +282,7 @@ export const useAuthStore = defineStore('auth', () => {
       throw new Error('Login failed')
     } catch (e: any) {
       console.error('[AuthStore] Email login error:', e)
-      error.value = e.message || 'Login failed'
+      error.value = e.message || i18n.global.t('login.loginFailed')
       isAuthenticated.value = false
       user.value = null
       const settingsStore = useSettingsStore()
@@ -294,7 +295,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function loginWithCaptcha(captchaResponse: string): Promise<boolean> {
     if (!captchaResponse) {
-      error.value = 'CAPTCHA response is required'
+      error.value = i18n.global.t('login.captchaRequired')
       return false
     }
 
@@ -335,7 +336,7 @@ export const useAuthStore = defineStore('auth', () => {
       throw new Error('Login failed after CAPTCHA')
     } catch (e: any) {
       console.error('[AuthStore] CAPTCHA login error:', e)
-      error.value = e.message || 'CAPTCHA verification failed'
+      error.value = e.message || i18n.global.t('login.captchaFailed')
       return false
     } finally {
       isLoading.value = false

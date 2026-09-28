@@ -28,7 +28,7 @@ const profileStore = useProfileStore()
 const syncStore = useSyncStore()
 const favoritesStore = useFavoritesStore()
 const isLoading = ref(true)
-const loadingMessage = ref('Loading settings...')
+const loadingMessage = ref(t('app.loadingSettings'))
 const showAuthExpiredBanner = ref(false)
 
 // Update title bar with download progress
@@ -43,7 +43,7 @@ watch(
         .filter(d => d.status === 'pending' || d.status === 'downloading')
         .reduce((sum, d) => sum + (d.progress || 0), 0)
       const avgProgress = Math.round(totalProgress / Math.max(active, 1))
-      document.title = `(${avgProgress}%) Deemix Remastered`
+      document.title = t('app.windowTitleProgress', { progress: avgProgress })
     } else {
       document.title = 'Deemix Remastered'
     }
@@ -90,7 +90,7 @@ onMounted(async () => {
   console.log('[App] Starting initialization...')
 
   // Initialize stores - settings must load first since auth depends on saved ARL
-  loadingMessage.value = 'Loading settings...'
+  loadingMessage.value = t('app.loadingSettings')
   await settingsStore.loadSettings()
   console.log('[App] Settings loaded')
 
@@ -103,12 +103,12 @@ onMounted(async () => {
     .catch((e: any) => console.warn('[App] Sync store init failed:', e.message))
 
   // Now initialize remaining stores
-  loadingMessage.value = 'Connecting to Deezer...'
+  loadingMessage.value = t('app.connectingDeezer')
   await downloadStore.init()
   console.log('[App] Download store initialized')
 
   // Auth initialization with timeout - don't block app loading if Deezer is unreachable
-  loadingMessage.value = 'Authenticating...'
+  loadingMessage.value = t('app.authenticating')
   const authTimeout = 10000 // 10 second timeout for auth
   try {
     await Promise.race([
@@ -137,7 +137,7 @@ onMounted(async () => {
   }
 
   // Load favorites (will work even without auth - just shows empty state)
-  loadingMessage.value = 'Loading favorites...'
+  loadingMessage.value = t('app.loadingFavorites')
   try {
     await favoritesStore.loadFavorites()
     console.log('[App] Favorites loaded')

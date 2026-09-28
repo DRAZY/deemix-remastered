@@ -142,7 +142,37 @@
     "speed": "Скорость",
     "substitutedListTitle": "Альтернативные версии",
     "substitutedListTip": "Нажмите, чтобы увидеть, какие треки взяты из альтернативного релиза",
-    "clearHistory": "Очистить историю"
+    "clearHistory": "Очистить историю",
+    "waitingCount": "Ожидает загрузки: {count} | Ожидают загрузки: {count}",
+    "formats": "Форматы",
+    "activeLabel": "активные",
+    "doneLabel": "готово",
+    "failedLabel": "ошибки",
+    "failedCount": "Ошибок: {count}",
+    "tracksCount": "Треки ({count})",
+    "historyCount": "История загрузок ({count})",
+    "interrupted": "Прервано: приложение закрылось до завершения. Нажмите «Повторить», чтобы продолжить (уже скачанные треки будут пропущены).",
+    "tracksFailedOf": "Не удалось скачать треков: {failed} из {total}",
+    "requestFailed": "Ошибка запроса на загрузку",
+    "albumRequestFailed": "Ошибка запроса на загрузку альбома",
+    "qobuzAlbumRequestFailed": "Ошибка запроса на загрузку альбома Qobuz",
+    "playlistRequestFailed": "Ошибка запроса на загрузку плейлиста",
+    "batchRequestFailed": "Ошибка запроса на пакетную загрузку",
+    "mixedBatchRequestFailed": "Ошибка запроса на смешанную пакетную загрузку",
+    "noDownloadId": "Сервер не вернул ID загрузки",
+    "noDownloadIds": "Сервер не вернул ID загрузок",
+    "qobuzAlbum": "Альбом Qobuz",
+    "errorCopy": {
+      "track": "Трек: {value}",
+      "artist": "Исполнитель: {value}",
+      "errorCode": "Код ошибки: {value}",
+      "httpStatus": "Статус HTTP: {value}",
+      "error": "Ошибка: {value}",
+      "suggestion": "Рекомендация: {value}",
+      "serverResponse": "Ответ сервера: {value}"
+    },
+    "showTracks": "Показать треки",
+    "hideTracks": "Скрыть треки"
   },
   "charts": {
     "title": "Чарты",
@@ -158,7 +188,8 @@
     "topAlbumsIn": "Топ {count} альбомов в {country}",
     "topArtistsIn": "Топ {count} исполнителей в {country}",
     "topPlaylistsIn": "Топ {count} плейлистов в {country}",
-    "noChartData": "Данные чарта недоступны"
+    "noChartData": "Данные чарта недоступны",
+    "worldwide": "Весь мир"
   },
   "favorites": {
     "title": "Избранное",
@@ -206,7 +237,10 @@
     "pinArtistTooltip": "Закрепить этого исполнителя для синхронизации",
     "unpinArtistTooltip": "Открепить этого исполнителя (останется в избранном)",
     "unpin": "Открепить",
-    "artistSyncRemoved": "«{name}» откреплён от синхронизации"
+    "artistSyncRemoved": "«{name}» откреплён от синхронизации",
+    "startDownloadsFailed": "Не удалось начать загрузки",
+    "importDeezerFailed": "Не удалось импортировать избранное Deezer",
+    "downloadAllOf": "Скачать все: {type}"
   },
   "analyzer": {
     "title": "Анализатор ссылок",
@@ -263,7 +297,16 @@
       "invalidUrl": "Пожалуйста, введите корректную ссылку Deezer",
       "unsupported": "Этот тип ссылки не поддерживается",
       "notFound": "Контент не найден в Deezer",
-      "networkError": "Ошибка анализа. Попробуйте снова."
+      "networkError": "Ошибка анализа. Попробуйте снова.",
+      "enterLink": "Введите ссылку Deezer, Spotify или Qobuz",
+      "invalidLink": "Введите корректную ссылку Deezer, Spotify или Qobuz",
+      "serverConnect": "Не удалось подключиться к серверу (порт {port}). {message}",
+      "serverHttp": "сервер вернул HTTP {status}",
+      "analyzeFailed": "Не удалось проанализировать ссылку",
+      "qobuzAnalyzeFailed": "Не удалось проанализировать ссылку Qobuz",
+      "spotifyAnalyzeFailed": "Не удалось проанализировать ссылку Spotify",
+      "spotifyConvertFailed": "Не удалось конвертировать контент Spotify",
+      "conversionFailed": "Ошибка конвертации: {message}"
     },
     "loginRequired": "Для скачивания необходимо войти",
     "convertTo": "Конвертировать в",
@@ -287,7 +330,15 @@
     "batchAnalyzed": "{done}/{total} проанализировано",
     "batchFailed": "{count} с ошибкой",
     "queuing": "Добавление в очередь...",
-    "downloadAllReady": "Скачать все готовые ({count})"
+    "downloadAllReady": "Скачать все готовые ({count})",
+    "clear": "Очистить",
+    "downloadTracks": "Скачать треки: {count}",
+    "onBoth": "на обоих",
+    "unavailable": "недоступно",
+    "matched": "Найдены ({count})",
+    "unmatched": "Не найдены ({count})",
+    "supported": "Поддерживаются: треки, альбомы, исполнители и плейлисты",
+    "spotifyPlaylist": "Плейлист Spotify"
   },
   "settings": {
     "title": "Настройки",
@@ -540,7 +591,22 @@
       "duplicated": "Профиль продублирован",
       "exported": "Профиль экспортирован",
       "imported": "Профиль «{name}» импортирован",
-      "importFailed": "Не удалось импортировать профиль — неверный формат"
+      "importFailed": "Не удалось импортировать профиль — неверный формат",
+      "importedProfile": "Импортированный профиль",
+      "builtin": {
+        "audiophile": {
+          "name": "Аудиофил",
+          "description": "FLAC без потерь, все теги метаданных, обложки высокого разрешения, синхронизированные тексты"
+        },
+        "quick": {
+          "name": "Быстрая загрузка",
+          "description": "MP3 128kbps, минимум тегов, маленькие обложки, самые быстрые загрузки"
+        },
+        "balanced": {
+          "name": "Сбалансированный",
+          "description": "MP3 320kbps, стандартные метаданные, обложки хорошего качества"
+        }
+      }
     },
     "noResults": "Совпадающих настроек не найдено",
     "clearSearch": "Очистить поиск",
@@ -599,8 +665,22 @@
       "selectAll": "Выбрать всё",
       "selectNone": "Снять выделение",
       "expandProfiles": "Показать список профилей",
-      "subsetCount": "{n} из {total}"
-    }
+      "subsetCount": "{n} из {total}",
+      "errors": {
+        "notJson": "Файл не является корректным JSON.",
+        "notBackup": "Файл не распознан как резервная копия.",
+        "notBackupOrConfig": "Файл не распознан как резервная копия или экспорт конфигурации.",
+        "settingsFormat": "Формат настроек не распознан",
+        "settingsRestoreFailed": "Не удалось восстановить настройки",
+        "profilesRestoreFailed": "Не удалось восстановить профили",
+        "playlistSyncRestoreFailed": "Не удалось восстановить синхронизацию плейлистов",
+        "artistSyncRestoreFailed": "Не удалось восстановить синхронизацию исполнителей",
+        "favouritesRestoreFailed": "Не удалось восстановить избранное",
+        "credentialsRestoreFailed": "Не удалось восстановить учётные данные"
+      }
+    },
+    "templateVariables": "Переменные: {vars}",
+    "exampleArtistName": "Имя исполнителя"
   },
   "login": {
     "title": "Вход в Deezer",
@@ -639,7 +719,19 @@
     "openingBrowser": "Открытие страницы входа Deezer...",
     "openInExternalBrowser": "Открыть во внешнем браузере",
     "browserLoginHelp": "Как это работает",
-    "browserLoginHelpText": "Откроется окно входа Deezer. Войдите в свою учётную запись, и по завершении сессия будет захвачена автоматически."
+    "browserLoginHelpText": "Откроется окно входа Deezer. Войдите в свою учётную запись, и по завершении сессия будет захвачена автоматически.",
+    "loginFailed": "Ошибка входа",
+    "loginFailedAfterCaptcha": "Ошибка входа после CAPTCHA",
+    "invalidServerResponse": "Сервер вернул некорректный ответ. Убедитесь, что приложение работает правильно.",
+    "connectionTimeout": "Время ожидания подключения истекло. Проверьте подключение к интернету.",
+    "emailPasswordRequired": "Требуются email и пароль",
+    "browserLoginUnavailable": "Вход через браузер недоступен",
+    "browserLoginWindowClosed": "Окно входа закрыто",
+    "browserLoginFailed": "Ошибка входа через браузер",
+    "loggedInAs": "Выполнен вход как {name}",
+    "enterArl": "Введите ARL токен",
+    "authFailed": "Ошибка аутентификации",
+    "serverConnectFailed": "Не удалось подключиться к серверу"
   },
   "common": {
     "download": "Скачать",
@@ -681,7 +773,26 @@
     "favorited": "В избранном",
     "fans": "поклонников",
     "by": "от",
-    "new": "НОВОЕ"
+    "new": "НОВОЕ",
+    "confirm": "Подтвердить",
+    "item": "Элемент",
+    "user": "Пользователь",
+    "unknownTrack": "Неизвестный трек",
+    "unknownCreator": "Неизвестный автор",
+    "private": "Приватный",
+    "source": "Источник",
+    "default": "По умолчанию",
+    "never": "Никогда",
+    "justNow": "Только что",
+    "durationHoursMinutes": "{hours} ч {mins} мин",
+    "copyLabel": "Копировать: {label}",
+    "copySuffix": "{name} (копия)",
+    "restoredSuffix": "{name} (восстановлено)",
+    "requestFailed": "Ошибка запроса",
+    "serverReturned": "Сервер вернул {status}",
+    "goBackEsc": "Назад (Esc)",
+    "cover": "Обложка",
+    "durationMinutes": "{mins} мин"
   },
   "errors": {
     "generic": "Произошла ошибка",
@@ -844,7 +955,11 @@
     "filterEPs": "EP",
     "filterCompilations": "Сборники",
     "filterFeatures": "Релизы с участием",
-    "editMinReleaseDate": "Скачивать только релизы после"
+    "editMinReleaseDate": "Скачивать только релизы после",
+    "resolvingTracks": "Определение треков...",
+    "downloadingProgress": "Загрузка {current}/{total}",
+    "checkingDiscography": "Проверка дискографии...",
+    "albumProgress": "Альбом {current}/{total}"
   },
   "userPlaylists": {
     "creator": "Создатель",
@@ -877,7 +992,20 @@
     "sortDefault": "ПОРЯДОК ЛЕНТЫ",
     "sortName": "А–Я",
     "sortTracks": "БОЛЬШЕ ТРЕКОВ",
-    "connectInSettings": "Подключить в настройках"
+    "connectInSettings": "Подключить в настройках",
+    "notConnected": "Qobuz не подключён",
+    "connectToBrowseGenres": "Подключите аккаунт Qobuz в настройках, чтобы просматривать жанры.",
+    "connectFirst": "Сначала подключите аккаунт Qobuz в настройках.",
+    "searchFailed": "Ошибка поиска в Qobuz",
+    "albumLoadFailed": "Не удалось загрузить альбом Qobuz",
+    "playlistLoadFailed": "Не удалось загрузить плейлист Qobuz",
+    "artistLoadFailed": "Не удалось загрузить исполнителя Qobuz",
+    "sessionExpired": "Сессия Qobuz истекла, переподключите аккаунт Qobuz в настройках",
+    "notAvailableInBrowser": "Недоступно в браузере",
+    "tokenRequired": "Требуется токен",
+    "tokenRejected": "Qobuz отклонил токен",
+    "tokenLoginFailed": "Ошибка входа по токену",
+    "connectAccountInSettings": "Подключите аккаунт Qobuz в настройках"
   },
   "retag": {
     "viaQobuzTip": "Теги получены из Qobuz — Deezer не нашёл совпадения для этого ISRC",
@@ -943,7 +1071,8 @@
     "credits": "Авторы и лицензия",
     "builtBy": "С заботой создано командой Team MAXIMUS.",
     "inspiredBy": "Вдохновлено оригинальным проектом deemix. Работает на основе API Deezer.",
-    "license": "Распространяется по лицензии GNU General Public License v3.0"
+    "license": "Распространяется по лицензии GNU General Public License v3.0",
+    "earlierReleases": "Предыдущие версии"
   },
   "accessibility": {
     "windowControls": "Управление окном",
@@ -989,7 +1118,14 @@
     "showing": "Показано {count} из {total} релизов",
     "downloadFiltered": "Скачать {count} {type}",
     "noReleases": "{type} не найдены",
-    "loadingDetailsShort": "(загрузка данных...)"
+    "loadingDetailsShort": "(загрузка данных...)",
+    "type": {
+      "album": "Альбом",
+      "ep": "EP",
+      "single": "Сингл",
+      "compilation": "Сборник",
+      "featured": "Участие"
+    }
   },
   "newReleases": {
     "title": "Новые релизы",
@@ -1069,5 +1205,23 @@
     "openFolderBtn": "Открыть папку",
     "remove": "Удалить",
     "deleteFiles": "Удалить файлы"
+  },
+  "app": {
+    "loadingSettings": "Загрузка настроек...",
+    "connectingDeezer": "Подключение к Deezer...",
+    "authenticating": "Аутентификация...",
+    "loadingFavorites": "Загрузка избранного...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "Перейти к поиску",
+    "focusSearchAlt": "Перейти к поиску (альт.)",
+    "goToDownloads": "Перейти к загрузкам",
+    "openSettings": "Открыть настройки",
+    "goToHome": "На главную",
+    "showShortcuts": "Показать сочетания клавиш",
+    "closeModals": "Закрыть окна",
+    "closeModalsOrBack": "Закрыть окна / Назад",
+    "pressToClose": "Нажмите {key}, чтобы закрыть"
   }
 }
