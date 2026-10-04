@@ -90,7 +90,7 @@ for (const file of files) {
     }
   }
   const scripts: Array<[number, string]> = []
-  if (file.endsWith('.vue')) { for (const m of s.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)) scripts.push([m.index! + m[0].indexOf('>') + 1, m[1]]) }
+  if (file.endsWith('.vue')) { for (const m of s.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script\b[^>]*>/gi)) scripts.push([m.index! + m[0].indexOf('>') + 1, m[1]]) }
   else scripts.push([0, s])
   for (const [off, body0] of scripts) {
     let body = body0.replace(/\/\*[\s\S]*?\*\//g, m => ' '.repeat(m.length)).replace(/(^|[^:'"`])\/\/[^\n]*/g, (m, p) => p + ' '.repeat(m.length - p.length))
