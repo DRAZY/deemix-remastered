@@ -166,6 +166,8 @@ Pre-built binaries are available on the [Releases](../../releases) page.
 | **Windows** | x64, ARM64 | `.exe` (Installer), `.exe` (Portable) |
 | **Linux** | x64, ARM64 | `.AppImage`, `.deb` |
 
+**Windows 11 is the supported Windows version.** Microsoft ended support for Windows 10 in October 2025, and it is not supported here either. The app may still run on Windows 10, but problems that only happen there will not be investigated.
+
 If the app earns a place in your workflow, a star on this repository is the easiest way to say so. It costs nothing, and it is how other people find the project.
 
 ---
