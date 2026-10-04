@@ -159,7 +159,37 @@
     "substitutedDifferentRecording": "Други снимак",
     "substitutedListTitle": "Алтернативне верзије",
     "substitutedListTip": "Кликните да видите које песме потичу из алтернативног издања",
-    "clearHistory": "Обриши историју"
+    "clearHistory": "Обриши историју",
+    "waitingCount": "Преузимања на чекању: {count} | Преузимања на чекању: {count}",
+    "formats": "Формати",
+    "activeLabel": "активна",
+    "doneLabel": "завршена",
+    "failedLabel": "неуспела",
+    "failedCount": "Неуспело: {count}",
+    "tracksCount": "Песме ({count})",
+    "historyCount": "Историја преузимања ({count})",
+    "interrupted": "Прекинуто, апликација је затворена пре завршетка. Кликните на Покушај поново да наставите (већ преузете песме се прескачу).",
+    "tracksFailedOf": "Неуспело {failed} од {total} песама",
+    "requestFailed": "Захтев за преузимање није успео",
+    "albumRequestFailed": "Захтев за преузимање албума није успео",
+    "qobuzAlbumRequestFailed": "Захтев за преузимање Qobuz албума није успео",
+    "playlistRequestFailed": "Захтев за преузимање плејлисте није успео",
+    "batchRequestFailed": "Захтев за групно преузимање није успео",
+    "mixedBatchRequestFailed": "Захтев за мешовито групно преузимање није успео",
+    "noDownloadId": "Сервер није вратио ID преузимања",
+    "noDownloadIds": "Сервер није вратио ID-јеве преузимања",
+    "qobuzAlbum": "Qobuz албум",
+    "errorCopy": {
+      "track": "Песма: {value}",
+      "artist": "Извођач: {value}",
+      "errorCode": "Код грешке: {value}",
+      "httpStatus": "HTTP статус: {value}",
+      "error": "Грешка: {value}",
+      "suggestion": "Предлог: {value}",
+      "serverResponse": "Одговор сервера: {value}"
+    },
+    "showTracks": "Прикажи песме",
+    "hideTracks": "Сакриј песме"
   },
   "charts": {
     "title": "Листе",
@@ -175,7 +205,8 @@
     "topAlbumsIn": "Топ {count} албума у {country}",
     "topArtistsIn": "Топ {count} извођача у {country}",
     "topPlaylistsIn": "Топ {count} плејлиста у {country}",
-    "noChartData": "Подаци листе нису доступни"
+    "noChartData": "Подаци листе нису доступни",
+    "worldwide": "Цео свет"
   },
   "favorites": {
     "title": "Омиљено",
@@ -223,7 +254,10 @@
     "pinArtistTooltip": "Закачи овог извођача за синхронизацију",
     "unpinArtistTooltip": "Откачи овог извођача (остаје у омиљеном)",
     "unpin": "Откачи",
-    "artistSyncRemoved": "Откачен „{name}“ из синхронизације"
+    "artistSyncRemoved": "Откачен „{name}“ из синхронизације",
+    "startDownloadsFailed": "Покретање преузимања није успело",
+    "importDeezerFailed": "Увоз Deezer омиљених није успео",
+    "downloadAllOf": "Преузми све: {type}"
   },
   "analyzer": {
     "title": "Анализатор линкова",
@@ -280,7 +314,16 @@
       "invalidUrl": "Унесите исправан Deezer URL",
       "unsupported": "Овај тип линка није подржан",
       "notFound": "Садржај није пронађен на Deezer-у",
-      "networkError": "Анализа линка није успела. Покушајте поново."
+      "networkError": "Анализа линка није успела. Покушајте поново.",
+      "enterLink": "Унесите Deezer, Spotify или Qobuz линк",
+      "invalidLink": "Унесите исправан Deezer, Spotify или Qobuz линк",
+      "serverConnect": "Повезивање са сервером није успело (порт {port}). {message}",
+      "serverHttp": "сервер је вратио HTTP {status}",
+      "analyzeFailed": "Анализа линка није успела",
+      "qobuzAnalyzeFailed": "Анализа Qobuz линка није успела",
+      "spotifyAnalyzeFailed": "Анализа Spotify линка није успела",
+      "spotifyConvertFailed": "Конверзија Spotify садржаја није успела",
+      "conversionFailed": "Конверзија није успела: {message}"
     },
     "loginRequired": "Пријава је потребна за преузимање",
     "convertTo": "Конвертуј у",
@@ -304,7 +347,15 @@
     "batchAnalyzed": "{done}/{total} анализирано",
     "batchFailed": "{count} неуспело",
     "queuing": "Стављање у ред чекања...",
-    "downloadAllReady": "Преузми све спремно ({count})"
+    "downloadAllReady": "Преузми све спремно ({count})",
+    "clear": "Обриши",
+    "downloadTracks": "Преузми песме ({count})",
+    "onBoth": "на оба",
+    "unavailable": "недоступно",
+    "matched": "Упарено ({count})",
+    "unmatched": "Неупарено ({count})",
+    "supported": "Подржано: песме, албуми, извођачи и плејлисте",
+    "spotifyPlaylist": "Spotify плејлиста"
   },
   "settings": {
     "title": "Подешавања",
@@ -563,7 +614,22 @@
       "duplicated": "Профил дуплиран",
       "exported": "Профил извезен",
       "imported": "Профил „{name}“ увезен",
-      "importFailed": "Увоз профила није успео — неважећи формат"
+      "importFailed": "Увоз профила није успео — неважећи формат",
+      "importedProfile": "Увезени профил",
+      "builtin": {
+        "audiophile": {
+          "name": "Аудиофил",
+          "description": "FLAC без губитака, сви тагови метаподатака, омоти високе резолуције, синхронизовани текстови"
+        },
+        "quick": {
+          "name": "Брзо преузимање",
+          "description": "MP3 128kbps, минимални тагови, мали омоти, најбржа преузимања"
+        },
+        "balanced": {
+          "name": "Уравнотежено",
+          "description": "MP3 320kbps, стандардни метаподаци, омоти доброг квалитета"
+        }
+      }
     },
     "downloadPacing": "Природно темпо преузимања",
     "downloadPacingHelp": "Додаје мале насумичне паузе између преузимања како велика група не би стигла Deezer-у одједном, смањујући могућност да ваш налог буде означен због необичне активности. Искључено задржава пуну брзину; Уравнотежено умерено разређује преузимања; Опрезно је најспорије и најбезбедније. За најприроднији образац, комбинујте Опрезно са 1 истовременим преузимањем.",
@@ -616,8 +682,22 @@
       "selectAll": "Изабери све",
       "selectNone": "Не бирај ништа",
       "expandProfiles": "Прикажи листу профила",
-      "subsetCount": "{n} од {total}"
-    }
+      "subsetCount": "{n} од {total}",
+      "errors": {
+        "notJson": "Датотека није исправан JSON.",
+        "notBackup": "Датотека није препозната као резервна копија.",
+        "notBackupOrConfig": "Датотека није препозната као резервна копија или извоз конфигурације.",
+        "settingsFormat": "Формат подешавања није препознат",
+        "settingsRestoreFailed": "Враћање подешавања није успело",
+        "profilesRestoreFailed": "Враћање профила није успело",
+        "playlistSyncRestoreFailed": "Враћање синхронизације плејлиста није успело",
+        "artistSyncRestoreFailed": "Враћање синхронизације извођача није успело",
+        "favouritesRestoreFailed": "Враћање омиљених није успело",
+        "credentialsRestoreFailed": "Враћање података за пријаву није успело"
+      }
+    },
+    "templateVariables": "Променљиве: {vars}",
+    "exampleArtistName": "Име извођача"
   },
   "login": {
     "title": "Пријава на Deezer",
@@ -656,7 +736,19 @@
     "emailPasswordHelp": "Користите креденцијале свог Deezer налога. Ово је препоручени метод јер је једноставнији и аутоматски управља сесијом.",
     "whatIsArl": "Шта је ARL токен?",
     "arlExplainer": "ARL (Authentication Request Login) токен је колачић са вашег Deezer налога који омогућава преузимање музике. Чува се у вашем прегледачу када се пријавите на Deezer.",
-    "passwordPlaceholder": "Ваша Deezer лозинка"
+    "passwordPlaceholder": "Ваша Deezer лозинка",
+    "loginFailed": "Пријава није успела",
+    "loginFailedAfterCaptcha": "Пријава није успела након CAPTCHA провере",
+    "invalidServerResponse": "Сервер је вратио неисправан одговор. Проверите да ли апликација ради исправно.",
+    "connectionTimeout": "Веза је истекла. Проверите интернет везу.",
+    "emailPasswordRequired": "Имејл и лозинка су обавезни",
+    "browserLoginUnavailable": "Пријава преко прегледача није доступна",
+    "browserLoginWindowClosed": "Прозор за пријаву је затворен",
+    "browserLoginFailed": "Пријава преко прегледача није успела",
+    "loggedInAs": "Пријављени сте као {name}",
+    "enterArl": "Унесите ARL токен",
+    "authFailed": "Потврда идентитета није успела",
+    "serverConnectFailed": "Повезивање са сервером није успело"
   },
   "common": {
     "download": "Преузми",
@@ -698,7 +790,26 @@
     "sortNameDesc": "Назив Ш-А",
     "pasteFromClipboard": "Налепи из клипборда",
     "paste": "Налепи",
-    "copy": "Копирај"
+    "copy": "Копирај",
+    "confirm": "Потврди",
+    "item": "Ставка",
+    "user": "Корисник",
+    "unknownTrack": "Непозната песма",
+    "unknownCreator": "Непознат аутор",
+    "private": "Приватно",
+    "source": "Извор",
+    "default": "Подразумевано",
+    "never": "Никад",
+    "justNow": "Управо сада",
+    "durationHoursMinutes": "{hours} ч {mins} мин",
+    "copyLabel": "Копирај {label}",
+    "copySuffix": "{name} (копија)",
+    "restoredSuffix": "{name} (враћено)",
+    "requestFailed": "Захтев није успео",
+    "serverReturned": "Сервер је вратио {status}",
+    "goBackEsc": "Назад (Esc)",
+    "cover": "Омот",
+    "durationMinutes": "{mins} мин"
   },
   "trackCard": {
     "stop": "Заустави",
@@ -745,7 +856,14 @@
     "sortNewest": "Прво најновије",
     "sortOldest": "Прво најстарије",
     "releases": "издања",
-    "featuredAppearances": "гостовања"
+    "featuredAppearances": "гостовања",
+    "type": {
+      "album": "Албум",
+      "ep": "EP",
+      "single": "Сингл",
+      "compilation": "Компилација",
+      "featured": "Гостовање"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "Преузми плејлисту",
@@ -939,7 +1057,11 @@
     "filterEPs": "EP-ови",
     "filterCompilations": "Компилације",
     "filterFeatures": "Гостујућа издања",
-    "editMinReleaseDate": "Преузми само издања после"
+    "editMinReleaseDate": "Преузми само издања после",
+    "resolvingTracks": "Одређивање песама...",
+    "downloadingProgress": "Преузимање {current}/{total}",
+    "checkingDiscography": "Провера дискографије...",
+    "albumProgress": "Албум {current}/{total}"
   },
   "userPlaylists": {
     "creator": "Аутор",
@@ -972,7 +1094,20 @@
     "sortDefault": "РЕДОСЛЕД ФИДА",
     "sortName": "А–Ш",
     "sortTracks": "НАЈВИШЕ НУМЕРА",
-    "connectInSettings": "Повежи се у Подешавањима"
+    "connectInSettings": "Повежи се у Подешавањима",
+    "notConnected": "Qobuz није повезан",
+    "connectToBrowseGenres": "Повежите свој Qobuz налог у Подешавањима да бисте прегледали жанрове.",
+    "connectFirst": "Прво повежите свој Qobuz налог у Подешавањима.",
+    "searchFailed": "Qobuz претрага није успела",
+    "albumLoadFailed": "Учитавање Qobuz албума није успело",
+    "playlistLoadFailed": "Учитавање Qobuz плејлисте није успело",
+    "artistLoadFailed": "Учитавање Qobuz извођача није успело",
+    "sessionExpired": "Qobuz сесија је истекла, поново повежите свој Qobuz налог у Подешавањима",
+    "notAvailableInBrowser": "Није доступно у прегледачу",
+    "tokenRequired": "Токен је обавезан",
+    "tokenRejected": "Qobuz је одбио токен",
+    "tokenLoginFailed": "Пријава токеном није успела",
+    "connectAccountInSettings": "Повежите свој Qobuz налог у Подешавањима"
   },
   "retag": {
     "viaQobuzTip": "Ознаке преузете са Qobuz-а — Deezer није нашао подударање за овај ISRC",
@@ -1038,7 +1173,8 @@
     "credits": "Заслуге и лиценца",
     "builtBy": "Направљено са пажњом од стране Team MAXIMUS.",
     "inspiredBy": "Инспирисано оригиналним deemix пројектом. Покреће га Deezer API.",
-    "license": "Лиценцирано под GNU General Public License v3.0"
+    "license": "Лиценцирано под GNU General Public License v3.0",
+    "earlierReleases": "Ранија издања"
   },
   "newReleases": {
     "title": "Нова издања",
@@ -1069,5 +1205,23 @@
     "pasteLink": "Налепи линк",
     "pasteToken": "Налепи токен",
     "pasted": "Налепљено"
+  },
+  "app": {
+    "loadingSettings": "Учитавање подешавања...",
+    "connectingDeezer": "Повезивање са Deezer-ом...",
+    "authenticating": "Потврђивање идентитета...",
+    "loadingFavorites": "Учитавање омиљених...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "Фокусирај претрагу",
+    "focusSearchAlt": "Фокусирај претрагу (алт.)",
+    "goToDownloads": "Иди на преузимања",
+    "openSettings": "Отвори подешавања",
+    "goToHome": "Иди на почетну",
+    "showShortcuts": "Прикажи пречице на тастатури",
+    "closeModals": "Затвори прозоре",
+    "closeModalsOrBack": "Затвори прозоре / Назад",
+    "pressToClose": "Притисните {key} да затворите"
   }
 }

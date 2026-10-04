@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = withDefaults(defineProps<{
   show: boolean
@@ -9,8 +12,6 @@ const props = withDefaults(defineProps<{
   cancelText?: string
   confirmStyle?: 'danger' | 'warning' | 'primary'
 }>(), {
-  confirmText: 'Confirm',
-  cancelText: 'Cancel',
   confirmStyle: 'danger'
 })
 
@@ -127,14 +128,14 @@ const confirmButtonClasses = {
                 @click="handleCancel"
                 class="px-4 py-2 font-mono text-[11px] tracking-[0.1em] uppercase border border-white/[0.1] text-foreground-muted hover:text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-background-secondary"
               >
-                {{ cancelText }}
+                {{ cancelText ?? t('common.cancel') }}
               </button>
               <button
                 @click="handleConfirm"
                 class="px-4 py-2 font-mono text-[11px] tracking-[0.1em] uppercase transition-colors focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-offset-background-secondary"
                 :class="confirmButtonClasses[confirmStyle]"
               >
-                {{ confirmText }}
+                {{ confirmText ?? t('common.confirm') }}
               </button>
             </div>
           </div>

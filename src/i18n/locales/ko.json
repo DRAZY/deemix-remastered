@@ -142,7 +142,37 @@
     "speed": "속도",
     "substitutedListTitle": "대체 버전",
     "substitutedListTip": "어떤 트랙이 대체 릴리스에서 왔는지 확인하려면 클릭하세요",
-    "clearHistory": "기록 지우기"
+    "clearHistory": "기록 지우기",
+    "waitingCount": "대기 중인 다운로드 {count}개 | 대기 중인 다운로드 {count}개",
+    "formats": "포맷",
+    "activeLabel": "진행 중",
+    "doneLabel": "완료",
+    "failedLabel": "실패",
+    "failedCount": "{count}개 실패",
+    "tracksCount": "트랙 ({count})",
+    "historyCount": "다운로드 기록 ({count})",
+    "interrupted": "중단됨: 완료되기 전에 앱이 종료되었습니다. 다시 시도를 클릭하면 이어서 진행합니다 (이미 다운로드한 트랙은 건너뜁니다).",
+    "tracksFailedOf": "트랙 {total}개 중 {failed}개 실패",
+    "requestFailed": "다운로드 요청 실패",
+    "albumRequestFailed": "앨범 다운로드 요청 실패",
+    "qobuzAlbumRequestFailed": "Qobuz 앨범 다운로드 요청 실패",
+    "playlistRequestFailed": "플레이리스트 다운로드 요청 실패",
+    "batchRequestFailed": "일괄 다운로드 요청 실패",
+    "mixedBatchRequestFailed": "혼합 일괄 다운로드 요청 실패",
+    "noDownloadId": "서버가 다운로드 ID를 반환하지 않았습니다",
+    "noDownloadIds": "서버가 다운로드 ID 목록을 반환하지 않았습니다",
+    "qobuzAlbum": "Qobuz 앨범",
+    "errorCopy": {
+      "track": "트랙: {value}",
+      "artist": "아티스트: {value}",
+      "errorCode": "오류 코드: {value}",
+      "httpStatus": "HTTP 상태: {value}",
+      "error": "오류: {value}",
+      "suggestion": "제안: {value}",
+      "serverResponse": "서버 응답: {value}"
+    },
+    "showTracks": "트랙 표시",
+    "hideTracks": "트랙 숨기기"
   },
   "charts": {
     "title": "차트",
@@ -158,7 +188,8 @@
     "topAlbumsIn": "{country}의 인기 앨범 {count}개",
     "topArtistsIn": "{country}의 인기 아티스트 {count}개",
     "topPlaylistsIn": "{country}의 인기 플레이리스트 {count}개",
-    "noChartData": "이용 가능한 차트 데이터가 없습니다"
+    "noChartData": "이용 가능한 차트 데이터가 없습니다",
+    "worldwide": "전 세계"
   },
   "favorites": {
     "title": "즐겨찾기",
@@ -206,7 +237,10 @@
     "pinArtistTooltip": "이 아티스트를 동기화에 고정",
     "unpinArtistTooltip": "이 아티스트 고정 해제 (즐겨찾기에는 유지됨)",
     "unpin": "고정 해제",
-    "artistSyncRemoved": "\"{name}\"을(를) 동기화에서 고정 해제했습니다"
+    "artistSyncRemoved": "\"{name}\"을(를) 동기화에서 고정 해제했습니다",
+    "startDownloadsFailed": "다운로드를 시작하지 못했습니다",
+    "importDeezerFailed": "Deezer 즐겨찾기를 가져오지 못했습니다",
+    "downloadAllOf": "{type} 모두 다운로드"
   },
   "analyzer": {
     "title": "링크 분석기",
@@ -263,7 +297,16 @@
       "invalidUrl": "유효한 Deezer URL을 입력하세요",
       "unsupported": "이 링크 유형은 지원되지 않습니다",
       "notFound": "Deezer에서 콘텐츠를 찾을 수 없습니다",
-      "networkError": "분석 실패. 다시 시도해 주세요."
+      "networkError": "분석 실패. 다시 시도해 주세요.",
+      "enterLink": "Deezer, Spotify 또는 Qobuz 링크를 입력하세요",
+      "invalidLink": "올바른 Deezer, Spotify 또는 Qobuz 링크를 입력하세요",
+      "serverConnect": "서버에 연결하지 못했습니다 (포트 {port}). {message}",
+      "serverHttp": "서버가 HTTP {status}을(를) 반환했습니다",
+      "analyzeFailed": "링크를 분석하지 못했습니다",
+      "qobuzAnalyzeFailed": "Qobuz 링크를 분석하지 못했습니다",
+      "spotifyAnalyzeFailed": "Spotify 링크를 분석하지 못했습니다",
+      "spotifyConvertFailed": "Spotify 콘텐츠를 변환하지 못했습니다",
+      "conversionFailed": "변환 실패: {message}"
     },
     "loginRequired": "다운로드하려면 로그인이 필요합니다",
     "convertTo": "다음으로 변환",
@@ -287,7 +330,15 @@
     "batchAnalyzed": "{done}/{total} 분석됨",
     "batchFailed": "{count}개 실패",
     "queuing": "대기열에 추가 중...",
-    "downloadAllReady": "준비된 항목 모두 다운로드 ({count})"
+    "downloadAllReady": "준비된 항목 모두 다운로드 ({count})",
+    "clear": "지우기",
+    "downloadTracks": "트랙 {count}개 다운로드",
+    "onBoth": "양쪽 모두",
+    "unavailable": "사용 불가",
+    "matched": "일치 ({count})",
+    "unmatched": "불일치 ({count})",
+    "supported": "지원: 트랙, 앨범, 아티스트, 플레이리스트",
+    "spotifyPlaylist": "Spotify 플레이리스트"
   },
   "settings": {
     "title": "설정",
@@ -540,7 +591,22 @@
       "duplicated": "프로필이 복제되었습니다",
       "exported": "프로필이 내보내졌습니다",
       "imported": "프로필 \"{name}\"을(를) 가져왔습니다",
-      "importFailed": "프로필을 가져오지 못했습니다 — 잘못된 형식"
+      "importFailed": "프로필을 가져오지 못했습니다 — 잘못된 형식",
+      "importedProfile": "가져온 프로필",
+      "builtin": {
+        "audiophile": {
+          "name": "오디오파일",
+          "description": "FLAC 무손실, 모든 메타데이터 태그, 고해상도 아트워크, 동기화 가사"
+        },
+        "quick": {
+          "name": "빠른 다운로드",
+          "description": "MP3 128kbps, 최소 태그, 작은 아트워크, 가장 빠른 다운로드"
+        },
+        "balanced": {
+          "name": "균형",
+          "description": "MP3 320kbps, 표준 메타데이터, 좋은 품질의 아트워크"
+        }
+      }
     },
     "noResults": "일치하는 설정을 찾을 수 없습니다",
     "clearSearch": "검색 지우기",
@@ -599,8 +665,22 @@
       "selectAll": "모두 선택",
       "selectNone": "선택 해제",
       "expandProfiles": "프로필 목록 표시",
-      "subsetCount": "{total}개 중 {n}개"
-    }
+      "subsetCount": "{total}개 중 {n}개",
+      "errors": {
+        "notJson": "파일이 올바른 JSON이 아닙니다.",
+        "notBackup": "인식할 수 있는 백업 파일이 아닙니다.",
+        "notBackupOrConfig": "인식할 수 있는 백업 또는 설정 내보내기 파일이 아닙니다.",
+        "settingsFormat": "설정 형식을 인식할 수 없습니다",
+        "settingsRestoreFailed": "설정 복원 실패",
+        "profilesRestoreFailed": "프로필 복원 실패",
+        "playlistSyncRestoreFailed": "플레이리스트 동기화 복원 실패",
+        "artistSyncRestoreFailed": "아티스트 동기화 복원 실패",
+        "favouritesRestoreFailed": "즐겨찾기 복원 실패",
+        "credentialsRestoreFailed": "로그인 정보 복원 실패"
+      }
+    },
+    "templateVariables": "변수: {vars}",
+    "exampleArtistName": "아티스트 이름"
   },
   "login": {
     "title": "Deezer 로그인",
@@ -639,7 +719,19 @@
     "openingBrowser": "Deezer 로그인 여는 중...",
     "openInExternalBrowser": "대신 외부 브라우저에서 열기",
     "browserLoginHelp": "작동 방식",
-    "browserLoginHelpText": "Deezer 로그인 창이 열립니다. 계정으로 로그인하면 완료 시 세션이 자동으로 저장됩니다."
+    "browserLoginHelpText": "Deezer 로그인 창이 열립니다. 계정으로 로그인하면 완료 시 세션이 자동으로 저장됩니다.",
+    "loginFailed": "로그인 실패",
+    "loginFailedAfterCaptcha": "CAPTCHA 후 로그인 실패",
+    "invalidServerResponse": "서버가 잘못된 응답을 반환했습니다. 앱이 정상적으로 실행 중인지 확인하세요.",
+    "connectionTimeout": "연결 시간이 초과되었습니다. 인터넷 연결을 확인하세요.",
+    "emailPasswordRequired": "이메일과 비밀번호를 입력해야 합니다",
+    "browserLoginUnavailable": "브라우저 로그인을 사용할 수 없습니다",
+    "browserLoginWindowClosed": "로그인 창이 닫혔습니다",
+    "browserLoginFailed": "브라우저 로그인 실패",
+    "loggedInAs": "{name}(으)로 로그인됨",
+    "enterArl": "ARL 토큰을 입력하세요",
+    "authFailed": "인증 실패",
+    "serverConnectFailed": "서버에 연결하지 못했습니다"
   },
   "common": {
     "download": "다운로드",
@@ -681,7 +773,26 @@
     "sortNameDesc": "이름 Z-A",
     "pasteFromClipboard": "클립보드에서 붙여넣기",
     "paste": "붙여넣기",
-    "copy": "복사"
+    "copy": "복사",
+    "confirm": "확인",
+    "item": "항목",
+    "user": "사용자",
+    "unknownTrack": "알 수 없는 트랙",
+    "unknownCreator": "알 수 없는 작성자",
+    "private": "비공개",
+    "source": "소스",
+    "default": "기본값",
+    "never": "안 함",
+    "justNow": "방금 전",
+    "durationHoursMinutes": "{hours}시간 {mins}분",
+    "copyLabel": "{label} 복사",
+    "copySuffix": "{name} (사본)",
+    "restoredSuffix": "{name} (복원됨)",
+    "requestFailed": "요청 실패",
+    "serverReturned": "서버 응답: {status}",
+    "goBackEsc": "뒤로 가기 (Esc)",
+    "cover": "커버",
+    "durationMinutes": "{mins}분"
   },
   "trackCard": {
     "stop": "정지",
@@ -728,7 +839,14 @@
     "featuredAppearances": "참여 앨범",
     "latestRelease": "최신 릴리스",
     "viewAlbum": "앨범 보기",
-    "compilations": "컴필레이션"
+    "compilations": "컴필레이션",
+    "type": {
+      "album": "앨범",
+      "ep": "EP",
+      "single": "싱글",
+      "compilation": "컴필레이션",
+      "featured": "피처링"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "플레이리스트 다운로드",
@@ -918,7 +1036,11 @@
     "filterEPs": "EP",
     "filterCompilations": "컴필레이션",
     "filterFeatures": "참여 릴리스",
-    "editMinReleaseDate": "다음 이후의 릴리스만 다운로드"
+    "editMinReleaseDate": "다음 이후의 릴리스만 다운로드",
+    "resolvingTracks": "트랙 확인 중...",
+    "downloadingProgress": "다운로드 중 {current}/{total}",
+    "checkingDiscography": "디스코그래피 확인 중...",
+    "albumProgress": "앨범 {current}/{total}"
   },
   "userPlaylists": {
     "creator": "제작자",
@@ -951,7 +1073,20 @@
     "sortDefault": "피드 순서",
     "sortName": "가나다순",
     "sortTracks": "트랙 많은 순",
-    "connectInSettings": "설정에서 연결"
+    "connectInSettings": "설정에서 연결",
+    "notConnected": "Qobuz 연결 안 됨",
+    "connectToBrowseGenres": "장르를 둘러보려면 설정에서 Qobuz 계정을 연결하세요.",
+    "connectFirst": "먼저 설정에서 Qobuz 계정을 연결하세요.",
+    "searchFailed": "Qobuz 검색 실패",
+    "albumLoadFailed": "Qobuz 앨범을 불러오지 못했습니다",
+    "playlistLoadFailed": "Qobuz 플레이리스트를 불러오지 못했습니다",
+    "artistLoadFailed": "Qobuz 아티스트를 불러오지 못했습니다",
+    "sessionExpired": "Qobuz 세션이 만료되었습니다. 설정에서 Qobuz 계정을 다시 연결하세요",
+    "notAvailableInBrowser": "브라우저에서는 사용할 수 없습니다",
+    "tokenRequired": "토큰이 필요합니다",
+    "tokenRejected": "Qobuz에서 토큰을 거부했습니다",
+    "tokenLoginFailed": "토큰 로그인 실패",
+    "connectAccountInSettings": "설정에서 Qobuz 계정을 연결하세요"
   },
   "retag": {
     "viaQobuzTip": "Qobuz에서 가져온 태그 — Deezer에 이 ISRC와 일치하는 항목이 없습니다",
@@ -1017,7 +1152,8 @@
     "credits": "크레딧 및 라이선스",
     "builtBy": "Team MAXIMUS가 정성껏 만들었습니다.",
     "inspiredBy": "원본 deemix 프로젝트에서 영감을 받았습니다. Deezer API로 구동됩니다.",
-    "license": "GNU General Public License v3.0에 따라 라이선스가 부여됩니다"
+    "license": "GNU General Public License v3.0에 따라 라이선스가 부여됩니다",
+    "earlierReleases": "이전 릴리스"
   },
   "accessibility": {
     "windowControls": "창 제어",
@@ -1069,5 +1205,23 @@
     "pasteLink": "링크 붙여넣기",
     "pasteToken": "토큰 붙여넣기",
     "pasted": "붙여넣음"
+  },
+  "app": {
+    "loadingSettings": "설정 불러오는 중...",
+    "connectingDeezer": "Deezer에 연결 중...",
+    "authenticating": "인증 중...",
+    "loadingFavorites": "즐겨찾기 불러오는 중...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "검색창으로 이동",
+    "focusSearchAlt": "검색창으로 이동 (대체)",
+    "goToDownloads": "다운로드로 이동",
+    "openSettings": "설정 열기",
+    "goToHome": "홈으로 이동",
+    "showShortcuts": "키보드 단축키 보기",
+    "closeModals": "창 닫기",
+    "closeModalsOrBack": "창 닫기 / 뒤로 가기",
+    "pressToClose": "닫으려면 {key} 키를 누르세요"
   }
 }

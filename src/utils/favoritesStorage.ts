@@ -48,13 +48,24 @@ export async function readFavorites<T = unknown>(): Promise<T[] | null> {
   }
 }
 
-/** Replace the stored list. Rejects on any storage failure. */
+/**
+ * Replace the stored list. Rejects on any storage failure.
+ *
+ * The list is copied to plain data first. IndexedDB structured-clones what it
+ * stores, and a Vue reactive Proxy cannot be cloned: handing it the store's
+ * live array threw DataCloneError ("[object Array] could not be cloned") on
+ * every save from 2.6.3 to 2.6.4, so imports did nothing and added favourites
+ * were lost on restart (#168). Unwrapping only the top level is not enough,
+ * because an item added from a page can itself be reactive. Favourites are
+ * JSON by origin (Deezer and Qobuz API objects), so the round-trip is lossless.
+ */
 export async function writeFavorites(items: unknown[]): Promise<void> {
+  const plain: unknown[] = JSON.parse(JSON.stringify(items))
   const db = await openDb()
   try {
     await new Promise<void>((resolve, reject) => {
       const tx = db.transaction(STORE, 'readwrite')
-      tx.objectStore(STORE).put(items, KEY)
+      tx.objectStore(STORE).put(plain, KEY)
       tx.oncomplete = () => resolve()
       tx.onerror = () => reject(tx.error ?? new Error('IndexedDB write failed'))
       tx.onabort = () => reject(tx.error ?? new Error('IndexedDB write aborted'))

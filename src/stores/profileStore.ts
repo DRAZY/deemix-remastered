@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useSettingsStore, defaultSettings, deepMerge, type Settings } from './settingsStore'
+import i18n from '../i18n'
 
 // Profile settings exclude credentials, appearance, and personal preferences
 type ProfileSettingsKeys =
@@ -62,12 +63,13 @@ function generateId(): string {
   return `profile_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
 }
 
-// Built-in presets
+// Built-in presets. Name and description are getters so they follow the
+// active language; the objects are never persisted (saveProfiles filters them out).
 const BUILT_IN_PROFILES: SettingsProfile[] = [
   {
     id: 'builtin_audiophile',
-    name: 'Audiophile',
-    description: 'FLAC lossless, all metadata tags, high-res artwork, synced lyrics',
+    get name() { return i18n.global.t('settings.profiles.builtin.audiophile.name') },
+    get description() { return i18n.global.t('settings.profiles.builtin.audiophile.description') },
     isBuiltIn: true,
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',
@@ -106,8 +108,8 @@ const BUILT_IN_PROFILES: SettingsProfile[] = [
   },
   {
     id: 'builtin_quick',
-    name: 'Quick Download',
-    description: 'MP3 128kbps, minimal tags, small artwork, fastest downloads',
+    get name() { return i18n.global.t('settings.profiles.builtin.quick.name') },
+    get description() { return i18n.global.t('settings.profiles.builtin.quick.description') },
     isBuiltIn: true,
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',
@@ -146,8 +148,8 @@ const BUILT_IN_PROFILES: SettingsProfile[] = [
   },
   {
     id: 'builtin_balanced',
-    name: 'Balanced',
-    description: 'MP3 320kbps, standard metadata, good quality artwork',
+    get name() { return i18n.global.t('settings.profiles.builtin.balanced.name') },
+    get description() { return i18n.global.t('settings.profiles.builtin.balanced.description') },
     isBuiltIn: true,
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',
@@ -272,7 +274,7 @@ export const useProfileStore = defineStore('profiles', () => {
     if (!source) return null
     const profile: SettingsProfile = {
       id: generateId(),
-      name: `${source.name} (Copy)`,
+      name: i18n.global.t('common.copySuffix', { name: source.name }),
       description: source.description,
       isBuiltIn: false,
       createdAt: new Date().toISOString(),
@@ -318,7 +320,7 @@ export const useProfileStore = defineStore('profiles', () => {
       const imported = data.profile
       const profile: SettingsProfile = {
         id: generateId(),
-        name: imported.name || 'Imported Profile',
+        name: imported.name || i18n.global.t('settings.profiles.importedProfile'),
         description: imported.description || '',
         isBuiltIn: false,
         createdAt: new Date().toISOString(),
@@ -362,7 +364,7 @@ export const useProfileStore = defineStore('profiles', () => {
       if (builtInNames.has(p.name)) {
         profiles.value.push({
           id: generateId(),
-          name: `${p.name} (Restored)`,
+          name: i18n.global.t('common.restoredSuffix', { name: p.name }),
           description: typeof p.description === 'string' ? p.description : '',
           isBuiltIn: false,
           createdAt: now,

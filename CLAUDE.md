@@ -104,7 +104,22 @@ missed. Do not stop at layer one.
 - **A new key ships in all 21 locale files in the same commit.** English first,
   then every other locale, so the fallback never leaves a language half
   English. `bun scripts/i18n-check.ts` must pass before a release; it checks
-  key parity and scans for hard-coded English.
+  key parity and scans for hard-coded English in templates, bound attributes
+  and script string literals (rewritten in 2.6.5 after #160 listed about 200
+  strings the old template-only scan missed). A string that is deliberately
+  not copy (a default filename, a search-term list) gets `// i18n-exempt` on
+  its line; nothing else is exempt.
+
+- **Reuse the key that exists.** Before adding a key, grep en.json for the
+  English text. In 2.6.4 about thirty strings had a key in all 21 languages
+  that no component ever called (`genres.title`, `analyzer.metadata`,
+  `common.unknownArtist` and others), so the translations existed and the
+  screen still showed English.
+
+- **Prefer the platform's own data to a translation table.** Country names
+  come from `Intl.DisplayNames`, relative times from `Intl.RelativeTimeFormat`.
+  A 159-row English country table was deleted in 2.6.5 instead of being
+  translated twenty times.
 
 ## Settings
 

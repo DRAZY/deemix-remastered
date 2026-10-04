@@ -235,7 +235,7 @@ onMounted(loadGenres)
         <div class="font-mono text-[10px] tracking-[0.3em] mb-2" :class="source === 'qobuz' ? 'text-qobuz-500' : 'text-primary-500'">
           // {{ source === 'qobuz' ? 'CHANNEL Q' : 'SIGNAL DECK' }}
         </div>
-        <h1 class="font-display uppercase text-[36px] leading-[1] tracking-[-0.01em] mb-2">Genres</h1>
+        <h1 class="font-display uppercase text-[36px] leading-[1] tracking-[-0.01em] mb-2">{{ t('genres.title') }}</h1>
         <p class="font-mono text-[11px] tracking-[0.06em] uppercase text-foreground-muted">
           {{ source === 'qobuz' ? t('genres.heroQobuz') : t('genres.heroDeezer') }}
         </p>

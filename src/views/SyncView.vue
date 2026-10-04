@@ -6,7 +6,7 @@ import { useArtistSyncStore, type SyncedArtist, type FirstSyncMode, type ArtistS
 import { useToastStore } from '../stores/toastStore'
 import { useSettingsStore } from '../stores/settingsStore'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const syncStore = useSyncStore()
 const artistSyncStore = useArtistSyncStore()
 const toastStore = useToastStore()
@@ -366,13 +366,14 @@ function toggleErrors(id: string) {
 }
 
 function formatDate(dateStr: string | null): string {
-  if (!dateStr) return 'Never'
+  if (!dateStr) return t('common.never')
   const date = new Date(dateStr)
   const now = new Date()
   const diff = now.getTime() - date.getTime()
-  if (diff < 60000) return 'Just now'
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`
+  if (diff < 60000) return t('common.justNow')
+  const rtf = new Intl.RelativeTimeFormat(locale.value, { numeric: 'auto', style: 'narrow' })
+  if (diff < 3600000) return rtf.format(-Math.floor(diff / 60000), 'minute')
+  if (diff < 86400000) return rtf.format(-Math.floor(diff / 3600000), 'hour')
   return date.toLocaleDateString()
 }
 
@@ -509,7 +510,7 @@ function getScheduleLabel(schedule: SyncSchedule): string {
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
               <span v-if="syncStore.getProgress(playlist.id)">
-                {{ syncStore.getProgress(playlist.id)?.phase === 'resolving' ? 'Resolving tracks...' : `Downloading ${syncStore.getProgress(playlist.id)?.current}/${syncStore.getProgress(playlist.id)?.total}` }}
+                {{ syncStore.getProgress(playlist.id)?.phase === 'resolving' ? t('sync.resolvingTracks') : t('sync.downloadingProgress', { current: syncStore.getProgress(playlist.id)?.current, total: syncStore.getProgress(playlist.id)?.total }) }}
               </span>
               <span v-else>{{ t('sync.syncing') }}...</span>
             </div>
@@ -713,8 +714,8 @@ function getScheduleLabel(schedule: SyncSchedule): string {
                 </svg>
                 <span v-if="artistSyncStore.getProgress(artist.id)">
                   {{ artistSyncStore.getProgress(artist.id)?.phase === 'resolving'
-                     ? 'Checking discography...'
-                     : `Album ${artistSyncStore.getProgress(artist.id)?.current}/${artistSyncStore.getProgress(artist.id)?.total}${artistSyncStore.getProgress(artist.id)?.albumTitle ? ` — ${artistSyncStore.getProgress(artist.id)?.albumTitle}` : ''}` }}
+                     ? t('sync.checkingDiscography')
+                     : `${t('sync.albumProgress', { current: artistSyncStore.getProgress(artist.id)?.current, total: artistSyncStore.getProgress(artist.id)?.total })}${artistSyncStore.getProgress(artist.id)?.albumTitle ? ` — ${artistSyncStore.getProgress(artist.id)?.albumTitle}` : ''}` }}
                 </span>
                 <span v-else>{{ t('sync.syncing') }}...</span>
               </div>

@@ -57,7 +57,7 @@ function parseChangelog(md: string): ReleaseNotes[] {
       continue
     }
     if (/^## Earlier releases/i.test(line)) {
-      cur = { version: 'Earlier', date: '', items: [] }
+      cur = { version: 'earlier', date: '', items: [] }
       releases.push(cur)
       continue
     }
@@ -67,7 +67,7 @@ function parseChangelog(md: string): ReleaseNotes[] {
     if (/^- /.test(line)) {
       const item = stripMarkdown(line.replace(/^- /, ''))
       if (item) cur.items.push(item)
-    } else if (cur.version === 'Earlier') {
+    } else if (cur.version === 'earlier') {
       const item = stripMarkdown(line)
       if (item) cur.items.push(item)
     }
@@ -106,7 +106,7 @@ const whatsNew: ReleaseNotes[] = parseChangelog(changelogRaw)
         <div v-for="release in whatsNew" :key="release.version" class="space-y-2">
           <div class="flex items-baseline gap-2 pb-1 border-b border-white/[0.06]">
             <h3 class="font-mono text-[12px] font-semibold text-foreground">
-              {{ release.version === 'Earlier' ? 'Earlier releases' : `v${release.version}` }}
+              {{ release.version === 'earlier' ? t('about.earlierReleases') : `v${release.version}` }}
             </h3>
             <span class="font-mono text-[10px] tracking-[0.04em] text-foreground-muted">{{ release.date }}</span>
           </div>

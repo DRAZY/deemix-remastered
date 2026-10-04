@@ -142,7 +142,37 @@
     "speed": "Ταχύτητα",
     "substitutedListTitle": "Εναλλακτικές εκδόσεις",
     "substitutedListTip": "Κάντε κλικ για να δείτε ποια τραγούδια προήλθαν από εναλλακτική κυκλοφορία",
-    "clearHistory": "Εκκαθάριση ιστορικού"
+    "clearHistory": "Εκκαθάριση ιστορικού",
+    "waitingCount": "{count} λήψη σε αναμονή | {count} λήψεις σε αναμονή",
+    "formats": "Μορφές",
+    "activeLabel": "ενεργές",
+    "doneLabel": "ολοκληρώθηκαν",
+    "failedLabel": "απέτυχαν",
+    "failedCount": "{count} απέτυχαν",
+    "tracksCount": "Τραγούδια ({count})",
+    "historyCount": "Ιστορικό λήψεων ({count})",
+    "interrupted": "Διακόπηκε, η εφαρμογή έκλεισε πριν ολοκληρωθεί. Πατήστε Επανάληψη για συνέχεια (τα τραγούδια που έχουν ήδη ληφθεί παραλείπονται).",
+    "tracksFailedOf": "Απέτυχαν {failed} από {total} τραγούδια",
+    "requestFailed": "Το αίτημα λήψης απέτυχε",
+    "albumRequestFailed": "Το αίτημα λήψης άλμπουμ απέτυχε",
+    "qobuzAlbumRequestFailed": "Το αίτημα λήψης άλμπουμ Qobuz απέτυχε",
+    "playlistRequestFailed": "Το αίτημα λήψης λίστας απέτυχε",
+    "batchRequestFailed": "Το αίτημα μαζικής λήψης απέτυχε",
+    "mixedBatchRequestFailed": "Το αίτημα μικτής μαζικής λήψης απέτυχε",
+    "noDownloadId": "Ο διακομιστής δεν επέστρεψε αναγνωριστικό λήψης",
+    "noDownloadIds": "Ο διακομιστής δεν επέστρεψε αναγνωριστικά λήψης",
+    "qobuzAlbum": "Άλμπουμ Qobuz",
+    "errorCopy": {
+      "track": "Τραγούδι: {value}",
+      "artist": "Καλλιτέχνης: {value}",
+      "errorCode": "Κωδικός σφάλματος: {value}",
+      "httpStatus": "Κατάσταση HTTP: {value}",
+      "error": "Σφάλμα: {value}",
+      "suggestion": "Πρόταση: {value}",
+      "serverResponse": "Απάντηση διακομιστή: {value}"
+    },
+    "showTracks": "Εμφάνιση κομματιών",
+    "hideTracks": "Απόκρυψη κομματιών"
   },
   "charts": {
     "title": "Κατατάξεις",
@@ -158,7 +188,8 @@
     "topAlbumsIn": "Κορυφαία {count} Άλμπουμ σε {country}",
     "topArtistsIn": "Κορυφαίοι {count} Καλλιτέχνες σε {country}",
     "topPlaylistsIn": "Κορυφαίες {count} Λίστες σε {country}",
-    "noChartData": "Δεν υπάρχουν διαθέσιμα δεδομένα κατάταξης"
+    "noChartData": "Δεν υπάρχουν διαθέσιμα δεδομένα κατάταξης",
+    "worldwide": "Παγκοσμίως"
   },
   "favorites": {
     "title": "Αγαπημένα",
@@ -206,7 +237,10 @@
     "pinArtistTooltip": "Καρφίτσωμα αυτού του καλλιτέχνη για συγχρονισμό",
     "unpinArtistTooltip": "Ξεκαρφίτσωμα αυτού του καλλιτέχνη (παραμένει στα αγαπημένα)",
     "unpin": "Ξεκαρφίτσωμα",
-    "artistSyncRemoved": "Ξεκαρφιτσώθηκε το \"{name}\" από τον συγχρονισμό"
+    "artistSyncRemoved": "Ξεκαρφιτσώθηκε το \"{name}\" από τον συγχρονισμό",
+    "startDownloadsFailed": "Αποτυχία έναρξης λήψεων",
+    "importDeezerFailed": "Αποτυχία εισαγωγής αγαπημένων από το Deezer",
+    "downloadAllOf": "Λήψη όλων: {type}"
   },
   "analyzer": {
     "title": "Αναλυτής Συνδέσμων",
@@ -263,7 +297,16 @@
       "invalidUrl": "Παρακαλώ εισάγετε έγκυρο URL Deezer",
       "unsupported": "Αυτός ο τύπος συνδέσμου δεν υποστηρίζεται",
       "notFound": "Το περιεχόμενο δεν βρέθηκε στο Deezer",
-      "networkError": "Η ανάλυση απέτυχε. Παρακαλώ προσπαθήστε ξανά."
+      "networkError": "Η ανάλυση απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
+      "enterLink": "Εισαγάγετε έναν σύνδεσμο Deezer, Spotify ή Qobuz",
+      "invalidLink": "Εισαγάγετε έναν έγκυρο σύνδεσμο Deezer, Spotify ή Qobuz",
+      "serverConnect": "Αποτυχία σύνδεσης με τον διακομιστή (θύρα {port}). {message}",
+      "serverHttp": "ο διακομιστής επέστρεψε HTTP {status}",
+      "analyzeFailed": "Αποτυχία ανάλυσης συνδέσμου",
+      "qobuzAnalyzeFailed": "Αποτυχία ανάλυσης συνδέσμου Qobuz",
+      "spotifyAnalyzeFailed": "Αποτυχία ανάλυσης συνδέσμου Spotify",
+      "spotifyConvertFailed": "Αποτυχία μετατροπής περιεχομένου Spotify",
+      "conversionFailed": "Η μετατροπή απέτυχε: {message}"
     },
     "loginRequired": "Απαιτείται σύνδεση για λήψη",
     "convertTo": "Μετατροπή σε",
@@ -287,7 +330,15 @@
     "batchAnalyzed": "{done}/{total} αναλύθηκαν",
     "batchFailed": "{count} απέτυχαν",
     "queuing": "Προσθήκη στην ουρά...",
-    "downloadAllReady": "Λήψη όλων των έτοιμων ({count})"
+    "downloadAllReady": "Λήψη όλων των έτοιμων ({count})",
+    "clear": "Εκκαθάριση",
+    "downloadTracks": "Λήψη {count} τραγουδιών",
+    "onBoth": "και στα δύο",
+    "unavailable": "μη διαθέσιμο",
+    "matched": "Αντιστοιχίστηκαν ({count})",
+    "unmatched": "Χωρίς αντιστοίχιση ({count})",
+    "supported": "Υποστηρίζονται: τραγούδια, άλμπουμ, καλλιτέχνες και λίστες",
+    "spotifyPlaylist": "Λίστα Spotify"
   },
   "settings": {
     "title": "Ρυθμίσεις",
@@ -540,7 +591,22 @@
       "duplicated": "Το προφίλ αντιγράφηκε",
       "exported": "Το προφίλ εξήχθη",
       "imported": "Το προφίλ \"{name}\" εισήχθη",
-      "importFailed": "Αποτυχία εισαγωγής προφίλ — μη έγκυρη μορφή"
+      "importFailed": "Αποτυχία εισαγωγής προφίλ — μη έγκυρη μορφή",
+      "importedProfile": "Εισαγόμενο προφίλ",
+      "builtin": {
+        "audiophile": {
+          "name": "Υψηλή πιστότητα",
+          "description": "FLAC χωρίς απώλειες, όλες οι ετικέτες μεταδεδομένων, εξώφυλλο υψηλής ανάλυσης, συγχρονισμένοι στίχοι"
+        },
+        "quick": {
+          "name": "Γρήγορη λήψη",
+          "description": "MP3 128kbps, ελάχιστες ετικέτες, μικρό εξώφυλλο, ταχύτερες λήψεις"
+        },
+        "balanced": {
+          "name": "Ισορροπημένο",
+          "description": "MP3 320kbps, βασικά μεταδεδομένα, εξώφυλλο καλής ποιότητας"
+        }
+      }
     },
     "noResults": "Δεν βρέθηκαν αντίστοιχες ρυθμίσεις",
     "clearSearch": "Εκκαθάριση αναζήτησης",
@@ -599,8 +665,22 @@
       "selectAll": "Επιλογή όλων",
       "selectNone": "Αποεπιλογή όλων",
       "expandProfiles": "Εμφάνιση λίστας προφίλ",
-      "subsetCount": "{n} από {total}"
-    }
+      "subsetCount": "{n} από {total}",
+      "errors": {
+        "notJson": "Το αρχείο δεν είναι έγκυρο JSON.",
+        "notBackup": "Το αρχείο δεν είναι αναγνωρισμένο αντίγραφο ασφαλείας.",
+        "notBackupOrConfig": "Το αρχείο δεν είναι αναγνωρισμένο αντίγραφο ασφαλείας ή εξαγωγή ρυθμίσεων.",
+        "settingsFormat": "Η μορφή ρυθμίσεων δεν αναγνωρίστηκε",
+        "settingsRestoreFailed": "Η επαναφορά ρυθμίσεων απέτυχε",
+        "profilesRestoreFailed": "Η επαναφορά προφίλ απέτυχε",
+        "playlistSyncRestoreFailed": "Η επαναφορά συγχρονισμού λιστών απέτυχε",
+        "artistSyncRestoreFailed": "Η επαναφορά συγχρονισμού καλλιτεχνών απέτυχε",
+        "favouritesRestoreFailed": "Η επαναφορά αγαπημένων απέτυχε",
+        "credentialsRestoreFailed": "Η επαναφορά διαπιστευτηρίων απέτυχε"
+      }
+    },
+    "templateVariables": "Μεταβλητές: {vars}",
+    "exampleArtistName": "Όνομα καλλιτέχνη"
   },
   "login": {
     "title": "Σύνδεση στο Deezer",
@@ -639,7 +719,19 @@
     "openingBrowser": "Άνοιγμα σύνδεσης Deezer...",
     "openInExternalBrowser": "Άνοιγμα σε εξωτερικό πρόγραμμα περιήγησης αντ' αυτού",
     "browserLoginHelp": "Πώς λειτουργεί",
-    "browserLoginHelpText": "Θα ανοίξει ένα παράθυρο σύνδεσης Deezer. Συνδεθείτε με τον λογαριασμό σας και η συνεδρία σας θα καταγραφεί αυτόματα μόλις ολοκληρωθεί."
+    "browserLoginHelpText": "Θα ανοίξει ένα παράθυρο σύνδεσης Deezer. Συνδεθείτε με τον λογαριασμό σας και η συνεδρία σας θα καταγραφεί αυτόματα μόλις ολοκληρωθεί.",
+    "loginFailed": "Η σύνδεση απέτυχε",
+    "loginFailedAfterCaptcha": "Η σύνδεση απέτυχε μετά το CAPTCHA",
+    "invalidServerResponse": "Ο διακομιστής επέστρεψε μη έγκυρη απάντηση. Βεβαιωθείτε ότι η εφαρμογή λειτουργεί σωστά.",
+    "connectionTimeout": "Λήξη χρόνου σύνδεσης. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο.",
+    "emailPasswordRequired": "Απαιτούνται email και κωδικός",
+    "browserLoginUnavailable": "Η σύνδεση μέσω προγράμματος περιήγησης δεν είναι διαθέσιμη",
+    "browserLoginWindowClosed": "Το παράθυρο σύνδεσης έκλεισε",
+    "browserLoginFailed": "Η σύνδεση μέσω προγράμματος περιήγησης απέτυχε",
+    "loggedInAs": "Συνδεθήκατε ως {name}",
+    "enterArl": "Εισαγάγετε ένα διακριτικό ARL",
+    "authFailed": "Ο έλεγχος ταυτότητας απέτυχε",
+    "serverConnectFailed": "Αποτυχία σύνδεσης με τον διακομιστή"
   },
   "common": {
     "download": "Λήψη",
@@ -681,7 +773,26 @@
     "sortNameDesc": "Όνομα Ω-Α",
     "pasteFromClipboard": "Επικόλληση από το πρόχειρο",
     "paste": "Επικόλληση",
-    "copy": "Αντιγραφή"
+    "copy": "Αντιγραφή",
+    "confirm": "Επιβεβαίωση",
+    "item": "Στοιχείο",
+    "user": "Χρήστης",
+    "unknownTrack": "Άγνωστο τραγούδι",
+    "unknownCreator": "Άγνωστος δημιουργός",
+    "private": "Ιδιωτική",
+    "source": "Πηγή",
+    "default": "Προεπιλογή",
+    "never": "Ποτέ",
+    "justNow": "Μόλις τώρα",
+    "durationHoursMinutes": "{hours} ώρ. {mins} λεπ.",
+    "copyLabel": "Αντιγραφή {label}",
+    "copySuffix": "{name} (Αντίγραφο)",
+    "restoredSuffix": "{name} (Επαναφορά)",
+    "requestFailed": "Το αίτημα απέτυχε",
+    "serverReturned": "Ο διακομιστής επέστρεψε {status}",
+    "goBackEsc": "Επιστροφή (Esc)",
+    "cover": "Εξώφυλλο",
+    "durationMinutes": "{mins} λεπ."
   },
   "trackCard": {
     "stop": "Διακοπή",
@@ -728,7 +839,14 @@
     "featuredAppearances": "συμμετοχές",
     "latestRelease": "Τελευταία Κυκλοφορία",
     "viewAlbum": "Προβολή Άλμπουμ",
-    "compilations": "Συλλογές"
+    "compilations": "Συλλογές",
+    "type": {
+      "album": "Άλμπουμ",
+      "ep": "EP",
+      "single": "Σινγκλ",
+      "compilation": "Συλλογή",
+      "featured": "Συμμετοχές"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "Λήψη λίστας",
@@ -918,7 +1036,11 @@
     "filterEPs": "EP",
     "filterCompilations": "Συλλογές",
     "filterFeatures": "Κυκλοφορίες με συμμετοχές",
-    "editMinReleaseDate": "Λήψη κυκλοφοριών μόνο μετά από"
+    "editMinReleaseDate": "Λήψη κυκλοφοριών μόνο μετά από",
+    "resolvingTracks": "Επίλυση κομματιών...",
+    "downloadingProgress": "Λήψη {current}/{total}",
+    "checkingDiscography": "Έλεγχος δισκογραφίας...",
+    "albumProgress": "Άλμπουμ {current}/{total}"
   },
   "userPlaylists": {
     "creator": "Δημιουργός",
@@ -951,7 +1073,20 @@
     "sortDefault": "ΣΕΙΡΑ ΡΟΗΣ",
     "sortName": "Α–Ω",
     "sortTracks": "ΠΕΡΙΣΣΟΤΕΡΑ ΚΟΜΜΑΤΙΑ",
-    "connectInSettings": "Σύνδεση από τις Ρυθμίσεις"
+    "connectInSettings": "Σύνδεση από τις Ρυθμίσεις",
+    "notConnected": "Το Qobuz δεν είναι συνδεδεμένο",
+    "connectToBrowseGenres": "Συνδέστε τον λογαριασμό σας Qobuz στις Ρυθμίσεις για να περιηγηθείτε στα είδη.",
+    "connectFirst": "Συνδέστε πρώτα τον λογαριασμό σας Qobuz στις Ρυθμίσεις.",
+    "searchFailed": "Η αναζήτηση στο Qobuz απέτυχε",
+    "albumLoadFailed": "Αποτυχία φόρτωσης άλμπουμ Qobuz",
+    "playlistLoadFailed": "Αποτυχία φόρτωσης λίστας Qobuz",
+    "artistLoadFailed": "Αποτυχία φόρτωσης καλλιτέχνη Qobuz",
+    "sessionExpired": "Η συνεδρία Qobuz έληξε, συνδέστε ξανά τον λογαριασμό σας Qobuz στις Ρυθμίσεις",
+    "notAvailableInBrowser": "Μη διαθέσιμο στο πρόγραμμα περιήγησης",
+    "tokenRequired": "Απαιτείται διακριτικό",
+    "tokenRejected": "Το Qobuz απέρριψε το διακριτικό",
+    "tokenLoginFailed": "Η σύνδεση με διακριτικό απέτυχε",
+    "connectAccountInSettings": "Συνδέστε τον λογαριασμό σας Qobuz στις Ρυθμίσεις"
   },
   "retag": {
     "viaQobuzTip": "Οι ετικέτες προέρχονται από το Qobuz — το Deezer δεν είχε αντιστοίχιση για αυτό το ISRC",
@@ -1017,7 +1152,8 @@
     "credits": "Συντελεστές & Άδεια Χρήσης",
     "builtBy": "Κατασκευάστηκε με φροντίδα από την Ομάδα MAXIMUS.",
     "inspiredBy": "Εμπνευσμένο από το αρχικό έργο deemix. Λειτουργεί με το Deezer API.",
-    "license": "Διανέμεται υπό την Άδεια GNU General Public License v3.0"
+    "license": "Διανέμεται υπό την Άδεια GNU General Public License v3.0",
+    "earlierReleases": "Προηγούμενες εκδόσεις"
   },
   "accessibility": {
     "windowControls": "Στοιχεία ελέγχου παραθύρου",
@@ -1069,5 +1205,23 @@
     "pasteLink": "Επικόλληση Συνδέσμου",
     "pasteToken": "Επικόλληση Token",
     "pasted": "Επικολλήθηκε"
+  },
+  "app": {
+    "loadingSettings": "Φόρτωση ρυθμίσεων...",
+    "connectingDeezer": "Σύνδεση στο Deezer...",
+    "authenticating": "Έλεγχος ταυτότητας...",
+    "loadingFavorites": "Φόρτωση αγαπημένων...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "Εστίαση στην αναζήτηση",
+    "focusSearchAlt": "Εστίαση στην αναζήτηση (εναλλακτικά)",
+    "goToDownloads": "Μετάβαση στις λήψεις",
+    "openSettings": "Άνοιγμα ρυθμίσεων",
+    "goToHome": "Μετάβαση στην αρχική",
+    "showShortcuts": "Εμφάνιση συντομεύσεων πληκτρολογίου",
+    "closeModals": "Κλείσιμο παραθύρων",
+    "closeModalsOrBack": "Κλείσιμο παραθύρων / Επιστροφή",
+    "pressToClose": "Πατήστε {key} για κλείσιμο"
   }
 }

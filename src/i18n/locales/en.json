@@ -207,7 +207,37 @@
       "tagging": "Tagging",
       "pending": "Pending"
     },
-    "clearHistory": "Clear History"
+    "clearHistory": "Clear History",
+    "waitingCount": "{count} download waiting | {count} downloads waiting",
+    "formats": "Formats",
+    "activeLabel": "active",
+    "doneLabel": "done",
+    "failedLabel": "failed",
+    "failedCount": "{count} failed",
+    "tracksCount": "Tracks ({count})",
+    "historyCount": "Download History ({count})",
+    "interrupted": "Interrupted, the app closed before this finished. Click retry to resume (already-downloaded tracks are skipped).",
+    "tracksFailedOf": "{failed} of {total} tracks failed",
+    "requestFailed": "Download request failed",
+    "albumRequestFailed": "Album download request failed",
+    "qobuzAlbumRequestFailed": "Qobuz album download request failed",
+    "playlistRequestFailed": "Playlist download request failed",
+    "batchRequestFailed": "Batch download request failed",
+    "mixedBatchRequestFailed": "Mixed batch download request failed",
+    "noDownloadId": "Server did not return a download ID",
+    "noDownloadIds": "Server did not return download IDs",
+    "qobuzAlbum": "Qobuz Album",
+    "errorCopy": {
+      "track": "Track: {value}",
+      "artist": "Artist: {value}",
+      "errorCode": "Error Code: {value}",
+      "httpStatus": "HTTP Status: {value}",
+      "error": "Error: {value}",
+      "suggestion": "Suggestion: {value}",
+      "serverResponse": "Server Response: {value}"
+    },
+    "showTracks": "Show tracks",
+    "hideTracks": "Hide tracks"
   },
   "charts": {
     "title": "Charts",
@@ -223,7 +253,8 @@
     "topAlbumsIn": "Top {count} Albums in {country}",
     "topArtistsIn": "Top {count} Artists in {country}",
     "topPlaylistsIn": "Top {count} Playlists in {country}",
-    "noChartData": "No chart data available"
+    "noChartData": "No chart data available",
+    "worldwide": "Worldwide"
   },
   "favorites": {
     "title": "Favorites",
@@ -271,7 +302,10 @@
     "importedCount": "+{n} imported",
     "prunedCount": "−{n} pruned",
     "unchangedCount": "{n} unchanged",
-    "noneOnAccount": "No favorites found on your Deezer account"
+    "noneOnAccount": "No favorites found on your Deezer account",
+    "startDownloadsFailed": "Failed to start downloads",
+    "importDeezerFailed": "Failed to import Deezer favorites",
+    "downloadAllOf": "Download All {type}"
   },
   "analyzer": {
     "title": "Link Analyzer",
@@ -328,7 +362,16 @@
       "invalidUrl": "Please enter a valid Deezer URL",
       "unsupported": "This link type is not supported",
       "notFound": "Content not found on Deezer",
-      "networkError": "Failed to analyze link. Please try again."
+      "networkError": "Failed to analyze link. Please try again.",
+      "enterLink": "Please enter a Deezer, Spotify, or Qobuz link",
+      "invalidLink": "Please enter a valid Deezer, Spotify, or Qobuz link",
+      "serverConnect": "Failed to connect to server (port {port}). {message}",
+      "serverHttp": "server returned HTTP {status}",
+      "analyzeFailed": "Failed to analyze link",
+      "qobuzAnalyzeFailed": "Failed to analyze Qobuz link",
+      "spotifyAnalyzeFailed": "Failed to analyze Spotify link",
+      "spotifyConvertFailed": "Failed to convert Spotify content",
+      "conversionFailed": "Conversion failed: {message}"
     },
     "loginRequired": "Login required to download",
     "convertTo": "Convert to",
@@ -352,7 +395,15 @@
     "batchAnalyzed": "{done}/{total} analyzed",
     "batchFailed": "{count} failed",
     "queuing": "Queuing...",
-    "downloadAllReady": "Download all ready ({count})"
+    "downloadAllReady": "Download all ready ({count})",
+    "clear": "Clear",
+    "downloadTracks": "Download {count} tracks",
+    "onBoth": "on both",
+    "unavailable": "unavailable",
+    "matched": "Matched ({count})",
+    "unmatched": "Unmatched ({count})",
+    "supported": "Supported: tracks, albums, artists, and playlists",
+    "spotifyPlaylist": "Spotify Playlist"
   },
   "settings": {
     "title": "Settings",
@@ -379,7 +430,22 @@
       "duplicated": "Profile duplicated",
       "exported": "Profile exported",
       "imported": "Profile \"{name}\" imported",
-      "importFailed": "Failed to import profile — invalid format"
+      "importFailed": "Failed to import profile — invalid format",
+      "importedProfile": "Imported Profile",
+      "builtin": {
+        "audiophile": {
+          "name": "Audiophile",
+          "description": "FLAC lossless, all metadata tags, high-res artwork, synced lyrics"
+        },
+        "quick": {
+          "name": "Quick Download",
+          "description": "MP3 128kbps, minimal tags, small artwork, fastest downloads"
+        },
+        "balanced": {
+          "name": "Balanced",
+          "description": "MP3 320kbps, standard metadata, good quality artwork"
+        }
+      }
     },
     "noResults": "No matching settings found",
     "clearSearch": "Clear search",
@@ -638,7 +704,19 @@
       "selectAll": "Select all",
       "selectNone": "Select none",
       "expandProfiles": "Show profiles list",
-      "subsetCount": "{n} of {total}"
+      "subsetCount": "{n} of {total}",
+      "errors": {
+        "notJson": "File is not valid JSON.",
+        "notBackup": "File is not a recognised backup.",
+        "notBackupOrConfig": "File is not a recognised backup or configuration export.",
+        "settingsFormat": "Settings format not recognised",
+        "settingsRestoreFailed": "Settings restore failed",
+        "profilesRestoreFailed": "Profiles restore failed",
+        "playlistSyncRestoreFailed": "Playlist sync restore failed",
+        "artistSyncRestoreFailed": "Artist sync restore failed",
+        "favouritesRestoreFailed": "Favourites restore failed",
+        "credentialsRestoreFailed": "Credentials restore failed"
+      }
     },
     "qobuz": {
       "title": "Qobuz",
@@ -665,7 +743,9 @@
     "deezerDisclaimer": "Use your own Deezer account. This app is not affiliated with Deezer. Please follow Deezer's terms of service.",
     "exportConfig": "Export Configuration",
     "importConfig": "Import Configuration",
-    "m3uTemplate": "M3U filename template"
+    "m3uTemplate": "M3U filename template",
+    "templateVariables": "Variables: {vars}",
+    "exampleArtistName": "Artist Name"
   },
   "login": {
     "title": "Login to Deezer",
@@ -704,7 +784,19 @@
     "emailPasswordHelp": "Use your Deezer account credentials. This is the recommended method as it's simpler and automatically handles session management.",
     "whatIsArl": "What is an ARL token?",
     "arlExplainer": "The ARL (Authentication Request Login) token is a cookie from your Deezer account that allows downloading music. It's stored in your browser when you log into Deezer.",
-    "passwordPlaceholder": "Your Deezer password"
+    "passwordPlaceholder": "Your Deezer password",
+    "loginFailed": "Login failed",
+    "loginFailedAfterCaptcha": "Login failed after CAPTCHA",
+    "invalidServerResponse": "Server returned invalid response. Make sure the app is running correctly.",
+    "connectionTimeout": "Connection timed out. Please check your internet connection.",
+    "emailPasswordRequired": "Email and password are required",
+    "browserLoginUnavailable": "Browser login not available",
+    "browserLoginWindowClosed": "Login window closed",
+    "browserLoginFailed": "Browser login failed",
+    "loggedInAs": "Logged in as {name}",
+    "enterArl": "Please enter an ARL token",
+    "authFailed": "Authentication failed",
+    "serverConnectFailed": "Failed to connect to server"
   },
   "common": {
     "download": "Download",
@@ -746,7 +838,26 @@
     "sortNameDesc": "Name Z-A",
     "pasteFromClipboard": "Paste from clipboard",
     "paste": "Paste",
-    "copy": "Copy"
+    "copy": "Copy",
+    "confirm": "Confirm",
+    "item": "Item",
+    "user": "User",
+    "unknownTrack": "Unknown Track",
+    "unknownCreator": "Unknown Creator",
+    "private": "Private",
+    "source": "Source",
+    "default": "Default",
+    "never": "Never",
+    "justNow": "Just now",
+    "durationHoursMinutes": "{hours} hr {mins} min",
+    "copyLabel": "Copy {label}",
+    "copySuffix": "{name} (Copy)",
+    "restoredSuffix": "{name} (Restored)",
+    "requestFailed": "Request failed",
+    "serverReturned": "Server returned {status}",
+    "goBackEsc": "Go back (Esc)",
+    "cover": "Cover",
+    "durationMinutes": "{mins} min"
   },
   "contextMenu": {
     "copy": "Copy",
@@ -819,7 +930,14 @@
     "sortNewest": "Newest First",
     "sortOldest": "Oldest First",
     "releases": "releases",
-    "featuredAppearances": "featured appearances"
+    "featuredAppearances": "featured appearances",
+    "type": {
+      "album": "Album",
+      "ep": "EP",
+      "single": "Single",
+      "compilation": "Compilation",
+      "featured": "Featured"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "Download Playlist",
@@ -1013,7 +1131,11 @@
     "scheduleEvery": "Every {hours} hours",
     "scheduleManual": "Manual only",
     "resolvingShareLink": "Resolving share link...",
-    "playlistDetected": "{service} playlist detected"
+    "playlistDetected": "{service} playlist detected",
+    "resolvingTracks": "Resolving tracks...",
+    "downloadingProgress": "Downloading {current}/{total}",
+    "checkingDiscography": "Checking discography...",
+    "albumProgress": "Album {current}/{total}"
   },
   "userPlaylists": {
     "creator": "Creator",
@@ -1036,7 +1158,8 @@
     "builtBy": "Built with care by Team MAXIMUS.",
     "inspiredBy": "Inspired by the original deemix project. Powered by the Deezer API.",
     "license": "Licensed under the GNU General Public License v3.0",
-    "disclaimer": "This app is not affiliated with, authorized by, or endorsed by Deezer, Qobuz, or Spotify. It is intended for personal use with your own accounts. Please use it responsibly and in accordance with your local laws regarding music downloading, and respect copyright and the terms of service of each streaming platform. Qobuz downloads require your own active paid Qobuz subscription."
+    "disclaimer": "This app is not affiliated with, authorized by, or endorsed by Deezer, Qobuz, or Spotify. It is intended for personal use with your own accounts. Please use it responsibly and in accordance with your local laws regarding music downloading, and respect copyright and the terms of service of each streaming platform. Qobuz downloads require your own active paid Qobuz subscription.",
+    "earlierReleases": "Earlier releases"
   },
   "qobuz": {
     "myPurchases": "My Purchases",
@@ -1052,7 +1175,20 @@
     "sortDefault": "Feed Order",
     "sortName": "A–Z",
     "sortTracks": "Most Tracks",
-    "connectInSettings": "Connect in Settings"
+    "connectInSettings": "Connect in Settings",
+    "notConnected": "Qobuz not connected",
+    "connectToBrowseGenres": "Connect your Qobuz account in Settings to browse genres.",
+    "connectFirst": "Connect your Qobuz account in Settings first.",
+    "searchFailed": "Qobuz search failed",
+    "albumLoadFailed": "Qobuz album load failed",
+    "playlistLoadFailed": "Qobuz playlist load failed",
+    "artistLoadFailed": "Qobuz artist load failed",
+    "sessionExpired": "Qobuz session expired, reconnect your Qobuz account in Settings",
+    "notAvailableInBrowser": "Not available in browser",
+    "tokenRequired": "Token required",
+    "tokenRejected": "Qobuz rejected the token",
+    "tokenLoginFailed": "Token login failed",
+    "connectAccountInSettings": "Connect your Qobuz account in Settings"
   },
   "genres": {
     "title": "Genres",
@@ -1069,5 +1205,23 @@
     "qobuzOfflineTip": "Qobuz not connected — connect in Settings",
     "region": "REGION",
     "quality": "QUALITY"
+  },
+  "app": {
+    "loadingSettings": "Loading settings...",
+    "connectingDeezer": "Connecting to Deezer...",
+    "authenticating": "Authenticating...",
+    "loadingFavorites": "Loading favorites...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "Focus search",
+    "focusSearchAlt": "Focus search (alt)",
+    "goToDownloads": "Go to downloads",
+    "openSettings": "Open settings",
+    "goToHome": "Go to home",
+    "showShortcuts": "Show keyboard shortcuts",
+    "closeModals": "Close modals",
+    "closeModalsOrBack": "Close modals / Go back",
+    "pressToClose": "Press {key} to close"
   }
 }

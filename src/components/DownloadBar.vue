@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useDownloadStore } from '../stores/downloadStore'
 
+const { t } = useI18n()
 const downloadStore = useDownloadStore()
 
 // Find the first download that's actually in 'downloading' status, not just 'pending'
@@ -46,10 +48,10 @@ const progress = computed(() => {
 
 // Safely extract artist name (handles both string and object)
 function getArtistName(item: any): string {
-  if (!item?.artist) return 'Unknown Artist'
+  if (!item?.artist) return t('common.unknownArtist')
   if (typeof item.artist === 'string') return item.artist
   if (typeof item.artist === 'object' && item.artist.name) return item.artist.name
-  return 'Unknown Artist'
+  return t('common.unknownArtist')
 }
 </script>
 
@@ -97,7 +99,7 @@ function getArtistName(item: any): string {
       <div class="flex items-center gap-2">
         <button
           class="p-2 hover:bg-white/10 transition-colors"
-          :title="downloadStore.isPaused ? 'Resume' : 'Pause'"
+          :title="downloadStore.isPaused ? t('downloads.resume') : t('downloads.pause')"
           @click="downloadStore.isPaused ? downloadStore.resumeQueue() : downloadStore.pauseQueue()"
         >
           <!-- Pause icon (when running) -->
@@ -111,7 +113,7 @@ function getArtistName(item: any): string {
         </button>
         <button
           class="p-2 hover:bg-white/10 transition-colors"
-          title="Cancel"
+          :title="t('common.cancel')"
           @click="downloadStore.cancelDownload(currentDownload.id)"
         >
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

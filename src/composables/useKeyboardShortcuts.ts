@@ -1,5 +1,6 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import i18n from '../i18n'
 
 interface ShortcutHandler {
   key: string
@@ -25,42 +26,42 @@ export function useKeyboardShortcuts() {
       ctrl: true,
       meta: true,
       handler: () => focusSearch(),
-      description: 'Focus search'
+      get description() { return i18n.global.t('shortcuts.focusSearch') }
     },
     {
       key: 'f',
       ctrl: true,
       meta: true,
       handler: () => focusSearch(),
-      description: 'Focus search (alt)'
+      get description() { return i18n.global.t('shortcuts.focusSearchAlt') }
     },
     {
       key: 'd',
       ctrl: true,
       meta: true,
       handler: () => router.push('/downloads'),
-      description: 'Go to downloads'
+      get description() { return i18n.global.t('shortcuts.goToDownloads') }
     },
     {
       key: ',',
       ctrl: true,
       meta: true,
       handler: () => router.push('/settings'),
-      description: 'Open settings'
+      get description() { return i18n.global.t('shortcuts.openSettings') }
     },
     {
       key: 'h',
       ctrl: true,
       meta: true,
       handler: () => router.push('/'),
-      description: 'Go to home'
+      get description() { return i18n.global.t('shortcuts.goToHome') }
     },
     {
       key: '/',
       ctrl: true,
       meta: true,
       handler: () => { showShortcutsHelp.value = true },
-      description: 'Show keyboard shortcuts'
+      get description() { return i18n.global.t('shortcuts.showShortcuts') }
     },
     {
       key: '?',
@@ -68,12 +69,12 @@ export function useKeyboardShortcuts() {
       meta: true,
       shift: true,
       handler: () => { showShortcutsHelp.value = true },
-      description: 'Show keyboard shortcuts'
+      get description() { return i18n.global.t('shortcuts.showShortcuts') }
     },
     {
       key: 'Escape',
       handler: () => closeModals(),
-      description: 'Close modals'
+      get description() { return i18n.global.t('shortcuts.closeModals') }
     }
   ]
 

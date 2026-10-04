@@ -24,7 +24,7 @@ const showCountryDropdown = ref(false)
 
 // Country selection
 const countries = ref<{ id: string; name: string; code: string }[]>([])
-const selectedCountry = ref<{ id: string; name: string; code: string }>({ id: '0', name: 'Worldwide', code: 'WW' })
+const selectedCountry = ref<{ id: string; name: string; code: string }>({ id: '0', name: t('charts.worldwide'), code: 'WW' })
 
 const charts = ref<{
   tracks: Track[]
@@ -40,6 +40,10 @@ const charts = ref<{
 
 // Check if we're viewing worldwide charts (which have all tabs) or country charts (tracks only)
 const isWorldwide = computed(() => selectedCountry.value.id === '0')
+// Worldwide's display name follows the current locale; stored names stay as they are.
+function countryName(c: { id: string; name: string }): string {
+  return c.id === '0' ? t('charts.worldwide') : c.name
+}
 
 const allTabs = [
   { id: 'tracks', label: t('charts.tracks'), icon: 'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3' },
@@ -74,7 +78,7 @@ onMounted(async () => {
     if (['tracks', 'albums', 'artists', 'playlists'].includes(type)) {
       activeTab.value = type as typeof activeTab.value
       // Reset to Worldwide so the requested tab is visible
-      selectedCountry.value = { id: '0', name: 'Worldwide', code: 'WW' }
+      selectedCountry.value = { id: '0', name: t('charts.worldwide'), code: 'WW' }
     }
   } else {
     // No type specified — restore saved country from localStorage
@@ -107,7 +111,7 @@ async function loadCountries() {
   } catch (error) {
     console.error('Failed to load countries:', error)
     // Fallback to just worldwide
-    countries.value = [{ id: '0', name: 'Worldwide', code: 'WW' }]
+    countries.value = [{ id: '0', name: t('charts.worldwide'), code: 'WW' }]
   } finally {
     isLoadingCountries.value = false
   }
@@ -242,7 +246,7 @@ function getCountryFlag(code: string): string {
             class="flex items-center gap-2 px-3 py-2 border border-white/[0.08] bg-background-secondary hover:bg-background-tertiary transition-colors"
           >
             <span class="text-lg">{{ getCountryFlag(selectedCountry.code) }}</span>
-            <span class="font-medium">{{ selectedCountry.name }}</span>
+            <span class="font-medium">{{ countryName(selectedCountry) }}</span>
             <svg
               class="w-4 h-4 transition-transform"
               :class="{ 'rotate-180': showCountryDropdown }"
@@ -278,7 +282,7 @@ function getCountryFlag(code: string): string {
                 :class="{ 'bg-primary-500/20': country.id === selectedCountry.id && country.code === selectedCountry.code }"
               >
                 <span class="text-lg">{{ getCountryFlag(country.code) }}</span>
-                <span>{{ country.name }}</span>
+                <span>{{ countryName(country) }}</span>
               </button>
 
               <div v-if="filteredCountries.length === 0" class="px-4 py-3 text-foreground-muted text-sm">
@@ -338,7 +342,7 @@ function getCountryFlag(code: string): string {
       <section v-if="activeTab === 'tracks'" class="space-y-4">
         <div class="flex items-center justify-between">
           <h2 class="text-lg font-semibold">
-            {{ t('charts.topTracksIn', { country: selectedCountry.name, count: currentCount }) }}
+            {{ t('charts.topTracksIn', { country: countryName(selectedCountry), count: currentCount }) }}
           </h2>
         </div>
         <div class="space-y-1">
@@ -355,7 +359,7 @@ function getCountryFlag(code: string): string {
       <section v-if="activeTab === 'albums'" class="space-y-4">
         <div class="flex items-center justify-between">
           <h2 class="text-lg font-semibold">
-            {{ t('charts.topAlbumsIn', { country: selectedCountry.name, count: currentCount }) }}
+            {{ t('charts.topAlbumsIn', { country: countryName(selectedCountry), count: currentCount }) }}
           </h2>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -371,7 +375,7 @@ function getCountryFlag(code: string): string {
       <section v-if="activeTab === 'artists'" class="space-y-4">
         <div class="flex items-center justify-between">
           <h2 class="text-lg font-semibold">
-            {{ t('charts.topArtistsIn', { country: selectedCountry.name, count: currentCount }) }}
+            {{ t('charts.topArtistsIn', { country: countryName(selectedCountry), count: currentCount }) }}
           </h2>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -387,7 +391,7 @@ function getCountryFlag(code: string): string {
       <section v-if="activeTab === 'playlists'" class="space-y-4">
         <div class="flex items-center justify-between">
           <h2 class="text-lg font-semibold">
-            {{ t('charts.topPlaylistsIn', { country: selectedCountry.name, count: currentCount }) }}
+            {{ t('charts.topPlaylistsIn', { country: countryName(selectedCountry), count: currentCount }) }}
           </h2>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">

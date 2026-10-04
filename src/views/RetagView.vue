@@ -112,7 +112,7 @@ async function scan() {
       toastStore.info(t('retag.noIsrcWarning'))
     }
   } catch (e: any) {
-    toastStore.error(e?.message || 'Scan failed')
+    toastStore.error(e?.message || t('common.requestFailed'))
   } finally {
     isScanning.value = false
   }
@@ -140,7 +140,7 @@ async function retagOne(path: string, preview: boolean, selectedFields: Record<s
       ? { status: 'failed', changes: [], error: data.error }
       : { status: data.status, changes: data.changes || [], unavailable: data.unavailable || [], unchanged: data.unchanged || [], reason: data.reason, error: data.error }
   } catch (e: any) {
-    results[path] = { status: 'failed', changes: [], error: e?.message || 'request failed' }
+    results[path] = { status: 'failed', changes: [], error: e?.message || t('common.requestFailed') }
   }
 }
 

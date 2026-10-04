@@ -142,7 +142,37 @@
     "speed": "Brzina",
     "substitutedListTitle": "Alternativne verzije",
     "substitutedListTip": "Kliknite za prikaz pjesama koje dolaze iz alternativnog izdanja",
-    "clearHistory": "Očisti povijest"
+    "clearHistory": "Očisti povijest",
+    "waitingCount": "Na čekanju: {count} preuzimanje | Na čekanju: {count} preuzimanja",
+    "formats": "Formati",
+    "activeLabel": "aktivno",
+    "doneLabel": "gotovo",
+    "failedLabel": "neuspjelo",
+    "failedCount": "Neuspjelo: {count}",
+    "tracksCount": "Pjesme ({count})",
+    "historyCount": "Povijest preuzimanja ({count})",
+    "interrupted": "Prekinuto, aplikacija se zatvorila prije završetka. Kliknite Pokušaj ponovo za nastavak (već preuzete pjesme se preskaču).",
+    "tracksFailedOf": "Neuspjelo: {failed} od {total} pjesama",
+    "requestFailed": "Zahtjev za preuzimanje nije uspio",
+    "albumRequestFailed": "Zahtjev za preuzimanje albuma nije uspio",
+    "qobuzAlbumRequestFailed": "Zahtjev za preuzimanje Qobuz albuma nije uspio",
+    "playlistRequestFailed": "Zahtjev za preuzimanje popisa za reprodukciju nije uspio",
+    "batchRequestFailed": "Zahtjev za skupno preuzimanje nije uspio",
+    "mixedBatchRequestFailed": "Zahtjev za mješovito skupno preuzimanje nije uspio",
+    "noDownloadId": "Poslužitelj nije vratio ID preuzimanja",
+    "noDownloadIds": "Poslužitelj nije vratio ID-eve preuzimanja",
+    "qobuzAlbum": "Qobuz album",
+    "errorCopy": {
+      "track": "Pjesma: {value}",
+      "artist": "Izvođač: {value}",
+      "errorCode": "Kôd pogreške: {value}",
+      "httpStatus": "HTTP status: {value}",
+      "error": "Pogreška: {value}",
+      "suggestion": "Prijedlog: {value}",
+      "serverResponse": "Odgovor poslužitelja: {value}"
+    },
+    "showTracks": "Prikaži pjesme",
+    "hideTracks": "Sakrij pjesme"
   },
   "charts": {
     "title": "Ljestvice",
@@ -158,7 +188,8 @@
     "topAlbumsIn": "Top {count} albuma u {country}",
     "topArtistsIn": "Top {count} izvođača u {country}",
     "topPlaylistsIn": "Top {count} popisa u {country}",
-    "noChartData": "Nema dostupnih podataka ljestvice"
+    "noChartData": "Nema dostupnih podataka ljestvice",
+    "worldwide": "Cijeli svijet"
   },
   "favorites": {
     "title": "Favoriti",
@@ -206,7 +237,10 @@
     "pinArtistTooltip": "Zakači ovog izvođača za sinkronizaciju",
     "unpinArtistTooltip": "Otkači ovog izvođača (ostaje u favoritima)",
     "unpin": "Otkači",
-    "artistSyncRemoved": "Otkačen \"{name}\" iz sinkronizacije"
+    "artistSyncRemoved": "Otkačen \"{name}\" iz sinkronizacije",
+    "startDownloadsFailed": "Pokretanje preuzimanja nije uspjelo",
+    "importDeezerFailed": "Uvoz Deezer favorita nije uspio",
+    "downloadAllOf": "Preuzmi sve: {type}"
   },
   "analyzer": {
     "title": "Analizator Linkova",
@@ -263,7 +297,16 @@
       "invalidUrl": "Molimo unesite valjani Deezer URL",
       "unsupported": "Ova vrsta linka nije podržana",
       "notFound": "Sadržaj nije pronađen na Deezeru",
-      "networkError": "Analiza nije uspjela. Pokušajte ponovo."
+      "networkError": "Analiza nije uspjela. Pokušajte ponovo.",
+      "enterLink": "Unesite Deezer, Spotify ili Qobuz poveznicu",
+      "invalidLink": "Unesite valjanu Deezer, Spotify ili Qobuz poveznicu",
+      "serverConnect": "Povezivanje s poslužiteljem nije uspjelo (port {port}). {message}",
+      "serverHttp": "poslužitelj je vratio HTTP {status}",
+      "analyzeFailed": "Analiza poveznice nije uspjela",
+      "qobuzAnalyzeFailed": "Analiza Qobuz poveznice nije uspjela",
+      "spotifyAnalyzeFailed": "Analiza Spotify poveznice nije uspjela",
+      "spotifyConvertFailed": "Pretvorba Spotify sadržaja nije uspjela",
+      "conversionFailed": "Pretvorba nije uspjela: {message}"
     },
     "loginRequired": "Potrebna prijava za preuzimanje",
     "convertTo": "Pretvori u",
@@ -287,7 +330,15 @@
     "batchAnalyzed": "{done}/{total} analizirano",
     "batchFailed": "{count} neuspjelo",
     "queuing": "Dodavanje u red...",
-    "downloadAllReady": "Preuzmi sve spremno ({count})"
+    "downloadAllReady": "Preuzmi sve spremno ({count})",
+    "clear": "Očisti",
+    "downloadTracks": "Preuzmi pjesme ({count})",
+    "onBoth": "na oba",
+    "unavailable": "nedostupno",
+    "matched": "Pronađeno ({count})",
+    "unmatched": "Nije pronađeno ({count})",
+    "supported": "Podržano: pjesme, albumi, izvođači i popisi za reprodukciju",
+    "spotifyPlaylist": "Spotify popis za reprodukciju"
   },
   "settings": {
     "title": "Postavke",
@@ -540,7 +591,22 @@
       "duplicated": "Profil dupliciran",
       "exported": "Profil izvezen",
       "imported": "Profil \"{name}\" uvezen",
-      "importFailed": "Uvoz profila nije uspio — nevažeći format"
+      "importFailed": "Uvoz profila nije uspio — nevažeći format",
+      "importedProfile": "Uvezeni profil",
+      "builtin": {
+        "audiophile": {
+          "name": "Audiofil",
+          "description": "FLAC bez gubitaka, sve oznake metapodataka, omot visoke rezolucije, sinkronizirani stihovi"
+        },
+        "quick": {
+          "name": "Brzo preuzimanje",
+          "description": "MP3 128 kbps, osnovne oznake, mali omot, najbrže preuzimanje"
+        },
+        "balanced": {
+          "name": "Uravnoteženo",
+          "description": "MP3 320 kbps, standardni metapodaci, omot dobre kvalitete"
+        }
+      }
     },
     "noResults": "Nema pronađenih odgovarajućih postavki",
     "clearSearch": "Obriši pretragu",
@@ -599,8 +665,22 @@
       "selectAll": "Odaberi sve",
       "selectNone": "Odaberi ništa",
       "expandProfiles": "Prikaži popis profila",
-      "subsetCount": "{n} od {total}"
-    }
+      "subsetCount": "{n} od {total}",
+      "errors": {
+        "notJson": "Datoteka nije valjani JSON.",
+        "notBackup": "Datoteka nije prepoznata sigurnosna kopija.",
+        "notBackupOrConfig": "Datoteka nije prepoznata sigurnosna kopija ni izvoz konfiguracije.",
+        "settingsFormat": "Format postavki nije prepoznat",
+        "settingsRestoreFailed": "Vraćanje postavki nije uspjelo",
+        "profilesRestoreFailed": "Vraćanje profila nije uspjelo",
+        "playlistSyncRestoreFailed": "Vraćanje sinkronizacije popisa za reprodukciju nije uspjelo",
+        "artistSyncRestoreFailed": "Vraćanje sinkronizacije izvođača nije uspjelo",
+        "favouritesRestoreFailed": "Vraćanje favorita nije uspjelo",
+        "credentialsRestoreFailed": "Vraćanje podataka za prijavu nije uspjelo"
+      }
+    },
+    "templateVariables": "Varijable: {vars}",
+    "exampleArtistName": "Ime izvođača"
   },
   "login": {
     "title": "Prijava na Deezer",
@@ -639,7 +719,19 @@
     "openingBrowser": "Otvaranje Deezer prijave...",
     "openInExternalBrowser": "Umjesto toga otvori u vanjskom pregledniku",
     "browserLoginHelp": "Kako to radi",
-    "browserLoginHelpText": "Otvorit će se prozor za Deezer prijavu. Prijavite se svojim računom, a vaša sesija bit će automatski preuzeta kad završite."
+    "browserLoginHelpText": "Otvorit će se prozor za Deezer prijavu. Prijavite se svojim računom, a vaša sesija bit će automatski preuzeta kad završite.",
+    "loginFailed": "Prijava nije uspjela",
+    "loginFailedAfterCaptcha": "Prijava nije uspjela nakon CAPTCHA provjere",
+    "invalidServerResponse": "Poslužitelj je vratio nevaljani odgovor. Provjerite radi li aplikacija ispravno.",
+    "connectionTimeout": "Veza je istekla. Provjerite internetsku vezu.",
+    "emailPasswordRequired": "Email i lozinka su obavezni",
+    "browserLoginUnavailable": "Prijava putem preglednika nije dostupna",
+    "browserLoginWindowClosed": "Prozor za prijavu je zatvoren",
+    "browserLoginFailed": "Prijava putem preglednika nije uspjela",
+    "loggedInAs": "Prijavljeni ste kao {name}",
+    "enterArl": "Unesite ARL token",
+    "authFailed": "Autentifikacija nije uspjela",
+    "serverConnectFailed": "Povezivanje s poslužiteljem nije uspjelo"
   },
   "common": {
     "download": "Preuzmi",
@@ -681,7 +773,26 @@
     "sortNameDesc": "Naziv Ž-A",
     "pasteFromClipboard": "Zalijepi iz međuspremnika",
     "paste": "Zalijepi",
-    "copy": "Kopiraj"
+    "copy": "Kopiraj",
+    "confirm": "Potvrdi",
+    "item": "Stavka",
+    "user": "Korisnik",
+    "unknownTrack": "Nepoznata pjesma",
+    "unknownCreator": "Nepoznati autor",
+    "private": "Privatno",
+    "source": "Izvor",
+    "default": "Zadano",
+    "never": "Nikad",
+    "justNow": "Upravo sada",
+    "durationHoursMinutes": "{hours} h {mins} min",
+    "copyLabel": "Kopiraj {label}",
+    "copySuffix": "{name} (kopija)",
+    "restoredSuffix": "{name} (vraćeno)",
+    "requestFailed": "Zahtjev nije uspio",
+    "serverReturned": "Poslužitelj je vratio {status}",
+    "goBackEsc": "Natrag (Esc)",
+    "cover": "Omot",
+    "durationMinutes": "{mins} min"
   },
   "trackCard": {
     "stop": "Zaustavi",
@@ -728,7 +839,14 @@
     "featuredAppearances": "gostujući nastupi",
     "latestRelease": "Najnovije izdanje",
     "viewAlbum": "Prikaži album",
-    "compilations": "Kompilacije"
+    "compilations": "Kompilacije",
+    "type": {
+      "album": "Album",
+      "ep": "EP",
+      "single": "Singl",
+      "compilation": "Kompilacija",
+      "featured": "Gostovanja"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "Preuzmi popis",
@@ -918,7 +1036,11 @@
     "filterEPs": "EP-ovi",
     "filterCompilations": "Kompilacije",
     "filterFeatures": "Gostujuća izdanja",
-    "editMinReleaseDate": "Preuzmi samo izdanja nakon"
+    "editMinReleaseDate": "Preuzmi samo izdanja nakon",
+    "resolvingTracks": "Razrješavanje pjesama...",
+    "downloadingProgress": "Preuzimanje {current}/{total}",
+    "checkingDiscography": "Provjera diskografije...",
+    "albumProgress": "Album {current}/{total}"
   },
   "userPlaylists": {
     "creator": "Autor",
@@ -951,7 +1073,20 @@
     "sortDefault": "REDOSLIJED FEEDA",
     "sortName": "A–Ž",
     "sortTracks": "NAJVIŠE PJESAMA",
-    "connectInSettings": "Poveži u Postavkama"
+    "connectInSettings": "Poveži u Postavkama",
+    "notConnected": "Qobuz nije povezan",
+    "connectToBrowseGenres": "Povežite svoj Qobuz račun u Postavkama za pregledavanje žanrova.",
+    "connectFirst": "Najprije povežite svoj Qobuz račun u Postavkama.",
+    "searchFailed": "Qobuz pretraga nije uspjela",
+    "albumLoadFailed": "Učitavanje Qobuz albuma nije uspjelo",
+    "playlistLoadFailed": "Učitavanje Qobuz popisa za reprodukciju nije uspjelo",
+    "artistLoadFailed": "Učitavanje Qobuz izvođača nije uspjelo",
+    "sessionExpired": "Qobuz sesija je istekla, ponovno povežite svoj Qobuz račun u Postavkama",
+    "notAvailableInBrowser": "Nije dostupno u pregledniku",
+    "tokenRequired": "Potreban je token",
+    "tokenRejected": "Qobuz je odbio token",
+    "tokenLoginFailed": "Prijava tokenom nije uspjela",
+    "connectAccountInSettings": "Povežite svoj Qobuz račun u Postavkama"
   },
   "retag": {
     "viaQobuzTip": "Oznake preuzete s Qobuza — Deezer nije imao podudaranje za ovaj ISRC",
@@ -1017,7 +1152,8 @@
     "credits": "Zasluge i licenca",
     "builtBy": "Izrađeno s pažnjom od strane Team MAXIMUS.",
     "inspiredBy": "Nadahnuto originalnim deemix projektom. Pokreće ga Deezer API.",
-    "license": "Licencirano pod GNU General Public License v3.0"
+    "license": "Licencirano pod GNU General Public License v3.0",
+    "earlierReleases": "Ranija izdanja"
   },
   "accessibility": {
     "windowControls": "Kontrole prozora",
@@ -1069,5 +1205,23 @@
     "pasteLink": "Zalijepi poveznicu",
     "pasteToken": "Zalijepi token",
     "pasted": "Zalijepljeno"
+  },
+  "app": {
+    "loadingSettings": "Učitavanje postavki...",
+    "connectingDeezer": "Povezivanje s Deezerom...",
+    "authenticating": "Autentifikacija...",
+    "loadingFavorites": "Učitavanje favorita...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "Fokus na pretragu",
+    "focusSearchAlt": "Fokus na pretragu (alt.)",
+    "goToDownloads": "Idi na preuzimanja",
+    "openSettings": "Otvori postavke",
+    "goToHome": "Idi na početnu",
+    "showShortcuts": "Prikaži prečace na tipkovnici",
+    "closeModals": "Zatvori prozore",
+    "closeModalsOrBack": "Zatvori prozore / Natrag",
+    "pressToClose": "Pritisnite {key} za zatvaranje"
   }
 }

@@ -207,7 +207,37 @@
       "tagging": "Étiquetage",
       "pending": "En attente"
     },
-    "clearHistory": "Effacer l'historique"
+    "clearHistory": "Effacer l'historique",
+    "waitingCount": "{count} téléchargement en attente | {count} téléchargements en attente",
+    "formats": "Formats",
+    "activeLabel": "en cours",
+    "doneLabel": "terminés",
+    "failedLabel": "en échec",
+    "failedCount": "{count} en échec",
+    "tracksCount": "Titres ({count})",
+    "historyCount": "Historique des téléchargements ({count})",
+    "interrupted": "Interrompu : l’application a été fermée avant la fin. Cliquez sur Réessayer pour reprendre (les titres déjà téléchargés sont ignorés).",
+    "tracksFailedOf": "{failed} sur {total} titres en échec",
+    "requestFailed": "Échec de la demande de téléchargement",
+    "albumRequestFailed": "Échec de la demande de téléchargement de l’album",
+    "qobuzAlbumRequestFailed": "Échec de la demande de téléchargement de l’album Qobuz",
+    "playlistRequestFailed": "Échec de la demande de téléchargement de la playlist",
+    "batchRequestFailed": "Échec de la demande de téléchargement groupé",
+    "mixedBatchRequestFailed": "Échec de la demande de téléchargement groupé mixte",
+    "noDownloadId": "Le serveur n’a pas renvoyé d’identifiant de téléchargement",
+    "noDownloadIds": "Le serveur n’a pas renvoyé d’identifiants de téléchargement",
+    "qobuzAlbum": "Album Qobuz",
+    "errorCopy": {
+      "track": "Titre : {value}",
+      "artist": "Artiste : {value}",
+      "errorCode": "Code d’erreur : {value}",
+      "httpStatus": "Statut HTTP : {value}",
+      "error": "Erreur : {value}",
+      "suggestion": "Suggestion : {value}",
+      "serverResponse": "Réponse du serveur : {value}"
+    },
+    "showTracks": "Afficher les titres",
+    "hideTracks": "Masquer les titres"
   },
   "charts": {
     "title": "Classements",
@@ -223,7 +253,8 @@
     "topAlbumsIn": "Top {count} des albums en {country}",
     "topArtistsIn": "Top {count} des artistes en {country}",
     "topPlaylistsIn": "Top {count} des playlists en {country}",
-    "noChartData": "Aucune donnée de classement disponible"
+    "noChartData": "Aucune donnée de classement disponible",
+    "worldwide": "Monde"
   },
   "favorites": {
     "title": "Favoris",
@@ -271,7 +302,10 @@
     "importedCount": "+{n} importé(s)",
     "prunedCount": "−{n} supprimé(s)",
     "unchangedCount": "{n} inchangé(s)",
-    "noneOnAccount": "Aucun favori trouvé sur votre compte Deezer"
+    "noneOnAccount": "Aucun favori trouvé sur votre compte Deezer",
+    "startDownloadsFailed": "Impossible de lancer les téléchargements",
+    "importDeezerFailed": "Échec de l’importation des favoris Deezer",
+    "downloadAllOf": "Tout télécharger : {type}"
   },
   "analyzer": {
     "title": "Analyseur de liens",
@@ -328,7 +362,16 @@
       "invalidUrl": "Veuillez saisir une URL Deezer valide",
       "unsupported": "Ce type de lien n’est pas pris en charge",
       "notFound": "Contenu introuvable sur Deezer",
-      "networkError": "Échec de l’analyse du lien. Veuillez réessayer."
+      "networkError": "Échec de l’analyse du lien. Veuillez réessayer.",
+      "enterLink": "Veuillez saisir un lien Deezer, Spotify ou Qobuz",
+      "invalidLink": "Veuillez saisir un lien Deezer, Spotify ou Qobuz valide",
+      "serverConnect": "Impossible de se connecter au serveur (port {port}). {message}",
+      "serverHttp": "le serveur a renvoyé HTTP {status}",
+      "analyzeFailed": "Échec de l’analyse du lien",
+      "qobuzAnalyzeFailed": "Échec de l’analyse du lien Qobuz",
+      "spotifyAnalyzeFailed": "Échec de l’analyse du lien Spotify",
+      "spotifyConvertFailed": "Échec de la conversion du contenu Spotify",
+      "conversionFailed": "Échec de la conversion : {message}"
     },
     "loginRequired": "Connexion requise pour télécharger",
     "convertTo": "Convertir vers",
@@ -352,7 +395,15 @@
     "batchAnalyzed": "{done}/{total} analysés",
     "batchFailed": "{count} échoué(s)",
     "queuing": "Mise en file...",
-    "downloadAllReady": "Télécharger tous les prêts ({count})"
+    "downloadAllReady": "Télécharger tous les prêts ({count})",
+    "clear": "Effacer",
+    "downloadTracks": "Télécharger {count} titres",
+    "onBoth": "sur les deux",
+    "unavailable": "indisponible",
+    "matched": "Trouvés ({count})",
+    "unmatched": "Non trouvés ({count})",
+    "supported": "Pris en charge : titres, albums, artistes et playlists",
+    "spotifyPlaylist": "Playlist Spotify"
   },
   "settings": {
     "title": "Paramètres",
@@ -379,7 +430,22 @@
       "duplicated": "Profil dupliqué",
       "exported": "Profil exporté",
       "imported": "Profil « {name} » importé",
-      "importFailed": "Échec de l’importation du profil — format invalide"
+      "importFailed": "Échec de l’importation du profil — format invalide",
+      "importedProfile": "Profil importé",
+      "builtin": {
+        "audiophile": {
+          "name": "Audiophile",
+          "description": "FLAC sans perte, tous les tags de métadonnées, pochette haute résolution, paroles synchronisées"
+        },
+        "quick": {
+          "name": "Téléchargement rapide",
+          "description": "MP3 128 kbit/s, tags minimaux, petite pochette, téléchargements les plus rapides"
+        },
+        "balanced": {
+          "name": "Équilibré",
+          "description": "MP3 320 kbit/s, métadonnées standard, pochette de bonne qualité"
+        }
+      }
     },
     "noResults": "Aucun paramètre correspondant",
     "clearSearch": "Effacer la recherche",
@@ -638,7 +704,19 @@
       "selectAll": "Tout sélectionner",
       "selectNone": "Tout désélectionner",
       "expandProfiles": "Afficher la liste des profils",
-      "subsetCount": "{n} sur {total}"
+      "subsetCount": "{n} sur {total}",
+      "errors": {
+        "notJson": "Le fichier n’est pas un JSON valide.",
+        "notBackup": "Le fichier n’est pas une sauvegarde reconnue.",
+        "notBackupOrConfig": "Le fichier n’est ni une sauvegarde ni un export de configuration reconnu.",
+        "settingsFormat": "Format des paramètres non reconnu",
+        "settingsRestoreFailed": "Échec de la restauration des paramètres",
+        "profilesRestoreFailed": "Échec de la restauration des profils",
+        "playlistSyncRestoreFailed": "Échec de la restauration de la synchronisation des playlists",
+        "artistSyncRestoreFailed": "Échec de la restauration de la synchronisation des artistes",
+        "favouritesRestoreFailed": "Échec de la restauration des favoris",
+        "credentialsRestoreFailed": "Échec de la restauration des informations de connexion"
+      }
     },
     "qobuz": {
       "title": "Qobuz",
@@ -665,7 +743,9 @@
     "deezerDisclaimer": "Utilisez votre propre compte Deezer. Cette application n’est pas affiliée à Deezer. Veuillez respecter les conditions d’utilisation de Deezer.",
     "exportConfig": "Exporter la configuration",
     "importConfig": "Importer la configuration",
-    "m3uTemplate": "Modèle de nom de fichier M3U"
+    "m3uTemplate": "Modèle de nom de fichier M3U",
+    "templateVariables": "Variables : {vars}",
+    "exampleArtistName": "Nom de l’artiste"
   },
   "login": {
     "title": "Connexion à Deezer",
@@ -704,7 +784,19 @@
     "emailPasswordHelp": "Utilisez les identifiants de votre compte Deezer. C'est la méthode recommandée, car elle est plus simple et gère automatiquement la session.",
     "whatIsArl": "Qu'est-ce qu'un jeton ARL ?",
     "arlExplainer": "Le jeton ARL (Authentication Request Login) est un cookie de votre compte Deezer qui permet de télécharger de la musique. Il est stocké dans votre navigateur lorsque vous vous connectez à Deezer.",
-    "passwordPlaceholder": "Votre mot de passe Deezer"
+    "passwordPlaceholder": "Votre mot de passe Deezer",
+    "loginFailed": "Échec de la connexion",
+    "loginFailedAfterCaptcha": "Échec de la connexion après le CAPTCHA",
+    "invalidServerResponse": "Le serveur a renvoyé une réponse invalide. Vérifiez que l’application fonctionne correctement.",
+    "connectionTimeout": "La connexion a expiré. Vérifiez votre connexion Internet.",
+    "emailPasswordRequired": "L’e-mail et le mot de passe sont obligatoires",
+    "browserLoginUnavailable": "Connexion via le navigateur indisponible",
+    "browserLoginWindowClosed": "Fenêtre de connexion fermée",
+    "browserLoginFailed": "Échec de la connexion via le navigateur",
+    "loggedInAs": "Connecté en tant que {name}",
+    "enterArl": "Veuillez saisir un jeton ARL",
+    "authFailed": "Échec de l’authentification",
+    "serverConnectFailed": "Impossible de se connecter au serveur"
   },
   "common": {
     "download": "Télécharger",
@@ -746,7 +838,26 @@
     "sortNameDesc": "Nom Z-A",
     "pasteFromClipboard": "Coller depuis le presse-papiers",
     "paste": "Coller",
-    "copy": "Copier"
+    "copy": "Copier",
+    "confirm": "Confirmer",
+    "item": "Élément",
+    "user": "Utilisateur",
+    "unknownTrack": "Titre inconnu",
+    "unknownCreator": "Créateur inconnu",
+    "private": "Privée",
+    "source": "Source",
+    "default": "Par défaut",
+    "never": "Jamais",
+    "justNow": "À l’instant",
+    "durationHoursMinutes": "{hours} h {mins} min",
+    "copyLabel": "Copier {label}",
+    "copySuffix": "{name} (copie)",
+    "restoredSuffix": "{name} (restauré)",
+    "requestFailed": "Échec de la requête",
+    "serverReturned": "Le serveur a renvoyé {status}",
+    "goBackEsc": "Retour (Échap)",
+    "cover": "Pochette",
+    "durationMinutes": "{mins} min"
   },
   "contextMenu": {
     "copy": "Copier",
@@ -819,7 +930,14 @@
     "sortNewest": "Plus récent d'abord",
     "sortOldest": "Plus ancien d'abord",
     "releases": "sorties",
-    "featuredAppearances": "apparitions en featuring"
+    "featuredAppearances": "apparitions en featuring",
+    "type": {
+      "album": "Album",
+      "ep": "EP",
+      "single": "Single",
+      "compilation": "Compilation",
+      "featured": "Participations"
+    }
   },
   "playlistView": {
     "downloadPlaylist": "Télécharger la playlist",
@@ -1013,7 +1131,11 @@
     "scheduleEvery": "Toutes les {hours} heures",
     "scheduleManual": "Manuel uniquement",
     "resolvingShareLink": "Résolution du lien de partage...",
-    "playlistDetected": "Playlist {service} détectée"
+    "playlistDetected": "Playlist {service} détectée",
+    "resolvingTracks": "Résolution des titres...",
+    "downloadingProgress": "Téléchargement {current}/{total}",
+    "checkingDiscography": "Vérification de la discographie...",
+    "albumProgress": "Album {current}/{total}"
   },
   "userPlaylists": {
     "creator": "Créateur",
@@ -1036,7 +1158,8 @@
     "builtBy": "Développé avec soin par Team MAXIMUS.",
     "inspiredBy": "Inspiré du projet deemix original. Propulsé par l’API Deezer.",
     "license": "Distribué sous licence GNU General Public License v3.0",
-    "disclaimer": "Cette application n’est ni affiliée à Deezer, Qobuz ou Spotify, ni autorisée ou approuvée par eux. Elle est destinée à un usage personnel avec vos propres comptes. Utilisez-la de manière responsable et conformément aux lois locales relatives au téléchargement de musique, et respectez le droit d’auteur ainsi que les conditions d’utilisation de chaque plateforme de streaming. Les téléchargements Qobuz nécessitent votre propre abonnement Qobuz payant et actif."
+    "disclaimer": "Cette application n’est ni affiliée à Deezer, Qobuz ou Spotify, ni autorisée ou approuvée par eux. Elle est destinée à un usage personnel avec vos propres comptes. Utilisez-la de manière responsable et conformément aux lois locales relatives au téléchargement de musique, et respectez le droit d’auteur ainsi que les conditions d’utilisation de chaque plateforme de streaming. Les téléchargements Qobuz nécessitent votre propre abonnement Qobuz payant et actif.",
+    "earlierReleases": "Versions précédentes"
   },
   "qobuz": {
     "myPurchases": "Mes achats",
@@ -1052,7 +1175,20 @@
     "sortDefault": "Ordre du flux",
     "sortName": "A–Z",
     "sortTracks": "Plus de titres",
-    "connectInSettings": "Se connecter dans Paramètres"
+    "connectInSettings": "Se connecter dans Paramètres",
+    "notConnected": "Qobuz non connecté",
+    "connectToBrowseGenres": "Connectez votre compte Qobuz dans les Paramètres pour parcourir les genres.",
+    "connectFirst": "Connectez d’abord votre compte Qobuz dans les Paramètres.",
+    "searchFailed": "Échec de la recherche Qobuz",
+    "albumLoadFailed": "Échec du chargement de l’album Qobuz",
+    "playlistLoadFailed": "Échec du chargement de la playlist Qobuz",
+    "artistLoadFailed": "Échec du chargement de l’artiste Qobuz",
+    "sessionExpired": "Session Qobuz expirée, reconnectez votre compte Qobuz dans les Paramètres",
+    "notAvailableInBrowser": "Non disponible dans le navigateur",
+    "tokenRequired": "Jeton requis",
+    "tokenRejected": "Qobuz a refusé le jeton",
+    "tokenLoginFailed": "Échec de la connexion par jeton",
+    "connectAccountInSettings": "Connectez votre compte Qobuz dans les Paramètres"
   },
   "genres": {
     "title": "Genres",
@@ -1069,5 +1205,23 @@
     "qobuzOfflineTip": "Qobuz non connecté — connectez-vous dans les Paramètres",
     "region": "RÉGION",
     "quality": "QUALITÉ"
+  },
+  "app": {
+    "loadingSettings": "Chargement des paramètres...",
+    "connectingDeezer": "Connexion à Deezer...",
+    "authenticating": "Authentification...",
+    "loadingFavorites": "Chargement des favoris...",
+    "windowTitleProgress": "({progress}%) Deemix Remastered"
+  },
+  "shortcuts": {
+    "focusSearch": "Aller à la recherche",
+    "focusSearchAlt": "Aller à la recherche (alt.)",
+    "goToDownloads": "Aller aux téléchargements",
+    "openSettings": "Ouvrir les paramètres",
+    "goToHome": "Aller à l’accueil",
+    "showShortcuts": "Afficher les raccourcis clavier",
+    "closeModals": "Fermer les fenêtres",
+    "closeModalsOrBack": "Fermer les fenêtres / Revenir en arrière",
+    "pressToClose": "Appuyez sur {key} pour fermer"
   }
 }
