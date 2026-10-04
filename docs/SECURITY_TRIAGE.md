@@ -4,6 +4,14 @@ Running record of every CodeQL alert in the repo's Security tab: what it was,
 what we did, and why. Future scans that re-flag a dismissed pattern should be
 checked against this log before any code churn.
 
+## 2026-10-03, one CodeQL alert opened by the 2.6.5 pull request
+
+| Alert | Rule | Severity | Location | Outcome |
+|---|---|---|---|---|
+| 175 | js/bad-tag-filter | high | `scripts/i18n-check.ts`, the pattern that finds `<script>` blocks in Vue files | **Fixed on `rc/2.6.5` before merge; CodeQL marks it fixed.** The rewritten localization checker located script blocks with a case-sensitive pattern that also required a bare `</script>`. The rule exists for HTML sanitisers, where a missed `<SCRIPT>` is an injection path. This script is a build-time scanner that only reads the repository's own source and emits text to the terminal, so nothing was exposed and nothing ships in the app. It was still cheaper to make the pattern correct (case-insensitive, closing tag may carry whitespace or attributes) than to dismiss it. The checker was re-run against a planted hard-coded string to confirm it still reports. |
+
+Open alerts on `main` after the merge of PR #170: **0**.
+
 ## 2026-09-20, three CodeQL alerts opened by the 2.6.3 push
 
 Dependabot, secret scanning and repository advisories were all clear. Code scanning

@@ -10,6 +10,8 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+## [2.6.5] - 2026-10-03
+
 ### Summary
 
 - **The rest of the interface is translated. About 200 strings that were typed straight into the code, from the startup messages and login errors to the keyboard shortcut list, the Link Analyzer and the built-in profile names, now go through the translation system in all 21 languages, and the check that guards this was rewritten so the same patterns cannot slip past it again. Favourites save again: since 2.6.3 every change to them, including the Deezer import, failed to store. The Transfer Rack stays collapsed if you left it that way. No change to downloading, tagging or settings.**
