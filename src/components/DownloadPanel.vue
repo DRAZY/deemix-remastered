@@ -10,7 +10,22 @@ const { t } = useI18n()
 const downloadStore = useDownloadStore()
 const settingsStore = useSettingsStore()
 
-const isCollapsed = ref(false)
+// The rack remembers whether it was left collapsed, the same way the Settings
+// sections do. It used to start open on every launch, so anyone who keeps it
+// closed for the extra page width had to close it again each time (reported
+// by cisko99za on Discussions #105). Nothing reopens it automatically: a
+// download that starts while it is collapsed shows in the strip's counter.
+const RACK_COLLAPSED_KEY = 'transferRackCollapsed'
+
+function loadCollapsed(): boolean {
+  try {
+    return localStorage.getItem(RACK_COLLAPSED_KEY) === 'true'
+  } catch {
+    return false
+  }
+}
+
+const isCollapsed = ref(loadCollapsed())
 const selectedFailedId = ref<string | null>(null)
 const showFailedModal = ref(false)
 const selectedItemForDetails = ref<DownloadItem | null>(null)
@@ -101,6 +116,11 @@ function getUnitPercent(item: DownloadItem): string {
 
 function toggleCollapsed() {
   isCollapsed.value = !isCollapsed.value
+  try {
+    localStorage.setItem(RACK_COLLAPSED_KEY, String(isCollapsed.value))
+  } catch (e) {
+    console.error('[DownloadPanel] Could not persist the rack collapse state:', e)
+  }
 }
 
 async function openDownloadFolder() {
