@@ -10,6 +10,9 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+### Fixed
+- `%date%` in an artist or album folder name is the album's release date again, as it was in the original deemix (reported by @chmasek2269-oss on #172). It used to put in the day of the download, while the same variable in a file name already gave the release date. The playlist folder and the M3U name keep the download date, which is what they were built for.
+
 ## [2.6.5] - 2026-10-03
 
 ### Summary

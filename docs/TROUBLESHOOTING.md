@@ -219,7 +219,7 @@ Available in v1.5.0+. Use `%owner%` in the **Playlist** folder template (Setting
 
 ### `%date%` template variable
 
-Available in v1.5.0+. Inserts the download date in the folder name. Combine with the M3U filename template (`%playlist% - %date%`) for date-stamped playlist files.
+In artist and album folder names, `%date%` is the release date (YYYY-MM-DD), the same value it gives in file names and the date tag. In the playlist folder and the M3U filename template it is the download date, so `%playlist% - %date%` still gives date-stamped playlist files. Before 2.6.6 every folder got the download date (#172).
 
 ---
 
