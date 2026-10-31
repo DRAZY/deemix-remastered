@@ -1819,11 +1819,13 @@ export class DeemixServer extends EventEmitter {
           skipDuplicateTracks: this.settings.skipDuplicateTracks,
           createErrorLog: this.settings.createErrorLog,
           overwriteMode,
-          // Album M3U tracking (#121). playlistPosition orders the M3U entries;
-          // for an album that's the track position. isFromPlaylist stays false
-          // so no playlist folder is created.
+          // Album M3U tracking (#121). playlistPosition is the per-disc track
+          // position (it feeds %position%); m3uPosition orders the M3U disc by
+          // disc, since track_position restarts on each disc (#176).
+          // isFromPlaylist stays false so no playlist folder is created.
           _m3uTrackerId: albumM3uId,
-          playlistPosition: track.track_position
+          playlistPosition: track.track_position,
+          m3uPosition: (track.disk_number || 1) * 10000 + (track.track_position || 0)
         })
         downloadIds.push(downloadId)
       }

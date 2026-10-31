@@ -138,6 +138,10 @@ export interface DownloadOptions {
   // inheriting the substituted release's numbering (#102/#103).
   trackNumber?: number
   playlistPosition?: number
+  // M3U sort key when it must differ from playlistPosition. A multi-disc
+  // album restarts track_position on every disc, so sorting by it interleaves
+  // the discs (#176); playlistPosition stays per-disc for %position%.
+  m3uPosition?: number
   // Playlist context - for compilation handling
   playlistContext?: {
     playlistId: string | number
@@ -951,7 +955,7 @@ export class Downloader extends EventEmitter {
       const recordM3U = (absolutePath: string) => {
         if (options._m3uTrackerId) {
           this.recordM3UEntry(options._m3uTrackerId || options.playlistName || '', {
-            position: options.playlistPosition || 0,
+            position: options.m3uPosition || options.playlistPosition || 0,
             duration: shim.DURATION || 0,
             artist: shim.ART_NAME || 'Unknown Artist',
             title: progress.trackTitle || shim.SNG_TITLE || 'Unknown Track',
@@ -1525,7 +1529,7 @@ export class Downloader extends EventEmitter {
         // M3U: point the playlist entry at the file we already have.
         if (options._m3uTrackerId) {
           this.recordM3UEntry(options._m3uTrackerId || options.playlistName || "", {
-            position: options.playlistPosition || 0,
+            position: options.m3uPosition || options.playlistPosition || 0,
             duration: trackInfo.DURATION || 0,
             artist: trackInfo.ART_NAME || 'Unknown Artist',
             title: progress.trackTitle || trackInfo.SNG_TITLE || 'Unknown Track',
@@ -1553,7 +1557,7 @@ export class Downloader extends EventEmitter {
       // Record skipped file for M3U — it still exists on disk
       if (options._m3uTrackerId) {
         this.recordM3UEntry(options._m3uTrackerId || options.playlistName || "", {
-          position: options.playlistPosition || 0,
+          position: options.m3uPosition || options.playlistPosition || 0,
           duration: trackInfo.DURATION || 0,
           artist: trackInfo.ART_NAME || 'Unknown Artist',
           title: progress.trackTitle || trackInfo.SNG_TITLE || 'Unknown Track',
@@ -1780,7 +1784,7 @@ export class Downloader extends EventEmitter {
       // Record actual file path for M3U generation (playlist tracks only)
       if (options._m3uTrackerId) {
         this.recordM3UEntry(options._m3uTrackerId || options.playlistName || "", {
-          position: options.playlistPosition || 0,
+          position: options.m3uPosition || options.playlistPosition || 0,
           duration: trackInfo.DURATION || 0,
           artist: trackInfo.ART_NAME || 'Unknown Artist',
           title: progress.trackTitle || trackInfo.SNG_TITLE || 'Unknown Track',
