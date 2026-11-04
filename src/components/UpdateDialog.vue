@@ -7,6 +7,14 @@ const { t } = useI18n()
 const updateStore = useUpdateStore()
 const status = computed(() => updateStore.status)
 
+// Release notes are markdown from GitHub, shown as plain text: never rendered as HTML.
+const notes = computed(() => (status.value.notes ?? '')
+  .replace(/^#{1,6}\s+/gm, '')
+  .replace(/^[-*]\s+/gm, '• ')
+  .replace(/\*\*(.+?)\*\*/g, '$1')
+  .replace(/\[(.+?)\]\(.+?\)/g, '$1')
+  .trim())
+
 const manualNote = computed(() => {
   switch (status.value.manualReason) {
     case 'unsigned': return t('updates.manualUnsigned')
@@ -38,9 +46,9 @@ const manualNote = computed(() => {
               {{ t('updates.dialogBody', { version: status.latest ?? '', current: status.current }) }}
             </p>
             <p v-if="manualNote" class="text-sm text-[#ffb454]">{{ manualNote }}</p>
-            <div v-if="status.notes">
+            <div v-if="notes">
               <p class="text-xs uppercase tracking-wide text-foreground-muted mb-1">{{ t('updates.whatsNew') }}</p>
-              <div class="max-h-56 overflow-y-auto text-sm text-foreground whitespace-pre-wrap border border-white/[0.08] p-3">{{ status.notes }}</div>
+              <div class="max-h-56 overflow-y-auto text-sm text-foreground whitespace-pre-wrap border border-white/[0.08] p-3">{{ notes }}</div>
             </div>
           </div>
           <div class="px-6 py-4 flex flex-wrap items-center justify-end gap-3 border-t border-white/[0.08]">
