@@ -456,7 +456,6 @@
     "paddedNumbers": "أرقام المسارات بأصفار",
     "paddedNumbersDesc": "إضافة أصفار في البداية (01، 02، إلخ)",
     "openFolder": "فتح المجلد",
-    "checkUpdates": "التحقق من التحديثات عند البدء",
     "playlistAsCompilation": "حفظ قوائم التشغيل كمجموعة",
     "useNullSeparator": "استخدام الفاصل الفارغ",
     "saveId3v1": "حفظ ID3v1 أيضاً",
@@ -731,7 +730,8 @@
     "loggedInAs": "تم تسجيل الدخول باسم {name}",
     "enterArl": "يرجى إدخال رمز ARL",
     "authFailed": "فشل التحقق من الهوية",
-    "serverConnectFailed": "فشل الاتصال بالخادم"
+    "serverConnectFailed": "فشل الاتصال بالخادم",
+    "connectionBlocked": "حظر نظامك الاتصال بـ Deezer. اسمح لـ Deemix Remastered عبر جدار الحماية أو برنامج مكافحة الفيروسات، أو تحقق من VPN أو الوكيل، ثم حاول مرة أخرى."
   },
   "common": {
     "download": "تحميل",
@@ -924,7 +924,6 @@
     "resumingInterrupted": "استئناف {count} تنزيل منقطع… | استئناف {count} تنزيلات منقطعة…",
     "removedFromFavorites": "تمت إزالة \"{name}\" من المفضلة",
     "addedToFavorites": "تمت إضافة \"{name}\" إلى المفضلة",
-    "updateAvailable": "يتوفر تحديث: v{version}. انتقل إلى الإعدادات > حول للتنزيل.",
     "profileSaveFailed": "فشل حفظ الملف الشخصي",
     "configExported": "تم تصدير الإعدادات (الإعدادات + الملفات الشخصية)",
     "configImported": "تم استيراد الإعدادات (الإعدادات + الملفات الشخصية)",
@@ -1223,5 +1222,36 @@
     "closeModals": "إغلاق النوافذ المنبثقة",
     "closeModalsOrBack": "إغلاق النوافذ المنبثقة / الرجوع",
     "pressToClose": "اضغط {key} للإغلاق"
+  },
+  "updates": {
+    "dialogTitle": "يتوفر تحديث",
+    "dialogBody": "يتوفر Deemix Remastered v{version}. لديك الإصدار v{current}.",
+    "whatsNew": "ما الجديد",
+    "updateNow": "التحديث الآن",
+    "downloadUpdate": "تنزيل التحديث",
+    "later": "التحديث لاحقًا",
+    "skip": "تخطي هذا الإصدار",
+    "hide": "إخفاء",
+    "downloading": "جارٍ تنزيل التحديث… {percent}%",
+    "ready": "الإصدار {version} جاهز. أعد التشغيل لإكمال التحديث.",
+    "busyWarning": "لا تزال هناك تنزيلات قيد التشغيل. ستؤدي إعادة التشغيل الآن إلى مقاطعتها.",
+    "restartNow": "إعادة التشغيل الآن",
+    "restartLater": "إعادة التشغيل لاحقًا",
+    "checkNow": "التحقق الآن",
+    "checking": "جارٍ التحقق…",
+    "upToDate": "لديك أحدث إصدار.",
+    "checkFailed": "تعذّر التحقق من وجود تحديثات.",
+    "statusAvailable": "الإصدار {version} متاح.",
+    "skipped": "لقد تخطيت الإصدار {version}.",
+    "manualUnsigned": "يتطلب هذا التحديث تنزيلًا يدويًا لمرة واحدة. ستُثبَّت التحديثات اللاحقة تلقائيًا.",
+    "manualReadonly": "لا يمكن للتطبيق الكتابة في مجلده، لذا نزّل الإصدار الجديد من صفحة الإصدارات.",
+    "manualUnsupported": "هذا التثبيت لا يحدّث نفسه. احصل على الإصدار الجديد من صفحة الإصدارات أو من مدير الحزم.",
+    "manualFailed": "تعذّر تثبيت التحديث: {error}. يمكنك تنزيله من صفحة الإصدارات.",
+    "every": "التحقق من وجود تحديثات",
+    "everyHour": "كل ساعة",
+    "everySixHours": "كل 6 ساعات",
+    "everyDay": "مرة في اليوم",
+    "everyLaunch": "عند فتح التطبيق فقط",
+    "everyNever": "أبدًا"
   }
 }

@@ -456,7 +456,6 @@
     "paddedNumbers": "Aufgefüllte Titelnummern",
     "paddedNumbersDesc": "Führende Nullen hinzufügen (01, 02, etc.)",
     "openFolder": "Ordner öffnen",
-    "checkUpdates": "Beim Start nach Updates suchen",
     "playlistAsCompilation": "Playlists als Compilation speichern",
     "useNullSeparator": "Null-Trennzeichen verwenden",
     "saveId3v1": "Auch ID3v1 speichern",
@@ -731,7 +730,8 @@
     "loggedInAs": "Angemeldet als {name}",
     "enterArl": "Bitte gib einen ARL-Token ein",
     "authFailed": "Authentifizierung fehlgeschlagen",
-    "serverConnectFailed": "Verbindung zum Server fehlgeschlagen"
+    "serverConnectFailed": "Verbindung zum Server fehlgeschlagen",
+    "connectionBlocked": "Dein System hat die Verbindung zu Deezer blockiert. Erlaube Deemix Remastered in deiner Firewall oder deinem Virenschutz oder prüfe dein VPN oder deinen Proxy und versuche es dann erneut."
   },
   "common": {
     "download": "Herunterladen",
@@ -924,7 +924,6 @@
     "resumingInterrupted": "{count} unterbrochener Download wird fortgesetzt… | {count} unterbrochene Downloads werden fortgesetzt…",
     "removedFromFavorites": "\"{name}\" aus Favoriten entfernt",
     "addedToFavorites": "\"{name}\" zu Favoriten hinzugefügt",
-    "updateAvailable": "Update verfügbar: v{version}. Öffne Einstellungen > Über, um es herunterzuladen.",
     "profileSaveFailed": "Profil konnte nicht gespeichert werden",
     "configExported": "Konfiguration exportiert (Einstellungen + Profile)",
     "configImported": "Konfiguration importiert (Einstellungen + Profile)",
@@ -1223,5 +1222,36 @@
     "closeModals": "Dialoge schließen",
     "closeModalsOrBack": "Dialoge schließen / Zurück",
     "pressToClose": "Zum Schließen {key} drücken"
+  },
+  "updates": {
+    "dialogTitle": "Update verfügbar",
+    "dialogBody": "Deemix Remastered v{version} ist verfügbar. Du nutzt v{current}.",
+    "whatsNew": "Was ist neu",
+    "updateNow": "Jetzt aktualisieren",
+    "downloadUpdate": "Update herunterladen",
+    "later": "Später aktualisieren",
+    "skip": "Diese Version überspringen",
+    "hide": "Ausblenden",
+    "downloading": "Update wird heruntergeladen… {percent}%",
+    "ready": "Version {version} ist bereit. Starte neu, um das Update abzuschließen.",
+    "busyWarning": "Es laufen noch Downloads. Ein Neustart würde sie unterbrechen.",
+    "restartNow": "Jetzt neu starten",
+    "restartLater": "Später neu starten",
+    "checkNow": "Jetzt prüfen",
+    "checking": "Wird geprüft…",
+    "upToDate": "Du hast die neueste Version.",
+    "checkFailed": "Suche nach Updates fehlgeschlagen.",
+    "statusAvailable": "Version {version} ist verfügbar.",
+    "skipped": "Du hast Version {version} übersprungen.",
+    "manualUnsigned": "Dieses Update muss einmalig manuell heruntergeladen werden. Spätere Updates installieren sich selbst.",
+    "manualReadonly": "Die App kann nicht in ihren Ordner schreiben. Lade die neue Version von der Release-Seite herunter.",
+    "manualUnsupported": "Diese Installation aktualisiert sich nicht selbst. Hol dir die neue Version von der Release-Seite oder über deinen Paketmanager.",
+    "manualFailed": "Das Update konnte nicht installiert werden: {error}. Du kannst es von der Release-Seite herunterladen.",
+    "every": "Nach Updates suchen",
+    "everyHour": "Stündlich",
+    "everySixHours": "Alle 6 Stunden",
+    "everyDay": "Einmal täglich",
+    "everyLaunch": "Nur beim Öffnen der App",
+    "everyNever": "Nie"
   }
 }

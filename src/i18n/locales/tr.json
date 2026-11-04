@@ -456,7 +456,6 @@
     "paddedNumbers": "Dolgulu şarkı numaraları",
     "paddedNumbersDesc": "Önde sıfırlar ekle (01, 02, vb.)",
     "openFolder": "Klasörü aç",
-    "checkUpdates": "Başlangıçta güncellemeleri kontrol et",
     "playlistAsCompilation": "Çalma listelerini derleme olarak kaydet",
     "useNullSeparator": "Boş ayırıcı kullan",
     "saveId3v1": "ID3v1'i de kaydet",
@@ -731,7 +730,8 @@
     "loggedInAs": "{name} olarak giriş yapıldı",
     "enterArl": "Lütfen bir ARL token girin",
     "authFailed": "Kimlik doğrulama başarısız",
-    "serverConnectFailed": "Sunucuya bağlanılamadı"
+    "serverConnectFailed": "Sunucuya bağlanılamadı",
+    "connectionBlocked": "Sisteminiz Deezer bağlantısını engelledi. Güvenlik duvarınızda veya antivirüsünüzde Deemix Remastered'a izin verin ya da VPN veya proxy ayarlarınızı denetleyin, sonra yeniden deneyin."
   },
   "common": {
     "download": "İndir",
@@ -924,7 +924,6 @@
     "resumingInterrupted": "{count} yarıda kalan indirme sürdürülüyor… | {count} yarıda kalan indirme sürdürülüyor…",
     "removedFromFavorites": "\"{name}\" favorilerden kaldırıldı",
     "addedToFavorites": "\"{name}\" favorilere eklendi",
-    "updateAvailable": "Güncelleme mevcut: v{version}. İndirmek için Ayarlar > Hakkında bölümüne gidin.",
     "profileSaveFailed": "Profil kaydedilemedi",
     "configExported": "Yapılandırma dışa aktarıldı (ayarlar + profiller)",
     "configImported": "Yapılandırma içe aktarıldı (ayarlar + profiller)",
@@ -1223,5 +1222,36 @@
     "closeModals": "Pencereleri kapat",
     "closeModalsOrBack": "Pencereleri kapat / Geri git",
     "pressToClose": "Kapatmak için {key} tuşuna basın"
+  },
+  "updates": {
+    "dialogTitle": "Güncelleme mevcut",
+    "dialogBody": "Deemix Remastered v{version} kullanılabilir. Sizdeki sürüm v{current}.",
+    "whatsNew": "Yenilikler",
+    "updateNow": "Şimdi güncelle",
+    "downloadUpdate": "Güncellemeyi indir",
+    "later": "Daha sonra güncelle",
+    "skip": "Bu sürümü atla",
+    "hide": "Gizle",
+    "downloading": "Güncelleme indiriliyor… %{percent}",
+    "ready": "{version} sürümü hazır. Güncellemeyi tamamlamak için yeniden başlatın.",
+    "busyWarning": "İndirmeler hâlâ devam ediyor. Şimdi yeniden başlatmak onları yarıda keser.",
+    "restartNow": "Şimdi yeniden başlat",
+    "restartLater": "Daha sonra yeniden başlat",
+    "checkNow": "Şimdi denetle",
+    "checking": "Denetleniyor…",
+    "upToDate": "En son sürümü kullanıyorsunuz.",
+    "checkFailed": "Güncellemeler denetlenemedi.",
+    "statusAvailable": "{version} sürümü kullanılabilir.",
+    "skipped": "{version} sürümünü atladınız.",
+    "manualUnsigned": "Bu güncelleme bir kez elle indirilmeli. Sonraki güncellemeler kendiliğinden kurulur.",
+    "manualReadonly": "Uygulama kendi klasörüne yazamıyor, bu yüzden yeni sürümü sürümler sayfasından indirin.",
+    "manualUnsupported": "Bu kurulum kendini güncellemez. Yeni sürümü sürümler sayfasından veya paket yöneticinizden alın.",
+    "manualFailed": "Güncelleme kurulamadı: {error}. Sürümler sayfasından indirebilirsiniz.",
+    "every": "Güncellemeleri denetle",
+    "everyHour": "Saatte bir",
+    "everySixHours": "6 saatte bir",
+    "everyDay": "Günde bir kez",
+    "everyLaunch": "Yalnızca uygulama açılırken",
+    "everyNever": "Asla"
   }
 }

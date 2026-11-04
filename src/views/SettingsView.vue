@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useSettingsStore, type ColorTheme } from '../stores/settingsStore'
 import { useProfileStore } from '../stores/profileStore'
 import { useToastStore } from '../stores/toastStore'
+import { useUpdateStore } from '../stores/updateStore'
 import { useAuthStore } from '../stores/authStore'
 import { SUPPORTED_LOCALES, setLocale, getCurrentLocale } from '../i18n'
 import FlagIcon from '../components/FlagIcon.vue'
@@ -13,6 +14,7 @@ import { useContextMenu } from '../composables/useContextMenu'
 
 const { t } = useI18n()
 const settingsStore = useSettingsStore()
+const updateStore = useUpdateStore()
 const authStore = useAuthStore()
 const profileStore = useProfileStore()
 
@@ -1764,18 +1766,46 @@ async function reindexLibrary() {
       </h2>
 
       <div v-show="expandedSections.other" class="space-y-6 pt-6">
+        <!-- App updates -->
+        <div class="space-y-3 pb-6 border-b border-white/[0.08]">
+          <div class="flex flex-wrap items-center gap-3">
+            <label for="update-check-every" class="text-sm">{{ t('updates.every') }}</label>
+            <select id="update-check-every" v-model="settingsStore.settings.updateCheckEvery" class="input w-auto text-sm">
+              <option value="hour">{{ t('updates.everyHour') }}</option>
+              <option value="sixHours">{{ t('updates.everySixHours') }}</option>
+              <option value="day">{{ t('updates.everyDay') }}</option>
+              <option value="launch">{{ t('updates.everyLaunch') }}</option>
+              <option value="never">{{ t('updates.everyNever') }}</option>
+            </select>
+            <button
+              type="button"
+              class="btn btn-secondary text-sm"
+              :disabled="updateStore.status.state === 'checking' || updateStore.status.state === 'downloading'"
+              @click="updateStore.checkNow()"
+            >
+              {{ t('updates.checkNow') }}
+            </button>
+          </div>
+          <p class="text-sm text-foreground-muted">
+            <template v-if="updateStore.status.state === 'checking'">{{ t('updates.checking') }}</template>
+            <template v-else-if="updateStore.status.state === 'none'">{{ t('updates.upToDate') }}</template>
+            <template v-else-if="updateStore.status.state === 'error'">{{ t('updates.checkFailed') }}</template>
+            <template v-else-if="updateStore.status.state === 'downloading'">{{ t('updates.downloading', { percent: updateStore.status.progress ?? 0 }) }}</template>
+            <template v-else-if="updateStore.status.state === 'ready'">
+              {{ t('updates.ready', { version: updateStore.status.latest ?? '' }) }}
+              <button type="button" class="text-primary-500 hover:underline ml-1" @click="updateStore.dialogOpen = true">{{ t('updates.restartNow') }}</button>
+            </template>
+            <template v-else-if="updateStore.status.state === 'available'">
+              {{ updateStore.status.latest === updateStore.skippedVersion ? t('updates.skipped', { version: updateStore.status.latest ?? '' }) : t('updates.statusAvailable', { version: updateStore.status.latest ?? '' }) }}
+              <button type="button" class="text-primary-500 hover:underline ml-1" @click="updateStore.dialogOpen = true">{{ t('updates.updateNow') }}</button>
+            </template>
+          </p>
+        </div>
+
         <!-- Checkbox options - 2 columns -->
         <div class="grid grid-cols-2 gap-x-8 gap-y-3">
         <!-- Column 1 -->
         <div class="space-y-3">
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              v-model="settingsStore.settings.checkForUpdates"
-              class="w-4 h-4 accent-primary-500"
-            />
-            <span class="text-sm">{{ t('settings.checkUpdates') }}</span>
-          </label>
           <label class="flex items-center gap-3 cursor-pointer">
             <input
               type="checkbox"

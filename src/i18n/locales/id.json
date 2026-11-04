@@ -456,7 +456,6 @@
     "paddedNumbers": "Nomor lagu dengan nol",
     "paddedNumbersDesc": "Tambahkan nol di depan (01, 02, dll.)",
     "openFolder": "Buka folder",
-    "checkUpdates": "Periksa pembaruan saat mulai",
     "playlistAsCompilation": "Simpan playlist sebagai kompilasi",
     "useNullSeparator": "Gunakan pemisah null",
     "saveId3v1": "Simpan ID3v1 juga",
@@ -731,7 +730,8 @@
     "loggedInAs": "Masuk sebagai {name}",
     "enterArl": "Silakan masukkan token ARL",
     "authFailed": "Autentikasi gagal",
-    "serverConnectFailed": "Gagal terhubung ke server"
+    "serverConnectFailed": "Gagal terhubung ke server",
+    "connectionBlocked": "Sistem Anda memblokir koneksi ke Deezer. Izinkan Deemix Remastered di firewall atau antivirus Anda, atau periksa VPN atau proxy Anda, lalu coba lagi."
   },
   "common": {
     "download": "Unduh",
@@ -843,7 +843,6 @@
     "resumingInterrupted": "Melanjutkan {count} unduhan yang terputus… | Melanjutkan {count} unduhan yang terputus…",
     "removedFromFavorites": "\"{name}\" dihapus dari favorit",
     "addedToFavorites": "\"{name}\" ditambahkan ke favorit",
-    "updateAvailable": "Pembaruan tersedia: v{version}. Kunjungi Pengaturan > Tentang untuk mengunduh.",
     "profileSaveFailed": "Gagal menyimpan profil",
     "configExported": "Konfigurasi diekspor (pengaturan + profil)",
     "configImported": "Konfigurasi diimpor (pengaturan + profil)",
@@ -1223,5 +1222,36 @@
     "closeModals": "Tutup jendela dialog",
     "closeModalsOrBack": "Tutup jendela dialog / Kembali",
     "pressToClose": "Tekan {key} untuk menutup"
+  },
+  "updates": {
+    "dialogTitle": "Pembaruan tersedia",
+    "dialogBody": "Deemix Remastered v{version} tersedia. Anda memakai v{current}.",
+    "whatsNew": "Yang baru",
+    "updateNow": "Perbarui sekarang",
+    "downloadUpdate": "Unduh pembaruan",
+    "later": "Perbarui nanti",
+    "skip": "Lewati versi ini",
+    "hide": "Sembunyikan",
+    "downloading": "Mengunduh pembaruan… {percent}%",
+    "ready": "Versi {version} sudah siap. Mulai ulang untuk menyelesaikan pembaruan.",
+    "busyWarning": "Unduhan masih berjalan. Memulai ulang sekarang akan menghentikannya.",
+    "restartNow": "Mulai ulang sekarang",
+    "restartLater": "Mulai ulang nanti",
+    "checkNow": "Periksa sekarang",
+    "checking": "Memeriksa…",
+    "upToDate": "Anda memakai versi terbaru.",
+    "checkFailed": "Tidak dapat memeriksa pembaruan.",
+    "statusAvailable": "Versi {version} tersedia.",
+    "skipped": "Anda melewati versi {version}.",
+    "manualUnsigned": "Pembaruan ini perlu diunduh manual satu kali. Pembaruan berikutnya akan terpasang sendiri.",
+    "manualReadonly": "Aplikasi tidak bisa menulis ke foldernya, jadi unduh versi baru dari halaman rilis.",
+    "manualUnsupported": "Instalasi ini tidak memperbarui dirinya sendiri. Dapatkan versi baru dari halaman rilis atau pengelola paket Anda.",
+    "manualFailed": "Pembaruan tidak dapat dipasang: {error}. Anda bisa mengunduhnya dari halaman rilis.",
+    "every": "Periksa pembaruan",
+    "everyHour": "Setiap jam",
+    "everySixHours": "Setiap 6 jam",
+    "everyDay": "Sekali sehari",
+    "everyLaunch": "Hanya saat aplikasi dibuka",
+    "everyNever": "Tidak pernah"
   }
 }

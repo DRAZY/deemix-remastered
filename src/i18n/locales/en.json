@@ -578,7 +578,6 @@
     "paddedNumbers": "Padded track numbers",
     "paddedNumbersDesc": "Add leading zeros (01, 02, etc.)",
     "openFolder": "Open folder",
-    "checkUpdates": "Check for updates on startup",
     "playlistAsCompilation": "Save playlists as compilation",
     "useNullSeparator": "Use null separator",
     "saveId3v1": "Save ID3v1 as well",
@@ -796,7 +795,8 @@
     "loggedInAs": "Logged in as {name}",
     "enterArl": "Please enter an ARL token",
     "authFailed": "Authentication failed",
-    "serverConnectFailed": "Failed to connect to server"
+    "serverConnectFailed": "Failed to connect to server",
+    "connectionBlocked": "Your system blocked the connection to Deezer. Allow Deemix Remastered through your firewall or antivirus, or check your VPN or proxy, then try again."
   },
   "common": {
     "download": "Download",
@@ -998,7 +998,6 @@
     "resumingInterrupted": "Resuming {count} interrupted download… | Resuming {count} interrupted downloads…",
     "removedFromFavorites": "Removed \"{name}\" from favorites",
     "addedToFavorites": "Added \"{name}\" to favorites",
-    "updateAvailable": "Update available: v{version}. Visit Settings > About to download.",
     "profileSaveFailed": "Failed to save profile",
     "configExported": "Configuration exported (settings + profiles)",
     "configImported": "Configuration imported (settings + profiles)",
@@ -1223,5 +1222,36 @@
     "closeModals": "Close modals",
     "closeModalsOrBack": "Close modals / Go back",
     "pressToClose": "Press {key} to close"
+  },
+  "updates": {
+    "dialogTitle": "Update available",
+    "dialogBody": "Deemix Remastered v{version} is available. You're on v{current}.",
+    "whatsNew": "What's new",
+    "updateNow": "Update now",
+    "downloadUpdate": "Download update",
+    "later": "Update later",
+    "skip": "Skip this version",
+    "hide": "Hide",
+    "downloading": "Downloading update… {percent}%",
+    "ready": "Version {version} is ready. Restart to finish updating.",
+    "busyWarning": "Downloads are still running. Restarting now will interrupt them.",
+    "restartNow": "Restart now",
+    "restartLater": "Restart later",
+    "checkNow": "Check now",
+    "checking": "Checking…",
+    "upToDate": "You're on the latest version.",
+    "checkFailed": "Couldn't check for updates.",
+    "statusAvailable": "Version {version} is available.",
+    "skipped": "You skipped version {version}.",
+    "manualUnsigned": "This update needs a one-time manual download. Later updates will install themselves.",
+    "manualReadonly": "The app can't write to its folder, so download the new version from the release page.",
+    "manualUnsupported": "This install doesn't update itself. Get the new version from the release page or your package manager.",
+    "manualFailed": "The update couldn't install: {error}. You can download it from the release page.",
+    "every": "Check for updates",
+    "everyHour": "Every hour",
+    "everySixHours": "Every 6 hours",
+    "everyDay": "Once a day",
+    "everyLaunch": "Only when the app opens",
+    "everyNever": "Never"
   }
 }

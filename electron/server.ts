@@ -430,7 +430,6 @@ interface ServerSettings {
   // Album cover settings
   albumCovers: AlbumCoverSettings
   // Other settings
-  checkForUpdates: boolean
   savePlaylistAsCompilation: boolean
   useNullSeparator: boolean
   saveID3v1: boolean
@@ -532,7 +531,6 @@ export class DeemixServer extends EventEmitter {
       jpegImageQuality: 90
     },
     // Other settings
-    checkForUpdates: true,
     savePlaylistAsCompilation: false,
     useNullSeparator: false,
     saveID3v1: false,
@@ -1098,7 +1096,7 @@ export class DeemixServer extends EventEmitter {
       })
     } catch (error: any) {
       console.error('[Server] Login error:', logSafe(error.message))
-      this.sendJSON(res, { error: error.message || 'Login failed' }, 401)
+      this.sendJSON(res, { error: error.message || 'Login failed', code: error.code }, 401)
     }
   }
 
@@ -1142,7 +1140,7 @@ export class DeemixServer extends EventEmitter {
       })
     } catch (error: any) {
       console.error('[Server] Email login error:', logSafe(error.message))
-      this.sendJSON(res, { error: error.message || 'Login failed' }, 401)
+      this.sendJSON(res, { error: error.message || 'Login failed', code: error.code }, 401)
     }
   }
 
@@ -1178,7 +1176,7 @@ export class DeemixServer extends EventEmitter {
       })
     } catch (error: any) {
       console.error('[Server] CAPTCHA login error:', logSafe(error.message))
-      this.sendJSON(res, { error: error.message || 'CAPTCHA verification failed' }, 401)
+      this.sendJSON(res, { error: error.message || 'CAPTCHA verification failed', code: error.code }, 401)
     }
   }
 
@@ -2493,7 +2491,7 @@ export class DeemixServer extends EventEmitter {
 
       // Validate Other settings - boolean checkboxes
       const otherBooleanSettings: (keyof ServerSettings)[] = [
-        'checkForUpdates', 'savePlaylistAsCompilation', 'useNullSeparator',
+        'savePlaylistAsCompilation', 'useNullSeparator',
         'saveID3v1', 'saveOnlyMainArtist', 'keepVariousArtists',
         'removeAlbumVersion', 'removeArtistCombinations'
       ]

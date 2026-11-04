@@ -456,7 +456,6 @@
     "paddedNumbers": "Numery utworów z zerami",
     "paddedNumbersDesc": "Dodaj zera wiodące (01, 02, itp.)",
     "openFolder": "Otwórz folder",
-    "checkUpdates": "Sprawdzaj aktualizacje przy uruchomieniu",
     "playlistAsCompilation": "Zapisz playlisty jako kompilację",
     "useNullSeparator": "Użyj separatora null",
     "saveId3v1": "Zapisz również ID3v1",
@@ -731,7 +730,8 @@
     "loggedInAs": "Zalogowano jako {name}",
     "enterArl": "Wprowadź token ARL",
     "authFailed": "Uwierzytelnianie nie powiodło się",
-    "serverConnectFailed": "Nie udało się połączyć z serwerem"
+    "serverConnectFailed": "Nie udało się połączyć z serwerem",
+    "connectionBlocked": "System zablokował połączenie z Deezer. Zezwól na Deemix Remastered w zaporze lub antywirusie albo sprawdź VPN lub proxy, a potem spróbuj ponownie."
   },
   "common": {
     "download": "Pobierz",
@@ -924,7 +924,6 @@
     "resumingInterrupted": "Wznawianie {count} przerwanego pobierania… | Wznawianie {count} przerwanych pobierań…",
     "removedFromFavorites": "Usunięto \"{name}\" z ulubionych",
     "addedToFavorites": "Dodano \"{name}\" do ulubionych",
-    "updateAvailable": "Dostępna aktualizacja: v{version}. Przejdź do Ustawienia > O programie, aby pobrać.",
     "profileSaveFailed": "Nie udało się zapisać profilu",
     "configExported": "Konfiguracja wyeksportowana (ustawienia + profile)",
     "configImported": "Konfiguracja zaimportowana (ustawienia + profile)",
@@ -1223,5 +1222,36 @@
     "closeModals": "Zamknij okna",
     "closeModalsOrBack": "Zamknij okna / Wstecz",
     "pressToClose": "Naciśnij {key}, aby zamknąć"
+  },
+  "updates": {
+    "dialogTitle": "Dostępna aktualizacja",
+    "dialogBody": "Dostępny jest Deemix Remastered v{version}. Masz wersję v{current}.",
+    "whatsNew": "Co nowego",
+    "updateNow": "Aktualizuj teraz",
+    "downloadUpdate": "Pobierz aktualizację",
+    "later": "Aktualizuj później",
+    "skip": "Pomiń tę wersję",
+    "hide": "Ukryj",
+    "downloading": "Pobieranie aktualizacji… {percent}%",
+    "ready": "Wersja {version} jest gotowa. Uruchom ponownie, aby dokończyć aktualizację.",
+    "busyWarning": "Pobierania wciąż trwają. Ponowne uruchomienie teraz je przerwie.",
+    "restartNow": "Uruchom ponownie teraz",
+    "restartLater": "Uruchom ponownie później",
+    "checkNow": "Sprawdź teraz",
+    "checking": "Sprawdzanie…",
+    "upToDate": "Masz najnowszą wersję.",
+    "checkFailed": "Nie udało się sprawdzić aktualizacji.",
+    "statusAvailable": "Dostępna jest wersja {version}.",
+    "skipped": "Pominięto wersję {version}.",
+    "manualUnsigned": "Ta aktualizacja wymaga jednorazowego ręcznego pobrania. Kolejne zainstalują się same.",
+    "manualReadonly": "Aplikacja nie może zapisywać w swoim folderze, więc pobierz nową wersję ze strony wydań.",
+    "manualUnsupported": "Ta instalacja nie aktualizuje się sama. Pobierz nową wersję ze strony wydań lub przez menedżer pakietów.",
+    "manualFailed": "Nie udało się zainstalować aktualizacji: {error}. Możesz ją pobrać ze strony wydań.",
+    "every": "Sprawdzaj aktualizacje",
+    "everyHour": "Co godzinę",
+    "everySixHours": "Co 6 godzin",
+    "everyDay": "Raz dziennie",
+    "everyLaunch": "Tylko przy otwarciu aplikacji",
+    "everyNever": "Nigdy"
   }
 }

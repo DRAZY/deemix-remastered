@@ -10,7 +10,16 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+### Added
+- **In-app updates.** When a new version is out, the app asks: Update now, Update later or Skip this version, with the release notes in the dialog. Update now downloads it and restarts into it, and waits for your restart if downloads are running. Update later asks again the next time the app opens. Skip this version stays quiet until a newer one comes out. Settings > Other has how often to check and a Check now button. Mac, the Windows installer and portable builds, and the Linux AppImage update themselves; .deb and AUR installs get a link to the release page.
+
+### Changed
+- **The Mac app is now signed with a Developer ID and notarized by Apple,** so it opens without a Gatekeeper warning. Mac users need to download this version by hand once, since an ad-hoc build can't update itself to a signed one. Later updates install themselves.
+
 ### Fixed
+- Album playlist files for multi-disc Deezer albums go through disc 1, then disc 2, instead of mixing the discs together (reported by @username227 on #176).
+- When a firewall, antivirus, VPN or proxy blocks the connection to Deezer, the login screen says so instead of showing a raw `connect EACCES` error, and a block like that no longer signs you out (#175).
+- If saved credentials can't be decrypted, for example because keychain access was denied, the app now treats them as missing instead of trying to use the encrypted text.
 - `%date%` in an artist or album folder name is the album's release date again, as it was in the original deemix (reported by @chmasek2269-oss on #172). It used to put in the day of the download, while the same variable in a file name already gave the release date. The playlist folder and the M3U name keep the download date, which is what they were built for.
 
 ## [2.6.5] - 2026-10-03
