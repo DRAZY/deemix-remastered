@@ -81,6 +81,10 @@ Runs in a special privileged context that exposes a small, allow-listed API to t
 
 Full Node.js, owns the window lifecycle, runs a local HTTP server, owns the auth session and downloader. This is also where all I/O happens.
 
+#### App updates — `electron/appUpdate.ts`, `electron/updatePlan.ts`
+
+Checks GitHub Releases on launch and on the schedule in Settings, and pushes `update:status` to the renderer, where `src/stores/updateStore.ts` and `src/components/UpdateDialog.vue` offer Update now, Update later and Skip this version. Nothing downloads until the user chooses. Mac, the Windows installer and the Linux AppImage install through electron-updater, the Windows portable exe swaps itself after a SHA-256 check against GitHub, and .deb, AUR and unsigned builds open the release page. The feeds come from `scripts/write-update-feeds.ts`.
+
 #### Local HTTP Server — `electron/server.ts`
 
 Runs on `127.0.0.1:6595` (port shifts on collision). Serves `/api/*` endpoints to the renderer. Routes:

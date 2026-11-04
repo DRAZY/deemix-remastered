@@ -10,6 +10,8 @@ Entries use a compact format, short bullets, one line each. Full per-version det
 
 ## [Unreleased]
 
+## [2.6.6] - 2026-11-04
+
 ### Added
 - **In-app updates.** When a new version is out, the app asks: Update now, Update later or Skip this version, with the release notes in the dialog. Update now downloads it and restarts into it, and waits for your restart if downloads are running. Update later asks again the next time the app opens. Skip this version stays quiet until a newer one comes out. Settings > Other has how often to check and a Check now button. Mac, the Windows installer and portable builds, and the Linux AppImage update themselves; .deb and AUR installs get a link to the release page.
 
