@@ -456,7 +456,6 @@
     "paddedNumbers": "Brojevi pjesama s nulama",
     "paddedNumbersDesc": "Dodaj vodeće nule (01, 02, itd.)",
     "openFolder": "Otvori mapu",
-    "checkUpdates": "Provjeri ažuriranja pri pokretanju",
     "playlistAsCompilation": "Spremi playliste kao kompilaciju",
     "useNullSeparator": "Koristi null separator",
     "saveId3v1": "Spremi i ID3v1",
@@ -731,7 +730,8 @@
     "loggedInAs": "Prijavljeni ste kao {name}",
     "enterArl": "Unesite ARL token",
     "authFailed": "Autentifikacija nije uspjela",
-    "serverConnectFailed": "Povezivanje s poslužiteljem nije uspjelo"
+    "serverConnectFailed": "Povezivanje s poslužiteljem nije uspjelo",
+    "connectionBlocked": "Vaš je sustav blokirao vezu s Deezerom. Dopustite Deemix Remastered u vatrozidu ili antivirusnom programu, ili provjerite VPN ili proxy, pa pokušajte ponovno."
   },
   "common": {
     "download": "Preuzmi",
@@ -924,7 +924,6 @@
     "resumingInterrupted": "Nastavljanje {count} prekinutog preuzimanja… | Nastavljanje {count} prekinutih preuzimanja…",
     "removedFromFavorites": "\"{name}\" uklonjen iz favorita",
     "addedToFavorites": "\"{name}\" dodan u favorite",
-    "updateAvailable": "Dostupno ažuriranje: v{version}. Idite na Postavke > O aplikaciji za preuzimanje.",
     "profileSaveFailed": "Spremanje profila nije uspjelo",
     "configExported": "Konfiguracija izvezena (postavke + profili)",
     "configImported": "Konfiguracija uvezena (postavke + profili)",
@@ -1223,5 +1222,36 @@
     "closeModals": "Zatvori prozore",
     "closeModalsOrBack": "Zatvori prozore / Natrag",
     "pressToClose": "Pritisnite {key} za zatvaranje"
+  },
+  "updates": {
+    "dialogTitle": "Dostupno je ažuriranje",
+    "dialogBody": "Dostupan je Deemix Remastered v{version}. Imate v{current}.",
+    "whatsNew": "Što je novo",
+    "updateNow": "Ažuriraj sada",
+    "downloadUpdate": "Preuzmi ažuriranje",
+    "later": "Ažuriraj kasnije",
+    "skip": "Preskoči ovu verziju",
+    "hide": "Sakrij",
+    "downloading": "Preuzimanje ažuriranja… {percent}%",
+    "ready": "Verzija {version} je spremna. Ponovno pokrenite aplikaciju da dovršite ažuriranje.",
+    "busyWarning": "Preuzimanja su još u tijeku. Ponovno pokretanje sada prekinut će ih.",
+    "restartNow": "Ponovno pokreni sada",
+    "restartLater": "Ponovno pokreni kasnije",
+    "checkNow": "Provjeri sada",
+    "checking": "Provjera…",
+    "upToDate": "Imate najnoviju verziju.",
+    "checkFailed": "Provjera ažuriranja nije uspjela.",
+    "statusAvailable": "Dostupna je verzija {version}.",
+    "skipped": "Preskočili ste verziju {version}.",
+    "manualUnsigned": "Ovo ažuriranje treba jednom preuzeti ručno. Kasnija ažuriranja instalirat će se sama.",
+    "manualReadonly": "Aplikacija ne može pisati u svoju mapu, pa preuzmite novu verziju sa stranice izdanja.",
+    "manualUnsupported": "Ova se instalacija ne ažurira sama. Novu verziju preuzmite sa stranice izdanja ili putem upravitelja paketa.",
+    "manualFailed": "Ažuriranje se nije moglo instalirati: {error}. Možete ga preuzeti sa stranice izdanja.",
+    "every": "Provjeri ažuriranja",
+    "everyHour": "Svaki sat",
+    "everySixHours": "Svakih 6 sati",
+    "everyDay": "Jednom dnevno",
+    "everyLaunch": "Samo pri otvaranju aplikacije",
+    "everyNever": "Nikad"
   }
 }

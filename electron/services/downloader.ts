@@ -138,6 +138,10 @@ export interface DownloadOptions {
   // inheriting the substituted release's numbering (#102/#103).
   trackNumber?: number
   playlistPosition?: number
+  // M3U sort key when it must differ from playlistPosition. A multi-disc
+  // album restarts track_position on every disc, so sorting by it interleaves
+  // the discs (#176); playlistPosition stays per-disc for %position%.
+  m3uPosition?: number
   // Playlist context - for compilation handling
   playlistContext?: {
     playlistId: string | number
@@ -951,7 +955,7 @@ export class Downloader extends EventEmitter {
       const recordM3U = (absolutePath: string) => {
         if (options._m3uTrackerId) {
           this.recordM3UEntry(options._m3uTrackerId || options.playlistName || '', {
-            position: options.playlistPosition || 0,
+            position: options.m3uPosition || options.playlistPosition || 0,
             duration: shim.DURATION || 0,
             artist: shim.ART_NAME || 'Unknown Artist',
             title: progress.trackTitle || shim.SNG_TITLE || 'Unknown Track',
@@ -1525,7 +1529,7 @@ export class Downloader extends EventEmitter {
         // M3U: point the playlist entry at the file we already have.
         if (options._m3uTrackerId) {
           this.recordM3UEntry(options._m3uTrackerId || options.playlistName || "", {
-            position: options.playlistPosition || 0,
+            position: options.m3uPosition || options.playlistPosition || 0,
             duration: trackInfo.DURATION || 0,
             artist: trackInfo.ART_NAME || 'Unknown Artist',
             title: progress.trackTitle || trackInfo.SNG_TITLE || 'Unknown Track',
@@ -1553,7 +1557,7 @@ export class Downloader extends EventEmitter {
       // Record skipped file for M3U — it still exists on disk
       if (options._m3uTrackerId) {
         this.recordM3UEntry(options._m3uTrackerId || options.playlistName || "", {
-          position: options.playlistPosition || 0,
+          position: options.m3uPosition || options.playlistPosition || 0,
           duration: trackInfo.DURATION || 0,
           artist: trackInfo.ART_NAME || 'Unknown Artist',
           title: progress.trackTitle || trackInfo.SNG_TITLE || 'Unknown Track',
@@ -1780,7 +1784,7 @@ export class Downloader extends EventEmitter {
       // Record actual file path for M3U generation (playlist tracks only)
       if (options._m3uTrackerId) {
         this.recordM3UEntry(options._m3uTrackerId || options.playlistName || "", {
-          position: options.playlistPosition || 0,
+          position: options.m3uPosition || options.playlistPosition || 0,
           duration: trackInfo.DURATION || 0,
           artist: trackInfo.ART_NAME || 'Unknown Artist',
           title: progress.trackTitle || trackInfo.SNG_TITLE || 'Unknown Track',
@@ -2002,9 +2006,15 @@ export class Downloader extends EventEmitter {
       folderExplicit = isTrackExplicit ? 'Explicit' : ''
     }
 
-    // Template replacement helper for FOLDER names - uses album context for consistency
-    const today = new Date()
-    const dateStr = today.toISOString().split('T')[0] // YYYY-MM-DD
+    // Template replacement helper for FOLDER names - uses album context for consistency.
+    // %date% means the release date in artist and album folders, the same value
+    // %date% gives in file names and the DATE tag (and what the original deemix
+    // used). PHYSICAL_RELEASE_DATE is album-level, and pinReleaseFields keeps it
+    // on substituted tracks, so every track of an album lands in one folder.
+    // Only the playlist folder uses the download date, which is what %date% was
+    // added for in 1.5.0; until 2.6.6 every folder got the download date (#172).
+    const releaseDateStr = trackInfo.PHYSICAL_RELEASE_DATE || ''
+    const downloadDateStr = new Date().toISOString().split('T')[0] // YYYY-MM-DD
     // Album-level UPC/barcode. v1.8.1: source from the public-API resolver
     // because Deezer's private song.getData (which populates trackInfo) does
     // NOT include ALB_UPC — the field is undefined on every track fetch. Use
@@ -2013,7 +2023,7 @@ export class Downloader extends EventEmitter {
     // fetch), then trackInfo.ALB_UPC (always empty today; kept for forward
     // compat). Empty string when missing — never undefined.
     const folderUpc = albumContext?.upc || options._resolvedAlbumUpc || trackInfo.ALB_UPC || ''
-    const replaceFolderTemplate = (template: string): string => {
+    const replaceFolderTemplate = (template: string, dateStr: string = releaseDateStr): string => {
       return this.sanitizeFilename(
         template
           .replace(/%artist%/gi, folderArtist)
@@ -2032,7 +2042,7 @@ export class Downloader extends EventEmitter {
 
     // Handle playlist folder (if downloading from a playlist)
     if (options.isFromPlaylist && folderSettings?.createPlaylistFolder) {
-      const playlistFolder = replaceFolderTemplate(folderSettings.playlistFolderTemplate || '%playlist%')
+      const playlistFolder = replaceFolderTemplate(folderSettings.playlistFolderTemplate || '%playlist%', downloadDateStr)
       outputPath = path.join(outputPath, playlistFolder)
 
       // Create artist/album subfolders within playlist if structure option is enabled

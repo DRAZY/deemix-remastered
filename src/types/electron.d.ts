@@ -46,6 +46,14 @@ declare global {
       openExternal: (url: string) => Promise<void>
       deletePath: (path: string) => Promise<void>
       getVersion: () => Promise<string>
+      updates: {
+        getStatus: () => Promise<import('../stores/updateStore').UpdateStatus>
+        check: () => Promise<import('../stores/updateStore').UpdateStatus>
+        install: () => Promise<void>
+        deferRestart: () => Promise<void>
+        setSchedule: (every: import('../stores/updateStore').UpdateSchedule) => Promise<void>
+        onStatus: (callback: (status: import('../stores/updateStore').UpdateStatus) => void) => void
+      }
       getRuntimeInfo: () => Promise<{ electron: string; chromium: string; node: string; v8: string; os: string }>
       getServerPort: () => Promise<number>
       onMaximizeChange: (callback: (isMaximized: boolean) => void) => void

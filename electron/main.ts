@@ -8,6 +8,8 @@ import { artistSync } from './services/artistSync'
 import { spotifyAPI } from './services/spotifyAPI'
 import { qobuzAuth } from './services/qobuzAuth'
 import { logSafe } from './services/logSafe'
+import { downloader } from './services/downloader'
+import { checkForUpdate, cleanupPortableUpdate, deferRestart, installUpdate, scheduleUpdateChecks, setUpdateBusyCheck, updateStatus, type UpdateSchedule } from './appUpdate'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling
 // Squirrel startup is handled by electron-builder
@@ -359,7 +361,8 @@ async function initServer() {
       const decodeField = (stored: any): string => {
         if (!stored || !stored.data) return ''
         if (stored.encrypted && safeStorage.isEncryptionAvailable()) {
-          try { return safeStorage.decryptString(Buffer.from(stored.data, 'base64')) } catch { /* fall through */ }
+          // Encrypted but unreadable (keychain access denied): no credential, never the ciphertext.
+          try { return safeStorage.decryptString(Buffer.from(stored.data, 'base64')) } catch { return '' }
         }
         if (stored.obfuscated) {
           try { return Buffer.from(stored.data.split('').reverse().join(''), 'base64').toString('utf-8') } catch { /* fall through */ }
@@ -597,6 +600,9 @@ app.whenReady().then(async () => {
 
   createWindow()
 
+  cleanupPortableUpdate()
+  setUpdateBusyCheck(() => downloader.getAllProgress().some(p => p.status === 'pending' || p.status === 'downloading' || p.status === 'decrypting' || p.status === 'tagging'))
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow()
@@ -771,6 +777,12 @@ ipcMain.handle('app:getVersion', () => {
   return app.getVersion()
 })
 
+ipcMain.handle('update:getStatus', () => updateStatus())
+ipcMain.handle('update:check', () => checkForUpdate(true))
+ipcMain.handle('update:install', () => installUpdate())
+ipcMain.handle('update:deferRestart', () => deferRestart())
+ipcMain.handle('update:setSchedule', (_, every: UpdateSchedule) => scheduleUpdateChecks(every))
+
 ipcMain.handle('app:getRuntimeInfo', () => {
   return {
     electron: process.versions.electron,
@@ -816,8 +828,8 @@ ipcMain.handle('safeStorage:decrypt', (_, encryptedBase64: string, isEncrypted: 
     return safeStorage.decryptString(buffer)
   } catch (error) {
     console.error('[Security] Decryption failed:', error)
-    // If decryption fails, the data might have been stored as plaintext
-    return encryptedBase64
+    // Encrypted but unreadable (keychain access denied): no credential, never the ciphertext.
+    return ''
   }
 })
 

@@ -6,6 +6,7 @@ import TitleBar from './components/TitleBar.vue'
 import DownloadBar from './components/DownloadBar.vue'
 import DownloadPanel from './components/DownloadPanel.vue'
 import ToastContainer from './components/ToastContainer.vue'
+import UpdateDialog from './components/UpdateDialog.vue'
 import KeyboardShortcutsModal from './components/KeyboardShortcutsModal.vue'
 import OfflineBanner from './components/OfflineBanner.vue'
 import { useDownloadStore } from './stores/downloadStore'
@@ -15,7 +16,7 @@ import { useSettingsStore } from './stores/settingsStore'
 import { useProfileStore } from './stores/profileStore'
 import { useSyncStore } from './stores/syncStore'
 import { useFavoritesStore } from './stores/favoritesStore'
-import { useToastStore } from './stores/toastStore'
+import { useUpdateStore } from './stores/updateStore'
 import { useKeyboardShortcuts } from './composables/useKeyboardShortcuts'
 import { useI18n } from 'vue-i18n'
 
@@ -154,27 +155,11 @@ onMounted(async () => {
   isLoading.value = false
   console.log('[App] Initialization complete')
 
-  // Non-blocking: check for app updates
-  if (settingsStore.settings.checkForUpdates) {
-    checkForUpdates()
-  }
+  // Non-blocking: start the update schedule; the main process does the checking
+  const updateStore = useUpdateStore()
+  await updateStore.init()
+  watch(() => settingsStore.settings.updateCheckEvery, (every) => updateStore.setSchedule(every), { immediate: true })
 })
-
-async function checkForUpdates() {
-  try {
-    const currentVersion = window.electronAPI ? await window.electronAPI.getVersion() : '0.0.0'
-    const response = await fetch('https://api.github.com/repos/DRAZY/deemix-remastered/releases/latest')
-    if (!response.ok) return
-    const release = await response.json()
-    const latestVersion = (release.tag_name || '').replace(/^v/, '')
-    if (latestVersion && latestVersion !== currentVersion) {
-      const toastStore = useToastStore()
-      toastStore.info(t('notifications.updateAvailable', { version: latestVersion }))
-    }
-  } catch {
-    // Silent fail — update check is best-effort
-  }
-}
 
 function handleGlobalPaste(e: ClipboardEvent) {
   // Skip if user is typing in an input field (let the input handle it)
@@ -212,6 +197,7 @@ onBeforeUnmount(() => {
   <div class="flex flex-col h-screen bg-background-main text-foreground">
     <!-- Toast Notifications -->
     <ToastContainer />
+    <UpdateDialog />
 
     <!-- Offline Status Banner -->
     <OfflineBanner />

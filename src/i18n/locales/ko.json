@@ -456,7 +456,6 @@
     "paddedNumbers": "트랙 번호에 0 추가",
     "paddedNumbersDesc": "앞에 0 추가 (01, 02 등)",
     "openFolder": "폴더 열기",
-    "checkUpdates": "시작 시 업데이트 확인",
     "playlistAsCompilation": "플레이리스트를 컴필레이션으로 저장",
     "useNullSeparator": "널 구분자 사용",
     "saveId3v1": "ID3v1도 저장",
@@ -731,7 +730,8 @@
     "loggedInAs": "{name}(으)로 로그인됨",
     "enterArl": "ARL 토큰을 입력하세요",
     "authFailed": "인증 실패",
-    "serverConnectFailed": "서버에 연결하지 못했습니다"
+    "serverConnectFailed": "서버에 연결하지 못했습니다",
+    "connectionBlocked": "시스템이 Deezer 연결을 차단했습니다. 방화벽이나 백신 프로그램에서 Deemix Remastered를 허용하거나 VPN 또는 프록시를 확인한 후 다시 시도하세요."
   },
   "common": {
     "download": "다운로드",
@@ -924,7 +924,6 @@
     "resumingInterrupted": "중단된 다운로드 {count}개 재개 중… | 중단된 다운로드 {count}개 재개 중…",
     "removedFromFavorites": "\"{name}\"을(를) 즐겨찾기에서 제거함",
     "addedToFavorites": "\"{name}\"을(를) 즐겨찾기에 추가함",
-    "updateAvailable": "업데이트 가능: v{version}. 다운로드하려면 설정 > 정보로 이동하세요.",
     "profileSaveFailed": "프로필 저장 실패",
     "configExported": "구성 내보내기 완료 (설정 + 프로필)",
     "configImported": "구성 가져오기 완료 (설정 + 프로필)",
@@ -1223,5 +1222,36 @@
     "closeModals": "창 닫기",
     "closeModalsOrBack": "창 닫기 / 뒤로 가기",
     "pressToClose": "닫으려면 {key} 키를 누르세요"
+  },
+  "updates": {
+    "dialogTitle": "업데이트 가능",
+    "dialogBody": "Deemix Remastered v{version}을(를) 사용할 수 있습니다. 현재 버전은 v{current}입니다.",
+    "whatsNew": "새로운 기능",
+    "updateNow": "지금 업데이트",
+    "downloadUpdate": "업데이트 다운로드",
+    "later": "나중에 업데이트",
+    "skip": "이 버전 건너뛰기",
+    "hide": "숨기기",
+    "downloading": "업데이트 다운로드 중… {percent}%",
+    "ready": "버전 {version}이(가) 준비되었습니다. 다시 시작하면 업데이트가 완료됩니다.",
+    "busyWarning": "아직 다운로드가 진행 중입니다. 지금 다시 시작하면 중단됩니다.",
+    "restartNow": "지금 다시 시작",
+    "restartLater": "나중에 다시 시작",
+    "checkNow": "지금 확인",
+    "checking": "확인 중…",
+    "upToDate": "최신 버전을 사용 중입니다.",
+    "checkFailed": "업데이트를 확인할 수 없습니다.",
+    "statusAvailable": "버전 {version}을(를) 사용할 수 있습니다.",
+    "skipped": "버전 {version}을(를) 건너뛰었습니다.",
+    "manualUnsigned": "이번 업데이트는 한 번만 직접 다운로드해야 합니다. 이후 업데이트는 자동으로 설치됩니다.",
+    "manualReadonly": "앱이 자체 폴더에 쓸 수 없으므로 릴리스 페이지에서 새 버전을 다운로드하세요.",
+    "manualUnsupported": "이 설치본은 자동으로 업데이트되지 않습니다. 릴리스 페이지나 패키지 관리자에서 새 버전을 받으세요.",
+    "manualFailed": "업데이트를 설치할 수 없습니다: {error}. 릴리스 페이지에서 다운로드할 수 있습니다.",
+    "every": "업데이트 확인",
+    "everyHour": "매시간",
+    "everySixHours": "6시간마다",
+    "everyDay": "하루에 한 번",
+    "everyLaunch": "앱을 열 때만",
+    "everyNever": "안 함"
   }
 }

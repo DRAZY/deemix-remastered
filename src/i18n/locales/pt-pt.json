@@ -456,7 +456,6 @@
     "paddedNumbers": "Números de faixa com zeros",
     "paddedNumbersDesc": "Adicionar zeros iniciais (01, 02, etc.)",
     "openFolder": "Abrir pasta",
-    "checkUpdates": "Verificar atualizações ao iniciar",
     "playlistAsCompilation": "Guardar playlists como compilação",
     "useNullSeparator": "Usar separador nulo",
     "saveId3v1": "Guardar também ID3v1",
@@ -731,7 +730,8 @@
     "loggedInAs": "Sessão iniciada como {name}",
     "enterArl": "Introduza um token ARL",
     "authFailed": "Falha na autenticação",
-    "serverConnectFailed": "Falha ao ligar ao servidor"
+    "serverConnectFailed": "Falha ao ligar ao servidor",
+    "connectionBlocked": "O seu sistema bloqueou a ligação ao Deezer. Permita o Deemix Remastered na firewall ou no antivírus, ou verifique a VPN ou o proxy, e tente novamente."
   },
   "common": {
     "download": "Transferir",
@@ -924,7 +924,6 @@
     "resumingInterrupted": "A retomar {count} transferência interrompida… | A retomar {count} transferências interrompidas…",
     "removedFromFavorites": "\"{name}\" removido dos favoritos",
     "addedToFavorites": "\"{name}\" adicionado aos favoritos",
-    "updateAvailable": "Atualização disponível: v{version}. Aceda a Definições > Sobre para transferir.",
     "profileSaveFailed": "Falha ao guardar perfil",
     "configExported": "Configuração exportada (definições + perfis)",
     "configImported": "Configuração importada (definições + perfis)",
@@ -1223,5 +1222,36 @@
     "closeModals": "Fechar janelas",
     "closeModalsOrBack": "Fechar janelas / Voltar",
     "pressToClose": "Prima {key} para fechar"
+  },
+  "updates": {
+    "dialogTitle": "Atualização disponível",
+    "dialogBody": "O Deemix Remastered v{version} está disponível. Tem a v{current}.",
+    "whatsNew": "Novidades",
+    "updateNow": "Atualizar agora",
+    "downloadUpdate": "Transferir atualização",
+    "later": "Atualizar mais tarde",
+    "skip": "Ignorar esta versão",
+    "hide": "Ocultar",
+    "downloading": "A transferir a atualização… {percent}%",
+    "ready": "A versão {version} está pronta. Reinicie para concluir a atualização.",
+    "busyWarning": "Ainda há transferências em curso. Reiniciar agora irá interrompê-las.",
+    "restartNow": "Reiniciar agora",
+    "restartLater": "Reiniciar mais tarde",
+    "checkNow": "Verificar agora",
+    "checking": "A verificar…",
+    "upToDate": "Tem a versão mais recente.",
+    "checkFailed": "Não foi possível procurar atualizações.",
+    "statusAvailable": "A versão {version} está disponível.",
+    "skipped": "Ignorou a versão {version}.",
+    "manualUnsigned": "Esta atualização precisa de uma única transferência manual. As seguintes instalam-se sozinhas.",
+    "manualReadonly": "A aplicação não consegue escrever na sua pasta, por isso transfira a nova versão na página de lançamentos.",
+    "manualUnsupported": "Esta instalação não se atualiza sozinha. Obtenha a nova versão na página de lançamentos ou no seu gestor de pacotes.",
+    "manualFailed": "Não foi possível instalar a atualização: {error}. Pode transferi-la na página de lançamentos.",
+    "every": "Procurar atualizações",
+    "everyHour": "A cada hora",
+    "everySixHours": "A cada 6 horas",
+    "everyDay": "Uma vez por dia",
+    "everyLaunch": "Só ao abrir a aplicação",
+    "everyNever": "Nunca"
   }
 }

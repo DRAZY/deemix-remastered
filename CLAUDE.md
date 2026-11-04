@@ -43,9 +43,19 @@ rather than in a global config.
   (Learned 2026-09-19 on 2.6.3, after the move to macOS 27.)
 
 - **Publish as a draft, then flip it.** The app's update check reads GitHub's
-  latest release, so a release that goes live before all ten installers are
-  attached tells users about an update they cannot download. Create with
-  `--draft`, upload, verify the count, then `gh release edit --draft=false`.
+  latest release, so a release that goes live before everything is attached
+  tells users about an update they cannot download. Create with `--draft`,
+  upload, verify the count, then `gh release edit --draft=false`. A release has
+  16 files: the 10 installers, the 2 Mac zips, and the 4 update feeds from
+  `bun scripts/write-update-feeds.ts` (run it after all the builds). Don't upload
+  electron-builder's own `latest*.yml`: each build overwrites the last one, and
+  they name files with dashes where GitHub's upload uses dots.
+
+- **Mac builds are signed and notarized.** `build:mac` and `build:mac-arm64` use
+  the Developer ID certificate and the `strata-notary` keychain profile, and take
+  several extra minutes. The shared setup is in the MyLife repo at
+  `Projects/AppleSigning-AllApps.md`. Check a build with `spctl --assess --type
+  execute --verbose=2` on the app and `xcrun stapler validate` on the dmg.
 
 - **Housekeeping ships with the version.** Each rollout audits and updates
   project structure and documentation surfaces so they describe what actually
@@ -134,7 +144,7 @@ missed. Do not stop at layer one.
 
 - **Drafts sound like the maintainer, first time.** Any reply drafted for an
   issue, discussion or user message follows the voice rule in
-  `LIFEOS/USER/CONFIG/OPERATIONAL_RULES.md` § Community replies: short, direct,
+  `LIFEOS/USER/CONFIG/OPERATIONAL_PREFERENCES.md` § Community replies: short, direct,
   warm, contractions, owns mistakes plainly, no headers or lists, no em-dashes.
   Draft it natural the first time so the maintainer never has to ask.
 

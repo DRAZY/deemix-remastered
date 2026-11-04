@@ -480,7 +480,6 @@
     "paddedNumbers": "Số bài có số 0 đầu",
     "paddedNumbersDesc": "Thêm số 0 đầu (01, 02, v.v.)",
     "openFolder": "Mở thư mục",
-    "checkUpdates": "Kiểm tra cập nhật khi khởi động",
     "playlistAsCompilation": "Lưu playlist như compilation",
     "useNullSeparator": "Dùng dấu phân cách null",
     "saveId3v1": "Cũng lưu ID3v1",
@@ -748,7 +747,8 @@
     "loggedInAs": "Đã đăng nhập với tên {name}",
     "enterArl": "Vui lòng nhập ARL token",
     "authFailed": "Xác thực thất bại",
-    "serverConnectFailed": "Không thể kết nối đến máy chủ"
+    "serverConnectFailed": "Không thể kết nối đến máy chủ",
+    "connectionBlocked": "Hệ thống của bạn đã chặn kết nối đến Deezer. Hãy cho phép Deemix Remastered trong tường lửa hoặc phần mềm diệt virus, hoặc kiểm tra VPN hay proxy, rồi thử lại."
   },
   "common": {
     "download": "Tải xuống",
@@ -924,7 +924,6 @@
     "resumingInterrupted": "Đang tiếp tục {count} lượt tải bị gián đoạn… | Đang tiếp tục {count} lượt tải bị gián đoạn…",
     "removedFromFavorites": "Đã xóa \"{name}\" khỏi mục yêu thích",
     "addedToFavorites": "Đã thêm \"{name}\" vào mục yêu thích",
-    "updateAvailable": "Có bản cập nhật: v{version}. Vào Cài đặt > Giới thiệu để tải xuống.",
     "profileSaveFailed": "Lưu hồ sơ thất bại",
     "configExported": "Đã xuất cấu hình (cài đặt + hồ sơ)",
     "configImported": "Đã nhập cấu hình (cài đặt + hồ sơ)",
@@ -1223,5 +1222,36 @@
     "closeModals": "Đóng hộp thoại",
     "closeModalsOrBack": "Đóng hộp thoại / Quay lại",
     "pressToClose": "Nhấn {key} để đóng"
+  },
+  "updates": {
+    "dialogTitle": "Có bản cập nhật",
+    "dialogBody": "Deemix Remastered v{version} đã có. Bạn đang dùng v{current}.",
+    "whatsNew": "Có gì mới",
+    "updateNow": "Cập nhật ngay",
+    "downloadUpdate": "Tải bản cập nhật",
+    "later": "Cập nhật sau",
+    "skip": "Bỏ qua phiên bản này",
+    "hide": "Ẩn",
+    "downloading": "Đang tải bản cập nhật… {percent}%",
+    "ready": "Phiên bản {version} đã sẵn sàng. Hãy khởi động lại để hoàn tất cập nhật.",
+    "busyWarning": "Vẫn còn các lượt tải đang chạy. Khởi động lại bây giờ sẽ làm gián đoạn chúng.",
+    "restartNow": "Khởi động lại ngay",
+    "restartLater": "Khởi động lại sau",
+    "checkNow": "Kiểm tra ngay",
+    "checking": "Đang kiểm tra…",
+    "upToDate": "Bạn đang dùng phiên bản mới nhất.",
+    "checkFailed": "Không thể kiểm tra bản cập nhật.",
+    "statusAvailable": "Phiên bản {version} đã có.",
+    "skipped": "Bạn đã bỏ qua phiên bản {version}.",
+    "manualUnsigned": "Bản cập nhật này cần tải thủ công một lần. Các bản sau sẽ tự cài đặt.",
+    "manualReadonly": "Ứng dụng không thể ghi vào thư mục của nó, vì vậy hãy tải phiên bản mới từ trang phát hành.",
+    "manualUnsupported": "Bản cài đặt này không tự cập nhật. Hãy lấy phiên bản mới từ trang phát hành hoặc trình quản lý gói của bạn.",
+    "manualFailed": "Không thể cài đặt bản cập nhật: {error}. Bạn có thể tải từ trang phát hành.",
+    "every": "Kiểm tra cập nhật",
+    "everyHour": "Mỗi giờ",
+    "everySixHours": "Mỗi 6 giờ",
+    "everyDay": "Mỗi ngày một lần",
+    "everyLaunch": "Chỉ khi mở ứng dụng",
+    "everyNever": "Không bao giờ"
   }
 }

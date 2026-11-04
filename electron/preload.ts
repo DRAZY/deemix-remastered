@@ -23,6 +23,16 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   // App info
   getVersion: () => ipcRenderer.invoke('app:getVersion'),
+  updates: {
+    getStatus: () => ipcRenderer.invoke('update:getStatus'),
+    check: () => ipcRenderer.invoke('update:check'),
+    install: () => ipcRenderer.invoke('update:install'),
+    deferRestart: () => ipcRenderer.invoke('update:deferRestart'),
+    setSchedule: (every: string) => ipcRenderer.invoke('update:setSchedule', every),
+    onStatus: (callback: (status: any) => void) => {
+      ipcRenderer.on('update:status', (_, status) => callback(status))
+    }
+  },
   getRuntimeInfo: () => ipcRenderer.invoke('app:getRuntimeInfo'),
   getServerPort: () => ipcRenderer.invoke('server:getPort'),
 

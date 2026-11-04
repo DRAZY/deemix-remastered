@@ -116,7 +116,7 @@ export interface Settings {
   // Album cover settings
   albumCovers: AlbumCoverSettings
   // Other settings
-  checkForUpdates: boolean
+  updateCheckEvery: 'hour' | 'sixHours' | 'day' | 'launch' | 'never'
   savePlaylistAsCompilation: boolean
   useNullSeparator: boolean
   saveID3v1: boolean
@@ -237,7 +237,7 @@ export const defaultSettings: Settings = {
     jpegImageQuality: 90
   },
   // Other settings
-  checkForUpdates: true,
+  updateCheckEvery: 'hour',
   savePlaylistAsCompilation: false,
   useNullSeparator: false,
   saveID3v1: false,
@@ -376,6 +376,15 @@ export const useSettingsStore = defineStore('settings', () => {
     // toggle did nothing can't silently change behavior on upgrade. The marker is
     // set for fresh installs too, so this never re-fires and later user changes
     // stick. Only existing users (a settings file already existed) need a re-save.
+    // The on/off update toggle became a schedule in 2.6.6; someone who turned checks
+    // off keeps them off. The old field is gone from the saved file after the next save.
+    const legacySettings = settings.value as Settings & { checkForUpdates?: boolean }
+    if (legacySettings.checkForUpdates === false) {
+      settings.value.updateCheckEvery = 'never'
+      if (settingsFileExists) migrationApplied = true
+    }
+    delete legacySettings.checkForUpdates
+
     const TOGGLE_MIGRATION_KEY = 'deemix-migration-wired-toggles-v1'
     if (!localStorage.getItem(TOGGLE_MIGRATION_KEY)) {
       settings.value.syncedLyrics = defaultSettings.syncedLyrics

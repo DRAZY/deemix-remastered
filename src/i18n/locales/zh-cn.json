@@ -456,7 +456,6 @@
     "paddedNumbers": "曲目编号补零",
     "paddedNumbersDesc": "添加前导零（01、02 等）",
     "openFolder": "打开文件夹",
-    "checkUpdates": "启动时检查更新",
     "playlistAsCompilation": "将播放列表保存为合辑",
     "useNullSeparator": "使用空分隔符",
     "saveId3v1": "同时保存 ID3v1",
@@ -731,7 +730,8 @@
     "loggedInAs": "已登录为 {name}",
     "enterArl": "请输入 ARL 令牌",
     "authFailed": "身份验证失败",
-    "serverConnectFailed": "无法连接到服务器"
+    "serverConnectFailed": "无法连接到服务器",
+    "connectionBlocked": "您的系统阻止了与 Deezer 的连接。请在防火墙或杀毒软件中允许 Deemix Remastered，或检查 VPN 或代理，然后重试。"
   },
   "common": {
     "download": "下载",
@@ -924,7 +924,6 @@
     "resumingInterrupted": "正在恢复 {count} 个中断的下载… | 正在恢复 {count} 个中断的下载…",
     "removedFromFavorites": "已将 \"{name}\" 从收藏中移除",
     "addedToFavorites": "已将 \"{name}\" 添加到收藏",
-    "updateAvailable": "有可用更新：v{version}。前往设置 > 关于以下载。",
     "profileSaveFailed": "保存配置文件失败",
     "configExported": "已导出配置（设置 + 配置文件）",
     "configImported": "已导入配置（设置 + 配置文件）",
@@ -1223,5 +1222,36 @@
     "closeModals": "关闭弹窗",
     "closeModalsOrBack": "关闭弹窗 / 返回",
     "pressToClose": "按 {key} 关闭"
+  },
+  "updates": {
+    "dialogTitle": "有可用更新",
+    "dialogBody": "Deemix Remastered v{version} 现已推出。您当前使用的是 v{current}。",
+    "whatsNew": "新增内容",
+    "updateNow": "立即更新",
+    "downloadUpdate": "下载更新",
+    "later": "稍后更新",
+    "skip": "跳过此版本",
+    "hide": "隐藏",
+    "downloading": "正在下载更新… {percent}%",
+    "ready": "版本 {version} 已准备就绪。重新启动以完成更新。",
+    "busyWarning": "仍有下载正在进行。现在重新启动会中断它们。",
+    "restartNow": "立即重新启动",
+    "restartLater": "稍后重新启动",
+    "checkNow": "立即检查",
+    "checking": "正在检查…",
+    "upToDate": "您使用的是最新版本。",
+    "checkFailed": "无法检查更新。",
+    "statusAvailable": "版本 {version} 现已推出。",
+    "skipped": "您已跳过版本 {version}。",
+    "manualUnsigned": "此次更新需要手动下载一次，之后的更新将自动安装。",
+    "manualReadonly": "应用无法写入自身文件夹，请从发布页面下载新版本。",
+    "manualUnsupported": "此安装方式不会自动更新。请从发布页面或软件包管理器获取新版本。",
+    "manualFailed": "无法安装更新：{error}。您可以从发布页面下载。",
+    "every": "检查更新",
+    "everyHour": "每小时",
+    "everySixHours": "每 6 小时",
+    "everyDay": "每天一次",
+    "everyLaunch": "仅在打开应用时",
+    "everyNever": "从不"
   }
 }

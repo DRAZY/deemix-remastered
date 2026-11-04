@@ -456,7 +456,6 @@
     "paddedNumbers": "Mga track number na may zero",
     "paddedNumbersDesc": "Magdagdag ng leading zeros (01, 02, atbp.)",
     "openFolder": "Buksan ang folder",
-    "checkUpdates": "Tingnan ang mga update sa pagsisimula",
     "playlistAsCompilation": "I-save ang mga playlist bilang compilation",
     "useNullSeparator": "Gamitin ang null separator",
     "saveId3v1": "I-save din ang ID3v1",
@@ -731,7 +730,8 @@
     "loggedInAs": "Naka-login bilang {name}",
     "enterArl": "Mangyaring maglagay ng ARL token",
     "authFailed": "Nabigo ang authentication",
-    "serverConnectFailed": "Hindi makakonekta sa server"
+    "serverConnectFailed": "Hindi makakonekta sa server",
+    "connectionBlocked": "Na-block ng system mo ang koneksyon sa Deezer. Payagan ang Deemix Remastered sa iyong firewall o antivirus, o tingnan ang iyong VPN o proxy, tapos subukan ulit."
   },
   "common": {
     "download": "I-download",
@@ -924,7 +924,6 @@
     "resumingInterrupted": "Ipinagpapatuloy ang {count} naantalang download… | Ipinagpapatuloy ang {count} na naantalang download…",
     "removedFromFavorites": "Inalis ang \"{name}\" sa mga paborito",
     "addedToFavorites": "Idinagdag ang \"{name}\" sa mga paborito",
-    "updateAvailable": "May available na update: v{version}. Pumunta sa Mga Setting > Tungkol para mag-download.",
     "profileSaveFailed": "Nabigong i-save ang profile",
     "configExported": "Na-export ang configuration (mga setting + profile)",
     "configImported": "Na-import ang configuration (mga setting + profile)",
@@ -1223,5 +1222,36 @@
     "closeModals": "Isara ang mga window",
     "closeModalsOrBack": "Isara ang mga window / Bumalik",
     "pressToClose": "Pindutin ang {key} para isara"
+  },
+  "updates": {
+    "dialogTitle": "May available na update",
+    "dialogBody": "Available na ang Deemix Remastered v{version}. Nasa v{current} ka.",
+    "whatsNew": "Ano'ng bago",
+    "updateNow": "I-update ngayon",
+    "downloadUpdate": "I-download ang update",
+    "later": "I-update mamaya",
+    "skip": "Laktawan ang bersyong ito",
+    "hide": "Itago",
+    "downloading": "Dina-download ang update… {percent}%",
+    "ready": "Handa na ang bersyon {version}. Mag-restart para matapos ang pag-update.",
+    "busyWarning": "May mga download pang tumatakbo. Mahihinto ang mga ito kapag nag-restart ngayon.",
+    "restartNow": "Mag-restart ngayon",
+    "restartLater": "Mag-restart mamaya",
+    "checkNow": "Tingnan ngayon",
+    "checking": "Tinitingnan…",
+    "upToDate": "Nasa pinakabagong bersyon ka.",
+    "checkFailed": "Hindi matingnan kung may mga update.",
+    "statusAvailable": "Available na ang bersyon {version}.",
+    "skipped": "Nilaktawan mo ang bersyon {version}.",
+    "manualUnsigned": "Kailangan ng isang beses na manual na pag-download ang update na ito. Kusang mai-install ang mga susunod na update.",
+    "manualReadonly": "Hindi makasulat ang app sa folder nito, kaya i-download ang bagong bersyon mula sa release page.",
+    "manualUnsupported": "Hindi kusang nag-a-update ang install na ito. Kunin ang bagong bersyon mula sa release page o sa iyong package manager.",
+    "manualFailed": "Hindi na-install ang update: {error}. Maaari mo itong i-download mula sa release page.",
+    "every": "Tingnan kung may mga update",
+    "everyHour": "Bawat oras",
+    "everySixHours": "Bawat 6 na oras",
+    "everyDay": "Isang beses sa isang araw",
+    "everyLaunch": "Kapag binuksan lang ang app",
+    "everyNever": "Hindi kailanman"
   }
 }

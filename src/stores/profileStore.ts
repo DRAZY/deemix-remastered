@@ -234,7 +234,7 @@ export const useProfileStore = defineStore('profiles', () => {
     merged.language = settingsStore.settings.language
     merged.appearance = settingsStore.settings.appearance
     merged.previewVolume = settingsStore.settings.previewVolume
-    merged.checkForUpdates = settingsStore.settings.checkForUpdates
+    merged.updateCheckEvery = settingsStore.settings.updateCheckEvery
 
     settingsStore.settings = merged
     activeProfileId.value = id

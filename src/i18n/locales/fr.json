@@ -578,7 +578,6 @@
     "paddedNumbers": "Numéros de piste avec zéros initiaux",
     "paddedNumbersDesc": "Ajouter des zéros initiaux (01, 02, etc.)",
     "openFolder": "Ouvrir le dossier",
-    "checkUpdates": "Rechercher les mises à jour au démarrage",
     "playlistAsCompilation": "Enregistrer les playlists comme compilations",
     "useNullSeparator": "Utiliser le séparateur nul",
     "saveId3v1": "Enregistrer également les tags ID3v1",
@@ -796,7 +795,8 @@
     "loggedInAs": "Connecté en tant que {name}",
     "enterArl": "Veuillez saisir un jeton ARL",
     "authFailed": "Échec de l’authentification",
-    "serverConnectFailed": "Impossible de se connecter au serveur"
+    "serverConnectFailed": "Impossible de se connecter au serveur",
+    "connectionBlocked": "Votre système a bloqué la connexion à Deezer. Autorisez Deemix Remastered dans votre pare-feu ou antivirus, ou vérifiez votre VPN ou proxy, puis réessayez."
   },
   "common": {
     "download": "Télécharger",
@@ -998,7 +998,6 @@
     "resumingInterrupted": "Reprise de {count} téléchargement interrompu… | Reprise de {count} téléchargements interrompus…",
     "removedFromFavorites": "\"{name}\" retiré des favoris",
     "addedToFavorites": "\"{name}\" ajouté aux favoris",
-    "updateAvailable": "Mise à jour disponible : v{version}. Rendez-vous dans Paramètres > À propos pour la télécharger.",
     "profileSaveFailed": "Échec de l'enregistrement du profil",
     "configExported": "Configuration exportée (paramètres + profils)",
     "configImported": "Configuration importée (paramètres + profils)",
@@ -1223,5 +1222,36 @@
     "closeModals": "Fermer les fenêtres",
     "closeModalsOrBack": "Fermer les fenêtres / Revenir en arrière",
     "pressToClose": "Appuyez sur {key} pour fermer"
+  },
+  "updates": {
+    "dialogTitle": "Mise à jour disponible",
+    "dialogBody": "Deemix Remastered v{version} est disponible. Vous utilisez la v{current}.",
+    "whatsNew": "Nouveautés",
+    "updateNow": "Mettre à jour maintenant",
+    "downloadUpdate": "Télécharger la mise à jour",
+    "later": "Mettre à jour plus tard",
+    "skip": "Ignorer cette version",
+    "hide": "Masquer",
+    "downloading": "Téléchargement de la mise à jour… {percent} %",
+    "ready": "La version {version} est prête. Redémarrez pour terminer la mise à jour.",
+    "busyWarning": "Des téléchargements sont encore en cours. Un redémarrage maintenant les interrompra.",
+    "restartNow": "Redémarrer maintenant",
+    "restartLater": "Redémarrer plus tard",
+    "checkNow": "Vérifier maintenant",
+    "checking": "Vérification…",
+    "upToDate": "Vous avez la dernière version.",
+    "checkFailed": "Impossible de rechercher les mises à jour.",
+    "statusAvailable": "La version {version} est disponible.",
+    "skipped": "Vous avez ignoré la version {version}.",
+    "manualUnsigned": "Cette mise à jour nécessite un téléchargement manuel unique. Les suivantes s'installeront toutes seules.",
+    "manualReadonly": "L'application ne peut pas écrire dans son dossier : téléchargez la nouvelle version depuis la page des versions.",
+    "manualUnsupported": "Cette installation ne se met pas à jour toute seule. Procurez-vous la nouvelle version sur la page des versions ou via votre gestionnaire de paquets.",
+    "manualFailed": "La mise à jour n'a pas pu s'installer : {error}. Vous pouvez la télécharger depuis la page des versions.",
+    "every": "Rechercher les mises à jour",
+    "everyHour": "Toutes les heures",
+    "everySixHours": "Toutes les 6 heures",
+    "everyDay": "Une fois par jour",
+    "everyLaunch": "Seulement à l'ouverture de l'application",
+    "everyNever": "Jamais"
   }
 }

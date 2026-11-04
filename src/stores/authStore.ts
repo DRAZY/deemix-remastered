@@ -23,6 +23,13 @@ export interface CaptchaChallenge {
   captchaUrl?: string
 }
 
+// The OS, a firewall or antivirus refused the connection before it left the machine
+// (#175). Node's raw "connect EACCES" tells the user nothing they can act on.
+function loginErrorMessage(data: { error?: string; code?: string }, fallback: string): string {
+  if (data.code === 'EACCES' || data.code === 'EPERM') return i18n.global.t('login.connectionBlocked')
+  return data.error || fallback
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<DeezerUser | null>(null)
   const isAuthenticated = ref(false)
@@ -183,7 +190,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
 
       if (!response.ok) {
-        throw new Error(data.error || 'Login failed')
+        throw new Error(loginErrorMessage(data, 'Login failed'))
       }
 
       if (data.success && data.user) {
@@ -262,7 +269,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
 
       if (!response.ok) {
-        throw new Error(data.error || 'Login failed')
+        throw new Error(loginErrorMessage(data, 'Login failed'))
       }
 
       if (data.success && data.user) {

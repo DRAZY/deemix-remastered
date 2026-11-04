@@ -1,6 +1,6 @@
 {
   "name": "deemix-app",
-  "version": "2.6.5",
+  "version": "2.6.6",
   "description": "Modern Deezer music downloader",
   "author": {
     "name": "Team MAXIMUS",
@@ -12,13 +12,13 @@
     "dev": "vite",
     "build": "rm -rf dist dist-electron && vite build && electron-builder",
     "build:vite": "rm -rf dist dist-electron && vite build",
-    "build:mac": "rm -rf dist dist-electron && vite build && electron-builder --mac --universal",
+    "build:mac": "rm -rf dist dist-electron && vite build && APPLE_KEYCHAIN_PROFILE=strata-notary electron-builder --mac --universal",
     "build:win": "rm -rf dist dist-electron && vite build && electron-builder --win --x64",
     "build:win-arm64": "rm -rf dist dist-electron && vite build && electron-builder --win --arm64",
     "build:linux": "rm -rf dist dist-electron && vite build && PATH=\"$PWD/scripts/build-tools:$PATH\" electron-builder --linux --x64",
     "build:linux-arm64": "rm -rf dist dist-electron && vite build && PATH=\"$PWD/scripts/build-tools:$PATH\" electron-builder --linux --arm64",
-    "build:mac-arm64": "rm -rf dist dist-electron && vite build && electron-builder --mac --arm64",
-    "build:all": "rm -rf dist dist-electron && vite build && electron-builder --mac --universal && electron-builder --mac --arm64 && electron-builder --win --x64 && electron-builder --win --arm64 && PATH=\"$PWD/scripts/build-tools:$PATH\" electron-builder --linux --x64 && PATH=\"$PWD/scripts/build-tools:$PATH\" electron-builder --linux --arm64",
+    "build:mac-arm64": "rm -rf dist dist-electron && vite build && APPLE_KEYCHAIN_PROFILE=strata-notary electron-builder --mac --arm64",
+    "build:all": "rm -rf dist dist-electron && vite build && APPLE_KEYCHAIN_PROFILE=strata-notary electron-builder --mac --universal && APPLE_KEYCHAIN_PROFILE=strata-notary electron-builder --mac --arm64 && electron-builder --win --x64 && electron-builder --win --arm64 && PATH=\"$PWD/scripts/build-tools:$PATH\" electron-builder --linux --x64 && PATH=\"$PWD/scripts/build-tools:$PATH\" electron-builder --linux --arm64 && bun scripts/write-update-feeds.ts",
     "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "electron:dev": "concurrently \"vite\" \"electron .\""
@@ -29,6 +29,7 @@
     "@fontsource/ibm-plex-sans": "^5.3.0",
     "@vue/devtools-api": "^8.1.5",
     "egoroof-blowfish": "^4.0.3",
+    "electron-updater": "^6.8.11",
     "music-metadata": "^11.14.0",
     "node-id3": "^0.2.9",
     "pinia": "^4.0.2",
@@ -86,11 +87,12 @@
     },
     "mac": {
       "target": [
-        "dmg"
+        "dmg",
+        "zip"
       ],
       "icon": "public/icon.icns",
-      "identity": "-",
-      "hardenedRuntime": true
+      "hardenedRuntime": true,
+      "notarize": true
     },
     "win": {
       "target": [
@@ -114,6 +116,16 @@
       ],
       "icon": "public/icon.png",
       "category": "Audio"
+    },
+    "dmg": {
+      "sign": true,
+      "writeUpdateInfo": false
+    },
+    "afterAllArtifactBuild": "scripts/after-all-artifacts.cjs",
+    "publish": {
+      "provider": "github",
+      "owner": "DRAZY",
+      "repo": "deemix-remastered"
     }
   }
 }

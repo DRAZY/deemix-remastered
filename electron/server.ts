@@ -430,7 +430,6 @@ interface ServerSettings {
   // Album cover settings
   albumCovers: AlbumCoverSettings
   // Other settings
-  checkForUpdates: boolean
   savePlaylistAsCompilation: boolean
   useNullSeparator: boolean
   saveID3v1: boolean
@@ -532,7 +531,6 @@ export class DeemixServer extends EventEmitter {
       jpegImageQuality: 90
     },
     // Other settings
-    checkForUpdates: true,
     savePlaylistAsCompilation: false,
     useNullSeparator: false,
     saveID3v1: false,
@@ -1098,7 +1096,7 @@ export class DeemixServer extends EventEmitter {
       })
     } catch (error: any) {
       console.error('[Server] Login error:', logSafe(error.message))
-      this.sendJSON(res, { error: error.message || 'Login failed' }, 401)
+      this.sendJSON(res, { error: error.message || 'Login failed', code: error.code }, 401)
     }
   }
 
@@ -1142,7 +1140,7 @@ export class DeemixServer extends EventEmitter {
       })
     } catch (error: any) {
       console.error('[Server] Email login error:', logSafe(error.message))
-      this.sendJSON(res, { error: error.message || 'Login failed' }, 401)
+      this.sendJSON(res, { error: error.message || 'Login failed', code: error.code }, 401)
     }
   }
 
@@ -1178,7 +1176,7 @@ export class DeemixServer extends EventEmitter {
       })
     } catch (error: any) {
       console.error('[Server] CAPTCHA login error:', logSafe(error.message))
-      this.sendJSON(res, { error: error.message || 'CAPTCHA verification failed' }, 401)
+      this.sendJSON(res, { error: error.message || 'CAPTCHA verification failed', code: error.code }, 401)
     }
   }
 
@@ -1819,11 +1817,13 @@ export class DeemixServer extends EventEmitter {
           skipDuplicateTracks: this.settings.skipDuplicateTracks,
           createErrorLog: this.settings.createErrorLog,
           overwriteMode,
-          // Album M3U tracking (#121). playlistPosition orders the M3U entries;
-          // for an album that's the track position. isFromPlaylist stays false
-          // so no playlist folder is created.
+          // Album M3U tracking (#121). playlistPosition is the per-disc track
+          // position (it feeds %position%); m3uPosition orders the M3U disc by
+          // disc, since track_position restarts on each disc (#176).
+          // isFromPlaylist stays false so no playlist folder is created.
           _m3uTrackerId: albumM3uId,
-          playlistPosition: track.track_position
+          playlistPosition: track.track_position,
+          m3uPosition: (track.disk_number || 1) * 10000 + (track.track_position || 0)
         })
         downloadIds.push(downloadId)
       }
@@ -2491,7 +2491,7 @@ export class DeemixServer extends EventEmitter {
 
       // Validate Other settings - boolean checkboxes
       const otherBooleanSettings: (keyof ServerSettings)[] = [
-        'checkForUpdates', 'savePlaylistAsCompilation', 'useNullSeparator',
+        'savePlaylistAsCompilation', 'useNullSeparator',
         'saveID3v1', 'saveOnlyMainArtist', 'keepVariousArtists',
         'removeAlbumVersion', 'removeArtistCombinations'
       ]

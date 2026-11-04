@@ -924,7 +924,9 @@ export class DeezerAuth extends EventEmitter {
     } catch (error: any) {
       console.error('[DeezerAuth] validateSession error:', logSafe(error.message))
       // Don't immediately invalidate on network errors - could be temporary
-      if (error.code === 'ENOTFOUND' || error.code === 'ETIMEDOUT' || error.code === 'ECONNRESET') {
+      // EACCES/EPERM: the OS, a firewall or antivirus refused the socket. ECONNREFUSED
+      // and EAI_AGAIN are network state too. None of them says the session is bad.
+      if (['ENOTFOUND', 'ETIMEDOUT', 'ECONNRESET', 'ECONNREFUSED', 'EAI_AGAIN', 'EACCES', 'EPERM'].includes(error.code)) {
         console.log('[DeezerAuth] validateSession: Network error, keeping session')
         return true // Assume valid on network error
       }
