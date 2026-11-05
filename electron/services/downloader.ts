@@ -1,3 +1,4 @@
+import { tagDownloadedMp3 } from './mp3-tags'
 import { EventEmitter } from 'events'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -1936,7 +1937,7 @@ export class Downloader extends EventEmitter {
         // written unless the user opted in.
         replayGain: false
       }
-      const result = applyMergeFromMeta(filePath, meta, fields, false)
+      const result = await applyMergeFromMeta(filePath, meta, fields, false)
       console.log(`[Downloader] Refresh-tags ${result.status} (${result.changes.length} changed): ${filePath}`)
 
       progress.status = 'completed'
@@ -2750,8 +2751,7 @@ export class Downloader extends EventEmitter {
       console.log('[Downloader] TrackInfo.ALB_PICTURE:', trackInfo?.ALB_PICTURE)
       console.log('[Downloader] options.metadataSettings:', JSON.stringify(options.metadataSettings, null, 2)?.substring(0, 500))
 
-      const NodeID3 = require('node-id3')
-      console.log('[Downloader] NodeID3 loaded successfully')
+
 
       // Get tag settings (default to all true if not provided)
       const tagSettings = options.metadataSettings?.tags || {
@@ -3141,70 +3141,16 @@ export class Downloader extends EventEmitter {
       }
       console.log(`[Downloader] Read file buffer: ${fileBuffer.length} bytes`)
 
-      try {
-
-        // Check if it's a valid MP3 (starts with ID3 tag or MP3 frame sync)
-        const hasID3 = fileBuffer[0] === 0x49 && fileBuffer[1] === 0x44 && fileBuffer[2] === 0x33 // "ID3"
-        const hasMP3Sync = fileBuffer[0] === 0xFF && (fileBuffer[1] & 0xE0) === 0xE0 // MP3 frame sync
-        console.log(`[Downloader] File has ID3 header: ${hasID3}, has MP3 sync: ${hasMP3Sync}`)
-
-        // Write tags to buffer
-        const taggedBuffer = NodeID3.write(tags, fileBuffer)
-
-        if (taggedBuffer && Buffer.isBuffer(taggedBuffer)) {
-          console.log(`[Downloader] Tagged buffer size: ${taggedBuffer.length} bytes`)
-          await this.writeFileAtomic(filePath, taggedBuffer)
-          console.log('[Downloader] Tags written successfully via buffer method')
-
-          // Write ID3v1 tags if enabled (for legacy player compatibility)
-          if (saveID3v1) {
-            this.writeID3v1Tags(filePath, {
-              title: tags.title,
-              artist: tags.artist,
-              album: tags.album,
-              year: tags.year,
-              track: trackInfo.TRACK_NUMBER ? parseInt(trackInfo.TRACK_NUMBER) : undefined
-            })
-          }
-
-          // Verify by reading back
-          const verifyTags = NodeID3.read(filePath)
-          console.log('[Downloader] Verification - read back title:', verifyTags?.title)
-          console.log('[Downloader] Verification - read back artist:', verifyTags?.artist)
-          console.log('[Downloader] Verification - has image:', !!verifyTags?.image)
-        } else {
-          // Try direct file write as fallback
-          console.log('[Downloader] Buffer method failed, trying direct file write...')
-          const success = NodeID3.write(tags, filePath)
-          console.log(`[Downloader] Direct write returned: ${success}`)
-
-          if (!success) {
-            // Try update instead
-            console.log('[Downloader] Trying NodeID3.update...')
-            const updateResult = NodeID3.update(tags, filePath)
-            console.log(`[Downloader] Update returned: ${updateResult}`)
-          }
-
-          // Write ID3v1 tags if enabled
-          if (saveID3v1) {
-            this.writeID3v1Tags(filePath, {
-              title: tags.title,
-              artist: tags.artist,
-              album: tags.album,
-              year: tags.year,
-              track: trackInfo.TRACK_NUMBER ? parseInt(trackInfo.TRACK_NUMBER) : undefined
-            })
-          }
-        }
-      } catch (writeError: any) {
-        console.error('[Downloader] Tag write error:', writeError.message)
-        // Last resort - try update
-        try {
-          const updateResult = NodeID3.update(tags, filePath)
-          console.log(`[Downloader] Fallback update returned: ${updateResult}`)
-        } catch (updateError: any) {
-          console.error('[Downloader] Fallback update error:', updateError.message)
-        }
+      const taggedBuffer = await tagDownloadedMp3(fileBuffer, tags)
+      await this.writeFileAtomic(filePath, taggedBuffer)
+      if (saveID3v1) {
+        this.writeID3v1Tags(filePath, {
+          title: tags.title,
+          artist: tags.artist,
+          album: tags.album,
+          year: tags.year,
+          track: trackInfo.TRACK_NUMBER ? parseInt(trackInfo.TRACK_NUMBER) : undefined
+        })
       }
 
       console.log('[Downloader] ========== TAG FILE END ==========')
