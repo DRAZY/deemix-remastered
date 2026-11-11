@@ -3,12 +3,10 @@
 // Design (see MEMORY/WORK/deemix-v1.9.0-retag/ISA.md):
 //  - Identity: read each file's ISRC via music-metadata (MP3 + FLAC), then look the
 //    track up on the public API (no ARL): GET /track/isrc:{isrc} -> GET /album/{id}.
-//  - Write: MERGE, never replace. The download writers in downloader.ts rebuild the
-//    whole tag block (fine for a fresh file); reusing them on an existing file would
-//    clobber the user's other tags + embedded artwork. So this module has its own
-//    merge-safe writers: MP3 = read-all -> mutate targeted frames -> write-all;
-//    FLAC = parse blocks, overlay only selected Vorbis comments, preserve PICTURE +
-//    audio bytes verbatim.
+//  - MP3: normalize existing common metadata, overlay selected fields, then
+//    rebuild ID3v2.4. Supported custom text and synchronized lyrics are carried
+//    over explicitly; unknown native frames are not guaranteed to survive.
+//    FLAC overlays selected Vorbis comments and preserves PICTURE/audio blocks.
 //  - Only NON-EMPTY resolved values overwrite; an empty lookup never deletes an
 //    existing tag. Files with no ISRC are reported, never guessed.
 
@@ -18,7 +16,7 @@ import * as https from 'https'
 import { qobuzAuth } from './qobuzAuth'
 import { deezerAuth } from './deezerAuth'
 
-const NodeID3 = require('node-id3')
+import { downloadTagPatch } from './mp3-tags'
 
 const str = (v: any) => (v === null || v === undefined ? '' : String(v))
 
@@ -410,8 +408,32 @@ function planFields(meta: ResolvedMeta, fields: RetagFields): { plan: PlannedFie
 
 // --- MP3 merge writer (read-all -> mutate targeted -> write-all) ----------
 
-function applyMp3(filePath: string, plan: PlannedField[], dryRun: boolean): { changes: TagChange[]; unchanged: string[] } {
-  const existing: any = NodeID3.read(filePath) || {}
+export async function applyMp3(filePath: string, plan: PlannedField[], dryRun: boolean): Promise<{ changes: TagChange[]; unchanged: string[] }> {
+  const { parseFile } = await import('music-metadata')
+  const { updateFile } = await import('music-metadata')
+  const metadata = await parseFile(filePath)
+  const common = metadata.common
+  const pair = (value: { no: number | null; of: number | null }) =>
+    value.no == null && value.of == null ? undefined : `${value.no ?? ''}${value.of == null ? '' : `/${value.of}`}`
+  const existing: any = {
+    ...common, performerInfo: common.albumartist, trackNumber: pair(common.track),
+    partOfSet: pair(common.disk), ISRC: common.isrc?.[0], publisher: common.label?.[0],
+    length: metadata.format.duration == null ? undefined : String(Math.round(metadata.format.duration * 1000)),
+    userDefinedText: []
+  }
+  const preservedNative: Record<string, any> = {}
+  for (const [group, entries] of Object.entries(metadata.native)) {
+    if (!group.startsWith('ID3v2')) continue
+    for (const tag of entries) {
+      if (tag.id.startsWith('TXXX:')) {
+        existing.userDefinedText.push({ description: tag.id.slice(5), value: tag.value })
+        const previous = preservedNative[tag.id]
+        preservedNative[tag.id] = previous === undefined ? tag.value : [...(Array.isArray(previous) ? previous : [previous]), tag.value]
+      } else if (tag.id === 'SYLT') {
+        preservedNative.SYLT = [...(preservedNative.SYLT || []), tag.value]
+      }
+    }
+  }
   const changes: TagChange[] = []
   const unchanged: string[] = []
   const record = (field: string, from: any, to: string) => {
@@ -419,8 +441,8 @@ function applyMp3(filePath: string, plan: PlannedField[], dryRun: boolean): { ch
     if (fromStr === to) { unchanged.push(field); return }
     changes.push({ field, from: fromStr, to })
   }
-  // Work on a copy so write-all preserves every existing frame.
-  const tags: any = { ...existing }
+  // Only selected fields override the normalized common metadata.
+  const tags: any = {}
   const udt: Array<{ description: string; value: string }> = Array.isArray(existing.userDefinedText)
     ? existing.userDefinedText.map((e: any) => ({ ...e }))
     : []
@@ -438,7 +460,7 @@ function applyMp3(filePath: string, plan: PlannedField[], dryRun: boolean): { ch
         record(field, existing.trackNumber, combined); tags.trackNumber = combined; break
       }
       case 'trackTotal': {
-        const cur = existing.trackNumber ? String(existing.trackNumber).split('/')[0] : ''
+        const cur = (tags.trackNumber ?? existing.trackNumber) ? String(tags.trackNumber ?? existing.trackNumber).split('/')[0] : ''
         const combined = cur ? `${cur}/${value}` : `/${value}`
         record('trackTotal', existing.trackNumber, combined); tags.trackNumber = combined; break
       }
@@ -500,8 +522,12 @@ function applyMp3(filePath: string, plan: PlannedField[], dryRun: boolean): { ch
   }
 
   if (!dryRun && changes.length > 0) {
-    const ok = NodeID3.write(tags, filePath)
-    if (!ok) throw new Error('NodeID3.write failed')
+    const overlay = downloadTagPatch(tags)
+    const merged = { ...common, native: { ...preservedNative, ...overlay.native } }
+    // Avoid common artist aliases competing with the selected native TPE1/TPE2.
+    if (tags.artist !== undefined) { delete merged.artist; delete merged.artists }
+    if (tags.performerInfo !== undefined) { delete merged.albumartist; delete merged.albumartists }
+    await updateFile(filePath, merged, { replaceId3: true })
   }
   return { changes, unchanged }
 }
@@ -648,7 +674,7 @@ function serializeVorbis(vendor: string, comments: string[]): Buffer {
  * (exact IDs — no ISRC reverse-lookup ambiguity); the standalone retag calls it
  * after resolving by ISRC.
  */
-export function applyMergeFromMeta(filePath: string, meta: ResolvedMeta, fields: RetagFields, dryRun: boolean): RetagResult {
+export async function applyMergeFromMeta(filePath: string, meta: ResolvedMeta, fields: RetagFields, dryRun: boolean): Promise<RetagResult> {
   const fmt = formatOf(filePath)
   if (!fmt) return { path: filePath, status: 'skipped', changes: [], reason: 'unsupported format' }
 
@@ -661,7 +687,7 @@ export function applyMergeFromMeta(filePath: string, meta: ResolvedMeta, fields:
   }
 
   try {
-    const { changes, unchanged } = fmt === 'flac' ? applyFlac(filePath, plan, dryRun) : applyMp3(filePath, plan, dryRun)
+    const { changes, unchanged } = fmt === 'flac' ? applyFlac(filePath, plan, dryRun) : await applyMp3(filePath, plan, dryRun)
     if (changes.length === 0) return { path: filePath, status: 'skipped', changes: [], unchanged, unavailable, reason: 'tags already up to date', source: meta.source }
     return { path: filePath, status: dryRun ? 'preview' : 'updated', changes, unchanged, unavailable, source: meta.source }
   } catch (e: any) {

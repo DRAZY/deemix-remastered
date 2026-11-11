@@ -190,7 +190,7 @@ For each track:
   downloader.streamTrack(mediaUrl, key)   → *.dzcdn.net (URL signed by Media API)
     ← encrypted bytes
   blowfishDecrypt(bytes, deriveKey(id))
-  tagFile(decryptedBuffer, metadata)      → node-id3 / flac-metadata
+  tagFile(decryptedBuffer, metadata)      → music-metadata / flac-metadata
   fs.writeFile(path, taggedBuffer)
   Server emits queue update via /api/queue
   ↑
@@ -271,6 +271,6 @@ Password never crosses the IPC boundary. Only the resulting ARL cookie does, and
 - **Bundler:** Vite 8 with vite-plugin-electron
 - **Type safety:** TypeScript 5, `vue-tsc --noEmit` enforced via CI
 - **Audio decryption:** `egoroof-blowfish` (CBC mode with Blowfish-derived key per track)
-- **Tagging:** `node-id3` for MP3, `flac-metadata` for FLAC
+- **Tagging:** `music-metadata` for MP3, `flac-metadata` for FLAC
 - **Packaging:** electron-builder (DMG, EXE, AppImage, .deb across x64 + ARM64)
 - **No tests** — manual QA before each release. Yes, this is a known gap.
