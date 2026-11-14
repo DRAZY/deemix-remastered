@@ -1,0 +1,26 @@
+services:
+  deemix-remastered:
+    build: .
+    image: deemix-remastered-web:latest
+    container_name: deemix-remastered
+    restart: unless-stopped
+    ports:
+      - "${DEEMIX_BIND_IP:-127.0.0.1}:6595:6595"
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+      - DEEMIX_PORT=6595
+      - DEEMIX_DATA_DIR=/config
+      - DEEMIX_MUSIC_DIR=/downloads
+      # Strongly recommended when exposed on a network:
+      - DEEMIX_WEB_USER=${DEEMIX_WEB_USER:-admin}
+      - DEEMIX_WEB_PASSWORD=${DEEMIX_WEB_PASSWORD:-}
+      # Optional: seed ARL on first boot
+      - DEEZER_ARL=${DEEZER_ARL:-}
+      # Optional: post-download webhook (e.g. trigger Navidrome / Jellyfin rescan)
+      - DEEMIX_POST_DOWNLOAD_WEBHOOK=${DEEMIX_POST_DOWNLOAD_WEBHOOK:-}
+      - DEEMIX_POST_DOWNLOAD_SECRET=${DEEMIX_POST_DOWNLOAD_SECRET:-}
+    volumes:
+      - ./config:/config
+      - /path/to/your/music:/downloads
