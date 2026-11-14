@@ -11,6 +11,13 @@ const settingsStore = useSettingsStore()
 const downloadStore = useDownloadStore()
 const isMaximized = ref(false)
 
+defineProps<{
+  navCollapsed?: boolean
+}>()
+const emit = defineEmits<{
+  (e: 'toggle-nav'): void
+}>()
+
 // Detect platform - check multiple sources for reliability
 const detectPlatform = (): boolean => {
   // Check navigator.platform
@@ -88,6 +95,20 @@ const close = () => window.electronAPI?.close()
     class="h-10 flex items-center bg-background-secondary border-b border-white/[0.06] drag-region select-none"
     :class="{ 'pl-20': isMac }"
   >
+    <!-- Navigation drawer toggle (mobile hamburger + desktop quick toggle) -->
+    <button
+      type="button"
+      @click="emit('toggle-nav')"
+      :aria-label="t('accessibility.mainNavigation')"
+      :aria-expanded="!navCollapsed"
+      class="h-full px-3 flex items-center justify-center border-r border-white/[0.06] text-foreground-muted hover:text-foreground hover:bg-white/[0.06] transition-colors no-drag"
+      title="Menu (Navigation)"
+    >
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
     <!-- Brand -->
     <div class="flex items-center h-full px-4 border-r border-white/[0.06]">
       <span class="font-display text-[13px] tracking-wide text-foreground">DEEMIX<span class="text-primary-500">▮</span>RMSTD</span>

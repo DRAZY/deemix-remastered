@@ -19,10 +19,12 @@ const RACK_COLLAPSED_KEY = 'transferRackCollapsed'
 
 function loadCollapsed(): boolean {
   try {
-    return localStorage.getItem(RACK_COLLAPSED_KEY) === 'true'
+    const saved = localStorage.getItem(RACK_COLLAPSED_KEY)
+    if (saved !== null) return saved === 'true'
   } catch {
-    return false
+    // Ignore storage errors
   }
+  return typeof window !== 'undefined' ? window.innerWidth < 1024 : false
 }
 
 const isCollapsed = ref(loadCollapsed())
