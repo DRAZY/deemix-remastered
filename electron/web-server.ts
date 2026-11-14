@@ -288,9 +288,14 @@ async function main() {
   artistSync.on('artistSync:error', (artistId: string, error: string) => broadcastEvent('artistSync:error', { artistId, error }))
 
   downloader.on('complete', (progress: any) => {
-    const filePath = progress?.filePath || progress?.outputPath || ''
-    const folderPath = filePath ? path.dirname(filePath) : DEFAULT_DOWNLOAD_PATH
-    triggerPostDownloadWebhook({ folder: folderPath, file: filePath })
+    const filePath = progress?.path || progress?.filePath || progress?.outputPath || ''
+    const folderPath = progress?.albumRootFolder || progress?.albumFolder || (filePath ? path.dirname(filePath) : DEFAULT_DOWNLOAD_PATH)
+    triggerPostDownloadWebhook({
+      folder: folderPath,
+      file: filePath,
+      type: progress?.type || (progress?.albumFolder ? 'album' : 'track'),
+      skipped: Boolean(progress?.skippedAsDuplicate || progress?.retagSkipped)
+    })
   })
 
   // 2. Public HTTP gateway
