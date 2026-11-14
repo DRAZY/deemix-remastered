@@ -1,11 +1,19 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useDownloadStore } from '../stores/downloadStore'
 import { useAuthStore } from '../stores/authStore'
 import { useSettingsStore } from '../stores/settingsStore'
 import LoginModal from './LoginModal.vue'
+
+const props = defineProps<{
+  collapsed?: boolean
+}>()
+const emit = defineEmits<{
+  (e: 'update:collapsed', value: boolean): void
+  (e: 'toggle'): void
+}>()
 
 const route = useRoute()
 const { t } = useI18n()
@@ -15,6 +23,25 @@ const settingsStore = useSettingsStore()
 
 const showLoginModal = ref(false)
 const activeDownloadsCount = computed(() => downloadStore.activeDownloads.length)
+
+// Responsive mobile detection (< 768px): acts as a slide-over drawer with backdrop
+const isMobileViewport = ref(typeof window !== 'undefined' ? window.innerWidth < 768 : false)
+function updateViewport() {
+  isMobileViewport.value = window.innerWidth < 768
+}
+onMounted(() => {
+  updateViewport()
+  window.addEventListener('resize', updateViewport)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateViewport)
+})
+
+function handleNavSelect() {
+  if (isMobileViewport.value && !props.collapsed) {
+    emit('update:collapsed', true)
+  }
+}
 
 // Appearance settings
 const isSlim = computed(() => settingsStore.settings.appearance?.slimSidebar ?? false)
@@ -65,13 +92,55 @@ function handleAuthClick() {
 </script>
 
 <template>
-  <nav
+  <!-- Mobile backdrop when drawer is open -->
+  <div
+    v-if="isMobileViewport && !collapsed"
+    class="fixed inset-x-0 top-10 bottom-0 bg-black/60 backdrop-blur-[1px] z-30"
+    @click="emit('update:collapsed', true)"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Desktop collapsed vertical strip (mirrors Transfer Rack on the right) -->
+  <aside
+    v-if="!isMobileViewport && collapsed"
     role="navigation"
     :aria-label="t('accessibility.mainNavigation')"
-    class="bg-background-secondary border-r border-white/[0.06] flex flex-col transition-all duration-300"
-    :class="isSlim ? 'w-16' : 'w-60'"
+    class="w-8 min-w-8 h-full bg-background-secondary border-r border-white/[0.06] flex flex-col items-center py-2 select-none cursor-pointer hover:bg-background-tertiary transition-colors"
+    @click="emit('toggle')"
   >
-    <!-- Brand block -->
+    <button
+      type="button"
+      class="p-1 text-foreground-muted hover:text-foreground transition-colors"
+      @click.stop="emit('toggle')"
+      title="Expand navigation"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+    <span class="vertical-label font-mono text-[9.5px] tracking-[0.24em] text-foreground-muted mt-3 uppercase">
+      CHANNELS
+    </span>
+    <div
+      v-if="activeDownloadsCount > 0"
+      class="mt-auto mb-2 font-mono text-[10px] font-bold bg-primary-500 text-background-main px-1.5 py-0.5 rounded-sm min-w-[18px] text-center"
+    >
+      {{ activeDownloadsCount }}
+    </div>
+  </aside>
+
+  <!-- Expanded navigation sidebar (slide-over drawer on mobile, side column on desktop) -->
+  <nav
+    v-else-if="!collapsed"
+    role="navigation"
+    :aria-label="t('accessibility.mainNavigation')"
+    class="bg-background-secondary border-r border-white/[0.06] flex flex-col transition-transform duration-200"
+    :class="[
+      isSlim ? 'w-16' : 'w-64 sm:w-60',
+      isMobileViewport ? 'fixed top-10 bottom-0 left-0 z-40 shadow-2xl' : 'relative h-full flex-shrink-0'
+    ]"
+  >
+    <!-- Brand block + Collapse button -->
     <div class="p-4" :class="isSlim ? 'pb-2' : 'p-5 pb-3'">
       <div class="flex items-center gap-2.5" :class="isSlim ? 'justify-center' : ''">
         <!-- Brand mark: the DM/RM Console Stack app icon, in its fixed brand
@@ -89,10 +158,21 @@ function handleAuthClick() {
             <rect x="400" y="292" width="42" height="128" fill="#59C2D6" />
           </svg>
         </div>
-        <div v-if="!isSlim" class="min-w-0">
+        <div v-if="!isSlim" class="min-w-0 flex-1">
           <h1 class="text-sm font-semibold leading-tight truncate">{{ t('sidebar.appName') }}</h1>
           <p class="font-mono text-[9.5px] tracking-[0.18em] text-foreground-muted uppercase">{{ t('sidebar.appTagline') }}</p>
         </div>
+        <button
+          v-if="!isSlim"
+          type="button"
+          class="p-1.5 -mr-1 text-foreground-muted hover:text-foreground hover:bg-white/[0.06] rounded transition-colors"
+          @click="emit('toggle')"
+          :title="t('downloadPanel.collapse')"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
       </div>
     </div>
 
@@ -108,6 +188,7 @@ function handleAuthClick() {
           v-for="(item, idx) in navItems"
           :key="item.path"
           :to="item.path"
+          @click="handleNavSelect"
           :aria-label="item.label"
           :aria-current="isActive(item.path) ? 'page' : undefined"
           class="relative flex items-center transition-all duration-150"
@@ -300,6 +381,11 @@ function handleAuthClick() {
 </template>
 
 <style scoped>
+.vertical-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
 .spark i {
   transform-origin: bottom;
   animation: spark-pulse 1.6s ease-in-out infinite;

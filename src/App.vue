@@ -32,6 +32,28 @@ const isLoading = ref(true)
 const loadingMessage = ref(t('app.loadingSettings'))
 const showAuthExpiredBanner = ref(false)
 
+const NAV_COLLAPSED_KEY = 'sidebarDrawerCollapsed'
+function loadNavCollapsed(): boolean {
+  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    return true
+  }
+  try {
+    return localStorage.getItem(NAV_COLLAPSED_KEY) === 'true'
+  } catch {
+    return false
+  }
+}
+const isNavCollapsed = ref(loadNavCollapsed())
+function setNavCollapsed(val: boolean) {
+  isNavCollapsed.value = val
+  if (typeof window === 'undefined' || window.innerWidth >= 768) {
+    try { localStorage.setItem(NAV_COLLAPSED_KEY, String(val)) } catch {}
+  }
+}
+function toggleNavDrawer() {
+  setNavCollapsed(!isNavCollapsed.value)
+}
+
 // Update title bar with download progress
 watch(
   () => ({
@@ -209,7 +231,7 @@ onBeforeUnmount(() => {
     />
 
     <!-- Title Bar (for frameless window) -->
-    <TitleBar />
+    <TitleBar :nav-collapsed="isNavCollapsed" @toggle-nav="toggleNavDrawer" />
 
     <!-- Loading Screen -->
     <div v-if="isLoading" class="flex-1 flex items-center justify-center">
@@ -257,13 +279,17 @@ onBeforeUnmount(() => {
     </transition>
 
     <!-- Main App (only shown after loading) -->
-    <div v-if="!isLoading" class="flex flex-1 overflow-hidden">
-      <!-- Sidebar Navigation -->
-      <Sidebar />
+    <div v-if="!isLoading" class="flex flex-1 overflow-hidden relative">
+      <!-- Sidebar Navigation (collapsible drawer) -->
+      <Sidebar
+        :collapsed="isNavCollapsed"
+        @update:collapsed="setNavCollapsed"
+        @toggle="toggleNavDrawer"
+      />
 
       <!-- Main Content -->
-      <main class="flex-1 overflow-hidden flex flex-col">
-        <div class="flex-1 overflow-y-auto p-6">
+      <main class="flex-1 overflow-hidden flex flex-col min-w-0">
+        <div class="flex-1 overflow-y-auto p-3 sm:p-6">
           <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in">
               <component :is="Component" />
