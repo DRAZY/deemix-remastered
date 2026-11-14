@@ -1,0 +1,9 @@
+node_modules
+release
+dist
+dist-electron
+dist-web
+.git
+.github
+*.log
+.env
